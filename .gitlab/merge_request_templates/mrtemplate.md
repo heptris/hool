@@ -1,8 +1,7 @@
 ## ✅ MR Checklist
 다음 요구 사항을 확인 체크해주세요:
 
-- [ ] 커밋 메세지가 [Code Style Guide](https://www.notion.so/HOOL-a880ac5a96ed4009b7f829a4ef2fe55e)과 맞는지 확인했습니다.
-        `ex. 🎉[Type] 커밋 제목 (S07P12A408-00)`
+- [ ] [Code Style Guide](https://www.notion.so/HOOL-a880ac5a96ed4009b7f829a4ef2fe55e)과 맞는지 확인했습니다.
 - [ ] 필요한 test들을 완료하였고 기능이 제대로 실행되는지 확인 하였습니다. (for bug fixes / features)
 - [ ] 제가 의도한 파일들과 수정 사항들만 커밋이 된 것을 확인 하였습니다.
 - [ ] 본 수정 사항들을 팀원들과 사전에 상의하였고 팀원들 모두 해당 PR에 대하여 알고 있습니다.
@@ -22,7 +21,8 @@
 - [ ] 문서 관련 변화(Documentation content changes)
 - [ ] 기타... 설명을 적어주세요:
 
-## 이슈 번호?
+
+## 이슈 번호? (Jira 또는 Gitlab Issue)
 <!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
 
 Issue Number: N/A
@@ -32,8 +32,6 @@ Issue Number: N/A
 
 - [ ] Yes
 - [ ] No
-
-
 <!-- If this MR contains a breaking change, please describe the impact and migration path for existing applications below. -->
 
 
