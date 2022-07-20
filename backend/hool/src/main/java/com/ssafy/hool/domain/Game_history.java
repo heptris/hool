@@ -30,4 +30,24 @@ public class Game_history {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    public static Game_history createGameHistory(Member member, Game game, int bett_point, Boolean bett) {
+        // getPoint 계산 메서드로 getPoint 넣기
+        Game_history gameHistory = Game_history.builder()
+                .bett_point(bett_point)
+                .bett(bett)
+                .build();
+        gameHistory.addGame(game);
+        gameHistory.addMember(member);
+        return gameHistory;
+    }
+
+    public void addGame(Game game) {
+        this.game = game;
+        game.getGameHistoryList().add(this);
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
+        member.getGameHistoryList().add(this);
+    }
 }
