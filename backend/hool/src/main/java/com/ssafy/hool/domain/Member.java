@@ -1,15 +1,18 @@
 package com.ssafy.hool.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Setter
+@Entity
 public class Member extends BaseEntity{
 
     @Id
@@ -45,7 +48,9 @@ public class Member extends BaseEntity{
 
     }
 
-    public void addFriend() {
-
+    public void addFriend(Friend friend) {
+        this.getFriends().add(friend);
+        friend.setMember(this);
     }
 }
+

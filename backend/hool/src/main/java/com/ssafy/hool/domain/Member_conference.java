@@ -1,16 +1,15 @@
 package com.ssafy.hool.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 @Setter
+@Entity
 public class Member_conference {
 
     @Id
