@@ -25,4 +25,5 @@ public class Member_conference {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
+
 }

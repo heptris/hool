@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Entity
 public class Friend {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "friend_id")
     private Long id;
 
@@ -26,13 +27,19 @@ public class Friend {
     private String friendName; // 친구 이름
 
 
-    public static Friend createFriend() {
+    public static Friend createFriend(Member member, String nickName, String friendName) {
         // 이미 친추돼있는지 검증
-
-
         Friend friend = Friend.builder()
-                .friendNickName("tset")
+                .friendNickName(nickName)
+                .friendName(friendName)
                 .build();
+
+        friend.addMember(member);
         return friend;
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
+        member.getFriends().add(this);
     }
 }

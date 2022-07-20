@@ -27,4 +27,11 @@ public class Game {
 
     @OneToMany(mappedBy = "game")
     private List<Game_history> gameHistoryList = new ArrayList<>();
+
+    public static Game eateGame(String name) {
+        Game game = Game.builder()
+                .name(name)
+                .build();
+        return game;
+    }
 }
