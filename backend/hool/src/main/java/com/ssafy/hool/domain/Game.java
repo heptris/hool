@@ -1,18 +1,17 @@
 package com.ssafy.hool.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
+@Builder
 @Setter
+@Entity
 public class Game {
 
     @Id
@@ -28,4 +27,11 @@ public class Game {
 
     @OneToMany(mappedBy = "game")
     private List<Game_history> gameHistoryList = new ArrayList<>();
+
+    public static Game eateGame(String name) {
+        Game game = Game.builder()
+                .name(name)
+                .build();
+        return game;
+    }
 }

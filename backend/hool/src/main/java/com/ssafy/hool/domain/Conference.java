@@ -6,11 +6,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Conference {
+@AllArgsConstructor
+@Builder
+@Entity
+public class Conference extends BaseEntity{
 
     @Id
     @GeneratedValue
@@ -25,7 +28,19 @@ public class Conference {
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
 
-    @OneToMany(mappedBy = "conference")
+    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
+
+//    public static Conference(String title, Long owner_id) {
+//        Conference conference = Conference.builder()
+//                .title(title)
+//                .owner_id(owner_id)
+//                .build();
+//
+//    }
+
+    public void addMemberConference() {
+
+    }
 
 }

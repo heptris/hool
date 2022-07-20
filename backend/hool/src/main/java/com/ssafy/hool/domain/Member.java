@@ -1,15 +1,19 @@
 package com.ssafy.hool.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.ssafy.hool.dto.MemberCreateDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Setter
+@Entity
 public class Member extends BaseEntity{
 
     @Id
@@ -36,16 +40,27 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
-
-    public Member createMember() {
-        return null;
+    public static Member createMember(MemberCreateDto memberCreateDto) {
+        Member member = Member.builder()
+                .name(memberCreateDto.getName())
+                .memberIdName(memberCreateDto.getMemberIdName())
+                .password(memberCreateDto.getPassword())
+                .friends(new ArrayList<>())
+                .memberConferenceList(new ArrayList<>())
+                .gameHistoryList(new ArrayList<>())
+                .build();
+        return member;
     }
 
     public void enterConference() {
 
     }
 
-    public void addFriend() {
 
+    // 수정 필요
+    public void addFriend(Friend friend) {
+        this.getFriends().add(friend);
+        friend.setMember(this);
     }
 }
+
