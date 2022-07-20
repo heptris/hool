@@ -28,9 +28,11 @@ public class Game {
     @OneToMany(mappedBy = "game")
     private List<Game_history> gameHistoryList = new ArrayList<>();
 
-    public static Game eateGame(String name) {
+    public static Game createGame(String name, Boolean result) {
         Game game = Game.builder()
                 .name(name)
+                .gameHistoryList(new ArrayList<>())
+                .result(result)
                 .build();
         return game;
     }
