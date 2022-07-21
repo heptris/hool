@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @Setter
 @Entity
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -52,8 +52,12 @@ public class Member extends BaseEntity{
         return member;
     }
 
-    public void enterConference() {
-
+    public void enterConference(Conference conference) {
+        Member_conference memberConference = Member_conference.builder()
+                .member(this)
+                .build();
+        memberConferenceList.add(memberConference);
+        memberConference.setConference(conference);
     }
 
 

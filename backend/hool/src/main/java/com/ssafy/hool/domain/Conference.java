@@ -31,16 +31,28 @@ public class Conference extends BaseEntity{
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
 
-//    public static Conference(String title, Long owner_id) {
-//        Conference conference = Conference.builder()
-//                .title(title)
-//                .owner_id(owner_id)
-//                .build();
-//
-//    }
+    public static Conference createConference(String title, Member owner, Conference_category conference_category) {
+        Conference conference = Conference.builder()
+                .title(title)
+                .owner_id(owner.getId())
+                .is_active(true)
+                .memberConferenceList(new ArrayList<>())
+                .conference_category(conference_category)
+                .build();
 
-    public void addMemberConference() {
+        Member_conference memberConference = Member_conference.builder()
+                .member(owner)
+                .build();
 
+        conference.addMemberConference(memberConference);
+
+        return conference;
     }
+
+    public void addMemberConference(Member_conference memberConference) {
+        this.memberConferenceList.add(memberConference);
+        memberConference.setConference(this);
+    }
+
 
 }
