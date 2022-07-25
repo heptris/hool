@@ -24,12 +24,14 @@ public class Member extends BaseEntity {
     private String name;
 
     @Column(unique = true)
-    private String memberIdName; // 로그인 아이디
+    private String memberEmail; // 로그인 이메일
     private String password; // 로그인 비밀번호
 
     @Column(unique = true)
     private String nickName; // 화면 내에서 아이디
     private int point;
+
+    private String profileImage;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
@@ -46,7 +48,7 @@ public class Member extends BaseEntity {
     public static Member createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.builder()
                 .name(memberCreateDto.getName())
-                .memberIdName(memberCreateDto.getMemberIdName())
+                .memberEmail(memberCreateDto.getMemberIdName())
                 .password(memberCreateDto.getPassword())
                 .friends(new ArrayList<>())
                 .memberConferenceList(new ArrayList<>())
