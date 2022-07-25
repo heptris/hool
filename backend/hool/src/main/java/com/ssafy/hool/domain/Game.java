@@ -26,10 +26,11 @@ public class Game {
     @Column(name = "game_result")
     private Boolean result;
 
+    //게임생성시간
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game") 
     private List<Game_history> gameHistoryList = new ArrayList<>();
 
     public static Game createGame(String name, Boolean result) {

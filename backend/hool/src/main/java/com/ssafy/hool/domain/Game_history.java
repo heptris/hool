@@ -21,7 +21,7 @@ public class Game_history {
 
     private int get_point;
 
-    private Boolean bettChoice; // 베팅 현황
+    private Boolean bettChoice; // 베팅현황
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
