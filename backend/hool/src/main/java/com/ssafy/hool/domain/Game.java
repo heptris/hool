@@ -3,6 +3,7 @@ package com.ssafy.hool.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,11 @@ public class Game {
     @Column(name = "game_result")
     private Boolean result;
 
-    @OneToMany(mappedBy = "game")
+    //게임생성시간
+    @Column(name = "created_time")
+    private LocalDateTime createdTime;
+
+    @OneToMany(mappedBy = "game") 
     private List<Game_history> gameHistoryList = new ArrayList<>();
 
     public static Game createGame(String name, Boolean result) {
@@ -33,6 +38,7 @@ public class Game {
                 .name(name)
                 .gameHistoryList(new ArrayList<>())
                 .result(result)
+                .createdTime(LocalDateTime.now())
                 .build();
         return game;
     }

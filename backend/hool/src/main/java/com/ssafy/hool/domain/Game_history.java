@@ -3,6 +3,7 @@ package com.ssafy.hool.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -20,7 +21,7 @@ public class Game_history {
 
     private int get_point;
 
-    private Boolean bett; // 베팅 현황
+    private Boolean bettChoice; // 베팅현황
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -30,11 +31,17 @@ public class Game_history {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    private LocalDateTime createdTime;
+
+    private GameStatus status;
+
     public static Game_history createGameHistory(Member member, Game game, int bett_point, Boolean bett) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()
                 .bett_point(bett_point)
-                .bett(bett)
+                .bettChoice(bett)
+                .createdTime(LocalDateTime.now())
+                .status(GameStatus.PROGRESS)
                 .build();
         gameHistory.addGame(game);
         gameHistory.addMember(member);
