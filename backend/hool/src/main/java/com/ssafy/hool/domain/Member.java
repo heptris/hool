@@ -45,6 +45,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Member_emoji> emojis = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Deal_history> dealHistoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Point_history> pointHistoryList = new ArrayList<>();
+
     public static Member createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.builder()
                 .name(memberCreateDto.getName())
