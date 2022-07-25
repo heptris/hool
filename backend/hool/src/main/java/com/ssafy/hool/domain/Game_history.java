@@ -35,7 +35,7 @@ public class Game_history {
 
     private GameStatus status;
 
-    public static Game_history createGameHistory(Member member, Game game, int bett_point, Boolean bett) {
+    public static Game_history createGameHistory(Member member, int bett_point, Boolean bett) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()
                 .bett_point(bett_point)
@@ -43,14 +43,13 @@ public class Game_history {
                 .createdTime(LocalDateTime.now())
                 .status(GameStatus.PROGRESS)
                 .build();
-        gameHistory.addGame(game);
+//        gameHistory.addGame(game);
         gameHistory.addMember(member);
         return gameHistory;
     }
 
     public void addGame(Game game) {
         this.game = game;
-        game.getGameHistoryList().add(this);
     }
 
     public void addMember(Member member) {
