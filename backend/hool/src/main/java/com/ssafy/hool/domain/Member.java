@@ -40,6 +40,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Member_emoji> emojis = new ArrayList<>();
+
     public static Member createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.builder()
                 .name(memberCreateDto.getName())
