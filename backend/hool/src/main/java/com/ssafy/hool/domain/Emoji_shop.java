@@ -2,10 +2,10 @@ package com.ssafy.hool.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +20,15 @@ public class Emoji_shop extends BaseEntity{
     @Column(name = "emoji_store_id")
     private Long id;
 
+    private int emoji_price;
 
+    private LocalDateTime created_time;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "emoji_id")
+    private Emoji emoji;
+
+    @OneToMany(mappedBy = "emojiShop", cascade = CascadeType.ALL)
+    private List<Deal_history> dealHistoryList = new ArrayList<>();
 
 }

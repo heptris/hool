@@ -35,6 +35,9 @@ public class Game_history {
 
     private GameStatus status;
 
+    @OneToOne(mappedBy = "game_history", fetch = FetchType.LAZY)
+    private Point_history point_history;
+
     public static Game_history createGameHistory(Member member, Game game, int bett_point, Boolean bett) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()

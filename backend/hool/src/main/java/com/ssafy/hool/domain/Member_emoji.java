@@ -25,4 +25,9 @@ public class Member_emoji extends BaseEntity{
     @JoinColumn(name = "emoji_id")
     private Emoji emoji;
 
+    private Boolean is_favorite;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "emoji_type")
+    private Emojitype emojitype;
 }

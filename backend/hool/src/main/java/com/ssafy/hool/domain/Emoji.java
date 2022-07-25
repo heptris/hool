@@ -29,5 +29,7 @@ public class Emoji extends BaseEntity{
     @OneToMany(mappedBy = "emoji", cascade = CascadeType.ALL)
     private List<Member_emoji>  memberEmojiList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "emoji", fetch = FetchType.LAZY)
+    private Emoji_shop emoji_shop;
 
 }
