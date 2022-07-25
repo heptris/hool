@@ -31,6 +31,9 @@ public class Conference extends BaseEntity{
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
+    private List<Game> games = new ArrayList<>();
+
     public static Conference createConference(String title, Member owner, Conference_category conference_category) {
         Conference conference = Conference.builder()
                 .title(title)
