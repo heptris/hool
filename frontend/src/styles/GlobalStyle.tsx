@@ -1,4 +1,7 @@
 import { createGlobalStyle } from "styled-components";
+import { darkTheme } from "./Theme";
+
+const { bgColor, white } = darkTheme;
 
 export const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -13,13 +16,15 @@ export const GlobalStyle = createGlobalStyle`
   article, aside, canvas, details, embed, 
   figure, figcaption, footer, header, hgroup, 
   menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
+  time, mark, audio, video, button {
     margin: 0;
     padding: 0;
     border: 0;
     font-size: 100%;
-    font: inherit;
+    font-family: "Noto Sans KR";
+    letter-spacing: -0.08rem;
     vertical-align: baseline;
+    color: ${white};
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure, 
@@ -28,6 +33,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
+    background-color: ${bgColor} ;
   }
   ol, ul {
     list-style: none;
