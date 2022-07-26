@@ -26,8 +26,28 @@ public class GameService {
         Member member = memberRepository.findByNickName(memberNickName);
         Optional<Conference> conference = conferenceRepository.findById(conferenceId);
         Game_history gameHistory = Game_history.createGameHistory(member, gameCreateDto.getBettPoint(), gameCreateDto.isBettChoice());
-        Game game = Game.createGame(gameCreateDto.getGameName(), null, conference.get(), gameHistory);
+        Game game = null;
+        if(gameRepository.findByConferenceId(conferenceId) == null){
+            game = Game.createGame(gameCreateDto.getGameName(), null, conference.get(), gameHistory);
+            gameRepository.save(game);
+        } else {
+            game = gameRepository.findByConferenceId(conferenceId);
+            game.addGameHistory(gameHistory);
+        }
 
-        gameRepository.save(game);
     }
+
+    public void saveGameResult(GameCreateDto gameCreateDto, String memberNickName, Long conferenceId){
+        Member member = memberRepository.findByNickName(memberNickName);
+        Optional<Conference> conference = conferenceRepository.findById(conferenceId);
+        Game_history gameHistory = gameRepository.findByMemberId(member.getId());
+        Game game = gameRepository.findByConferenceId(conferenceId);
+
+        // 포인트 계산
+        int getPoint = 0;
+
+        gameHistory.gameResultUpdate(getPoint, gameCreateDto.isBettChoice());
+        game.resultUpdate(gameCreateDto.isGameResult());
+    }
+
 }

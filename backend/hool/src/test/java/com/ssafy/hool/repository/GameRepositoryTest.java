@@ -1,8 +1,6 @@
 package com.ssafy.hool.repository;
 
-import com.ssafy.hool.domain.Game;
-import com.ssafy.hool.domain.Game_history;
-import com.ssafy.hool.domain.Member;
+import com.ssafy.hool.domain.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +20,8 @@ class GameRepositoryTest {
     GameRepository gameRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    ConferenceRepository conferenceRepository;
 
     @Test
     public void test() {
@@ -33,10 +33,13 @@ class GameRepositoryTest {
                 .build();
         memberRepository.save(member);
 
-        Game game = Game.createGame("손흥민이 2골이상 넣을까요?", true);
-        Member me = memberRepository.findById(1L).get();
+        Conference conference = Conference.createConference("123", member, Conference_category.SOCCER);
+        conferenceRepository.save(conference);
 
-        Game_history gameHistory = Game_history.createGameHistory(me, game, 30, false);
+        Game_history gameHistory = Game_history.createGameHistory(member, 100, true);
+
+        Game game = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference, gameHistory);
+
         gameRepository.save(game);
     }
 }

@@ -18,9 +18,9 @@ public class Game_history {
     @Column(name = "game_history_id")
     private Long id;
 
-    private int bett_point;
+    private int bettPoint;
 
-    private int get_point;
+    private int getPoint;
 
     private Boolean bettChoice; // 베팅현황
 
@@ -37,15 +37,15 @@ public class Game_history {
 
     private LocalDateTime createdTime;
 
-    private GameStatus status;
+    private GameStatus gameStatus;
 
-    public static Game_history createGameHistory(Member member, int bett_point, Boolean bett) {
+    public static Game_history createGameHistory(Member member, int bettPoint, Boolean bett) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()
-                .bett_point(bett_point)
+                .bettPoint(bettPoint)
                 .bettChoice(bett)
                 .createdTime(LocalDateTime.now())
-                .status(GameStatus.PROGRESS)
+                .gameStatus(GameStatus.PROGRESS)
                 .build();
 //        gameHistory.addGame(game);
         gameHistory.addMember(member);
@@ -59,5 +59,11 @@ public class Game_history {
     public void addMember(Member member) {
         this.member = member;
         member.getGameHistoryList().add(this);
+    }
+
+    public void gameResultUpdate(int getPoint, boolean bettChoice){
+        this.getPoint = getPoint;
+        this.bettChoice = bettChoice;
+        this.gameStatus = GameStatus.OVER;
     }
 }

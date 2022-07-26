@@ -58,4 +58,8 @@ public class Game {
         getGameHistoryList().add(gameHistory);
         gameHistory.addGame(this);
     }
+
+    public void resultUpdate(boolean result){
+        this.result = result;
+    }
 }
