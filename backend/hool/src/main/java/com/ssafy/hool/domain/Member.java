@@ -57,6 +57,9 @@ public class Member extends BaseEntity {
                 .memberEmail(memberCreateDto.getMemberIdName())
                 .password(memberCreateDto.getPassword())
                 .friends(new ArrayList<>())
+                .emojis(new ArrayList<>())
+                .dealHistoryList(new ArrayList<>())
+                .pointHistoryList(new ArrayList<>())
                 .memberConferenceList(new ArrayList<>())
                 .gameHistoryList(new ArrayList<>())
                 .build();
