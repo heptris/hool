@@ -1,6 +1,6 @@
 package com.ssafy.hool.domain;
 
-import com.ssafy.hool.dto.MemberCreateDto;
+import com.ssafy.hool.dto.member.MemberCreateDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,32 +33,38 @@ public class Member extends BaseEntity {
 
     private String profileImage;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Game_history> gameHistoryList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Friend> friends = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Member_emoji> emojis = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Deal_history> dealHistoryList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Point_history> pointHistoryList = new ArrayList<>();
 
     public static Member createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.builder()
-                .name(memberCreateDto.getName())
-                .memberEmail(memberCreateDto.getMemberIdName())
-                .password(memberCreateDto.getPassword())
-                .friends(new ArrayList<>())
-                .memberConferenceList(new ArrayList<>())
-                .gameHistoryList(new ArrayList<>())
+          //      .name(memberCreateDto.getName())
+                .memberEmail(memberCreateDto.getMemberEmail())
                 .build();
         return member;
     }
@@ -77,5 +83,7 @@ public class Member extends BaseEntity {
         this.getFriends().add(friend);
         friend.setMember(this);
     }
+
+
 }
 
