@@ -1,44 +1,48 @@
 import React from "react";
 import styled from "styled-components";
-import { darkTheme } from "@/styles/Theme";
+import { darkTheme } from "styles/Theme";
 
-const { adaptiveGrey500, adaptiveGrey200, mainBadgeColor } = darkTheme;
-
-const FormDIV = styled.form`
-  width: 20rem;
-  margin: 2rem auto;
-`;
+const FormDIV = styled.form``;
 
 const Label = styled.label`
   display: block;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: ${adaptiveGrey200};
+  color: ${darkTheme.adaptiveGrey200};
 `;
+
 const Input = styled.input`
-  width: 100%;
+  width: 20rem;
   height: 2.8rem;
   font: inherit;
-  font-size: 1.5rem;
-  padding: 0.5rem;
+  font-size: 0.875rem;
+  padding-left: 1rem;
   border-radius: 4px;
-  background-color: ${adaptiveGrey500};
+  background-color: ${darkTheme.adaptiveGrey500};
   border: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+
   &:focus {
-    outline: 2px solid ${mainBadgeColor};
+    outline: 2px solid ${darkTheme.mainBadgeColor};
+  }
+  color: ${darkTheme.adaptiveGrey200};
+  ::placeholder {
+    color: ${darkTheme.adaptiveGrey200};
+    font-size: 0.875rem;
   }
 `;
 
 type PropsType = {
   text: string;
+  placeholderText: string;
 };
 
 const Form = (props: PropsType) => {
   return (
     <FormDIV>
       <Label htmlFor="text">{props.text}</Label>
-      <Input type="text" id="text" />
+      <Input type="text" id="text" placeholder={props.placeholderText} />
     </FormDIV>
   );
 };
