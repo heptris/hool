@@ -33,7 +33,7 @@ class GameRepositoryTest {
         Member member = getMember("Lee1");
         memberRepository.save(member);
 
-        Conference conference = Conference.createConference("123", member, Conference_category.SOCCER);
+        Conference conference = Conference.createConference("123", "123", member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
 
         Game game = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
@@ -46,7 +46,7 @@ class GameRepositoryTest {
     public void saveGameHistoryTest(){
         Member m = getMember("Lee2");
         memberRepository.save(m);
-        Conference conference = Conference.createConference("123", m, Conference_category.SOCCER);
+        Conference conference = Conference.createConference("123", "123", m, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
@@ -64,7 +64,7 @@ class GameRepositoryTest {
     public void saveGameResultTest(){
         Member m = getMember("Lee3");
         memberRepository.save(m);
-        Conference conference = Conference.createConference("123", m, Conference_category.SOCCER);
+        Conference conference = Conference.createConference("123", "123", m, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
@@ -87,7 +87,7 @@ class GameRepositoryTest {
         memberRepository.save(m2);
         memberRepository.save(m3);
         memberRepository.save(m4);
-        Conference conference = Conference.createConference("123", m1, Conference_category.SOCCER);
+        Conference conference = Conference.createConference("123", "123", m1, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", true, conference);
         gameRepository.save(g);

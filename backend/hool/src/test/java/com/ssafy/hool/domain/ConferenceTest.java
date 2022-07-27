@@ -40,7 +40,7 @@ class ConferenceTest {
 
         memberRepository.save(member);
         memberRepository.save(member2);
-        Conference conference = Conference.createConference("맨시티vs맨유", member, Conference_category.SOCCER);
+        Conference conference = Conference.createConference("맨시티vs맨유", "아아아", member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
 
         member2.enterConference(conference);
