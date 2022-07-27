@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import styled from "styled-components";
-import { darkTheme } from "../styles/Theme";
+import { darkTheme } from "styles/Theme";
 
-import profileDefaultImg from "../assets/profile-default-img.png";
+import profileDefaultImg from "assets/profile-default-img.png";
 
 function Profile() {
   const [username, setUsername] = useState<string | null>("Andrew");

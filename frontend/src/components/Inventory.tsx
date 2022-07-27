@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import styled from "styled-components";
-import { darkTheme } from "../styles/Theme";
+import { darkTheme } from "styles/Theme";
 
 function Inventory() {
   const [isItems, setIsItems] = useState(true);
