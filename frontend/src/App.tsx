@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Modal from "components/commons/Modal";
-import ProfileView from "components/ProfileView";
+import ProfileView from "pages/ProfileView";
 
 function App() {
   return (
