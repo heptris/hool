@@ -28,9 +28,11 @@ public class Conference extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
 
+    @Builder.Default
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Game> games = new ArrayList<>();
 
@@ -39,8 +41,6 @@ public class Conference extends BaseEntity{
                 .title(title)
                 .owner_id(owner.getId())
                 .is_active(true)
-                .games(new ArrayList<>())
-                .memberConferenceList(new ArrayList<>())
                 .conference_category(conference_category)
                 .build();
 
