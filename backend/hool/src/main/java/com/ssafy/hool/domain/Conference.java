@@ -39,6 +39,7 @@ public class Conference extends BaseEntity{
                 .title(title)
                 .owner_id(owner.getId())
                 .is_active(true)
+                .games(new ArrayList<>())
                 .memberConferenceList(new ArrayList<>())
                 .conference_category(conference_category)
                 .build();
