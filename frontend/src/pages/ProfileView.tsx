@@ -3,8 +3,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import Profile from "./Profile";
-import Inventory from "./Inventory";
+import Profile from "components/Profile";
+import Inventory from "components/Inventory";
 
 function ProfileView() {
   return (

@@ -1,10 +1,14 @@
 import { useState } from "react";
 
-import Auth from "./components/Auth";
+import Modal from "components/commons/Modal";
+import ProfileView from "pages/ProfileView";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <Auth />;
+  return (
+    <div>
+      {/* <Modal header={<div>Header</div>} body={<div>Body</div>} /> */}
+      <ProfileView />
+    </div>
+  );
 }
 export default App;

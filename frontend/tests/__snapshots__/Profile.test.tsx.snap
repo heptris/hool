@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Profile /> matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-bczRLJ jglEHW"
+  >
+    <span
+      class="sc-gsnTZi cCUMgb"
+    >
+      나의 프로필
+    </span>
+    <img
+      alt="profile-img"
+      class="sc-dkzDqf fKvBQC"
+      src="default"
+    />
+    <span
+      class="sc-hKMtZM hUMtpj"
+    >
+      Andrew
+    </span>
+    <span
+      class="sc-eCYdqJ kIonYf"
+    >
+      Andy@gmail.com
+    </span>
+    <div
+      class="sc-jSMfEi bzIksm"
+    >
+      <div
+        class="sc-gKXOVf jbVIGJ"
+      >
+        <span
+          class="sc-ftvSup fJVaoj"
+        >
+          1,237
+        </span>
+        <span
+          class="sc-iBkjds ggynos"
+        >
+          포인트
+        </span>
+      </div>
+      <div
+        class="sc-gKXOVf jbVIGJ"
+      >
+        <span
+          class="sc-ftvSup fJVaoj"
+        >
+          2
+        </span>
+        <span
+          class="sc-iBkjds ggynos"
+        >
+          이모지
+        </span>
+      </div>
+      <div
+        class="sc-gKXOVf jbVIGJ"
+      >
+        <span
+          class="sc-ftvSup fJVaoj"
+        >
+          47
+        </span>
+        <span
+          class="sc-iBkjds ggynos"
+        >
+          팔로잉
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
