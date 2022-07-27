@@ -29,7 +29,6 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 6vw;
   position: fixed;
   left: 1vw;
   margin: 0 auto;
