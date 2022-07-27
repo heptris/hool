@@ -5,13 +5,49 @@ import { darkTheme } from "../styles/Theme";
 
 import profileDefaultImg from "../assets/profile-default-img.png";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+function Profile() {
+  const [username, setUsername] = useState<string | null>("Andrew");
+  const [email, setEmail] = useState<string | null>("Andy@gmail.com");
+
+  const [point, emojiCnt, followingCnt]: number[] = [1237, 2, 47];
+  const [userPoint, setUserPoint] = useState<string | null>(
+    point?.toLocaleString("ko-KR")
+  );
+  const [userEmojiCnt, setUserEmojiCnt] = useState<string | null>(
+    emojiCnt?.toLocaleString("ko-KR")
+  );
+  const [userFollwingCnt, setUserFollowingCnt] = useState<string | null>(
+    followingCnt?.toLocaleString("ko-KR")
+  );
+
+  return (
+    <ProfileBox>
+      <ProfileHeader>나의 프로필</ProfileHeader>
+
+      <ProfileImg src={profileDefaultImg} alt="profile-img" />
+
+      <Username>{username}</Username>
+      <Email>{email}</Email>
+
+      <InfoBox>
+        <Info>
+          <InfoNumber>{userPoint}</InfoNumber>
+          <InfoContent>포인트</InfoContent>
+        </Info>
+
+        <Info>
+          <InfoNumber>{userEmojiCnt}</InfoNumber>
+          <InfoContent>이모지</InfoContent>
+        </Info>
+
+        <Info>
+          <InfoNumber>{userFollwingCnt}</InfoNumber>
+          <InfoContent>팔로잉</InfoContent>
+        </Info>
+      </InfoBox>
+    </ProfileBox>
+  );
+}
 
 const ProfileBox = styled.div`
   border: 1px solid ${darkTheme.adaptiveGrey700};
@@ -71,51 +107,5 @@ const InfoNumber = styled.span`
   font-size: 1.25rem;
   font-weight: bold;
 `;
-
-function Profile() {
-  const [username, setUsername] = useState<string | null>("Andrew");
-  const [email, setEmail] = useState<string | null>("Andy@gmail.com");
-
-  const [point, emojiCnt, followingCnt]: number[] = [1237, 2, 47];
-  const [userPoint, setUserPoint] = useState<string | null>(
-    point?.toLocaleString("ko-KR")
-  );
-  const [userEmojiCnt, setUserEmojiCnt] = useState<string | null>(
-    emojiCnt?.toLocaleString("ko-KR")
-  );
-  const [userFollwingCnt, setUserFollowingCnt] = useState<string | null>(
-    followingCnt?.toLocaleString("ko-KR")
-  );
-
-  return (
-    <Container>
-      <ProfileBox>
-        <ProfileHeader>나의 프로필</ProfileHeader>
-
-        <ProfileImg src={profileDefaultImg} alt="profile-img" />
-
-        <Username>{username}</Username>
-        <Email>{email}</Email>
-
-        <InfoBox>
-          <Info>
-            <InfoNumber>{userPoint}</InfoNumber>
-            <InfoContent>포인트</InfoContent>
-          </Info>
-
-          <Info>
-            <InfoNumber>{userEmojiCnt}</InfoNumber>
-            <InfoContent>이모지</InfoContent>
-          </Info>
-
-          <Info>
-            <InfoNumber>{userFollwingCnt}</InfoNumber>
-            <InfoContent>팔로잉</InfoContent>
-          </Info>
-        </InfoBox>
-      </ProfileBox>
-    </Container>
-  );
-}
 
 export default Profile;
