@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
+@Service
 public class GameService {
     private final GameRepository gameRepository;
     private final MemberRepository memberRepository;
