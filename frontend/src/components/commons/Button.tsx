@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 interface ButtonProps {
-  text?: string | HTMLImageElement;
+  text?: string;
   color?: string;
-  isSqr?: boolean;
 }
 
 /**
@@ -13,12 +12,8 @@ interface ButtonProps {
  * @returns {HTMLButtonElement} Btn
  */
 
-const Button = ({ text, color, isSqr = false }: ButtonProps) => {
-  return (
-    <Btn color={color} isSqr={isSqr}>
-      {typeof text === "string"?}
-    </Btn>
-  );
+const Button = ({ text = "버튼", color }: ButtonProps) => {
+  return <Btn color={color}>{text}</Btn>;
 };
 
 export default Button;
@@ -27,13 +22,11 @@ const Btn = styled.button`
   border-radius: 4px;
   background-color: ${({ color }) =>
     color ? color : darkTheme.mainBadgeColor};
-  padding: ${({ isSqr }) => (isSqr ? "0.5rem" : "0.5rem 1rem")};
+  padding: 0.5rem 1rem;
   line-height: 1;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) =>
-      props.color === "grey"
-        ? darkTheme.adaptiveGrey700
-        : darkTheme.darkBadgeColor};
+    background-color: ${({ color }) =>
+      color ? darkTheme.darkColor : darkTheme.darkBadgeColor};
   }
 `;
