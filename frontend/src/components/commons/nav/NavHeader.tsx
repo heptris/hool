@@ -2,10 +2,12 @@ import profileDefaultImg from "assets/profile-default-img.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+const { adaptiveGrey200, adaptiveGrey800 } = darkTheme;
+
 const NavHeader = () => {
   return (
     <Header>
-      <div className="emoji">♟️</div>
+      <Icon className="fa-solid fa-bell" />
       <NavUser>
         <ProfileImg
           src={profileDefaultImg}
@@ -19,27 +21,32 @@ const NavHeader = () => {
 };
 
 const Header = styled.nav`
-  background-color: ${darkTheme.adaptiveGrey800};
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 90%;
+  position: fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
   padding: 1rem;
-  height: 2rem;
+  width: 94vw;
+  height: 2.5rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  background-color: ${adaptiveGrey800};
+`;
+const Icon = styled.i`
+  margin-right: 1rem;
+  color: ${adaptiveGrey200};
 `;
 const ProfileImg = styled.img`
   height: 2rem;
   border-radius: 4px;
-`;
-const NavSide = styled.nav`
-  display: flex;
-  flex-direction: column;
 `;
 const NavUser = styled.div`
   width: 10rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  color: ${adaptiveGrey200};
 `;
 
 export default NavHeader;
