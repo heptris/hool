@@ -53,22 +53,24 @@ const FooterContent = styled.div`
       margin: 1rem 0 0 0;
       color: ${darkTheme.adaptiveGrey500};
       font-size: 0.875rem;
+      font-weight: normal;
     }
 
     h3 {
       margin: 0.8rem 0 0 0;
       color: ${darkTheme.adaptiveGrey500};
       font-size: 0.75rem;
+      font-weight: normal;
     }
   }
 `;
 
 const FooterItems = styled.div`
   display: flex;
+  width: 150%;
+  justify-content: space-between;
 
   div {
-    margin: 0 5rem 0 0;
-
     h1 {
       color: ${darkTheme.adaptiveGrey200};
     }
