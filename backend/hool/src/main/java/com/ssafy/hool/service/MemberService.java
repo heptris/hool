@@ -4,11 +4,15 @@ import com.ssafy.hool.domain.Friend;
 import com.ssafy.hool.domain.FriendRequest;
 import com.ssafy.hool.domain.FriendRequestStatus;
 import com.ssafy.hool.domain.Member;
+import com.ssafy.hool.dto.member.MemberJoinResponseDto;
+import com.ssafy.hool.dto.member.MemberResponseDto;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
     private final FriendRepository friendRepository;
 
     // 회원 가입
@@ -47,7 +52,7 @@ public class MemberService {
     @Transactional
     public void updateMember(Long memberId, String password, String name, String nickName) {
         Member member = memberRepository.findById(memberId).get();
-        member.setPassword(password);
+        member.setPassword(passwordEncoder.encode(password));
         member.setName(name);
         member.setNickName(nickName);
     }
@@ -68,4 +73,11 @@ public class MemberService {
         return memberRepository.getEmojiCount(memberId);
     }
 
+    // 현재 SecurityContext 에 있는 유저 정보 가져오기
+    @Transactional(readOnly = true)
+    public MemberJoinResponseDto getMyInfo() {
+        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .map(MemberJoinResponseDto::of)
+                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+    }
 }

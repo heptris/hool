@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(RuntimeException.class)
     public String test() {
-        return "test";
+        return "exception";
     }
 }

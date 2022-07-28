@@ -13,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,8 +57,7 @@ class MemberServiceTest {
 
     @Test
     void 회원수정() {
-        memberService.join(new Member());
-        memberService.updateMember(1L, "1234", "회원", "음바페1");
+        memberService.updateMember(1L, "1235", "회원", "음바페1");
     }
 
     @Test
@@ -71,6 +67,12 @@ class MemberServiceTest {
         int friendCount2 = memberService.getFriendCount(2L);
         Assertions.assertThat(friendCount2).isEqualTo(1);
 
+    }
+
+    @Test
+    void 테스트() {
+        Date now = new Date();
+        System.out.println(now.getTime());
     }
 
 }

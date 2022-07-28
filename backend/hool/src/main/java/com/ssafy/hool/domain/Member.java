@@ -1,6 +1,6 @@
 package com.ssafy.hool.domain;
 
-import com.ssafy.hool.dto.member.MemberCreateDto;
+import com.ssafy.hool.dto.member.MemberJoinDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,9 +33,12 @@ public class Member extends BaseEntity {
 
     private String profileImage;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Builder.Default
+//    private List<String> roles = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -65,7 +68,7 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<FriendRequest> friendRequestList = new ArrayList<>();
 
-    public static Member createMember(MemberCreateDto memberCreateDto) {
+    public static Member createMember(MemberJoinDto memberCreateDto) {
         Member member = Member.builder()
                 .name(memberCreateDto.getName())
                 .memberEmail(memberCreateDto.getMemberEmail())

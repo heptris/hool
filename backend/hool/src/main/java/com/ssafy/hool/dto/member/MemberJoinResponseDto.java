@@ -1,20 +1,16 @@
 package com.ssafy.hool.dto.member;
 
 import com.ssafy.hool.domain.Member;
+
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @AllArgsConstructor
-@Builder
-public class MemberResponseDto {
-
-    private String nickName;
+@NoArgsConstructor
+public class MemberJoinResponseDto {
     private String memberEmail;
-    private int point;
-    private int emojiCount;
-    private int friendCount;
 
     public static MemberJoinResponseDto of(Member member) {
         return new MemberJoinResponseDto(member.getMemberEmail());
