@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -10,6 +9,17 @@ const Label = styled.label`
   margin-bottom: 0.25rem;
   font-weight: bold;
   color: ${darkTheme.adaptiveGrey200};
+`;
+
+const FlexBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const Info = styled.div`
+  font-size: 0.7rem;
+  color: ${darkTheme.infoColor};
 `;
 
 const Input = styled.input`
@@ -38,15 +48,23 @@ type PropsType = {
   placeholderText: string;
   widthSize: string;
   type: string;
+  info: string;
 };
 
-const Form = ({ text, placeholderText, widthSize, type }: PropsType) => {
+const Form = ({ text, placeholderText, widthSize, type, info }: PropsType) => {
   return (
     <FormDIV>
-      <Label htmlFor="text">{text}</Label>
+      {info ? (
+        <FlexBox>
+          <Label htmlFor={placeholderText}>{text}</Label>
+          <Info>{info}</Info>
+        </FlexBox>
+      ) : (
+        <Label htmlFor={placeholderText}>{text}</Label>
+      )}
       <Input
         type={type}
-        id="text"
+        id={placeholderText}
         placeholder={placeholderText}
         widthSize={widthSize}
       />
