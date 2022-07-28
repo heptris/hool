@@ -36,7 +36,7 @@ const Icon = styled.i`
   color: ${adaptiveGrey200};
 `;
 const ProfileImg = styled.img`
-  height: 2rem;
+  height: 2.5rem;
   border-radius: 4px;
 `;
 const ProfileName = styled.p`

@@ -47,14 +47,13 @@ const Logo = styled.h1`
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 40vh;
 `;
 const Btn = styled.button`
-  width: 4rem;
-  height: 4rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 4px;
   background-color: ${adaptiveGrey800};
+  margin: 0 0 2rem 0;
   cursor: pointer;
 
   &:hover {
@@ -62,7 +61,7 @@ const Btn = styled.button`
   }
 `;
 const Icon = styled.i`
-  font-size: 1.8rem;
+  font-size: 1rem;
   color: ${adaptiveGrey200};
   margin: 0 ${letterSpacingSize}rem 0 0;
 `;
