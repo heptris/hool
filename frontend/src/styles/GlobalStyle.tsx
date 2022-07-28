@@ -3,6 +3,8 @@ import { darkTheme } from "./Theme";
 
 const { bgColor, white } = darkTheme;
 
+export const letterSpacingSize = 0.08;
+
 export const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -13,8 +15,8 @@ export const GlobalStyle = createGlobalStyle`
   dl, dt, dd, ol, ul, li,
   fieldset, form, label, legend,
   table, caption, tbody, tfoot, thead, tr, th, td,
-  article, aside, canvas, details, embed, 
-  figure, figcaption, footer, header, hgroup, 
+  article, aside, canvas, details, embed,
+  figure, figcaption, footer, header, hgroup,
   menu, nav, output, ruby, section, summary,
   time, mark, audio, video, button {
     margin: 0;
@@ -22,12 +24,12 @@ export const GlobalStyle = createGlobalStyle`
     border: 0;
     font-size: 100%;
     font-family: "Noto Sans KR";
-    letter-spacing: -0.08rem;
+    letter-spacing: -${letterSpacingSize}rem;
     vertical-align: baseline;
     color: ${white};
   }
   /* HTML5 display-role reset for older browsers */
-  article, aside, details, figcaption, figure, 
+  article, aside, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
