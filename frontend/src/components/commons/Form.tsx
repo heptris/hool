@@ -13,7 +13,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  width: 20rem;
+  width: ${({ widthSize }: PropsType) => widthSize || `19rem`};
   height: 2.8rem;
   font: inherit;
   font-size: 0.875rem;
@@ -36,13 +36,20 @@ const Input = styled.input`
 type PropsType = {
   text: string;
   placeholderText: string;
+  widthSize: string;
+  type: string;
 };
 
-const Form = (props: PropsType) => {
+const Form = ({ text, placeholderText, widthSize, type }: PropsType) => {
   return (
     <FormDIV>
-      <Label htmlFor="text">{props.text}</Label>
-      <Input type="text" id="text" placeholder={props.placeholderText} />
+      <Label htmlFor="text">{text}</Label>
+      <Input
+        type={type}
+        id="text"
+        placeholder={placeholderText}
+        widthSize={widthSize}
+      />
     </FormDIV>
   );
 };
