@@ -6,16 +6,21 @@ import { darkTheme } from "../../styles/Theme";
 type PropsType = {
   header: ReactElement;
   body: ReactElement;
+  onDisplayChange: Function;
 };
 
-function Modal({ header, body }: PropsType) {
+function Modal({ header, body, onDisplayChange }: PropsType) {
+  const handleDisplayChange = () => {
+    onDisplayChange();
+  };
+
   return (
     <Wrapper>
       <ModalWindow>
         <ModalComponent>
           <ModalHeader>
             {header}
-            <CloseBtn>
+            <CloseBtn onClick={handleDisplayChange}>
               <i className="fa-solid fa-xmark"></i>
             </CloseBtn>
           </ModalHeader>
