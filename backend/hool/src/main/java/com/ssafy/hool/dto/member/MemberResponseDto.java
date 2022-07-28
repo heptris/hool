@@ -12,4 +12,6 @@ public class MemberResponseDto {
     private String nickName;
     private String memberEmail;
     private int point;
+    private int emojiCount;
+    private int friendCount;
 }

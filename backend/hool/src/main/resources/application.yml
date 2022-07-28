@@ -4,13 +4,13 @@ spring:
       enabled: always
   datasource:
     url: jdbc:mysql://localhost:3306/ssafy_web_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password: ssafy
+    username: ssafy
+    password: (2MdiTE7h[BXy(fEVQw=
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
 #        show_sql: true

@@ -22,16 +22,17 @@ public class Friend {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String friendNickName; // 친구 아이디
+    private Long friendMemberId;
 
-    private String friendName; // 친구 이름
+    @ManyToOne
+    @JoinColumn(name = "friend_request_id")
+    private FriendRequest friendRequest;
 
 
-    public static Friend createFriend(Member member, String nickName, String friendName) {
-        // 이미 친추돼있는지 검증
+    public static Friend createFriend(Member member, Long friendMemberId, FriendRequest friendRequest) {
         Friend friend = Friend.builder()
-                .friendNickName(nickName)
-                .friendName(friendName)
+                .friendRequest(friendRequest)
+                .friendMemberId(friendMemberId)
                 .build();
 
         friend.addMember(member);

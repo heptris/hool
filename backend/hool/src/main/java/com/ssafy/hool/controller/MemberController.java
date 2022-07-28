@@ -24,6 +24,9 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * 회원가입
+     */
     @PostMapping("/join")
     public ResponseEntity<Long> join(@RequestBody MemberCreateDto memberCreateDto) {
         Member member = Member.createMember(memberCreateDto);
@@ -45,6 +48,9 @@ public class MemberController {
         }
     }
 
+    /**
+     * 로그인
+     */
     @PostMapping("/login")
     public String login(@RequestBody MemberLoginDto memberLoginDto) {
         String memberEmail = memberLoginDto.getMemberEmail();
@@ -61,18 +67,25 @@ public class MemberController {
     @GetMapping("/api/member/{memberId}")
     public ResponseDto memberProfile(@PathVariable("memberId") Long memberId) {
         Member member = memberService.findByMemberId(memberId);
+        int friendCount = memberService.getFriendCount(memberId);
         MemberResponseDto memberProfile = MemberResponseDto.builder()
                 .nickName(member.getNickName())
                 .memberEmail(member.getMemberEmail())
                 .point(member.getPoint())
+                .friendCount(friendCount)
                 .build();
 
         return new ResponseDto<MemberResponseDto>(200, "success", memberProfile);
     }
 
+    /**
+     * 회원 프로필 수정
+     */
     @PutMapping("/api/member/{memberId}")
     public ResponseDto memberUpdate(@PathVariable("memberId")Long memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
-        memberService.updateMember(memberId, memberUpdateDto.getPassword(), memberUpdateDto.getName(), memberUpdateDto.getNickName());
+        String rawPassword = memberUpdateDto.getPassword();
+        String password = passwordEncoder.encode(rawPassword);
+        memberService.updateMember(memberId, password, memberUpdateDto.getName(), memberUpdateDto.getNickName());
 
         return new ResponseDto(200, "success", "회원 수정 완료");
     }

@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Builder
 @Setter
@@ -61,9 +61,13 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Point_history> pointHistoryList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<FriendRequest> friendRequestList = new ArrayList<>();
+
     public static Member createMember(MemberCreateDto memberCreateDto) {
         Member member = Member.builder()
-                //      .name(memberCreateDto.getName())
+                .name(memberCreateDto.getName())
                 .memberEmail(memberCreateDto.getMemberEmail())
                 .build();
         return member;
@@ -77,13 +81,9 @@ public class Member extends BaseEntity {
         memberConference.setConference(conference);
     }
 
-
-    // 수정 필요
-    public void addFriend(Friend friend) {
-        this.getFriends().add(friend);
-        friend.setMember(this);
+    // 친구 삭제
+    public void deleteFriend(Friend friend) {
+        getFriends().remove(friend);
     }
-
-
 }
 
