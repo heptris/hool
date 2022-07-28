@@ -1,6 +1,7 @@
 export const darkTheme = {
   mainBadgeColor: "#00C6C1",
   darkBadgeColor: "#178581",
+  infoColor: "#00FF85",
   emphasisColor: "#638CF6",
   mainColor: "#1C1F2E",
   contrastColor: "#FF0090",
