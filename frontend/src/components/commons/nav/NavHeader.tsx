@@ -28,6 +28,8 @@ const Header = styled.nav`
   padding: 1rem 4rem;
   height: 2rem;
   display: flex;
+  position: fixed;
+  z-index: 1;
   justify-content: end;
   align-items: center;
   background-color: ${mainColor};
