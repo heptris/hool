@@ -6,6 +6,10 @@ type ButtonProps = {
   color?: string;
   width: number;
   height: number;
+  marginTop?: number;
+  marginBottom?: number;
+  marginLeft?: number;
+  marginRight?: number;
 };
 
 /**
@@ -14,9 +18,24 @@ type ButtonProps = {
  * @returns {JSX.Element} Btn
  */
 
-const Button = ({ text = "버튼", color, width, height }: ButtonProps) => {
+const Button = ({
+  text = "버튼",
+  color,
+  width,
+  height,
+  marginTop,
+  marginBottom,
+  marginLeft,
+  marginRight,
+}: ButtonProps) => {
   return (
-    <Btn color={color} width={width} height={height}>
+    <Btn
+      color={color}
+      width={width}
+      height={height}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
+    >
       <span>{text}</span>
     </Btn>
   );
@@ -25,12 +44,22 @@ const Button = ({ text = "버튼", color, width, height }: ButtonProps) => {
 export default Button;
 
 const Btn = styled.button`
+  margin-top: ${({ marginTop }: ButtonProps) =>
+    marginTop ? marginTop : "0"}rem;
+  margin-bottom: ${({ marginBottom }: ButtonProps) =>
+    marginBottom ? marginBottom : "0"}rem;
+  margin-left: ${({ marginLeft }: ButtonProps) =>
+    marginLeft ? marginLeft : "0"}rem;
+  margin-right: ${({ marginRight }: ButtonProps) =>
+    marginRight ? marginRight : "0"}rem;
+
   border-radius: 4px;
-  background-color: ${({ color }) =>
-    color ? color : darkTheme.mainBadgeColor};
   width: ${({ width }: ButtonProps) => width}rem;
   height: ${({ height }: ButtonProps) => height}rem;
   line-height: 1;
+
+  background-color: ${({ color }) =>
+    color ? color : darkTheme.mainBadgeColor};
   cursor: pointer;
 
   span {
