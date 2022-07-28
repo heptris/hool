@@ -6,17 +6,16 @@ import NavSide from "./NavSide";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Wrapper>
+    <>
       <NavSide />
       <Main>
         <NavHeader />
         <Container>{children}</Container>
         <Footer />
       </Main>
-    </Wrapper>
+    </>
   );
 };
-const Wrapper = styled.div``;
 const Main = styled.div`
   position: absolute;
   top: 0;
@@ -26,4 +25,7 @@ const Main = styled.div`
 `;
 const Container = styled.main`
   margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: start;
 `;
