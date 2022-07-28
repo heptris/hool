@@ -3,72 +3,91 @@
 exports[`<Profile /> matches snapshot 1`] = `
 <div>
   <div
-    class="sc-bczRLJ jglEHW"
+    style="width: 17%;"
   >
-    <span
-      class="sc-gsnTZi cCUMgb"
-    >
-      나의 프로필
-    </span>
-    <img
-      alt="profile-img"
-      class="sc-dkzDqf fKvBQC"
-      src="default"
-    />
-    <span
-      class="sc-hKMtZM hUMtpj"
-    >
-      Andrew
-    </span>
-    <span
-      class="sc-eCYdqJ kIonYf"
-    >
-      Andy@gmail.com
-    </span>
     <div
-      class="sc-jSMfEi bzIksm"
+      class="sc-papXJ bJWJWe"
     >
-      <div
-        class="sc-gKXOVf jbVIGJ"
+      <span
+        class="sc-jqUVSM dclcoQ"
       >
-        <span
-          class="sc-ftvSup fJVaoj"
+        나의 프로필
+      </span>
+      <img
+        alt="profile-img"
+        class="sc-kDDrLX siaIx"
+        src="default"
+      />
+      <span
+        class="sc-iqcoie fBlXKq"
+      >
+        Andrew
+      </span>
+      <span
+        class="sc-crXcEl fXXtVH"
+      >
+        Andy@gmail.com
+      </span>
+      <div>
+        <button
+          class="sc-bczRLJ lfnOUr"
+          height="2"
+          width="6"
         >
-          1,237
-        </span>
-        <span
-          class="sc-iBkjds ggynos"
-        >
-          포인트
-        </span>
+          <span>
+            프로필 편집
+          </span>
+        </button>
       </div>
       <div
-        class="sc-gKXOVf jbVIGJ"
+        class="sc-evZas hLCrHz"
       >
-        <span
-          class="sc-ftvSup fJVaoj"
+        <div
+          class="sc-ksZaOG dAAxH"
         >
-          2
-        </span>
-        <span
-          class="sc-iBkjds ggynos"
+          <div
+            class="sc-breuTD cnHpMH"
+          >
+            <span
+              class="sc-fnykZs FbPsi"
+            >
+              1,237
+            </span>
+            <span
+              class="sc-hAZoDl eyYiat"
+            >
+              포인트
+            </span>
+          </div>
+        </div>
+        <div
+          class="sc-breuTD cnHpMH"
         >
-          이모지
-        </span>
-      </div>
-      <div
-        class="sc-gKXOVf jbVIGJ"
-      >
-        <span
-          class="sc-ftvSup fJVaoj"
+          <span
+            class="sc-fnykZs FbPsi"
+          >
+            2
+          </span>
+          <span
+            class="sc-hAZoDl eyYiat"
+          >
+            이모지
+          </span>
+        </div>
+        <div
+          class="sc-breuTD cnHpMH"
         >
-          47
-        </span>
-        <span
-          class="sc-iBkjds ggynos"
-        >
-          팔로잉
-        </span>
+          <span
+            class="sc-fnykZs FbPsi"
+          >
+            47
+          </span>
+          <span
+            class="sc-hAZoDl eyYiat"
+          >
+            친구
+          </span>
+        </div>
       </div>
     </div>
   </div>
