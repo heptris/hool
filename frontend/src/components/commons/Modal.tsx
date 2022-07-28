@@ -30,11 +30,13 @@ function Modal({ header, body }: PropsType) {
 }
 
 const Wrapper = styled.div`
-  min-width: 100vw;
-  min-height: 100vh;
+  background-size: cover;
   background-color: rgba(0, 0, 0, 0.5);
-  background-repeat: repeat;
   position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 `;
 
 const ModalWindow = styled.div`
@@ -46,14 +48,12 @@ const ModalWindow = styled.div`
 `;
 
 const ModalComponent = styled.div`
-  width: 30vw;
-  height: 30vh;
   border-radius: 4px;
   background-color: ${darkTheme.mainColor};
 `;
 
 const ModalHeader = styled.div`
-  margin: 2rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -76,7 +76,7 @@ const Hr = styled.hr`
 `;
 
 const ModalBody = styled.div`
-  margin: 2rem;
+  padding: 0 1rem;
 `;
 
 export default Modal;
