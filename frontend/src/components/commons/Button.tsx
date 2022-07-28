@@ -1,4 +1,4 @@
-import styled, { StyledComponent } from "styled-components";
+import styled, { CSSProp } from "styled-components";
 import { darkTheme } from "styles/Theme";
 import { letterSpacingSize } from "styles/GlobalStyle";
 
@@ -11,6 +11,8 @@ type ButtonProps = {
   marginBottom?: number;
   marginLeft?: number;
   marginRight?: number;
+  fontSize?: number;
+  CSSProps?: CSSProp;
 };
 
 /**
@@ -19,24 +21,10 @@ type ButtonProps = {
  * @returns {JSX.Element} Btn
  */
 
-const Button = ({
-  text = "버튼",
-  color,
-  width,
-  height,
-  marginTop,
-  marginBottom,
-  marginLeft,
-  marginRight,
-}: ButtonProps) => {
+const Button = (props: ButtonProps) => {
+  const { text = "버튼" } = props;
   return (
-    <Btn
-      color={color}
-      width={width}
-      height={height}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-    >
+    <Btn {...props}>
       <span>{text}</span>
     </Btn>
   );
@@ -45,6 +33,7 @@ const Button = ({
 export default Button;
 
 const Btn = styled.button`
+  font-size: ${({ fontSize }: ButtonProps) => fontSize}rem;
   margin-top: ${({ marginTop }: ButtonProps) =>
     marginTop ? marginTop : "0"}rem;
   margin-bottom: ${({ marginBottom }: ButtonProps) =>
@@ -71,4 +60,6 @@ const Btn = styled.button`
     background-color: ${({ color }) =>
       color ? darkTheme.emphasisColor : darkTheme.darkBadgeColor};
   }
+
+  ${({ CSSProps }: ButtonProps) => CSSProps};
 `;
