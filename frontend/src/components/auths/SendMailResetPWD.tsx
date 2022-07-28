@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const PasswordChangeBox = styled.div`
+const SendMailResetPWDBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,7 +30,7 @@ const Title = styled.div`
   font-size: 1.25rem;
   color: ${darkTheme.adaptiveGrey200};
   align-self: start;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 `;
 
 const SubTitle1 = styled.div`
@@ -48,16 +48,16 @@ const SubTitle2 = styled.div`
 `;
 
 const Info = styled.div`
-  font-size: 0.7rem;
+  font-size: 0.687rem;
   align-self: start;
   margin-bottom: 0.25rem;
   color: ${darkTheme.infoColor};
 `;
 
-const PasswordChange = () => {
+const SendMailResetPWD = () => {
   return (
     <Container>
-      <PasswordChangeBox>
+      <SendMailResetPWDBox>
         <Logo>hool!</Logo>
         <Title>이메일로 비밀번호 초기화</Title>
         <SubTitle1>HOOL!에 가입한 이메일을 정확히 입력해 주세요.</SubTitle1>
@@ -71,9 +71,9 @@ const PasswordChange = () => {
         />
         <Info>*위 주소로 비밀번호 설정 메일이 전송되었습니다.</Info>
         <Info>메일을 확인해주세요.</Info>
-      </PasswordChangeBox>
+      </SendMailResetPWDBox>
     </Container>
   );
 };
 
-export default PasswordChange;
+export default SendMailResetPWD;
