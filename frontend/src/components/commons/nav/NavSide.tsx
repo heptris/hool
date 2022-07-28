@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 import Button from "../Button";
-const { adaptiveGrey200, adaptiveGrey800, emphasisColor, mainColor } =
+const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const NavSide = () => {
   return (
@@ -25,20 +25,19 @@ const NavSide = () => {
   );
 };
 const Side = styled.div`
-  padding: 1.5rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
-  left: 1vw;
   margin: 0 auto;
-  height: 90vh;
-  background-color: ${mainColor};
+  height: 100vh;
+  background-color: ${bgColor};
 `;
 const Logo = styled.h1`
   font-family: "Lobster";
-  font-size: 2.5rem;
-  margin-bottom: 6rem;
+  font-size: 2rem;
+  margin-bottom: 3.5rem;
 `;
 const ButtonGroup = styled.div`
   display: flex;
@@ -52,8 +51,9 @@ const Btn = styled.button`
   border-radius: 4px;
   background-color: ${adaptiveGrey800};
   cursor: pointer;
+
   &:hover {
-    background-color: ${emphasisColor};
+    background-color: ${adaptiveGrey700};
   }
 `;
 const Icon = styled.i`
