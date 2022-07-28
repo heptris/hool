@@ -2,40 +2,49 @@ import profileDefaultImg from "assets/profile-default-img.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+const { adaptiveGrey200, mainColor } = darkTheme;
+
 const NavHeader = () => {
   return (
     <Header>
-      <div className="emoji">♟️</div>
       <NavUser>
         <ProfileImg
           src={profileDefaultImg}
           alt={`${profileDefaultImg}의 프로필 이미지`}
         />
-        <p>Andrew</p>
-        <select className="select"></select>
+        <ProfileName>Andrew</ProfileName>
+        <Icon className="fa-solid fa-chevron-down" />
       </NavUser>
+      <Icon className="fa-solid fa-bell" />
     </Header>
   );
 };
 
 const Header = styled.nav`
-  background-color: ${darkTheme.adaptiveGrey800};
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 90%;
-  padding: 1rem;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  padding: 0.7rem 4rem;
   height: 2rem;
+  display: flex;
+  position: fixed;
+  justify-content: end;
+  align-items: center;
+  background-color: ${mainColor};
+`;
+const Icon = styled.i`
+  color: ${adaptiveGrey200};
 `;
 const ProfileImg = styled.img`
   height: 2rem;
   border-radius: 4px;
 `;
-const NavSide = styled.nav`
-  display: flex;
-  flex-direction: column;
+const ProfileName = styled.p`
+  color: ${adaptiveGrey200};
+  font-size: 1rem;
 `;
 const NavUser = styled.div`
+  margin-right: 1rem;
   width: 10rem;
   display: flex;
   align-items: center;

@@ -1,14 +1,14 @@
-import { useState } from "react";
-
-import Modal from "components/commons/Modal";
+import Button from "components/commons/Button";
+import { Layout } from "components/layouts/Layout";
+import Profile from "components/Profile";
 import ProfileView from "pages/ProfileView";
 
 function App() {
   return (
-    <div>
-      {/* <Modal header={<div>Header</div>} body={<div>Body</div>} /> */}
-      <ProfileView />
-    </div>
+    <Layout>
+      <div></div>
+    </Layout>
   );
 }
+
 export default App;
