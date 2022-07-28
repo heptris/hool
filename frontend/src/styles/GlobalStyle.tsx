@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { darkTheme } from "./Theme";
 
-const { bgColor, white } = darkTheme;
+const { darkColor, white } = darkTheme;
 
 export const letterSpacingSize = 0.08;
 
@@ -35,7 +35,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
-    background-color: ${bgColor} ;
+    background-color: ${darkColor} ;
   }
   ol, ul {
     list-style: none;
