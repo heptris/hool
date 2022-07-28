@@ -1,5 +1,6 @@
 import styled, { StyledComponent } from "styled-components";
 import { darkTheme } from "styles/Theme";
+import { letterSpacingSize } from "styles/GlobalStyle";
 
 type ButtonProps = {
   text?: string;
@@ -34,7 +35,7 @@ const Btn = styled.button`
   cursor: pointer;
 
   span {
-    margin-right: 0.08rem;
+    margin-right: ${letterSpacingSize}rem;
   }
 
   &:hover {

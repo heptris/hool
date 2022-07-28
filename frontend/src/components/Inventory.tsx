@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+import { letterSpacingSize } from "styles/GlobalStyle";
 
 function Inventory() {
   const [isItems, setIsItems] = useState(true);
@@ -77,7 +78,7 @@ const SwitchItem = styled.button`
   padding: 0 0 0.25rem 0;
 
   span {
-    margin-right: 0.08rem;
+    margin-right: ${letterSpacingSize}rem;
   }
 
   &:hover {
