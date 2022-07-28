@@ -17,7 +17,7 @@ function ProfileView() {
 
 const Container = styled.div`
   width: 100%;
-  height: 80vh;
+  height: 86vh;
   display: flex;
   justify-content: center;
   align-items: start;
