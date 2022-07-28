@@ -32,7 +32,7 @@ const Title = styled.div`
   font-size: 1.25rem;
   color: ${darkTheme.adaptiveGrey200};
   align-self: start;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 `;
 
 const Text = styled.div`
