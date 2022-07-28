@@ -63,6 +63,7 @@ const SignUp = () => {
             width={3.75}
             height={1.875}
             marginLeft={0.5}
+            fontSize={0.75}
           />
         </BtnBox>
 
