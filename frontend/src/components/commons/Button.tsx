@@ -10,6 +10,7 @@ type ButtonProps = {
   marginBottom?: number;
   marginLeft?: number;
   marginRight?: number;
+  fontSize?: number;
 };
 
 /**
@@ -27,6 +28,7 @@ const Button = ({
   marginBottom,
   marginLeft,
   marginRight,
+  fontSize,
 }: ButtonProps) => {
   return (
     <Btn
@@ -35,6 +37,9 @@ const Button = ({
       height={height}
       marginTop={marginTop}
       marginBottom={marginBottom}
+      marginLeft={marginLeft}
+      marginRight={marginRight}
+      fontSize={fontSize}
     >
       <span>{text}</span>
     </Btn>
@@ -44,6 +49,7 @@ const Button = ({
 export default Button;
 
 const Btn = styled.button`
+  font-size: ${({ fontSize }: ButtonProps) => fontSize}rem;
   margin-top: ${({ marginTop }: ButtonProps) =>
     marginTop ? marginTop : "0"}rem;
   margin-bottom: ${({ marginBottom }: ButtonProps) =>
