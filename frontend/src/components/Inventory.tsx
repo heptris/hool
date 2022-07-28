@@ -5,10 +5,15 @@ import { darkTheme } from "styles/Theme";
 import { letterSpacingSize } from "styles/GlobalStyle";
 
 function Inventory() {
-  const [isItems, setIsItems] = useState(true);
+  const [isOwnItems, setIsOwnItems] = useState(true);
+  const [isDisplayModal, setIsDisplayModal] = useState(false);
 
   const switchIsItems = () => {
-    setIsItems(!isItems);
+    setIsOwnItems(!isOwnItems);
+  };
+
+  const switchIsDisplayModal = () => {
+    setIsDisplayModal(!isDisplayModal);
   };
 
   return (
@@ -17,29 +22,31 @@ function Inventory() {
       <InventorySwitches>
         <SwitchItem
           style={
-            isItems
+            isOwnItems
               ? {
                   background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
                 }
               : {}
           }
+          disabled={isOwnItems ? true : false}
           onClick={switchIsItems}
         >
-          <span style={isItems ? { color: darkTheme.mainBadgeColor } : {}}>
+          <span style={isOwnItems ? { color: darkTheme.mainBadgeColor } : {}}>
             소유중
           </span>
         </SwitchItem>
         <SwitchItem
           style={
-            isItems
+            isOwnItems
               ? {}
               : {
                   background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
                 }
           }
+          disabled={isOwnItems ? false : true}
           onClick={switchIsItems}
         >
-          <span style={isItems ? {} : { color: darkTheme.mainBadgeColor }}>
+          <span style={isOwnItems ? {} : { color: darkTheme.mainBadgeColor }}>
             찜
           </span>
         </SwitchItem>
@@ -52,11 +59,11 @@ function Inventory() {
 }
 
 const InventoryBox = styled.div`
-  width: 60vw;
-  height: 80vh;
+  width: 60%;
+  height: 90%;
   border: 1px solid ${darkTheme.adaptiveGrey700};
   border-radius: 4px;
-  margin: 0 0 0 2rem;
+  margin: 0 0 0 4rem;
   background-color: ${darkTheme.mainColor};
 `;
 

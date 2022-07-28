@@ -16,11 +16,12 @@ function ProfileView() {
 }
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: start;
+  padding: 4% 0 0 0;
 `;
 
 export default ProfileView;

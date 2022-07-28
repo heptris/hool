@@ -5,7 +5,22 @@ import { darkTheme } from "styles/Theme";
 
 import profileDefaultImg from "assets/profile-default-img.png";
 
+import Button from "./commons/Button";
+import Modal from "./commons/Modal";
+import Card from "./commons/Card";
+
 function Profile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDisplayModal, setIsDisplayModal] = useState(false);
+
+  const switchIsEditing = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const switchIsDisplayModal = () => {
+    setIsDisplayModal(!isDisplayModal);
+  };
+
   const [username, setUsername] = useState<string | null>("Andrew");
   const [email, setEmail] = useState<string | null>("Andy@gmail.com");
 
@@ -21,38 +36,72 @@ function Profile() {
   );
 
   return (
-    <ProfileBox>
-      <ProfileHeader>나의 프로필</ProfileHeader>
+    <div style={{ width: "17%" }}>
+      {isDisplayModal && (
+        <Modal
+          header={
+            <PointLogHeader>
+              <span>포인트 내역</span>
+            </PointLogHeader>
+          }
+          body={
+            <PointLogBody>
+              <Card
+                children={
+                  <CardContent>
+                    <div>
+                      <Activity>로그인 보너스</Activity>
+                      <Date>2022.07.25</Date>
+                    </div>
+                    <Diff>+500</Diff>
+                  </CardContent>
+                }
+              />
+            </PointLogBody>
+          }
+          onDisplayChange={switchIsDisplayModal}
+        />
+      )}
 
-      <ProfileImg src={profileDefaultImg} alt="profile-img" />
+      <ProfileBox>
+        <ProfileHeader>나의 프로필</ProfileHeader>
 
-      <Username>{username}</Username>
-      <Email>{email}</Email>
+        <ProfileImg src={profileDefaultImg} alt="profile-img" />
 
-      <InfoBox>
-        <Info>
-          <InfoNumber>{userPoint}</InfoNumber>
-          <InfoContent>포인트</InfoContent>
-        </Info>
+        <Username>{username}</Username>
+        <Email>{email}</Email>
 
-        <Info>
-          <InfoNumber>{userEmojiCnt}</InfoNumber>
-          <InfoContent>이모지</InfoContent>
-        </Info>
+        <div onClick={switchIsEditing}>
+          <Button width={6} height={2} text={"프로필 편집"} />
+        </div>
 
-        <Info>
-          <InfoNumber>{userFollwingCnt}</InfoNumber>
-          <InfoContent>팔로잉</InfoContent>
-        </Info>
-      </InfoBox>
-    </ProfileBox>
+        <InfoBox>
+          <Clickable onClick={switchIsDisplayModal}>
+            <Info>
+              <InfoNumber>{userPoint}</InfoNumber>
+              <InfoContent>포인트</InfoContent>
+            </Info>
+          </Clickable>
+
+          <Info>
+            <InfoNumber>{userEmojiCnt}</InfoNumber>
+            <InfoContent>이모지</InfoContent>
+          </Info>
+
+          <Info>
+            <InfoNumber>{userFollwingCnt}</InfoNumber>
+            <InfoContent>친구</InfoContent>
+          </Info>
+        </InfoBox>
+      </ProfileBox>
+    </div>
   );
 }
 
 const ProfileBox = styled.div`
   border: 1px solid ${darkTheme.adaptiveGrey700};
   border-radius: 4px;
-  width: 20rem;
+  width: 100%;
   background-color: ${darkTheme.mainColor};
   padding: 0.8rem;
   display: flex;
@@ -81,20 +130,29 @@ const Username = styled.span`
 const Email = styled.span`
   color: ${darkTheme.adaptiveGrey200};
   font-size: 0.875rem;
-  margin: 0.5rem 0 0 0;
+  margin: 0.5rem 0 2.5rem 0;
 `;
 
 const InfoBox = styled.div`
   display: flex;
-  width: 70%;
+  width: 80%;
   justify-content: space-between;
-  margin: 6rem 0 3rem 0;
+  margin: 5rem 0 3rem 0;
 `;
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
+  padding: 1rem;
+`;
+
+const Clickable = styled.div`
+  &:hover {
+    cursor: pointer;
+    background-color: ${darkTheme.darkColor};
+    border-radius: 8px;
+  }
 `;
 
 const InfoContent = styled.span`
@@ -104,6 +162,38 @@ const InfoContent = styled.span`
 `;
 
 const InfoNumber = styled.span`
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
+
+const PointLogHeader = styled.h1`
+  width: 30rem;
+  margin: 1rem 0 1rem 0;
+`;
+
+const PointLogBody = styled.div`
+  width: 100%;
+  height: 30rem;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 1.5rem;
+`;
+
+const Activity = styled.h2`
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+`;
+
+const Date = styled.span`
+  font-size: 0.875rem;
+  color: ${darkTheme.adaptiveGrey500};
+`;
+
+const Diff = styled.span`
   font-size: 1.25rem;
   font-weight: bold;
 `;
