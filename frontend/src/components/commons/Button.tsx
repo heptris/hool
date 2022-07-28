@@ -17,7 +17,7 @@ type ButtonProps = {
 const Button = ({ text = "버튼", color, width, height }: ButtonProps) => {
   return (
     <Btn color={color} width={width} height={height}>
-      {text}
+      <span>{text}</span>
     </Btn>
   );
 };
@@ -32,6 +32,11 @@ const Btn = styled.button`
   height: ${({ height }: ButtonProps) => height}rem;
   line-height: 1;
   cursor: pointer;
+
+  span {
+    margin-right: 0.08rem;
+  }
+
   &:hover {
     background-color: ${({ color }) =>
       color ? darkTheme.emphasisColor : darkTheme.darkBadgeColor};
