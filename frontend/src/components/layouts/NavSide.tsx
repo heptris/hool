@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { letterSpacingSize } from "styles/GlobalStyle";
 import { darkTheme } from "styles/Theme";
-import Button from "../Button";
+
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const NavSide = () => {
@@ -30,8 +31,12 @@ const Side = styled.div`
   flex-direction: column;
   align-items: center;
   position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
   margin: 0 auto;
   height: 100vh;
+  width: 3rem;
   background-color: ${bgColor};
 `;
 const Logo = styled.h1`
@@ -57,8 +62,9 @@ const Btn = styled.button`
   }
 `;
 const Icon = styled.i`
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: ${adaptiveGrey200};
+  margin: 0 ${letterSpacingSize}rem 0 0;
 `;
 
 export default NavSide;

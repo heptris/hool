@@ -21,13 +21,13 @@ const NavHeader = () => {
 };
 
 const Header = styled.nav`
-  position: fixed;
   margin: 0 auto;
   left: 0;
   right: 0;
-  padding: 1rem 4rem;
+  padding: 0.7rem 4rem;
   height: 2rem;
   display: flex;
+  position: fixed;
   justify-content: end;
   align-items: center;
   background-color: ${mainColor};
