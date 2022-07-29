@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Profile from "../src/components/Profile";
+import Profile from "../src/components/accounts/Profile";
 
 describe("<Profile />", () => {
   it("matches snapshot", () => {

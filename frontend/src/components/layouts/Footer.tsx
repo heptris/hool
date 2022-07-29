@@ -10,7 +10,13 @@ const Footer = () => {
             <h1>서비스</h1>
             <ul>
               <li>공지사항</li>
-              <li>운영진 문의</li>
+            </ul>
+          </div>
+          <div>
+            <h1>문의</h1>
+            <ul>
+              <li>사이트 개선 제안</li>
+              <li>피해신고</li>
             </ul>
           </div>
           <div>
@@ -47,7 +53,6 @@ const FooterContent = styled.div`
 
   div {
     color: ${darkTheme.adaptiveGrey200};
-    margin: 3rem 0 0 0;
 
     h2 {
       margin: 1rem 0 0 0;
@@ -67,8 +72,9 @@ const FooterContent = styled.div`
 
 const FooterItems = styled.div`
   display: flex;
-  width: 150%;
+  width: 180%;
   justify-content: space-between;
+  margin: 0 0 3rem 0;
 
   div {
     h1 {

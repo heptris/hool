@@ -3,8 +3,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import Profile from "components/Profile";
-import Inventory from "components/Inventory";
+import Profile from "components/accounts/Profile";
+import Inventory from "components/accounts/Inventory";
 
 function ProfileView() {
   return (
@@ -17,11 +17,11 @@ function ProfileView() {
 
 const Container = styled.div`
   width: 100%;
-  height: 86vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: start;
-  padding: 4% 0 0 0;
+  padding: 1rem 0 0 0;
 `;
 
 export default ProfileView;

@@ -5,9 +5,9 @@ import { darkTheme } from "styles/Theme";
 
 import profileDefaultImg from "assets/profile-default-img.png";
 
-import Button from "./commons/Button";
-import Modal from "./commons/Modal";
-import Card from "./commons/Card";
+import Button from "../commons/Button";
+import Modal from "../commons/Modal";
+import Card from "../commons/Card";
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +36,7 @@ function Profile() {
   );
 
   return (
-    <div style={{ width: "17%" }}>
+    <div style={{ width: "20rem" }}>
       {isDisplayModal && (
         <Modal
           header={
@@ -145,6 +145,7 @@ const Info = styled.div`
   flex-direction: column;
   text-align: center;
   padding: 1rem;
+  width: 3rem;
 `;
 
 const Clickable = styled.div`
