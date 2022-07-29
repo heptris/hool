@@ -37,8 +37,6 @@ const Side = styled.div`
   flex-direction: column;
   align-items: center;
   position: fixed;
-  left: 0;
-  top: 0;
   z-index: 5;
   margin: 0 auto;
   height: 100vh;
