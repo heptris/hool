@@ -1,24 +1,45 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import profileDefaultImg from "assets/profile-default-img.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+import { letterSpacingSize } from "styles/GlobalStyle";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 
 const NavHeader = () => {
+  const [isDisplayMenu, setIsDisplayMenu] = useState(false);
+
   return (
     <Header>
-      <NavLink to="/profile" style={{ textDecoration: "none" }}>
-        <NavUser>
-          <ProfileImg
-            src={profileDefaultImg}
-            alt={`${profileDefaultImg}의 프로필 이미지`}
-          />
-          <ProfileName>Andrew</ProfileName>
-          <Icon className="fa-solid fa-chevron-down" />
-        </NavUser>
-      </NavLink>
+      <NavUser
+        onMouseEnter={() => setIsDisplayMenu(true)}
+        onMouseLeave={() => setIsDisplayMenu(false)}
+      >
+        {isDisplayMenu && (
+          <ProfileMenu
+            onMouseEnter={() => setIsDisplayMenu(true)}
+            onMouseLeave={() => setIsDisplayMenu(false)}
+          >
+            <NavLink to="/profile" style={{ textDecoration: "none" }}>
+              <MenuItem>
+                <span>프로필</span>
+              </MenuItem>
+            </NavLink>
+            <Hr />
+            <MenuItem>
+              <span>로그아웃</span>
+            </MenuItem>
+          </ProfileMenu>
+        )}
+        <ProfileImg
+          src={profileDefaultImg}
+          alt={`${profileDefaultImg}의 프로필 이미지`}
+        />
+        <ProfileName>Andrew</ProfileName>
+        <Icon className="fa-solid fa-chevron-down" />
+      </NavUser>
       <Icon className="fa-solid fa-bell" />
     </Header>
   );
@@ -66,6 +87,28 @@ const NavUser = styled.div`
       transition: transform ease 0.3s;
     }
   }
+`;
+const ProfileMenu = styled.div`
+  position: fixed;
+  top: 2.8rem;
+  width: 10rem;
+  background-color: ${darkTheme.mainColor};
+  border-radius: 4px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+`;
+const MenuItem = styled.div`
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+
+  span {
+    margin-right: ${letterSpacingSize};
+    color: ${darkTheme.adaptiveGrey200};
+  }
+`;
+const Hr = styled.hr`
+  border: 1px solid ${darkTheme.adaptiveGrey800};
+  background-color: ${darkTheme.adaptiveGrey800};
+  margin: 0;
 `;
 
 export default NavHeader;
