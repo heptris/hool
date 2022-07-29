@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Inventory from "../src/components/Inventory";
+import Inventory from "../src/components/accounts/Inventory";
 
 describe("<Inventory />", () => {
   it("matches snapshot", () => {
@@ -12,6 +12,6 @@ describe("<Inventory />", () => {
     const utils = render(<Inventory />);
     utils.getByText("인벤토리");
     utils.getByText("소유중");
-    utils.getByText("찜");
+    utils.getByText("즐겨찾기");
   });
 });

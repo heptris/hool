@@ -3,7 +3,7 @@
 exports[`<Profile /> matches snapshot 1`] = `
 <div>
   <div
-    style="width: 17%;"
+    style="width: 20rem;"
   >
     <div
       class="sc-papXJ bJWJWe"
@@ -46,7 +46,7 @@ exports[`<Profile /> matches snapshot 1`] = `
           class="sc-ksZaOG dAAxH"
         >
           <div
-            class="sc-breuTD cnHpMH"
+            class="sc-breuTD cvVZFX"
           >
             <span
               class="sc-fnykZs FbPsi"
@@ -61,7 +61,7 @@ exports[`<Profile /> matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="sc-breuTD cnHpMH"
+          class="sc-breuTD cvVZFX"
         >
           <span
             class="sc-fnykZs FbPsi"
@@ -75,7 +75,7 @@ exports[`<Profile /> matches snapshot 1`] = `
           </span>
         </div>
         <div
-          class="sc-breuTD cnHpMH"
+          class="sc-breuTD cvVZFX"
         >
           <span
             class="sc-fnykZs FbPsi"
