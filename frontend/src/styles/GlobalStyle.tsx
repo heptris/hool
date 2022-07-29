@@ -27,6 +27,7 @@ export const GlobalStyle = createGlobalStyle`
     letter-spacing: -${letterSpacingSize}rem;
     vertical-align: baseline;
     color: ${white};
+    text-decoration: none;
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
