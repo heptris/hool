@@ -1,12 +1,9 @@
-import { useState } from "react";
-
 import styled from "styled-components";
-import { darkTheme } from "styles/Theme";
 
 import Profile from "components/accounts/Profile";
 import Inventory from "components/accounts/Inventory";
 
-function ProfileView() {
+function ProfilePage() {
   return (
     <Container>
       <Profile />
@@ -24,4 +21,4 @@ const Container = styled.div`
   padding: 1rem 0 0 0;
 `;
 
-export default ProfileView;
+export default ProfilePage;
