@@ -53,7 +53,7 @@ const Btn = styled.button`
   height: 2.5rem;
   border-radius: 4px;
   background-color: ${adaptiveGrey800};
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.75rem 0;
   cursor: pointer;
 
   &:hover {
