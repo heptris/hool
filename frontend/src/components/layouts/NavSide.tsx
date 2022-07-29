@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 import styled from "styled-components";
 import { letterSpacingSize } from "styles/GlobalStyle";
 import { darkTheme } from "styles/Theme";
@@ -7,11 +9,15 @@ const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
 const NavSide = () => {
   return (
     <Side>
-      <Logo>hool!</Logo>
+      <NavLink to="/" style={{ textDecoration: "none" }}>
+        <Logo>hool!</Logo>
+      </NavLink>
       <ButtonGroup>
-        <Btn>
-          <Icon className="fa-solid fa-list" />
-        </Btn>
+        <NavLink to="/">
+          <Btn>
+            <Icon className="fa-solid fa-list" />
+          </Btn>
+        </NavLink>
         <Btn>
           <Icon className="fa-solid fa-users" />
         </Btn>

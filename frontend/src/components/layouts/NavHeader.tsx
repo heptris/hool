@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 import profileDefaultImg from "assets/profile-default-img.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -7,14 +9,16 @@ const { adaptiveGrey200, mainColor } = darkTheme;
 const NavHeader = () => {
   return (
     <Header>
-      <NavUser>
-        <ProfileImg
-          src={profileDefaultImg}
-          alt={`${profileDefaultImg}의 프로필 이미지`}
-        />
-        <ProfileName>Andrew</ProfileName>
-        <Icon className="fa-solid fa-chevron-down" />
-      </NavUser>
+      <NavLink to="/profile" style={{ textDecoration: "none" }}>
+        <NavUser>
+          <ProfileImg
+            src={profileDefaultImg}
+            alt={`${profileDefaultImg}의 프로필 이미지`}
+          />
+          <ProfileName>Andrew</ProfileName>
+          <Icon className="fa-solid fa-chevron-down" />
+        </NavUser>
+      </NavLink>
       <Icon className="fa-solid fa-bell" />
     </Header>
   );
