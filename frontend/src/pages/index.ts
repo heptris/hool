@@ -1,2 +1,3 @@
 export {default as HomeView} from './HomeView'
-export {default as ProfileView} from './ProfileView'
+export {default as ProfilePage} from './ProfilePage'
+export {default as SocialPage} from './SocialPage'
