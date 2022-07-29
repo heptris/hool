@@ -3,7 +3,7 @@
 exports[`<Inventory /> matches snapshot 1`] = `
 <div>
   <div
-    class="sc-bczRLJ bsVrre"
+    class="sc-bczRLJ kknEKR"
   >
     <div
       class="sc-gsnTZi gkOHpF"
@@ -27,7 +27,7 @@ exports[`<Inventory /> matches snapshot 1`] = `
         class="sc-hKMtZM kbhiCc"
       >
         <span>
-          찜
+          즐겨찾기
         </span>
       </button>
     </div>
