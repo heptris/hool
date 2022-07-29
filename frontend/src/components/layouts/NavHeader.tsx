@@ -34,9 +34,13 @@ const Header = styled.nav`
 `;
 const Icon = styled.i`
   color: ${adaptiveGrey200};
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const ProfileImg = styled.img`
-  height: 2.5rem;
+  height: 2rem;
   border-radius: 4px;
 `;
 const ProfileName = styled.p`
@@ -44,11 +48,20 @@ const ProfileName = styled.p`
   font-size: 1rem;
 `;
 const NavUser = styled.div`
-  margin-right: 1rem;
+  margin-right: 2rem;
   width: 10rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+
+  &:hover {
+    cursor: pointer;
+
+    i {
+      transform: rotate(180deg);
+      transition: transform ease 0.3s;
+    }
+  }
 `;
 
 export default NavHeader;

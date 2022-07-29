@@ -40,9 +40,14 @@ const Side = styled.div`
   background-color: ${bgColor};
 `;
 const Logo = styled.h1`
-  font-family: "Lobster";
+  font-family: "Lobster", cursive;
   font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 3.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const ButtonGroup = styled.div`
   display: flex;
