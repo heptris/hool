@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -44,11 +45,11 @@ const Input = styled.input`
 `;
 
 type PropsType = {
-  text: string;
-  placeholderText: string;
-  widthSize: string;
+  text?: string;
+  placeholderText?: string;
+  widthSize?: string;
   type: string;
-  info: string;
+  info?: string;
 };
 
 const Form = ({ text, placeholderText, widthSize, type, info }: PropsType) => {
