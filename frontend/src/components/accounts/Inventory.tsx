@@ -47,7 +47,7 @@ function Inventory() {
           onClick={switchIsItems}
         >
           <span style={isOwnItems ? {} : { color: darkTheme.mainBadgeColor }}>
-            찜
+            즐겨찾기
           </span>
         </SwitchItem>
       </InventorySwitches>
@@ -59,8 +59,8 @@ function Inventory() {
 }
 
 const InventoryBox = styled.div`
-  width: 60%;
-  height: 90%;
+  width: 50%;
+  min-height: 45rem;
   border: 1px solid ${darkTheme.adaptiveGrey700};
   border-radius: 4px;
   margin: 0 0 0 4rem;
