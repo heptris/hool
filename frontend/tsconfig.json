@@ -31,7 +31,8 @@
       "utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src","src/custom.d.ts"],
   "exclude": ["node_modules", ".vscode"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
+
 }
