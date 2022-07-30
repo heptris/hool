@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 const FormDIV = styled.form``;
@@ -23,7 +23,7 @@ const Info = styled.div`
   color: ${darkTheme.infoColor};
 `;
 
-export const Input = styled.input`
+export const InputStyle = css`
   width: ${({ widthSize }: PropsType) => widthSize || `19rem`};
   height: 2.8rem;
   font: inherit;
@@ -42,6 +42,9 @@ export const Input = styled.input`
     color: ${darkTheme.adaptiveGrey200};
     font-size: 0.875rem;
   }
+`;
+const Input = styled.input`
+  ${InputStyle}
 `;
 
 type PropsType = {
