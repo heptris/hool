@@ -1,17 +1,21 @@
 import styled from "styled-components";
 import { InputStyle } from "styles/InputStyle";
 
+interface LabelTextProps {
+  isInput: boolean;
+  contentName: string;
+  placeholder?: string;
+  widthSize?: string;
+  marginRight?: string;
+}
+
 const LabelText = ({
   contentName,
   isInput,
   placeholder,
   widthSize,
-}: {
-  isInput: boolean;
-  contentName: string;
-  placeholder?: string;
-  widthSize?: string;
-}) => {
+  marginRight,
+}: LabelTextProps) => {
   return (
     <Wrapper>
       <Label htmlFor={contentName}>{contentName}</Label>
@@ -20,6 +24,7 @@ const LabelText = ({
           id={contentName}
           placeholder={placeholder}
           widthSize={widthSize}
+          marginRight={marginRight}
         />
       ) : (
         <TextArea id={contentName}></TextArea>
@@ -43,8 +48,12 @@ const TextArea = styled.textarea`
   padding: 1rem;
   margin: 0;
 `;
-const Input = styled.input`
+const Input = styled.input<{
+  widthSize?: string;
+  marginRight?: string;
+}>`
   ${InputStyle}
+  margin-right: ${({ marginRight }) => marginRight || "0rem"};
   &::placeholder {
     font-size: 0.7rem;
   }
