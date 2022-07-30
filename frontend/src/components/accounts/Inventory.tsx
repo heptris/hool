@@ -8,13 +8,13 @@ function Inventory() {
   const [isOwnItems, setIsOwnItems] = useState(true);
   const [isDisplayModal, setIsDisplayModal] = useState(false);
 
-  const switchIsItems = () => {
-    setIsOwnItems(!isOwnItems);
-  };
-
   const switchIsDisplayModal = () => {
     setIsDisplayModal(!isDisplayModal);
   };
+
+  const MyOwnItems = [];
+
+  const MyFavorites = [];
 
   return (
     <InventoryBox>
@@ -28,8 +28,9 @@ function Inventory() {
                 }
               : {}
           }
-          disabled={isOwnItems ? true : false}
-          onClick={switchIsItems}
+          onClick={() => {
+            setIsOwnItems(true);
+          }}
         >
           <span style={isOwnItems ? { color: darkTheme.mainBadgeColor } : {}}>
             소유중
@@ -43,8 +44,9 @@ function Inventory() {
                   background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
                 }
           }
-          disabled={isOwnItems ? false : true}
-          onClick={switchIsItems}
+          onClick={() => {
+            setIsOwnItems(false);
+          }}
         >
           <span style={isOwnItems ? {} : { color: darkTheme.mainBadgeColor }}>
             즐겨찾기

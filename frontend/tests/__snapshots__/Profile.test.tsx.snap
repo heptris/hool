@@ -6,25 +6,25 @@ exports[`<Profile /> matches snapshot 1`] = `
     style="width: 20rem;"
   >
     <div
-      class="sc-papXJ bJWJWe"
+      class="sc-ftvSup kxFRev"
     >
       <span
-        class="sc-jqUVSM dclcoQ"
+        class="sc-papXJ hKCaeh"
       >
         나의 프로필
       </span>
       <img
         alt="profile-img"
-        class="sc-kDDrLX siaIx"
+        class="sc-jqUVSM bpIlDa"
         src="default"
       />
       <span
-        class="sc-iqcoie fBlXKq"
+        class="sc-kDDrLX lbmtVj"
       >
         Andrew
       </span>
       <span
-        class="sc-crXcEl fXXtVH"
+        class="sc-iqcoie lhOjwE"
       >
         Andy@gmail.com
       </span>
@@ -40,50 +40,50 @@ exports[`<Profile /> matches snapshot 1`] = `
         </button>
       </div>
       <div
-        class="sc-evZas hLCrHz"
+        class="sc-crXcEl jWdfjH"
       >
         <div
-          class="sc-ksZaOG dAAxH"
+          class="sc-breuTD dnDSjI"
         >
           <div
-            class="sc-breuTD cvVZFX"
+            class="sc-evZas gcCZdA"
           >
             <span
-              class="sc-fnykZs FbPsi"
+              class="sc-hAZoDl bgMyON"
             >
               1,237
             </span>
             <span
-              class="sc-hAZoDl eyYiat"
+              class="sc-ksZaOG iMNuZq"
             >
               포인트
             </span>
           </div>
         </div>
         <div
-          class="sc-breuTD cvVZFX"
+          class="sc-evZas gcCZdA"
         >
           <span
-            class="sc-fnykZs FbPsi"
+            class="sc-hAZoDl bgMyON"
           >
             2
           </span>
           <span
-            class="sc-hAZoDl eyYiat"
+            class="sc-ksZaOG iMNuZq"
           >
             이모지
           </span>
         </div>
         <div
-          class="sc-breuTD cvVZFX"
+          class="sc-evZas gcCZdA"
         >
           <span
-            class="sc-fnykZs FbPsi"
+            class="sc-hAZoDl bgMyON"
           >
             47
           </span>
           <span
-            class="sc-hAZoDl eyYiat"
+            class="sc-ksZaOG iMNuZq"
           >
             친구
           </span>

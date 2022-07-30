@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-import profileDefaultImg from "assets/profile-default-img.png";
+import profileDefaultImg from "assets/profile-default-imgs/1.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 import { letterSpacingSize } from "styles/GlobalStyle";

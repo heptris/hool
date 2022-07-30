@@ -1,7 +1,4 @@
-import { useState } from "react";
-
 import styled from "styled-components";
-import { darkTheme } from "styles/Theme";
 
 import Profile from "components/accounts/Profile";
 import Inventory from "components/accounts/Inventory";

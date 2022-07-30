@@ -15,22 +15,27 @@ function Modal({ header, body, onDisplayChange }: PropsType) {
   };
 
   return (
-    <Wrapper>
-      <ModalWindow>
-        <ModalComponent>
-          <ModalHeader>
-            {header}
-            <CloseBtn onClick={handleDisplayChange}>
+    <ModalWindow>
+      <ModalComponent>
+        <ModalHeader>
+          {header}
+          {/* <CloseBtn onClick={handleDisplayChange}>
               <i className="fa-solid fa-xmark"></i>
-            </CloseBtn>
-          </ModalHeader>
+            </CloseBtn> */}
+        </ModalHeader>
 
-          <Hr />
+        <Hr />
 
-          <ModalBody>{body}</ModalBody>
-        </ModalComponent>
-      </ModalWindow>
-    </Wrapper>
+        <ModalBody>{body}</ModalBody>
+      </ModalComponent>
+      <Wrapper
+        onClick={(e: React.MouseEvent) => {
+          e.preventDefault();
+
+          handleDisplayChange();
+        }}
+      ></Wrapper>
+    </ModalWindow>
   );
 }
 
@@ -51,11 +56,18 @@ const ModalWindow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9991;
 `;
 
 const ModalComponent = styled.div`
   border-radius: 4px;
   background-color: ${darkTheme.mainColor};
+  z-index: 9992;
 `;
 
 const ModalHeader = styled.div`
@@ -64,17 +76,17 @@ const ModalHeader = styled.div`
   justify-content: space-between;
 `;
 
-const CloseBtn = styled.button`
-  background-color: transparent;
+// const CloseBtn = styled.button`
+//   background-color: transparent;
 
-  &:hover {
-    cursor: pointer;
+//   &:hover {
+//     cursor: pointer;
 
-    i {
-      color: ${darkTheme.adaptiveGrey200};
-    }
-  }
-`;
+//     i {
+//       color: ${darkTheme.adaptiveGrey200};
+//     }
+//   }
+// `;
 
 const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey700};

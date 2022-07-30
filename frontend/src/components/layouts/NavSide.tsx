@@ -18,9 +18,11 @@ const NavSide = () => {
             <Icon className="fa-solid fa-list" />
           </Btn>
         </NavLink>
-        <Btn>
-          <Icon className="fa-solid fa-users" />
-        </Btn>
+        <NavLink to="/social">
+          <Btn>
+            <Icon className="fa-solid fa-users" />
+          </Btn>
+        </NavLink>
         <Btn>
           <Icon className="fa-solid fa-face-grin-wide" />
         </Btn>
