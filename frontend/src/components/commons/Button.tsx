@@ -42,7 +42,7 @@ const Btn = styled.button`
     marginLeft ? marginLeft : "0"}rem;
   margin-right: ${({ marginRight }: ButtonProps) =>
     marginRight ? marginRight : "0"}rem;
-
+  box-sizing: border-box;
   border-radius: 4px;
   width: ${({ width }: ButtonProps) => width}rem;
   height: ${({ height }: ButtonProps) => height}rem;
