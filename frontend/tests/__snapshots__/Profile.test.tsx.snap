@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Profile /> matches snapshot 1`] = `
+<div>
+  <div
+    style="width: 20rem;"
+  >
+    <div
+      class="sc-ftvSup kxFRev"
+    >
+      <span
+        class="sc-papXJ hKCaeh"
+      >
+        나의 프로필
+      </span>
+      <img
+        alt="profile-img"
+        class="sc-jqUVSM bpIlDa"
+        src="default"
+      />
+      <span
+        class="sc-kDDrLX lbmtVj"
+      >
+        Andrew
+      </span>
+      <span
+        class="sc-iqcoie lhOjwE"
+      >
+        Andy@gmail.com
+      </span>
+      <div>
+        <button
+          class="sc-bczRLJ lfnOUr"
+          height="2"
+          width="6"
+        >
+          <span>
+            프로필 편집
+          </span>
+        </button>
+      </div>
+      <div
+        class="sc-crXcEl jWdfjH"
+      >
+        <div
+          class="sc-breuTD dnDSjI"
+        >
+          <div
+            class="sc-evZas gcCZdA"
+          >
+            <span
+              class="sc-hAZoDl bgMyON"
+            >
+              1,237
+            </span>
+            <span
+              class="sc-ksZaOG iMNuZq"
+            >
+              포인트
+            </span>
+          </div>
+        </div>
+        <div
+          class="sc-evZas gcCZdA"
+        >
+          <span
+            class="sc-hAZoDl bgMyON"
+          >
+            2
+          </span>
+          <span
+            class="sc-ksZaOG iMNuZq"
+          >
+            이모지
+          </span>
+        </div>
+        <div
+          class="sc-evZas gcCZdA"
+        >
+          <span
+            class="sc-hAZoDl bgMyON"
+          >
+            47
+          </span>
+          <span
+            class="sc-ksZaOG iMNuZq"
+          >
+            친구
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
