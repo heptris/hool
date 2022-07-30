@@ -1,18 +1,24 @@
 import styled from "styled-components";
+import { useState } from "react";
 
-import MarketHeader from "../components/market/MarketHeader";
-import MarketItemList from "../components/market/MarketItemList";
+import { MarketHeader, MarketItemList, MarketModal } from "components/market";
 
 const MarketPage = () => {
+  const [isDisplayModal, setIsDisplayModal] = useState(false);
+  const onDisplayChange = () => {
+    setIsDisplayModal(!isDisplayModal);
+  };
   return (
     <MarketContainer>
-      <MarketHeader />
+      <MarketHeader onDisplayChange={onDisplayChange} />
       <MarketItemList />
+      {isDisplayModal && <MarketModal onDisplayChange={onDisplayChange} />}
     </MarketContainer>
   );
 };
 const MarketContainer = styled.section`
   margin-top: 7rem;
+  width: 90%;
 `;
 
 export default MarketPage;
