@@ -1,9 +1,12 @@
 package com.ssafy.hool.config.jwt;
 
+import com.ssafy.hool.config.redis.RedisService;
 import com.ssafy.hool.dto.token.TokenDto;
+import com.ssafy.hool.exception.ex.BadRequestException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -29,11 +33,16 @@ public class TokenProvider {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
+    @Value("${jwt.blacklist.access-token}")
+    private String blackListATPrefix;
+
+    private final RedisService redisService;
     private final Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public TokenProvider(@Value("${jwt.secret}") String secretKey, RedisService redisService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.redisService = redisService;
     }
 
     public TokenDto generateTokenDto(Authentication authentication) {
@@ -58,6 +67,8 @@ public class TokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+
+        redisService.setValues(authentication.getName(), refreshToken, Duration.ofMillis(REFRESH_TOKEN_EXPIRE_TIME));
 
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)
@@ -89,6 +100,10 @@ public class TokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            String expiredAT = redisService.getValues(blackListATPrefix + token);
+            if (expiredAT != null) {
+                throw new ExpiredJwtException(null, null, null);
+            }
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
@@ -109,5 +124,22 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public void checkRefreshToken(String memberId, String refreshToken) {
+        String redisRT = redisService.getValues(memberId);
+        if (!refreshToken.equals(redisRT)) {
+            throw new BadRequestException("토큰이 만료되었습니다");
+        }
+    }
+
+    private Date getExpiredTime(String token) {
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getExpiration();
+    }
+
+    public void logout(String memberId, String accessToken) {
+        long expiredAccessTokenTime = getExpiredTime(accessToken).getTime() - new Date().getTime();
+        redisService.setValues(blackListATPrefix + accessToken, memberId, Duration.ofMillis(expiredAccessTokenTime));
+        redisService.deleteValues(memberId); // Delete RefreshToken In Redis
     }
 }

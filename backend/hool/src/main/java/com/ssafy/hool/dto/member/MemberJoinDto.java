@@ -22,7 +22,7 @@ public class MemberJoinDto {
         return Member.builder()
                 .memberEmail(memberEmail)
                 .password(passwordEncoder.encode(password))
-                .authority(Authority.ROLE_ADMIN)
+                .authority(Authority.ROLE_USER)
                 .name(name)
                 .nickName(nickName)
                 .build();

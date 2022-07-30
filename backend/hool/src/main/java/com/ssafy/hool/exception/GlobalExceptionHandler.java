@@ -1,5 +1,6 @@
 package com.ssafy.hool.exception;
 
+import com.ssafy.hool.exception.ex.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -9,6 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BadRequestException.class)
+    public String badRequest(BadRequestException e) {
+        log.info("bad = {}", e.getMessage());
+        return e.getMessage();
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public String errorTest(IllegalArgumentException e) {

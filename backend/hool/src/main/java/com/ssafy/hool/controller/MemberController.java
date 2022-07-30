@@ -4,6 +4,7 @@ import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.ResponseDto;
+import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -68,4 +70,5 @@ public class MemberController {
 
         return new ResponseDto(200, "success", "회원 수정 완료");
     }
+
 }

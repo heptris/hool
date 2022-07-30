@@ -1,18 +1,13 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.Friend;
-import com.ssafy.hool.domain.FriendRequest;
-import com.ssafy.hool.domain.FriendRequestStatus;
+import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
-import com.ssafy.hool.dto.member.MemberResponseDto;
+import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.repository.FriendRepository;
-import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
-import com.ssafy.hool.repository.RefreshTokenRepository;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +24,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final FriendRepository friendRepository;
 
-    private final RefreshTokenRepository refreshTokenRepository;
+
 
     // 회원 가입
     @Transactional
@@ -65,7 +60,7 @@ public class MemberService {
      */
     @Transactional
     public void deleteMember(Long memberId) {
-        refreshTokenRepository.deleteByKey(String.valueOf(memberId));
+        //refreshTokenRepository.deleteByKey(String.valueOf(memberId));
         memberRepository.deleteById(memberId);
         List<Long> deleteFriendIds = friendRepository.findByFriendMemberId(memberId);
         friendRepository.deleteAllByIdInBatch(deleteFriendIds);
@@ -87,10 +82,4 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 
-    /**
-     * 로그 아웃
-     */
-    public void logout(Long memberId) {
-
-    }
 }
