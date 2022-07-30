@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import MarketHeader from "./MarketHeader";
-import MarketItemList from "./MarketItemList";
+import MarketHeader from "../components/market/MarketHeader";
+import MarketItemList from "../components/market/MarketItemList";
 
-const MarketView = () => {
+const MarketPage = () => {
   return (
     <MarketContainer>
       <MarketHeader />
@@ -15,4 +15,4 @@ const MarketContainer = styled.section`
   margin-top: 7rem;
 `;
 
-export default MarketView;
+export default MarketPage;

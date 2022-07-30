@@ -1,6 +1,6 @@
 import { Layout } from "components/layouts/Layout";
 import { Routes, Route } from "react-router-dom";
-import { HomePage, ProfilePage, SocialPage } from "pages";
+import { HomePage, MarketPage, ProfilePage, SocialPage } from "pages";
 
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/market" element={<MarketPage />} />
         <Route path="/social" element={<SocialPage />} />
       </Routes>
     </Layout>
