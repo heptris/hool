@@ -75,4 +75,8 @@ class MemberServiceTest {
         System.out.println(now.getTime());
     }
 
+    @Test
+    void 회원조회() {
+        Member member = memberService.findByMemberId(20L);
+    }
 }

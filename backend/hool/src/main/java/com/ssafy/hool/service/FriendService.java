@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,16 +24,22 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private final FriendRequestRepository friendRequestRepository;
 
-    // 친구 추가할 친구 닉네임으로 검색
+    /**
+     * 친구추가할 친구를 닉네임으로 검색
+     */
     @Transactional
     public void searchAddFriend(String friendNickName) {
-        Member friend = memberRepository.findByNickName(friendNickName);
+        Optional.ofNullable(memberRepository.findByNickName(friendNickName)).orElseThrow(
+                () -> new IllegalArgumentException("해당 닉네임을 가진 계정은 없습니다."));
+        // dto로 변환
     }
 
-    // 친구 추가 요청
+    /**
+     * 친구요청 메세지 보내기
+     */
     @Transactional
     public void addFriendRequest(Member member, String friendNickName) {
-        Member friend = memberRepository.findByNickName(friendNickName); // 친구 추가할 친구의 멤버 엔티티
+        Member friend = memberRepository.findByNickName(friendNickName).get(); // 친구 추가할 친구의 멤버 엔티티
         FriendRequest friendRequest = FriendRequest.createFriendRequest(member, friend.getId());
         friendRequestRepository.save(friendRequest);
     }
@@ -45,7 +52,7 @@ public class FriendService {
         if (accept) {
             friendRequest.setFriendRequestStatus(FriendRequestStatus.ACCEPT);
 
-            // 친구 요청 받은 애
+            // 친구 요청 받은 애 (나)
             Member receiver = memberRepository.findById(memberId).get();
 
             // 친구 요청 건 애
@@ -63,7 +70,9 @@ public class FriendService {
         }
     }
 
-    // 친구 요청 메세지 조회
+    /**
+     * 나한테 온 친구 요청 메세지 조회
+     */
     public List<FriendRequest> getFriendRequestMessage(Long memberId) {
         List<FriendRequest> friendRequestMessage = friendRequestRepository.findFriendRequest(memberId);
         //   List<FriendRequest> friendRequestMessage = friendRequestRepository.findByFriendMemberId(memberId);
@@ -76,7 +85,10 @@ public class FriendService {
         return friendList;
     }
 
-    // 친구 삭제
+    /**
+     * 친구
+     * 삭제
+     */
     public void deleteFriend(Long memberId, Long friendMemberId) {
         friendRepository.deleteByMemberIdAndFriendMemberId(memberId, friendMemberId);
         friendRepository.deleteByMemberIdAndFriendMemberId(friendMemberId, memberId);

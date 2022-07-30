@@ -9,6 +9,7 @@ import com.ssafy.hool.dto.member.MemberResponseDto;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.repository.RefreshTokenRepository;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final FriendRepository friendRepository;
 
+    private final RefreshTokenRepository refreshTokenRepository;
+
     // 회원 가입
     @Transactional
     public Long join(Member member) {
@@ -44,22 +47,25 @@ public class MemberService {
     }
 
     public Member findByMemberId(Long memberId) {
-        return memberRepository.findById(memberId).get();
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 없습니다."));
     }
 
 
     // 회원 수정
     @Transactional
     public void updateMember(Long memberId, String password, String name, String nickName) {
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 없습니다."));
         member.setPassword(passwordEncoder.encode(password));
         member.setName(name);
         member.setNickName(nickName);
     }
 
-    // 회원 삭제
+    /**
+     * 회원 탈퇴
+     */
     @Transactional
     public void deleteMember(Long memberId) {
+        refreshTokenRepository.deleteByKey(String.valueOf(memberId));
         memberRepository.deleteById(memberId);
         List<Long> deleteFriendIds = friendRepository.findByFriendMemberId(memberId);
         friendRepository.deleteAllByIdInBatch(deleteFriendIds);
@@ -79,5 +85,12 @@ public class MemberService {
         return memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .map(MemberJoinResponseDto::of)
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+    }
+
+    /**
+     * 로그 아웃
+     */
+    public void logout(Long memberId) {
+
     }
 }
