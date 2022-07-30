@@ -1,6 +1,7 @@
-import { ReactElement } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+import Input from "./Input";
+import { FormPropsType } from "types/FormPropsType";
 
 const FormDIV = styled.form``;
 
@@ -23,39 +24,8 @@ const Info = styled.div`
   color: ${darkTheme.infoColor};
 `;
 
-export const InputStyle = css`
-  width: ${({ widthSize }: PropsType) => widthSize || `19rem`};
-  height: 2.8rem;
-  font: inherit;
-  font-size: 0.875rem;
-  padding-left: 1rem;
-  border-radius: 4px;
-  background-color: ${darkTheme.adaptiveGrey500};
-  border: none;
-  margin-bottom: 1rem;
-
-  &:focus {
-    outline: 2px solid ${darkTheme.mainBadgeColor};
-  }
-  color: ${darkTheme.adaptiveGrey200};
-  ::placeholder {
-    color: ${darkTheme.adaptiveGrey200};
-    font-size: 0.875rem;
-  }
-`;
-const Input = styled.input`
-  ${InputStyle}
-`;
-
-type PropsType = {
-  text?: string;
-  placeholderText?: string;
-  widthSize?: string;
-  type?: string;
-  info?: string;
-};
-
-const Form = ({ text, placeholderText, widthSize, type, info }: PropsType) => {
+const Form = (props: FormPropsType) => {
+  const { text, placeholderText, widthSize, type, info } = props;
   return (
     <FormDIV>
       {info ? (
@@ -66,12 +36,7 @@ const Form = ({ text, placeholderText, widthSize, type, info }: PropsType) => {
       ) : (
         <Label htmlFor={placeholderText}>{text}</Label>
       )}
-      <Input
-        type={type}
-        id={placeholderText}
-        placeholder={placeholderText}
-        widthSize={widthSize}
-      />
+      <Input {...props} />
     </FormDIV>
   );
 };

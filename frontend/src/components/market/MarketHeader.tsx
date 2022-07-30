@@ -4,7 +4,7 @@ import { darkTheme } from "styles/Theme";
 
 import Button from "components/commons/Button";
 import { CostsWrapper, Icon } from "./MarketItem";
-import { InputStyle } from "components/commons/Form";
+import { InputStyle } from "styles/InputStyle";
 
 const { adaptiveGrey700 } = darkTheme;
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
