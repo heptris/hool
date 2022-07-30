@@ -23,7 +23,7 @@ const Info = styled.div`
   color: ${darkTheme.infoColor};
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   width: ${({ widthSize }: PropsType) => widthSize || `19rem`};
   height: 2.8rem;
   font: inherit;
@@ -48,7 +48,7 @@ type PropsType = {
   text?: string;
   placeholderText?: string;
   widthSize?: string;
-  type: string;
+  type?: string;
   info?: string;
 };
 
