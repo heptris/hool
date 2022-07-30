@@ -1,15 +1,15 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Social from "../src/components/social/Social";
+import SocialPage from "../src/pages/SocialPage";
 
-describe("<Social />", () => {
+describe("<SocialPage />", () => {
   it("matches snapshot", () => {
-    const utils = render(<Social />);
+    const utils = render(<SocialPage />);
     expect(utils.container).toMatchSnapshot();
   });
 
   it("shows the props correctly", () => {
-    const utils = render(<Social />);
+    const utils = render(<SocialPage />);
     utils.getByText("친구찾기");
     utils.getByText("친구와 함께하면 즐거움이 두배에요.");
     utils.getByText("내친구");
