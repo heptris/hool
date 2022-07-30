@@ -2,7 +2,7 @@
   "roots": ["<rootDir>/tests/"],
   "testEnvironment": "jsdom",
   "moduleNameMapper": {
-    "\\.(css|less|svg|png)$": "identity-obj-proxy"
+    "\\.(css|less|svg|png|jpg)$": "identity-obj-proxy"
   },
   "setupFilesAfterEnv": ["<rootDir>/tests/setup.ts"],
   "transform": {
