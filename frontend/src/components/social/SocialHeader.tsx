@@ -74,7 +74,7 @@ function Social({ isDisplayMyFriends, setIsDisplayMyFriends }: PropsType) {
 }
 
 const SocialHeader = styled.div`
-  width: 83.333333%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
