@@ -8,8 +8,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/market" element={<MarketPage />} />
         <Route path="/social" element={<SocialPage />} />
+        <Route path="/market" element={<MarketPage />} />
       </Routes>
     </Layout>
   );
