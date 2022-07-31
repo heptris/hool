@@ -13,13 +13,13 @@ import javax.persistence.*;
 @Entity
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(name = "friend_uk", columnNames = {"member_id","friendMemberId"})
+                @UniqueConstraint(name = "friend_uk", columnNames = {"member_id","friend_member_id"})
         }
 )
 public class Friend {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
     private Long id;
 
@@ -27,25 +27,27 @@ public class Friend {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Long friendMemberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "friend_member_id")
+    private Member friend;
 
     @ManyToOne
     @JoinColumn(name = "friend_request_id")
     private FriendRequest friendRequest;
 
 
-    public static Friend createFriend(Member member, Long friendMemberId, FriendRequest friendRequest) {
-        Friend friend = Friend.builder()
-                .friendRequest(friendRequest)
-                .friendMemberId(friendMemberId)
-                .build();
-
-        friend.addMember(member);
-        return friend;
-    }
-
-    public void addMember(Member member) {
-        this.member = member;
-        member.getFriends().add(this);
-    }
+//    public static Friend createFriend(Member member, Long friendMemberId, FriendRequest friendRequest) {
+//        Friend friend = Friend.builder()
+//                .friendRequest(friendRequest)
+//                .friendMemberId(friendMemberId)
+//                .build();
+//
+//        friend.addMember(member);
+//        return friend;
+//    }
+//
+//    public void addMember(Member member) {
+//        this.member = member;
+//        member.getFriends().add(this);
+//    }
 }

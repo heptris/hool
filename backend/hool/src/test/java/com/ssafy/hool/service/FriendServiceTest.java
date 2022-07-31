@@ -27,24 +27,21 @@ class FriendServiceTest {
 
     @Test
     void 친구요청() {
-        Member member = memberService.findByMemberId(2L);
-        friendService.addFriendRequest(member, "ronaldo");
-        friendService.addFriendRequest(member, "콩콩");
+        friendService.sendFriendMessage(3L, 2L);
 
     }
 
     @Test
     void 친구수락() {
-        friendService.friendAccept(2L, 4L, true);
-        friendService.friendAccept(3L, 5L, true);
-
+        friendService.friendAccept(2L, true);
     }
 
     @Test
     void 친구요청_메세지_조회() {
-        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(10L);
+        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(2L);
         for (FriendRequest friendRequest : friendRequestMessage) {
-            System.out.println(friendRequest.getMember().getNickName());
+            System.out.println("fromMember :"  + friendRequest.getFromMember().getNickName());
+            System.out.println("toMember : "+friendRequest.getToMember().getNickName());
         }
     }
 
@@ -59,6 +56,6 @@ class FriendServiceTest {
 
     @Test
     void 친구삭제() {
-        friendService.deleteFriend(6L, 8L);
+        friendService.deleteFriend(1L, 2L);
     }
 }

@@ -38,14 +38,17 @@ class MemberServiceTest {
     void 회원가입() {
         Member member = new Member();
         member.setNickName("음바페");
+        member.setPassword("1234");
         memberService.join(member);
 
         Member member2 = new Member();
         member2.setNickName("네이마르");
+        member2.setPassword("1234");
         memberService.join(member2);
 
         Member member3 = new Member();
         member3.setNickName("홀란드");
+        member3.setPassword("1234");
         memberService.join(member3);
     }
 

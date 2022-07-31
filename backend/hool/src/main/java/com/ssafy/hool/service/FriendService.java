@@ -29,9 +29,10 @@ public class FriendService {
      * 친구추가할 친구를 닉네임으로 검색
      */
     @Transactional
-    public void searchAddFriend(String friendNickName) {
+    public void searchAddFriend(Long memberId, String friendNickName) {
         Member friend = memberRepository.findByNickName(friendNickName).orElseThrow(
                 () -> new CustomException("해당 닉네임을 가진 계정은 없습니다."));
+
         // dto로 변환
         FriendDto friendDto = friend.friendDto();
     }
@@ -40,37 +41,35 @@ public class FriendService {
      * 친구요청 메세지 보내기
      */
     @Transactional
-    public void addFriendRequest(Member member, String friendNickName) {
-        Member friend = memberRepository.findByNickName(friendNickName).get(); // 친구 추가할 친구의 멤버 엔티티
-        FriendRequest friendRequest = FriendRequest.createFriendRequest(member, friend.getId());
-        friendRequestRepository.save(friendRequest);
+    public void sendFriendMessage(Long fromMember, Long toMember) {
+        if (friendRepository.isAlreadyFriend(fromMember, toMember)) {
+            System.out.println("이미 친구 상태입니다,");
+            throw new CustomException("이미 친구 중인 상태입니다.");
+        }
+        friendRequestRepository.sendFriendMessage(fromMember, toMember);
     }
 
     /**
      * 친구 요청 메세지 수락 / 거부
      */
     @Transactional
-    public void friendAccept(Long memberId, Long friendRequestId, Boolean accept) {
+    public void friendAccept(Long friendRequestId, Boolean accept) {
         FriendRequest friendRequest = friendRequestRepository.findById(friendRequestId).get();
-        // 친구 수락 허용
-        if (accept) {
-            friendRequest.setFriendRequestStatus(FriendRequestStatus.ACCEPT);
+        try {
+            // 친구 수락 허용
+            if (accept) {
+                friendRequest.setFriendRequestStatus(FriendRequestStatus.ACCEPT);
+                friendRepository.accept(friendRequest.getFromMember().getId(), friendRequest.getToMember().getId(), friendRequestId);
+                friendRepository.accept(friendRequest.getToMember().getId(), friendRequest.getFromMember().getId(), friendRequestId);
 
-            // 친구 요청 받은 애 (나)
-            Member receiver = memberRepository.findById(memberId).get();
 
-            // 친구 요청 건 애
-            Member sender = memberRepository.findById(friendRequest.getMember().getId()).get();
-
-            Friend friend = Friend.createFriend(receiver, sender.getId(), friendRequest);
-            Friend friend1 = Friend.createFriend(sender, receiver.getId(), friendRequest);
-
-            friendRepository.save(friend);
-            friendRepository.save(friend1);
-
-        } // 친구 수락 거부
-        else {
-            friendRequest.setFriendRequestStatus(FriendRequestStatus.REFUSE);
+            } // 친구 수락 거부
+            else {
+                friendRequest.setFriendRequestStatus(FriendRequestStatus.REFUSE);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new CustomException("이미 친구 상태입니다.");
         }
     }
 
@@ -95,7 +94,7 @@ public class FriendService {
      * 삭제
      */
     public void deleteFriend(Long memberId, Long friendMemberId) {
-        friendRepository.deleteByMemberIdAndFriendMemberId(memberId, friendMemberId);
-        friendRepository.deleteByMemberIdAndFriendMemberId(friendMemberId, memberId);
+        friendRepository.deleteFriend(memberId, friendMemberId);
+        friendRepository.deleteFriend(friendMemberId, memberId);
     }
 }

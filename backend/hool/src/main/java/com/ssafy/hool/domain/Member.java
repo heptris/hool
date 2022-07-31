@@ -18,7 +18,7 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
@@ -27,7 +27,7 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String memberEmail; // 로그인 이메일
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String password; // 로그인 비밀번호
 
     @Column(unique = true, nullable = false)
@@ -64,7 +64,7 @@ public class Member extends BaseEntity {
     private List<Point_history> pointHistoryList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
     private List<FriendRequest> friendRequestList = new ArrayList<>();
 
     public static Member createMember(MemberJoinDto memberCreateDto) {
