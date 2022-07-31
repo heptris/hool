@@ -2,7 +2,7 @@ package com.ssafy.hool.service;
 
 import com.ssafy.hool.domain.FriendRequest;
 import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.dto.friend.FriendListDto;
+import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ class FriendServiceTest {
 
     @Test
     void 친구요청() {
-        Member member = memberService.findByMemberId(1L);
-        friendService.addFriendRequest(member, "네이마르");
-        friendService.addFriendRequest(member, "홀란드");
+        Member member = memberService.findByMemberId(2L);
+        friendService.addFriendRequest(member, "ronaldo");
+        friendService.addFriendRequest(member, "콩콩");
 
     }
 
@@ -42,7 +42,7 @@ class FriendServiceTest {
 
     @Test
     void 친구요청_메세지_조회() {
-        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(1L);
+        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(10L);
         for (FriendRequest friendRequest : friendRequestMessage) {
             System.out.println(friendRequest.getMember().getNickName());
         }
@@ -50,9 +50,9 @@ class FriendServiceTest {
 
     @Test
     void 친구리스트() {
-        List<FriendListDto> friendListDtos = friendService.friendList(1L);
-        for (FriendListDto friendListDto : friendListDtos) {
-            System.out.println(friendListDto);
+        List<FriendDto> friendList = friendService.friendList(1L);
+        for (FriendDto friendDto : friendList) {
+            System.out.println(friendDto);
         }
 
     }

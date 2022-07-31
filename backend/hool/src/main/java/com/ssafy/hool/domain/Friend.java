@@ -11,6 +11,11 @@ import javax.persistence.*;
 @Builder
 @Setter
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "friend_uk", columnNames = {"member_id","friendMemberId"})
+        }
+)
 public class Friend {
 
     @Id

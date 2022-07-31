@@ -4,7 +4,8 @@ import com.ssafy.hool.domain.Friend;
 import com.ssafy.hool.domain.FriendRequest;
 import com.ssafy.hool.domain.FriendRequestStatus;
 import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.dto.friend.FriendListDto;
+import com.ssafy.hool.dto.friend.FriendDto;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
@@ -29,9 +30,10 @@ public class FriendService {
      */
     @Transactional
     public void searchAddFriend(String friendNickName) {
-        Optional.ofNullable(memberRepository.findByNickName(friendNickName)).orElseThrow(
-                () -> new IllegalArgumentException("해당 닉네임을 가진 계정은 없습니다."));
+        Member friend = memberRepository.findByNickName(friendNickName).orElseThrow(
+                () -> new CustomException("해당 닉네임을 가진 계정은 없습니다."));
         // dto로 변환
+        FriendDto friendDto = friend.friendDto();
     }
 
     /**
@@ -83,8 +85,8 @@ public class FriendService {
     /**
      * 친구 리스트 조회
      */
-    public List<FriendListDto> friendList(Long memberId) {
-        List<FriendListDto> friendList = friendRepository.findFriendList(memberId);
+    public List<FriendDto> friendList(Long memberId) {
+        List<FriendDto> friendList = friendRepository.findFriendList(memberId);
         return friendList;
     }
 

@@ -2,6 +2,7 @@ package com.ssafy.hool.exception;
 
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.exception.ex.BadRequestException;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.exception.ex.CustomValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomValidationException.class)
     public ResponseDto<?> customValidation(CustomValidationException e) {
         return new ResponseDto(-1, e.getMessage(), e.getErrorMap());
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseDto<?> customException(CustomException e) {
+        return new ResponseDto<>(-1, e.getMessage(), null);
     }
 
     @ExceptionHandler(BadRequestException.class)

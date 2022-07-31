@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain;
 
+import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import lombok.*;
 
@@ -85,6 +86,15 @@ public class Member extends BaseEntity {
     // 친구 삭제
     public void deleteFriend(Friend friend) {
         getFriends().remove(friend);
+    }
+
+    public FriendDto friendDto() {
+        FriendDto friend = FriendDto.builder()
+                .memberEmail(memberEmail)
+                .nickName(nickName)
+                .id(id)
+                .build();
+        return friend;
     }
 }
 
