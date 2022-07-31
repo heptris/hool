@@ -1,5 +1,7 @@
-import React, { ReactElement, ReactFragment } from "react";
+import React from "react";
+
 import styled from "styled-components";
+
 import Footer from "./Footer";
 import NavHeader from "./NavHeader";
 import RoomNavside from "./RoomNavside";

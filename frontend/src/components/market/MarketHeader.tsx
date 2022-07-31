@@ -1,10 +1,9 @@
 import styled from "styled-components";
-
 import { darkTheme } from "styles/Theme";
+import { InputStyle } from "styles/InputStyle";
 
 import Button from "components/commons/Button";
 import { CostsWrapper, Icon } from "./MarketItem";
-import { InputStyle } from "styles/InputStyle";
 
 const { adaptiveGrey700 } = darkTheme;
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {

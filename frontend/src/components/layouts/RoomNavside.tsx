@@ -1,8 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
-import { letterSpacingSize } from "styles/GlobalStyle";
 import { darkTheme } from "styles/Theme";
+import { letterSpacingSize } from "styles/GlobalStyle";
 
 const Side = styled.div`
   padding: 1rem 2rem;
@@ -67,9 +67,9 @@ const ButtonWrapper = styled.div`
 const RoomNavside = () => {
   return (
     <Side>
-      <NavLink to="/" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Logo>hool!</Logo>
-      </NavLink>
+      </Link>
       <ButtonGroup>
         <ButtonWrapper>
           <Btn>

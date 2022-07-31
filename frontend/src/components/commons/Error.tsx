@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import Button from "components/commons/Button";
+
 import { ReactComponent as ErrorCircleImg } from "assets/error-circle-img.svg";
 import { ReactComponent as ErrorExclamationImg } from "assets/error-exclamation-img.svg";
+
+import Button from "components/commons/Button";
 
 const Container = styled.div`
   width: 100vw;
