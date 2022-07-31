@@ -5,9 +5,8 @@ import styled from "styled-components";
 import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
 import Requests from "components/social/Requests";
-import { Layout } from "components/layouts/Layout";
 
-function SocialView() {
+function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
 
   const myFriends = [
@@ -21,16 +20,14 @@ function SocialView() {
   const searchRes = [{ nickname: "Kruskal", email: "mst@gmail.com" }];
 
   return (
-    <Layout>
-      <Container>
-        <SocialHeader
-          isDisplayMyFriends={isDisplayMyFriends}
-          setIsDisplayMyFriends={setIsDisplayMyFriends}
-        />
-        {isDisplayMyFriends && <MyFriends />}
-        {!isDisplayMyFriends && <Requests />}
-      </Container>
-    </Layout>
+    <Container>
+      <SocialHeader
+        isDisplayMyFriends={isDisplayMyFriends}
+        setIsDisplayMyFriends={setIsDisplayMyFriends}
+      />
+      {isDisplayMyFriends && <MyFriends />}
+      {!isDisplayMyFriends && <Requests />}
+    </Container>
   );
 }
 
@@ -43,4 +40,4 @@ const Container = styled.div`
   padding: 1rem 0 0 0;
 `;
 
-export default SocialView;
+export default SocialPage;
