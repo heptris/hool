@@ -58,6 +58,12 @@ const RoomOutDIv = styled.div`
   margin-bottom: 2rem;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const RoomNavside = () => {
   return (
     <Side>
@@ -65,7 +71,7 @@ const RoomNavside = () => {
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        <div>
+        <ButtonWrapper>
           <Btn>
             <Icon className="fa-solid fa-microphone"></Icon>
           </Btn>
@@ -81,7 +87,7 @@ const RoomNavside = () => {
           <Btn>
             <Icon className="fa-solid fa-gear"></Icon>
           </Btn>
-        </div>
+        </ButtonWrapper>
         <RoomOutDIv>
           <Btn>
             <Icon className="fa-solid fa-right-from-bracket"></Icon>
