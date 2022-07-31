@@ -44,7 +44,9 @@ public class FriendService {
         friendRequestRepository.save(friendRequest);
     }
 
-    // 친구요청 메세지 왔을 때 수락
+    /**
+     * 친구 요청 메세지 수락 / 거부
+     */
     @Transactional
     public void friendAccept(Long memberId, Long friendRequestId, Boolean accept) {
         FriendRequest friendRequest = friendRequestRepository.findById(friendRequestId).get();
@@ -75,11 +77,12 @@ public class FriendService {
      */
     public List<FriendRequest> getFriendRequestMessage(Long memberId) {
         List<FriendRequest> friendRequestMessage = friendRequestRepository.findFriendRequest(memberId);
-        //   List<FriendRequest> friendRequestMessage = friendRequestRepository.findByFriendMemberId(memberId);
         return friendRequestMessage;
     }
 
-    // 친구 리스트 조회
+    /**
+     * 친구 리스트 조회
+     */
     public List<FriendListDto> friendList(Long memberId) {
         List<FriendListDto> friendList = friendRepository.findFriendList(memberId);
         return friendList;

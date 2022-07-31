@@ -60,7 +60,6 @@ public class MemberService {
      */
     @Transactional
     public void deleteMember(Long memberId) {
-        //refreshTokenRepository.deleteByKey(String.valueOf(memberId));
         memberRepository.deleteById(memberId);
         List<Long> deleteFriendIds = friendRepository.findByFriendMemberId(memberId);
         friendRepository.deleteAllByIdInBatch(deleteFriendIds);

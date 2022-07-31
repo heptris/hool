@@ -22,10 +22,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         // content -type
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        ResponseDto<String> responseDto = new ResponseDto<>(401, "UNAUTHORIZED", "권한x");
+
+        ResponseDto<String> responseDto = new ResponseDto<>(401, "UNAUTHORIZED", "인증X");
         String result = objectMapper.writeValueAsString(responseDto);
         response.getWriter().write(result);
-        // 유효한 자격증명을 제공하지 않고 접근하려 할때 401
-      //  response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "해당 권한이 없습니다.");
     }
 }

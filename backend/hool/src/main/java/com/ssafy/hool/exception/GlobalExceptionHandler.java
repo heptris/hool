@@ -1,6 +1,8 @@
 package com.ssafy.hool.exception;
 
+import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.exception.ex.BadRequestException;
+import com.ssafy.hool.exception.ex.CustomValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -11,6 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(CustomValidationException.class)
+    public ResponseDto<?> customValidation(CustomValidationException e) {
+        return new ResponseDto(-1, e.getMessage(), e.getErrorMap());
+    }
+
     @ExceptionHandler(BadRequestException.class)
     public String badRequest(BadRequestException e) {
         log.info("bad = {}", e.getMessage());
@@ -19,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public String errorTest(IllegalArgumentException e) {
-      log.error("exxor = {}", e.getMessage());
+        log.error("exxor = {}", e.getMessage());
         return e.getMessage();
     }
 

@@ -25,17 +25,15 @@ public class Member extends BaseEntity {
 
     @Column(unique = true)
     private String memberEmail; // 로그인 이메일
+
+    @Column(unique = true, nullable = false)
     private String password; // 로그인 비밀번호
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String nickName; // 화면 내에서 아이디
     private int point;
 
     private String profileImage;
-
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @Builder.Default
-//    private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
