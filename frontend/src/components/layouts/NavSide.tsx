@@ -14,7 +14,7 @@ const NavSide = () => {
         <Logo>hool!</Logo>
       </Link>
       <ButtonGroup>
-        <Link to="/main/market">
+        <Link to="/market">
           <Btn>
             <Icon className="fa-solid fa-list" />
           </Btn>
@@ -24,7 +24,7 @@ const NavSide = () => {
             <Icon className="fa-solid fa-users" />
           </Btn>
         </Link>
-        <Link to="/room">
+        <Link to={"/meeting/room/1"}>
           <Btn>
             <Icon className="fa-solid fa-face-grin-wide" />
           </Btn>
