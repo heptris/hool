@@ -29,5 +29,25 @@ public class Member_emoji extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "emoji_type")
-    private Emojitype emojitype;
+    private EmojiType emojitype;
+
+    public static Member_emoji createMemberEmoji(Member member, Emoji emoji){
+        Member_emoji memberEmoji = Member_emoji.builder()
+                .emojitype(EmojiType.MADE)
+                .is_favorite(false)
+                .build();
+        memberEmoji.setMember(member);
+        memberEmoji.setEmoji(emoji);
+        return memberEmoji;
+    }
+
+    public void setEmoji(Emoji emoji){
+        this.emoji = emoji;
+        emoji.getMemberEmojiList().add(this);
+    }
+
+    public void setMember(Member member){
+        this.member = member;
+        member.getEmojis().add(this);
+    }
 }

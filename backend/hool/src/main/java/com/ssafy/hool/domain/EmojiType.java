@@ -1,5 +1,5 @@
 package com.ssafy.hool.domain;
 
-public enum Emojitype {
+public enum EmojiType {
     BUY, MADE, DEFAULT
 }
