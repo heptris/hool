@@ -9,23 +9,25 @@ const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
 const NavSide = () => {
   return (
     <Side>
-      <NavLink to="/" style={{ textDecoration: "none" }}>
+      <CustomNavLink to="/">
         <Logo>hool!</Logo>
-      </NavLink>
+      </CustomNavLink>
       <ButtonGroup>
-        <NavLink to="/">
+        <CustomNavLink to="/">
           <Btn>
             <Icon className="fa-solid fa-list" />
           </Btn>
-        </NavLink>
-        <NavLink to="/social">
+        </CustomNavLink>
+        <CustomNavLink to="/social">
           <Btn>
             <Icon className="fa-solid fa-users" />
           </Btn>
-        </NavLink>
-        <Btn>
-          <Icon className="fa-solid fa-face-grin-wide" />
-        </Btn>
+        </CustomNavLink>
+        <CustomNavLink to="/market">
+          <Btn>
+            <Icon className="fa-solid fa-face-grin-wide" />
+          </Btn>
+        </CustomNavLink>
         <Btn>
           <Icon className="fa-solid fa-gear" />
         </Btn>
@@ -45,11 +47,14 @@ const Side = styled.div`
   width: 3rem;
   background-color: ${bgColor};
 `;
+const CustomNavLink = styled(NavLink)`
+  margin: 0 0 1.75rem 0;
+  text-decoration: none;
+`;
 const Logo = styled.h1`
   font-family: "Lobster", cursive;
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 3.5rem;
 
   &:hover {
     cursor: pointer;
@@ -58,13 +63,13 @@ const Logo = styled.h1`
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 3.5rem;
 `;
 const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 4px;
   background-color: ${adaptiveGrey800};
-  margin: 0 0 1.75rem 0;
   cursor: pointer;
 
   &:hover {
