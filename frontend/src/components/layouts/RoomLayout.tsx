@@ -4,12 +4,12 @@ import styled from "styled-components";
 
 import Footer from "./Footer";
 import NavHeader from "./NavHeader";
-import NavSide from "./NavSide";
+import RoomNavside from "./RoomNavside";
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+export const RoomLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <NavSide />
+      <RoomNavside />
       <Main>
         <NavHeader />
         <Container>{children}</Container>
@@ -18,6 +18,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     </>
   );
 };
+
 const Main = styled.div`
   position: absolute;
   top: 0;

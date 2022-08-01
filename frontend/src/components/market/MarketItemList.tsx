@@ -12,14 +12,22 @@ const MarketItemList = () => {
       <MarketItem />
       <MarketItem />
       <MarketItem />
+      <MarketItem />
+      <MarketItem />
+      <MarketItem />
+      <MarketItem />
+      <MarketItem />
+      <MarketItem />
+      <MarketItem />
     </ItemList>
   );
 };
 const ItemList = styled.section`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, 18rem);
   grid-gap: 2rem;
   margin-top: 5rem;
+  justify-content: center;
 `;
 
 export default MarketItemList;
