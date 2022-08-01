@@ -1,7 +1,7 @@
 package com.ssafy.hool.service;
 
 import com.ssafy.hool.domain.*;
-import com.ssafy.hool.dto.GameHistoryCreateDto;
+import com.ssafy.hool.dto.game.GameHistoryCreateDto;
 import com.ssafy.hool.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,13 +27,7 @@ public class GameService {
         return game;
     }
     public void saveGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
-<<<<<<< HEAD
         Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).get();
-        Optional<Game> game = gameRepository.findById(gameHistoryCreateDto.getGameId());
-        Game_history gameHistory = Game_history.createGameHistory(member, gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), game.get());
-        gameHistoryRepository.save(gameHistory);
-=======
-        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName());
         Game game = gameRepository.findById(gameHistoryCreateDto.getGameId()).get();
 
         // 회원이 보유한 포인트보다 많은 포인트를 베팅할 수 없음
@@ -43,7 +37,6 @@ public class GameService {
         } else {
             throw new IllegalStateException("포인트가 부족합니다.");
         }
->>>>>>> e202630 (:sparkles: [FEAT] PointHistory, DealHistory 구현 / 포인트 관리(S07P12A408-241))
     }
 
     public void saveGameResult(Long gameId, boolean result){

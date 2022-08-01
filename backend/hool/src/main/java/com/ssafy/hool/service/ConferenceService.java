@@ -30,7 +30,7 @@ public class ConferenceService {
     }
 
     public void createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category){
-        Member member = memberRepository.findByNickName(conferenceCreateDto.getNickName());
+        Member member = memberRepository.findByNickName(conferenceCreateDto.getNickName()).get();
         Conference conference = Conference.createConference(conferenceCreateDto.getTitle(), conferenceCreateDto.getDescription(), member, conference_category);
         conferenceRepository.save(conference);
     }

@@ -1,4 +1,4 @@
-package com.ssafy.hool.dto;
+package com.ssafy.hool.dto.game;
 
 import com.ssafy.hool.domain.GameStatus;
 import lombok.AllArgsConstructor;

@@ -1,15 +1,13 @@
-package com.ssafy.hool.dto;
+package com.ssafy.hool.dto.game;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-public class GameResponseDto {
+public class GameCreateDto {
     // Game
-    private Long gameId;
+    private String gameName;
     private Long conferenceId;
     private LocalDateTime createdTime;
     private boolean gameResult;

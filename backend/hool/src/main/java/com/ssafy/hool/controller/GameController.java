@@ -1,9 +1,9 @@
 package com.ssafy.hool.controller;
 
 import com.ssafy.hool.domain.Game;
-import com.ssafy.hool.dto.GameCreateDto;
-import com.ssafy.hool.dto.GameHistoryCreateDto;
-import com.ssafy.hool.dto.GameResponseDto;
+import com.ssafy.hool.dto.game.GameCreateDto;
+import com.ssafy.hool.dto.game.GameHistoryCreateDto;
+import com.ssafy.hool.dto.game.GameResponseDto;
 import com.ssafy.hool.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
