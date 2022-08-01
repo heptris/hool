@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import styled from "styled-components";
 
+import Container from "components/commons/Container";
 import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
 import Requests from "components/social/Requests";
@@ -45,25 +46,15 @@ function SocialPage() {
   const searchRes = [{ nickname: "Kruskal", email: "mst@gmail.com" }];
 
   return (
-    <Row>
+    <Container>
       <SocialHeader
         isDisplayMyFriends={isDisplayMyFriends}
         setIsDisplayMyFriends={setIsDisplayMyFriends}
       />
       {isDisplayMyFriends && <MyFriends myFriends={myFriends} />}
       {!isDisplayMyFriends && <Requests />}
-    </Row>
+    </Container>
   );
 }
-
-const Row = styled.div`
-  width: 83.333333%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  padding: 1rem 0 0 0;
-`;
 
 export default SocialPage;

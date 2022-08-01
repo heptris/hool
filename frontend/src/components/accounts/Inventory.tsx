@@ -61,7 +61,7 @@ function Inventory() {
 }
 
 const InventoryBox = styled.div`
-  width: 50%;
+  width: 100%;
   min-height: 45rem;
   border: 1px solid ${darkTheme.adaptiveGrey700};
   border-radius: 4px;

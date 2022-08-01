@@ -10,25 +10,25 @@ const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
 const NavSide = () => {
   return (
     <Side>
-      <Link to="/" style={{ textDecoration: "none" }}>
+      <NavLink to="/">
         <Logo>hool!</Logo>
-      </Link>
+      </NavLink>
       <ButtonGroup>
-        <Link to="/market">
+        <NavLink to="/meeting">
           <Btn>
             <Icon className="fa-solid fa-list" />
           </Btn>
-        </Link>
-        <Link to="/login">
+        </NavLink>
+        <NavLink to="/social">
           <Btn>
             <Icon className="fa-solid fa-users" />
           </Btn>
-        </Link>
-        <Link to={"/meeting/room/1"}>
+        </NavLink>
+        <NavLink to={"/market"}>
           <Btn>
             <Icon className="fa-solid fa-face-grin-wide" />
           </Btn>
-        </Link>
+        </NavLink>
         <Btn>
           <Icon className="fa-solid fa-gear" />
         </Btn>
@@ -47,6 +47,10 @@ const Side = styled.div`
   height: 100vh;
   width: 3rem;
   background-color: ${bgColor};
+`;
+const NavLink = styled(Link)`
+  text-decoration: none;
+  margin-bottom: 1.75rem;
 `;
 const Logo = styled.h1`
   font-family: "Lobster", cursive;

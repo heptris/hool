@@ -1,24 +1,22 @@
 import styled from "styled-components";
 
+import Container from "components/commons/Container";
 import Profile from "components/accounts/Profile";
 import Inventory from "components/accounts/Inventory";
 
 function ProfilePage() {
   return (
-    <Container>
+    <ConcreteContainer>
       <Profile />
       <Inventory />
-    </Container>
+    </ConcreteContainer>
   );
 }
 
-const Row = styled.div`
-  width: 83.333333%;
-  min-height: 100vh;
-  display: flex;
+const ConcreteContainer = styled(Container)`
+  flex-direction: row;
   justify-content: center;
   align-items: start;
-  padding: 1rem 0 0 0;
 `;
 
 export default ProfilePage;

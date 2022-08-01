@@ -23,7 +23,7 @@ const NavHeader = () => {
             onMouseEnter={() => setIsDisplayMenu(true)}
             onMouseLeave={() => setIsDisplayMenu(false)}
           >
-            <Link to="/main/profile" style={{ textDecoration: "none" }}>
+            <Link to="/profile" style={{ textDecoration: "none" }}>
               <MenuItem>
                 <span>프로필</span>
               </MenuItem>

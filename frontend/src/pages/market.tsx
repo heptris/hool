@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import styled from "styled-components";
 
+import Container from "components/commons/Container";
 import { MarketHeader, MarketItemList, MarketModal } from "components/market";
 
 const MarketPage = () => {
@@ -10,16 +11,12 @@ const MarketPage = () => {
     setIsDisplayModal(!isDisplayModal);
   };
   return (
-    <MarketContainer>
+    <Container>
       <MarketHeader onDisplayChange={onDisplayChange} />
       <MarketItemList />
       {isDisplayModal && <MarketModal onDisplayChange={onDisplayChange} />}
-    </MarketContainer>
+    </Container>
   );
 };
-const MarketContainer = styled.section`
-  margin-top: 7rem;
-  width: 90%;
-`;
 
 export default MarketPage;
