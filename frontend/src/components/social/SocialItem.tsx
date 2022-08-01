@@ -64,23 +64,23 @@ const ProfileImg = styled.img`
 const UserInfo = styled.div`
   align-self: center;
   margin: 0 5vw 0 2vw;
-  width: 50%;
+  width: 70%;
 `;
 
 const Nickname = styled.h1`
-  font-size: 1vw;
+  font-size: 1.2vw;
   margin-bottom: 0.5vw;
 `;
 
 const Email = styled.h2`
-  font-size: 0.8vw;
+  font-size: 1vw;
   font-weight: normal;
   color: ${darkTheme.adaptiveGrey700};
   margin-bottom: 0.3vw;
 `;
 
 const CurrentPos = styled.span`
-  font-size: 0.8vw;
+  font-size: 1vw;
   color: ${darkTheme.adaptiveGrey500};
 `;
 

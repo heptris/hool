@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import defaultImg from "assets/google-logo-img.png";
+import defaultImg from "assets/profile-default-imgs/6.jpg";
 
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
@@ -16,17 +16,17 @@ const MarketItem = () => {
       <ItemDesc>테스트용 구글 이미지입니다</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
-          <Icon className="fa-solid fa-coins" />
+          <Icon className="fa-solid fa-sack-dollar" />
           <span>500</span>
         </CostsWrapper>
-        <BuyButton height={2.5} width={3} fontSize={0.8} text={"구매"} />
+        <BuyButton height={2.75} width={3.75} fontSize={0.875} text={"구매"} />
       </BuyInfoWrapper>
     </Item>
   );
 };
 const Item = styled(Card)`
   position: relative;
-  width: 18rem;
+  width: 18vw;
   height: 30rem;
   display: flex;
   flex-direction: column;
@@ -45,6 +45,7 @@ const ItemDesc = styled.p`
   height: 4rem;
   overflow: auto;
   word-wrap: break-word;
+  text-align: center;
   max-width: 10rem;
 `;
 const BuyInfoWrapper = styled.div`
@@ -53,6 +54,7 @@ const BuyInfoWrapper = styled.div`
 `;
 export const CostsWrapper = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 export const Icon = styled.i`
