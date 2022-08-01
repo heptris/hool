@@ -51,7 +51,7 @@ class GameRepositoryTest {
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
 
-        Member member = memberRepository.findByNickName("Lee2");
+        Member member = memberRepository.findByNickName("Lee2").get();
         Optional<Game> game = gameRepository.findById(g.getId());
 
         Game_history gameHistory = Game_history.createGameHistory(member, 100, true, game.get());

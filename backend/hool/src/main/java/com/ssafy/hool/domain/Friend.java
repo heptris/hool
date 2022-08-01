@@ -11,10 +11,15 @@ import javax.persistence.*;
 @Builder
 @Setter
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "friend_uk", columnNames = {"member_id","friend_member_id"})
+        }
+)
 public class Friend {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
     private Long id;
 
@@ -22,24 +27,27 @@ public class Friend {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String friendNickName; // 친구 아이디
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "friend_member_id")
+    private Member friend;
 
-    private String friendName; // 친구 이름
+    @ManyToOne
+    @JoinColumn(name = "friend_request_id")
+    private FriendRequest friendRequest;
 
 
-    public static Friend createFriend(Member member, String nickName, String friendName) {
-        // 이미 친추돼있는지 검증
-        Friend friend = Friend.builder()
-                .friendNickName(nickName)
-                .friendName(friendName)
-                .build();
-
-        friend.addMember(member);
-        return friend;
-    }
-
-    public void addMember(Member member) {
-        this.member = member;
-        member.getFriends().add(this);
-    }
+//    public static Friend createFriend(Member member, Long friendMemberId, FriendRequest friendRequest) {
+//        Friend friend = Friend.builder()
+//                .friendRequest(friendRequest)
+//                .friendMemberId(friendMemberId)
+//                .build();
+//
+//        friend.addMember(member);
+//        return friend;
+//    }
+//
+//    public void addMember(Member member) {
+//        this.member = member;
+//        member.getFriends().add(this);
+//    }
 }

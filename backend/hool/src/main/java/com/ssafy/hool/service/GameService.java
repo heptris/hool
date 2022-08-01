@@ -32,7 +32,7 @@ public class GameService {
         return game;
     }
     public void saveGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
-        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName());
+        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).get();
         Optional<Game> game = gameRepository.findById(gameHistoryCreateDto.getGameId());
         Game_history gameHistory = Game_history.createGameHistory(member, gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), game.get());
         gameHistoryRepository.save(gameHistory);

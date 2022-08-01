@@ -1,12 +1,10 @@
 package com.ssafy.hool.controller;
 
-import com.ssafy.hool.config.jwt.JwtTokenProvider;
+import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.dto.member.MemberCreateDto;
-import com.ssafy.hool.dto.member.MemberLoginDto;
-import com.ssafy.hool.dto.member.MemberResponseDto;
-import com.ssafy.hool.dto.member.MemberUpdateDto;
+import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.ResponseDto;
+import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -22,16 +21,9 @@ public class MemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider jwtTokenProvider;
 
-    @PostMapping("/join")
-    public ResponseEntity<Long> join(@RequestBody MemberCreateDto memberCreateDto) {
-        Member member = Member.createMember(memberCreateDto);
-        member.setPassword(passwordEncoder.encode(memberCreateDto.getPassword()));
-        member.setRoles(Collections.singletonList("ROLE_USER"));
-        Long memberId = memberService.join(member);
-        return new ResponseEntity<Long>(memberId, HttpStatus.OK);
-    }
+
 
     /**
      * 닉네임 중복 체크
@@ -45,15 +37,12 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody MemberLoginDto memberLoginDto) {
-        String memberEmail = memberLoginDto.getMemberEmail();
-        Member member = memberService.findByMemberEmail(memberEmail).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디입니다."));
-        if (passwordEncoder.matches(memberLoginDto.getPassword(), member.getPassword())) {
-            return jwtTokenProvider.createToken(memberEmail);
-        }
-        return "비밀번호 오류";
+
+    @GetMapping("/api/me")
+    public ResponseEntity<MemberJoinResponseDto> getMyMemberInfo() {
+        return ResponseEntity.ok(memberService.getMyInfo());
     }
+
 
     /**
      * 회원 프로필 조회
@@ -61,19 +50,25 @@ public class MemberController {
     @GetMapping("/api/member/{memberId}")
     public ResponseDto memberProfile(@PathVariable("memberId") Long memberId) {
         Member member = memberService.findByMemberId(memberId);
+        int friendCount = memberService.getFriendCount(memberId);
         MemberResponseDto memberProfile = MemberResponseDto.builder()
                 .nickName(member.getNickName())
                 .memberEmail(member.getMemberEmail())
                 .point(member.getPoint())
+                .friendCount(friendCount)
                 .build();
 
         return new ResponseDto<MemberResponseDto>(200, "success", memberProfile);
     }
 
+    /**
+     * 회원 프로필 수정
+     */
     @PutMapping("/api/member/{memberId}")
     public ResponseDto memberUpdate(@PathVariable("memberId")Long memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
         memberService.updateMember(memberId, memberUpdateDto.getPassword(), memberUpdateDto.getName(), memberUpdateDto.getNickName());
 
         return new ResponseDto(200, "success", "회원 수정 완료");
     }
+
 }
