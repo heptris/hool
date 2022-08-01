@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
 import Room from "./Room";
 
 const Container = styled.div`
@@ -7,7 +8,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const ConferenceBox = styled.div`
+const MeetingBox = styled.div`
   width: 91.68rem;
   height: 57.68rem;
   margin-top: 2.5rem;
@@ -20,17 +21,17 @@ const ConferenceBox = styled.div`
   background-color: ${darkTheme.bgColor};
 `;
 
-const ConferenceRoom = () => {
+const MeetingRoom = () => {
   return (
     <Container>
-      <ConferenceBox>
+      <MeetingBox>
         <Room />
         <Room />
         <Room />
         <Room />
-      </ConferenceBox>
+      </MeetingBox>
     </Container>
   );
 };
 
-export default ConferenceRoom;
+export default MeetingRoom;

@@ -1,6 +1,7 @@
 import { css } from "styled-components";
-import { FormPropsType } from "types/FormPropsType";
 import { darkTheme } from "./Theme";
+
+import { FormPropsType } from "types/FormPropsType";
 
 export const InputStyle = css`
   width: ${({ widthSize }: FormPropsType) => widthSize || `19rem`};

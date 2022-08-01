@@ -1,8 +1,11 @@
-import React from "react";
+import { Link } from "@tanstack/react-location";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import Form from "components/commons/Form";
+
 import googleLogoImg from "assets/google-logo-img.png";
+
+import Form from "components/commons/Form";
 import Button from "components/commons/Button";
 
 const Container = styled.div`
@@ -83,7 +86,9 @@ const Auth = () => {
   return (
     <Container>
       <FormBox>
-        <Logo>hool!</Logo>
+        <Link to={"/"}>
+          <Logo>hool!</Logo>
+        </Link>
         <Title>로그인</Title>
         <Form text="이메일" placeholderText="Email" type="email" />
         <Form text="비밀번호" placeholderText="Password" type="password" />

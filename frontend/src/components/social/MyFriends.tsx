@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { darkTheme } from "styles/Theme";
 
 import SocialItem from "./SocialItem";
 

@@ -1,4 +1,4 @@
-import ConferenceRoom from "components/conferences/ConferenceRoom";
+import ConferenceRoom from "components/meeting/MeetingRoom";
 import { RoomLayout } from "components/layouts/RoomLayout";
 
 const RoomPage = () => {

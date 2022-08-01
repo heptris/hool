@@ -1,5 +1,6 @@
-import styled from "styled-components";
 import { useState } from "react";
+
+import styled from "styled-components";
 
 import { MarketHeader, MarketItemList, MarketModal } from "components/market";
 

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-location";
 
-import profileDefaultImg from "assets/profile-default-imgs/1.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 import { letterSpacingSize } from "styles/GlobalStyle";
+
+import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 
@@ -22,11 +23,11 @@ const NavHeader = () => {
             onMouseEnter={() => setIsDisplayMenu(true)}
             onMouseLeave={() => setIsDisplayMenu(false)}
           >
-            <NavLink to="/profile" style={{ textDecoration: "none" }}>
+            <Link to="/main/profile" style={{ textDecoration: "none" }}>
               <MenuItem>
                 <span>프로필</span>
               </MenuItem>
-            </NavLink>
+            </Link>
             <Hr />
             <MenuItem>
               <span>로그아웃</span>

@@ -1,8 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
-import { letterSpacingSize } from "styles/GlobalStyle";
 import { darkTheme } from "styles/Theme";
+import { letterSpacingSize } from "styles/GlobalStyle";
 
 const Side = styled.div`
   padding: 1rem 2rem;
@@ -58,14 +58,20 @@ const RoomOutDIv = styled.div`
   margin-bottom: 2rem;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const RoomNavside = () => {
   return (
     <Side>
-      <NavLink to="/" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Logo>hool!</Logo>
-      </NavLink>
+      </Link>
       <ButtonGroup>
-        <div>
+        <ButtonWrapper>
           <Btn>
             <Icon className="fa-solid fa-microphone"></Icon>
           </Btn>
@@ -81,7 +87,7 @@ const RoomNavside = () => {
           <Btn>
             <Icon className="fa-solid fa-gear"></Icon>
           </Btn>
-        </div>
+        </ButtonWrapper>
         <RoomOutDIv>
           <Btn>
             <Icon className="fa-solid fa-right-from-bracket"></Icon>

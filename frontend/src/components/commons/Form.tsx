@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
 import Input from "./Input";
+
 import { FormPropsType } from "types/FormPropsType";
 
 const FormDIV = styled.form``;

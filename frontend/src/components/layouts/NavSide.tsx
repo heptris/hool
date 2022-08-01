@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { letterSpacingSize } from "styles/GlobalStyle";
@@ -6,28 +6,29 @@ import { darkTheme } from "styles/Theme";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
+
 const NavSide = () => {
   return (
     <Side>
-      <CustomNavLink to="/">
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Logo>hool!</Logo>
-      </CustomNavLink>
+      </Link>
       <ButtonGroup>
-        <CustomNavLink to="/">
+        <Link to="/main/market">
           <Btn>
             <Icon className="fa-solid fa-list" />
           </Btn>
-        </CustomNavLink>
-        <CustomNavLink to="/social">
+        </Link>
+        <Link to="/login">
           <Btn>
             <Icon className="fa-solid fa-users" />
           </Btn>
-        </CustomNavLink>
-        <CustomNavLink to="/market">
+        </Link>
+        <Link to="/room">
           <Btn>
             <Icon className="fa-solid fa-face-grin-wide" />
           </Btn>
-        </CustomNavLink>
+        </Link>
         <Btn>
           <Icon className="fa-solid fa-gear" />
         </Btn>
@@ -46,10 +47,6 @@ const Side = styled.div`
   height: 100vh;
   width: 3rem;
   background-color: ${bgColor};
-`;
-const CustomNavLink = styled(NavLink)`
-  margin: 0 0 1.75rem 0;
-  text-decoration: none;
 `;
 const Logo = styled.h1`
   font-family: "Lobster", cursive;

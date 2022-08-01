@@ -1,6 +1,6 @@
 import styled from "styled-components";
-
 import { darkTheme } from "styles/Theme";
+
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 import LabelText from "./LabelText";
