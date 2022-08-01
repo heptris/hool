@@ -2,13 +2,16 @@ import styled from "styled-components";
 
 import Profile from "components/accounts/Profile";
 import Inventory from "components/accounts/Inventory";
+import { Layout } from "components/layouts/Layout";
 
 function ProfilePage() {
   return (
-    <Row>
-      <Profile />
-      <Inventory />
-    </Row>
+    <Layout>
+      <Container>
+        <Profile />
+        <Inventory />
+      </Container>
+    </Layout>
   );
 }
 

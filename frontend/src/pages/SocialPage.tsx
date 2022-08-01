@@ -5,6 +5,7 @@ import styled from "styled-components";
 import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
 import Requests from "components/social/Requests";
+import { Layout } from "components/layouts/Layout";
 
 function SocialView() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
