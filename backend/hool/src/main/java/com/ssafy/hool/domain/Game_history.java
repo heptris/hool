@@ -66,4 +66,8 @@ public class Game_history {
         this.getPoint = getPoint;
         this.gameStatus = GameStatus.OVER;
     }
+
+    public void setPointHistory(Point_history pointHistory){
+        this.pointHistory = pointHistory;
+    }
 }

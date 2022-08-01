@@ -25,5 +25,23 @@ public class Member_conference {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
+    public static Member_conference createMemberConference(Member member, Conference conference) {
+        Member_conference memberConference = Member_conference.builder()
+                .member(member)
+                .conference(conference)
+                .build();
+        memberConference.addConference(conference);
+        memberConference.addMember(member);
+        return memberConference;
+    }
 
+    public void addConference(Conference conference){
+        this.conference = conference;
+        conference.getMemberConferenceList().add(this);
+    }
+
+    public void addMember(Member member){
+        this.member = member;
+        member.getMemberConferenceList().add(this);
+    }
 }

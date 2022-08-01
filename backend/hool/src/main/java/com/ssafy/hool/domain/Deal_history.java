@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain;
 
+import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,9 +29,35 @@ public class Deal_history extends BaseEntity{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private int dealPrice;
-    private String seller_member_id;
+    private int dealPoint;
+    private Long sellerMemberId;
 
     @OneToOne(mappedBy = "deal_history", fetch = FetchType.LAZY)
     private Point_history point_history;
+
+    public static Deal_history createDealHistory(DealHistoryCreateDto dealHistoryCreateDto, Emoji_shop emojiShop, Member member){
+        Deal_history dealHistory = Deal_history.builder()
+                .dealPoint(dealHistoryCreateDto.getDealPoint())
+                .sellerMemberId(dealHistoryCreateDto.getSellerMemberId())
+                .build();
+
+        dealHistory.addEmojiShop(emojiShop);
+        dealHistory.addMember(member);
+        return dealHistory;
+    }
+
+    public void addEmojiShop(Emoji_shop emojiShop){
+        this.emojiShop = emojiShop;
+        emojiShop.getDealHistoryList().add(this);
+    }
+
+    public void addMember(Member member){
+        this.member = member;
+        member.getDealHistoryList().add(this);
+    }
+
+    public void setPointHistory(Point_history pointHistory){
+        this.point_history = pointHistory;
+    }
+
 }
