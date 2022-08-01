@@ -1,6 +1,5 @@
-package com.ssafy.hool.dto;
+package com.ssafy.hool.dto.game;
 
-import com.ssafy.hool.domain.GameStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,11 +8,7 @@ import java.time.LocalDateTime;
 public class GameCreateDto {
     // Game
     private String gameName;
+    private Long conferenceId;
     private LocalDateTime createdTime;
     private boolean gameResult;
-
-    // Game History -> Dto로 변환?
-    private int bettPoint;
-    private boolean bettChoice;
-    private GameStatus gameStatus;
 }

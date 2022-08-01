@@ -3,7 +3,6 @@ package com.ssafy.hool.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,9 +36,10 @@ public class Game_history {
 
     private LocalDateTime createdTime;
 
+    @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;
 
-    public static Game_history createGameHistory(Member member, int bettPoint, Boolean bett) {
+    public static Game_history createGameHistory(Member member, int bettPoint, Boolean bett, Game game) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()
                 .bettPoint(bettPoint)
@@ -47,13 +47,14 @@ public class Game_history {
                 .createdTime(LocalDateTime.now())
                 .gameStatus(GameStatus.PROGRESS)
                 .build();
-//        gameHistory.addGame(game);
+        gameHistory.addGame(game);
         gameHistory.addMember(member);
         return gameHistory;
     }
 
     public void addGame(Game game) {
         this.game = game;
+        game.getGameHistoryList().add(this);
     }
 
     public void addMember(Member member) {
@@ -61,9 +62,12 @@ public class Game_history {
         member.getGameHistoryList().add(this);
     }
 
-    public void gameResultUpdate(int getPoint, boolean bettChoice){
+    public void gameResultUpdate(int getPoint){
         this.getPoint = getPoint;
-        this.bettChoice = bettChoice;
         this.gameStatus = GameStatus.OVER;
+    }
+
+    public void setPointHistory(Point_history pointHistory){
+        this.pointHistory = pointHistory;
     }
 }

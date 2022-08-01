@@ -34,18 +34,17 @@ public class Game {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
+    @Builder.Default
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Game_history> gameHistoryList = new ArrayList<>();
 
-    public static Game createGame(String name, Boolean result, Conference conference, Game_history gameHistory) {
+    public static Game createGame(String name, Boolean result, Conference conference) {
         Game game = Game.builder()
                 .name(name)
-                .gameHistoryList(new ArrayList<>())
                 .result(result)
                 .createdTime(LocalDateTime.now())
                 .build();
         game.addConference(conference);
-        game.addGameHistory(gameHistory);
         return game;
     }
 

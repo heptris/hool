@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain;
 
+import com.ssafy.hool.dto.conference.ConferenceModifyDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,18 +29,20 @@ public class Conference extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
 
+    @Builder.Default
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Game> games = new ArrayList<>();
 
-    public static Conference createConference(String title, Member owner, Conference_category conference_category) {
+    public static Conference createConference(String title, String description, Member owner, Conference_category conference_category) {
         Conference conference = Conference.builder()
                 .title(title)
+                .description(description)
                 .owner_id(owner.getId())
                 .is_active(true)
-                .memberConferenceList(new ArrayList<>())
                 .conference_category(conference_category)
                 .build();
 
@@ -55,6 +58,11 @@ public class Conference extends BaseEntity{
     public void addMemberConference(Member_conference memberConference) {
         this.memberConferenceList.add(memberConference);
         memberConference.setConference(this);
+    }
+
+    public void modifyConference(ConferenceModifyDto conferenceModifyDto){
+        this.title = conferenceModifyDto.getTitle();
+        this.description = conferenceModifyDto.getDescription();
     }
 
 

@@ -22,13 +22,24 @@ public class Emoji_shop extends BaseEntity{
 
     private int emoji_price;
 
-    private LocalDateTime created_time;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "emoji_id")
     private Emoji emoji;
 
+    @Builder.Default
     @OneToMany(mappedBy = "emojiShop", cascade = CascadeType.ALL)
     private List<Deal_history> dealHistoryList = new ArrayList<>();
 
+    public static Emoji_shop createEmojiShop(Emoji emoji, int emoji_price){
+        Emoji_shop emojiShop = Emoji_shop.builder()
+                .emoji_price(emoji_price)
+                .build();
+        emojiShop.setEmoji(emoji);
+        return emojiShop;
+    }
+
+    public void setEmoji(Emoji emoji){
+        this.emoji = emoji;
+        emoji.setEmoji_shop(this);
+    }
 }
