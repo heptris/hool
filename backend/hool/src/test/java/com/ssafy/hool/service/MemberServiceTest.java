@@ -65,10 +65,10 @@ class MemberServiceTest {
 
     @Test
     void 친구얼마나있는지() {
-        int friendCount = memberService.getFriendCount(1L);
-        Assertions.assertThat(friendCount).isEqualTo(2);
-        int friendCount2 = memberService.getFriendCount(2L);
-        Assertions.assertThat(friendCount2).isEqualTo(1);
+        Member member = memberService.findByMemberId(2L);
+        System.out.println(member.getFriends().size());
+        int friendCount = memberService.getFriendCount(2L);
+        System.out.println(friendCount);
 
     }
 

@@ -33,7 +33,8 @@ class FriendServiceTest {
 
     @Test
     void 친구수락() {
-        friendService.friendAccept(2L, true);
+        friendService.friendAccept(1L, true);
+        friendService.friendAccept(4L, true);
     }
 
     @Test
