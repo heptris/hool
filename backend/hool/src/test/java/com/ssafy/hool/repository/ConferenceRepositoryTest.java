@@ -33,6 +33,7 @@ class ConferenceRepositoryTest {
     public void findAllConferenceTest(){
         List<Conference> conferenceList = conferenceRepository.findAll();
         Assertions.assertThat(conferenceList.get(0).getId()).isEqualTo(2);
+        Assertions.assertThat(conferenceList.size()).isEqualTo(7);
     }
 
     @Test

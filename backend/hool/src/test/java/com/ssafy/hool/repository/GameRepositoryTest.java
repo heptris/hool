@@ -1,6 +1,8 @@
 package com.ssafy.hool.repository;
 
 import com.ssafy.hool.domain.*;
+import com.ssafy.hool.dto.GameHistoryCreateDto;
+import com.ssafy.hool.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,10 +29,12 @@ class GameRepositoryTest {
     ConferenceRepository conferenceRepository;
     @Autowired
     GameHistoryRepository gameHistoryRepository;
+    @Autowired
+    GameService gameService;
 
     @Test
     public void saveGameTest() {
-        Member member = getMember("Lee1");
+        Member member = getMember("Lee12");
         memberRepository.save(member);
 
         Conference conference = Conference.createConference("123", "123", member, Conference_category.SOCCER);
@@ -44,7 +48,7 @@ class GameRepositoryTest {
 
     @Test
     public void saveGameHistoryTest(){
-        Member m = getMember("Lee2");
+        Member m = getMember("Lee11");
         memberRepository.save(m);
         Conference conference = Conference.createConference("123", "123", m, Conference_category.SOCCER);
         conferenceRepository.save(conference);
@@ -55,7 +59,14 @@ class GameRepositoryTest {
         Optional<Game> game = gameRepository.findById(g.getId());
 
         Game_history gameHistory = Game_history.createGameHistory(member, 100, true, game.get());
-        gameHistoryRepository.save(gameHistory);
+        GameHistoryCreateDto gameHistoryCreateDto = new GameHistoryCreateDto(gameHistory.getBettPoint(),
+                gameHistory.getBettChoice(),
+                gameHistory.getGameStatus(),
+                member.getNickName(),
+                game.get().getId());
+        assertThrows(IllegalStateException.class, ()->{
+            gameService.saveGameHistory(gameHistoryCreateDto);
+        });
 
         assertThat(game.get().getGameHistoryList().get(0)).isEqualTo(gameHistory);
     }
@@ -73,8 +84,8 @@ class GameRepositoryTest {
         game.get().resultUpdate(true);
         gameRepository.save(game.get());
 
-        Optional<Game> resultGame = gameRepository.findById(game.get().getId());
-        assertTrue(resultGame.get().getResult());
+        Game resultGame = gameRepository.findById(game.get().getId()).get();
+        assertTrue(resultGame.getResult());
     }
 
     @Test
@@ -101,9 +112,9 @@ class GameRepositoryTest {
         gameHistoryRepository.save(gameHistory3);
         gameHistoryRepository.save(gameHistory4);
 
-        Optional<Game> game = gameRepository.findById(g.getId());
-        boolean result = game.get().getResult();
-        List<Game_history> gameHistoryList = game.get().getGameHistoryList();
+        Game game = gameRepository.findById(g.getId()).get();
+        boolean result = game.getResult();
+        List<Game_history> gameHistoryList = game.getGameHistoryList();
 
         int winPoint = 0, losePoint = 0;
 
@@ -128,9 +139,15 @@ class GameRepositoryTest {
         }
 
         assertThat(gameHistoryList.get(0).getGetPoint()).isEqualTo(40);
+        assertThat(gameHistoryList.get(0).getPointHistory().getDeal_point()).isEqualTo(40);
         assertThat(gameHistoryList.get(1).getGetPoint()).isEqualTo(0);
+        assertThat(gameHistoryList.get(1).getPointHistory().getDeal_point()).isEqualTo(-200);
         assertThat(gameHistoryList.get(2).getGetPoint()).isEqualTo(100);
+        assertThat(gameHistoryList.get(2).getPointHistory().getDeal_point()).isEqualTo(100);
         assertThat(gameHistoryList.get(3).getGetPoint()).isEqualTo(60);
+        assertThat(gameHistoryList.get(3).getPointHistory().getDeal_point()).isEqualTo(60);
+
+
     }
 
     private Member getMember(String nickName) {
@@ -139,12 +156,6 @@ class GameRepositoryTest {
                 .memberEmail(nickName + "@gmail.com")
                 .password("123123")
                 .nickName(nickName)
-                .friends(new ArrayList<>())
-                .emojis(new ArrayList<>())
-                .dealHistoryList(new ArrayList<>())
-                .pointHistoryList(new ArrayList<>())
-                .memberConferenceList(new ArrayList<>())
-                .gameHistoryList(new ArrayList<>())
                 .build();
         return member;
     }
