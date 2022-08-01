@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 public class Emoji extends BaseEntity{
 
@@ -21,15 +21,27 @@ public class Emoji extends BaseEntity{
     @Column(name = "emoji_id")
     private Long id;
 
-    private String url;
     private String name;
-    private String creator;
-    private LocalDateTime created_time;
+    private String url;
+    private String description;
+    private Long creatorId;
 
+    @Builder.Default
     @OneToMany(mappedBy = "emoji", cascade = CascadeType.ALL)
     private List<Member_emoji>  memberEmojiList = new ArrayList<>();
 
     @OneToOne(mappedBy = "emoji", fetch = FetchType.LAZY)
     private Emoji_shop emoji_shop;
+
+    public static Emoji createEmoji(Long creatorId, String name, String url, String description){
+        Emoji emoji = Emoji.builder()
+                .name(name)
+                .url(url)
+                .description(description)
+                .creatorId(creatorId)
+                .build();
+
+        return emoji;
+    }
 
 }
