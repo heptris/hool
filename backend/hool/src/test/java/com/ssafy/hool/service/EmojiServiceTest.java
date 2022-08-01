@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class EmojiServiceTest {
 
     @Autowired EmojiService emojiService;
@@ -75,7 +75,9 @@ class EmojiServiceTest {
 
         //when
         List<Emoji> emojis = emojiService.listEmoji();
-        emojiService.updateEmoji(2L,1L,"이름바꿈", "설명도바꿈");
+        for (Emoji emoji : emojis) {
+            emojiService.updateEmoji(emoji.getId(),member.getId(),"이름바꿈", "설명도바꿈");
+        }
 
         //then
         assertEquals("이름바꿈", emojis.get(0).getName());
