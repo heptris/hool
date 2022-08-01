@@ -1,19 +1,19 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import defaultImg from "assets/profile-default-imgs/6.jpg";
+import defaultImg from "assets/profile-default-imgs/2.png";
 
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 
-const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
+const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
 const MarketItem = () => {
   return (
-    <Item bgColor={adaptiveGrey800} borderColor={adaptiveGrey700}>
+    <Item bgColor={mainColor} borderColor={adaptiveGrey700}>
       <Emoji src={defaultImg} alt="" />
-      <ItemTitle>구글 이미지</ItemTitle>
-      <ItemDesc>테스트용 구글 이미지입니다</ItemDesc>
+      <ItemTitle>Sample</ItemTitle>
+      <ItemDesc>Lorem ipsum</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
           <Icon className="fa-solid fa-sack-dollar" />
@@ -36,9 +36,11 @@ const Item = styled(Card)`
 const Emoji = styled.img`
   margin-top: 3rem;
   height: 8rem;
+  border-radius: 4px;
 `;
 const ItemTitle = styled.h3`
   margin-top: 1rem;
+  font-size: 1.2rem;
 `;
 const ItemDesc = styled.p`
   margin-top: 2rem;
@@ -47,6 +49,7 @@ const ItemDesc = styled.p`
   word-wrap: break-word;
   text-align: center;
   max-width: 10rem;
+  font-size: 1.1rem;
 `;
 const BuyInfoWrapper = styled.div`
   position: absolute;

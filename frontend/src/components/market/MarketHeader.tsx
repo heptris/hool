@@ -15,7 +15,7 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
       concreteBtn={
         <MarketButton
           height={2.8}
-          width={5}
+          width={7}
           text={"상품등록"}
           onClick={onDisplayChange}
         />
