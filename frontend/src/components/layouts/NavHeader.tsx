@@ -5,15 +5,17 @@ import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
+import { ROUTES_NAME } from "constant";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
+const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
 
   return (
     <Header>
-      <Link to="/auth/login">
+      <Link to={LOGIN}>
         <LoginBtn>로그인</LoginBtn>
       </Link>
       <NavUser
@@ -25,7 +27,7 @@ const NavHeader = () => {
             onMouseEnter={() => setIsDisplayMenu(true)}
             onMouseLeave={() => setIsDisplayMenu(false)}
           >
-            <Link to="/profile" style={{ textDecoration: "none" }}>
+            <Link to={PROFILE}>
               <MenuItem>
                 <span>프로필</span>
               </MenuItem>
