@@ -1,14 +1,8 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.Conference;
-import com.ssafy.hool.domain.Game;
-import com.ssafy.hool.domain.Game_history;
-import com.ssafy.hool.domain.Member;
+import com.ssafy.hool.domain.*;
 import com.ssafy.hool.dto.GameHistoryCreateDto;
-import com.ssafy.hool.repository.ConferenceRepository;
-import com.ssafy.hool.repository.GameHistoryRepository;
-import com.ssafy.hool.repository.GameRepository;
-import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +18,7 @@ public class GameService {
     private final MemberRepository memberRepository;
     private final ConferenceRepository conferenceRepository;
     private final GameHistoryRepository gameHistoryRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     public Game saveGame(String gameName, Long conferenceId){
         Optional<Conference> conference = conferenceRepository.findById(conferenceId);
@@ -32,10 +27,23 @@ public class GameService {
         return game;
     }
     public void saveGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
+<<<<<<< HEAD
         Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).get();
         Optional<Game> game = gameRepository.findById(gameHistoryCreateDto.getGameId());
         Game_history gameHistory = Game_history.createGameHistory(member, gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), game.get());
         gameHistoryRepository.save(gameHistory);
+=======
+        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName());
+        Game game = gameRepository.findById(gameHistoryCreateDto.getGameId()).get();
+
+        // 회원이 보유한 포인트보다 많은 포인트를 베팅할 수 없음
+        if(member.getPoint() >= gameHistoryCreateDto.getBettPoint()){
+            Game_history gameHistory = Game_history.createGameHistory(member, gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), game);
+            gameHistoryRepository.save(gameHistory);
+        } else {
+            throw new IllegalStateException("포인트가 부족합니다.");
+        }
+>>>>>>> e202630 (:sparkles: [FEAT] PointHistory, DealHistory 구현 / 포인트 관리(S07P12A408-241))
     }
 
     public void saveGameResult(Long gameId, boolean result){
@@ -44,9 +52,9 @@ public class GameService {
     }
 
     public void saveBettPointCal(Long gameId){
-        Optional<Game> game = gameRepository.findById(gameId);
-        boolean result = game.get().getResult();
-        List<Game_history> gameHistoryList = game.get().getGameHistoryList();
+        Game game = gameRepository.findById(gameId).get();
+        boolean result = game.getResult();
+        List<Game_history> gameHistoryList = game.getGameHistoryList();
 
         int winPoint = 0, losePoint = 0;
 
@@ -61,13 +69,20 @@ public class GameService {
 
         // 포인트 계산
         for(Game_history gameHistory : gameHistoryList){
+            double getPoint = 0;
+            int currentPoint;
             if(gameHistory.getBettChoice() == result){
                 double winRate = (double)gameHistory.getBettPoint()/winPoint; // 베팅한 포인트 / 정답에 배팅된 총 포인트 = 포인트 할당 비율
-                double getPoint = losePoint * winRate; // 포인트 할당량
+                getPoint = losePoint * winRate; // 포인트 할당량
+                currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate((int)getPoint);
             } else {
+                getPoint = -gameHistory.getBettPoint();
+                currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate(0); // 오답일 경우 포인트 0
             }
+            Point_history pointHistory = Point_history.createPointHistory((int)getPoint, currentPoint, gameHistory.getMember(), null, gameHistory);
+            pointHistoryRepository.save(pointHistory);
         }
     }
 }
