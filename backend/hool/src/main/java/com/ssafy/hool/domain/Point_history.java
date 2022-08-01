@@ -34,4 +34,31 @@ public class Point_history extends BaseEntity{
 
     private int current_point;
 
+    public static Point_history createPointHistory(int dealPoint, int currentPoint, Member member, Deal_history dealHistory, Game_history gameHistory){
+        Point_history pointHistory = Point_history.builder()
+                .deal_point(dealPoint)
+                .current_point(currentPoint)
+                .build();
+
+        pointHistory.addMember(member);
+        pointHistory.addGameHistory(gameHistory);
+        pointHistory.addDealHistory(dealHistory);
+        return pointHistory;
+    }
+
+    public void addMember(Member member){
+        this.member = member;
+        member.getPointHistoryList().add(this);
+    }
+
+    public void addDealHistory(Deal_history dealHistory){
+        this.deal_history = dealHistory;
+        dealHistory.setPointHistory(this);
+    }
+
+    public void addGameHistory(Game_history gameHistory){
+        this.game_history = gameHistory;
+        gameHistory.setPointHistory(this);
+    }
+
 }
