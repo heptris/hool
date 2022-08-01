@@ -6,6 +6,9 @@ import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.service.MemberService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +23,6 @@ import java.util.Collections;
 public class MemberController {
 
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider jwtTokenProvider;
-
-
 
     /**
      * 닉네임 중복 체크
@@ -39,16 +38,18 @@ public class MemberController {
 
 
     @GetMapping("/api/me")
-    public ResponseEntity<MemberJoinResponseDto> getMyMemberInfo() {
-        return ResponseEntity.ok(memberService.getMyInfo());
+    public ResponseEntity<ResponseDto> getMyMemberInfo() {
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "내 회원 정보", memberService.getMyInfo())
+                , HttpStatus.OK);
     }
 
 
     /**
      * 회원 프로필 조회
      */
+    @ApiOperation(value = "회원 프로필 조회", notes = "회원 프로필 Dto를 반환해줍니다.")
     @GetMapping("/api/member/{memberId}")
-    public ResponseDto memberProfile(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity memberProfile(@PathVariable("memberId") Long memberId) {
         Member member = memberService.findByMemberId(memberId);
         int friendCount = memberService.getFriendCount(memberId);
         MemberResponseDto memberProfile = MemberResponseDto.builder()
@@ -58,17 +59,20 @@ public class MemberController {
                 .friendCount(friendCount)
                 .build();
 
-        return new ResponseDto<MemberResponseDto>(200, "success", memberProfile);
+        return new ResponseEntity<ResponseDto>(new ResponseDto<MemberResponseDto>(200, "success",
+                memberProfile), HttpStatus.OK);
     }
 
     /**
      * 회원 프로필 수정
      */
+    @ApiOperation(value = "회원 프로필 수정")
     @PutMapping("/api/member/{memberId}")
-    public ResponseDto memberUpdate(@PathVariable("memberId")Long memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
+    public ResponseEntity memberUpdate(@PathVariable("memberId") Long memberId, @RequestBody MemberUpdateDto memberUpdateDto) {
         memberService.updateMember(memberId, memberUpdateDto.getPassword(), memberUpdateDto.getName(), memberUpdateDto.getNickName());
 
-        return new ResponseDto(200, "success", "회원 수정 완료");
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "회원 수정 완료")
+                ,HttpStatus.OK);
     }
 
 }

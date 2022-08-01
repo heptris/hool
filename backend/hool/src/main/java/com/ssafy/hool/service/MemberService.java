@@ -4,6 +4,8 @@ import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
+import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,14 +46,14 @@ public class MemberService {
     }
 
     public Member findByMemberId(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 없습니다."));
+        return memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
 
     // 회원 수정
     @Transactional
     public void updateMember(Long memberId, String password, String name, String nickName) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 유저는 없습니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         member.setPassword(passwordEncoder.encode(password));
         member.setName(name);
         member.setNickName(nickName);
@@ -78,7 +82,7 @@ public class MemberService {
     public MemberJoinResponseDto getMyInfo() {
         return memberRepository.findById(SecurityUtil.getCurrentMemberId())
                 .map(MemberJoinResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
 }

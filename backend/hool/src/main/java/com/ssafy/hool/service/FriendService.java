@@ -6,6 +6,7 @@ import com.ssafy.hool.domain.FriendRequestStatus;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,7 +34,7 @@ public class FriendService {
     @Transactional
     public void searchAddFriend(Long memberId, String friendNickName) {
         Member friend = memberRepository.findByNickName(friendNickName).orElseThrow(
-                () -> new CustomException("해당 닉네임을 가진 계정은 없습니다."));
+                () -> new CustomException(MEMBER_NICKNAME_NOT_FOUND));
 
         // dto로 변환
         FriendDto friendDto = friend.friendDto();
@@ -43,8 +46,7 @@ public class FriendService {
     @Transactional
     public void sendFriendMessage(Long fromMember, Long toMember) {
         if (friendRepository.isAlreadyFriend(fromMember, toMember)) {
-            System.out.println("이미 친구 상태입니다,");
-            throw new CustomException("이미 친구 중인 상태입니다.");
+            throw new CustomException(ALREADY_SAVED_FRIEND);
         }
         friendRequestRepository.sendFriendMessage(fromMember, toMember);
     }
@@ -68,8 +70,7 @@ public class FriendService {
                 friendRequest.setFriendRequestStatus(FriendRequestStatus.REFUSE);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new CustomException("이미 친구 상태입니다.");
+            throw new CustomException(ALREADY_SAVED_FRIEND);
         }
     }
 

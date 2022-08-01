@@ -1,5 +1,7 @@
 package com.ssafy.hool.util;
 
+import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.INVALID_ACCESS_TOKEN;
 
 @Slf4j
 public class SecurityUtil {
@@ -19,7 +23,7 @@ public class SecurityUtil {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null) {
-            throw  new RuntimeException("Security Context 에 인증 정보가 없습니다.");
+            throw  new CustomException(INVALID_ACCESS_TOKEN);
         }
 
         return Long.parseLong(authentication.getName());

@@ -2,11 +2,11 @@ package com.ssafy.hool.config.jwt;
 
 import com.ssafy.hool.config.redis.RedisService;
 import com.ssafy.hool.dto.token.TokenDto;
-import com.ssafy.hool.exception.ex.BadRequestException;
+import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @Slf4j
 @Component
@@ -83,7 +85,7 @@ public class TokenProvider {
         Claims claims = parseClaims(accessToken);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            throw new CustomException(INVALID_ACCESS_TOKEN);
         }
 
         // 클레임에서 권한 정보 가져오기
@@ -108,12 +110,14 @@ public class TokenProvider {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
+            throw new CustomException(INVALID_ACCESS_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
+            throw new CustomException(EXPIRED_ACCESS_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
+            throw new CustomException(INVALID_ACCESS_TOKEN);
         }
         return false;
     }
@@ -121,15 +125,16 @@ public class TokenProvider {
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e)  {
+            log.error("accessToken 잘못됨 = {}", e.getMessage());
+            throw new CustomException(INVALID_ACCESS_TOKEN);
         }
     }
 
     public void checkRefreshToken(String memberId, String refreshToken) {
         String redisRT = redisService.getValues(memberId);
         if (!refreshToken.equals(redisRT)) {
-            throw new BadRequestException("토큰이 만료되었습니다");
+            throw new CustomException(INVALID_REFRESH_TOKEN);
         }
     }
 
