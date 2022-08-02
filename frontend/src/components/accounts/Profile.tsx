@@ -56,6 +56,7 @@ function Profile() {
                     <Diff>+500</Diff>
                   </CardContent>
                 }
+                marginTop={2}
               />
             </PointLogBody>
           }

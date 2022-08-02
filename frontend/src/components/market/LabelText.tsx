@@ -55,7 +55,7 @@ const Input = styled.input<{
   ${InputStyle}
   margin-right: ${({ marginRight }) => marginRight || "0rem"};
   &::placeholder {
-    font-size: 0.7rem;
+    font-size: 0.875rem;
   }
 `;
 export default LabelText;
