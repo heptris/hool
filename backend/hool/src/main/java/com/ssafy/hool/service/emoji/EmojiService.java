@@ -65,7 +65,7 @@ public class EmojiService {
     }
 
     @Transactional
-    public EmojiDto updateEmoji(EmojiUpdateDto emojiUpdateDto){
+    public void updateEmoji(EmojiUpdateDto emojiUpdateDto){
 
         Emoji emoji = emojiRepository.findById(emojiUpdateDto.getEmojiId())
                 .orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
@@ -76,8 +76,6 @@ public class EmojiService {
         }else{
             throw new CustomException(CANNOT_MODIFY_EMOJI);
         }
-
-        return new EmojiDto(emoji.getName(),emoji.getUrl(),emoji.getDescription(),emoji.getCreatorId());
     }
 
     @Transactional
