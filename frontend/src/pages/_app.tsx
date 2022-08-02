@@ -12,6 +12,8 @@ export default function App({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log(router.state.location.pathname);
     router.state.location.pathname === "/login" ||
+    router.state.location.pathname === "/signup" ||
+    router.state.location.pathname === "/find" ||
     router.state.location.pathname === "/error"
       ? dispatch(setIsNavbar(false))
       : dispatch(setIsNavbar(true));

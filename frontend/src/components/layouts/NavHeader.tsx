@@ -14,7 +14,7 @@ const NavHeader = () => {
 
   return (
     <Header>
-      <Link to="/login">
+      <Link to="/auth/login">
         <LoginBtn>로그인</LoginBtn>
       </Link>
       <NavUser
