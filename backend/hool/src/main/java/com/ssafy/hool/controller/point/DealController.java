@@ -2,6 +2,7 @@ package com.ssafy.hool.controller.point;
 
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
 import com.ssafy.hool.dto.deal_history.DealHistoryResponseDto;
+import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.point.DealHistoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class DealController {
 
     @ApiOperation(value = "이모지 구매", notes = "이모지 거래 (거래 포인트, 구매자아이디(PK), 판매자아이디(PK), 이모지상점아이디(PK))")
     @PostMapping
-    public ResponseEntity<DealHistoryResponseDto> createConference(@RequestBody DealHistoryCreateDto dealHistoryCreateDto){
-        return new ResponseEntity<>(dealHistoryService.makeDeal(dealHistoryCreateDto), HttpStatus.OK);
+    public ResponseEntity createConference(@RequestBody DealHistoryCreateDto dealHistoryCreateDto){
+        return new ResponseEntity<ResponseDto>(new ResponseDto<DealHistoryResponseDto>(200, "success", dealHistoryService.makeDeal(dealHistoryCreateDto)), HttpStatus.OK);
     }
 
 }
