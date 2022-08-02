@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, setIsNavbar } from "store";
 
 import { Layout } from "components/layouts/Layout";
+import { MeetingModal } from "components/meeting";
 
 export default function App({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
@@ -17,6 +18,20 @@ export default function App({ children }: { children: React.ReactNode }) {
       : dispatch(setIsNavbar(true));
   });
 
-  const { isNavbar } = useSelector((state: RootState) => state.navbar);
-  return <>{isNavbar ? <Layout>{children}</Layout> : <>{children}</>}</>;
+  const { isNavbar, isCreatingRoom } = useSelector(
+    (state: RootState) => state.navbar
+  );
+
+  return (
+    <>
+      {isNavbar ? (
+        <Layout>
+          {children}
+          {isCreatingRoom && <MeetingModal />}
+        </Layout>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
 }
