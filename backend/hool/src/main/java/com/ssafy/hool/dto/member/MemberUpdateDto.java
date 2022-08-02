@@ -14,5 +14,5 @@ public class MemberUpdateDto {
     private String name;
     private String nickName;
 
-    private MultipartFile multipartFile;
+//    private MultipartFile multipartFile;
 }

@@ -90,10 +90,11 @@ public class Member extends BaseEntity {
 
     public FriendDto friendDto() {
         FriendDto friend = FriendDto.builder()
-                .memberEmail(memberEmail)
-                .nickName(nickName)
-                .id(id)
+                .friendMemberEmail(memberEmail)
+                .friendNickName(nickName)
+                .friendMemberId(id)
                 .build();
+
         return friend;
     }
 }
