@@ -3,7 +3,7 @@ import { darkTheme } from "styles/Theme";
 
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
-import LabelText from "./LabelText";
+import LabelText from "../LabelText";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 

@@ -16,7 +16,7 @@ const MarketItem = () => {
       <ItemDesc>테스트용 구글 이미지입니다</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
-          <Icon className="fa-solid fa-coins" />
+          <span className="fa-solid fa-coins" />
           <span>500</span>
         </CostsWrapper>
         <BuyButton height={2.5} width={3} fontSize={0.8} text={"구매"} />
@@ -51,12 +51,9 @@ const BuyInfoWrapper = styled.div`
   position: absolute;
   bottom: 2rem;
 `;
-export const CostsWrapper = styled.div`
+const CostsWrapper = styled.div`
   display: flex;
   align-items: center;
-`;
-export const Icon = styled.i`
-  margin-right: 0.4rem;
 `;
 const BuyButton = styled(Button)`
   margin-top: 2rem;
