@@ -5,8 +5,34 @@ import { darkTheme } from "styles/Theme";
 
 import googleLogoImg from "assets/google-logo-img.png";
 
-import Form from "components/commons/Form";
 import Button from "components/commons/Button";
+import LabelInput from "components/commons/LabelInput";
+
+const Auth = () => {
+  return (
+    <Container>
+      <FormBox>
+        <Link to={"/"}>
+          <Logo>hool!</Logo>
+        </Link>
+        <Title>로그인</Title>
+        <LabelInput text="이메일" placeholderText="Email" type="email" />
+        <LabelInput
+          text="비밀번호"
+          placeholderText="Password"
+          type="password"
+        />
+        <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
+        <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
+        <Text>계정이 없으신가요? 회원가입</Text>
+        <GoogleDIV>
+          <GoogleLogoImg src={googleLogoImg} alt="google-logo-img" />
+          <GoogleText>구글 계정으로 로그인</GoogleText>
+        </GoogleDIV>
+      </FormBox>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100vw;
@@ -81,27 +107,5 @@ const GoogleText = styled.span`
   padding: 0.3rem;
   color: ${darkTheme.mainColor};
 `;
-
-const Auth = () => {
-  return (
-    <Container>
-      <FormBox>
-        <Link to={"/"}>
-          <Logo>hool!</Logo>
-        </Link>
-        <Title>로그인</Title>
-        <Form text="이메일" placeholderText="Email" type="email" />
-        <Form text="비밀번호" placeholderText="Password" type="password" />
-        <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
-        <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
-        <Text>계정이 없으신가요? 회원가입</Text>
-        <GoogleDIV>
-          <GoogleLogoImg src={googleLogoImg} alt="google-logo-img" />
-          <GoogleText>구글 계정으로 로그인</GoogleText>
-        </GoogleDIV>
-      </FormBox>
-    </Container>
-  );
-};
 
 export default Auth;
