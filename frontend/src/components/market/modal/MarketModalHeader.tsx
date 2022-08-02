@@ -18,6 +18,7 @@ const MarketModalHeader = ({
     </Header>
   );
 };
+
 const TitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,7 +33,7 @@ const Header = styled.div`
   padding: 2rem 1rem 1rem;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 `;
 
