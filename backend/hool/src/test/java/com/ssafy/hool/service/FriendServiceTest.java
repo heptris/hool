@@ -37,14 +37,14 @@ class FriendServiceTest {
         friendService.friendAccept(4L, true);
     }
 
-    @Test
-    void 친구요청_메세지_조회() {
-        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(2L);
-        for (FriendRequest friendRequest : friendRequestMessage) {
-            System.out.println("fromMember :"  + friendRequest.getFromMember().getNickName());
-            System.out.println("toMember : "+friendRequest.getToMember().getNickName());
-        }
-    }
+//    @Test
+//    void 친구요청_메세지_조회() {
+//        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(2L);
+//        for (FriendRequest friendRequest : friendRequestMessage) {
+//            System.out.println("fromMember :"  + friendRequest.getFromMember().getNickName());
+//            System.out.println("toMember : "+friendRequest.getToMember().getNickName());
+//        }
+//    }
 
     @Test
     void 친구리스트() {

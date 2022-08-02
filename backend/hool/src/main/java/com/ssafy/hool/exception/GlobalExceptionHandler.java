@@ -10,6 +10,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.ssafy.hool.exception.ex.ErrorCode.INTERNAL_SERVER_ERROR;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -31,6 +33,12 @@ public class GlobalExceptionHandler {
         log.error("password = {}", e.getMessage());
         return new ResponseEntity<>(new ResponseDto(400, "비밀번호가 틀립니다.", null)
                 , HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity handlerServerException(Exception e) {
+        return new ResponseEntity(new ResponseDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage(), null)
+                , HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
