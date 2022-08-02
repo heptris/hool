@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Member_emoji extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_emoji_id")
     private Long id;
 

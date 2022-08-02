@@ -4,17 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @Builder
-public class EmojiCreateDto {
+public class EmojiDto {
 
-    private Long memberId;
     private String name;
     private String url;
     private String description;
     private Long creatorId;
-
 }
