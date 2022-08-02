@@ -5,7 +5,6 @@ import { IconStyle } from "styles/IconStyle";
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
 const MessageShowTopBox = styled(MessageBox)`
-  margin-top: 2.5rem;
   height: 3rem;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
