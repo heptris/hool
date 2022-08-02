@@ -14,6 +14,9 @@ const NavHeader = () => {
 
   return (
     <Header>
+      <Link to="/login">
+        <LoginBtn>로그인</LoginBtn>
+      </Link>
       <NavUser
         onMouseEnter={() => setIsDisplayMenu(true)}
         onMouseLeave={() => setIsDisplayMenu(false)}
@@ -111,6 +114,17 @@ const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey800};
   background-color: ${darkTheme.adaptiveGrey800};
   margin: 0;
+`;
+const LoginBtn = styled.button`
+  width: 4rem;
+  height: 2rem;
+  border-radius: 2rem;
+  background-color: ${darkTheme.darkColor};
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
 
 export default NavHeader;
