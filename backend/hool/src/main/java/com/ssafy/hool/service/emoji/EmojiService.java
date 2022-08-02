@@ -8,7 +8,6 @@ import com.ssafy.hool.dto.emoji.EmojiCreateDto;
 import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
 import com.ssafy.hool.dto.emoji.EmojiDto;
 import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
-import com.ssafy.hool.dto.emoji_shop.EmojiShopCreateDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.exception.ex.CustomException;
@@ -82,14 +81,15 @@ public class EmojiService {
     }
 
     @Transactional
-    public Long makeEmojiShop(EmojiShopCreateDto emojiShopCreateDto){
-        Emoji_shop emojiShop = Emoji_shop.createEmojiShop(emojiShopCreateDto.getEmoji(), emojiShopCreateDto.getPrice());
+    public Long makeEmojiShop(EmojiShopDto emojiShopDto){
+        Emoji emoji = emojiRepository.findById(emojiShopDto.getEmojiId()).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
+        Emoji_shop emojiShop = Emoji_shop.createEmojiShop(emoji, emojiShopDto.getPrice());
         emojiShopRepository.save(emojiShop);
         return emojiShop.getId();
     }
 
     @Transactional
-    public EmojiShopCreateDto updateEmojiShop(EmojiShopUpdateDto emojiShopUpdateDto){
+    public EmojiShopDto updateEmojiShop(EmojiShopUpdateDto emojiShopUpdateDto){
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopUpdateDto.getEmojiShopId())
                 .orElseThrow(() -> new CustomException(EMOJI_SHOP_NOT_FOUND));
         Long creatorId = emojiShop.getEmoji().getCreatorId();
@@ -99,7 +99,7 @@ public class EmojiService {
             throw new CustomException(CANNOT_MODIFY_EMOJI);
         }
 
-        return new EmojiShopCreateDto(emojiShop.getEmoji(),emojiShop.getEmoji_price());
+        return new EmojiShopDto(emojiShop.getEmoji_price(), emojiShop.getEmoji().getId());
     }
 
     @Transactional

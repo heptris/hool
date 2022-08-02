@@ -1,6 +1,5 @@
 package com.ssafy.hool.controller.emoji;
 
-import com.ssafy.hool.dto.emoji_shop.EmojiShopCreateDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.service.emoji.EmojiService;
@@ -21,14 +20,14 @@ public class EmojiShopController {
 
     @ApiOperation(value = "상점이모지 만들기", notes = "이모지 객체와 가격을 받아 이모지상점에 저장", response = Map.class)
     @PostMapping("/api/emoji_shop")
-    public void createEmojiShop(@RequestBody EmojiShopCreateDto emojiShopCreateDto){
-        emojiService.makeEmojiShop(emojiShopCreateDto);
+    public void createEmojiShop(@RequestBody EmojiShopDto emojiShopDto){
+        emojiService.makeEmojiShop(emojiShopDto);
     }
 
     @ApiOperation(value = "상점이모지 수정",
             notes = "상점이모지 아이디와 memberId와 수정한 가격을 받아 이모지상점에 저장 후 이모지 객체와 가격을 담은 dto로 반환", response = Map.class)
     @PutMapping("/api/emoji_shop")
-    public ResponseEntity<EmojiShopCreateDto> updateEmojiShop(@RequestBody EmojiShopUpdateDto emojiShopUpdateDto){
+    public ResponseEntity<EmojiShopDto> updateEmojiShop(@RequestBody EmojiShopUpdateDto emojiShopUpdateDto){
         return new ResponseEntity<>(emojiService.updateEmojiShop(emojiShopUpdateDto), HttpStatus.ACCEPTED);
     }
 
