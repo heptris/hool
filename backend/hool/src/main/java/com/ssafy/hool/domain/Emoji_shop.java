@@ -16,7 +16,7 @@ import java.util.List;
 public class Emoji_shop extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "emoji_store_id")
     private Long id;
 

@@ -1,6 +1,11 @@
 package com.ssafy.hool.service;
 
 import com.ssafy.hool.domain.*;
+import com.ssafy.hool.dto.emoji.EmojiCreateDto;
+import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
+import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopCreateDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.repository.EmojiRepository;
 import com.ssafy.hool.repository.EmojiShopRepository;
 import com.ssafy.hool.repository.MemberEmojiRepository;
@@ -8,7 +13,6 @@ import com.ssafy.hool.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,7 +37,9 @@ class EmojiServiceTest {
         memberRepository.save(member);
 
         // when
-        emojiService.makeEmoji("이름","1234", "이모지 설명", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1",member.getId());
+
+        emojiService.makeEmoji(emojiCreateDto1);
 
 //         then
         List<Emoji> emojiList = emojiRepository.findAll();
@@ -42,7 +48,7 @@ class EmojiServiceTest {
         Member_emoji memberEmoji = memberEmojiList.get(0);
 
         assertEquals("1234", emoji.getUrl());
-        assertEquals("이모지 설명",emoji.getDescription());
+        assertEquals("이모지 설명1",emoji.getDescription());
         assertEquals(EmojiType.MADE, memberEmoji.getEmojitype());
     }
 
@@ -52,11 +58,14 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
+
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
 
         //when
-        List<Emoji> emojis = emojiService.listEmoji();
+        List<Emoji> emojis = emojiRepository.findAll();
 
         //then
         assertEquals("이름1", emojis.get(0).getName());
@@ -69,14 +78,16 @@ class EmojiServiceTest {
         //given
         Member member = getMember("1");
         memberRepository.save(member);
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
 
         //when
-        List<Emoji> emojis = emojiService.listEmoji();
+        List<Emoji> emojis = emojiRepository.findAll();
         for (Emoji emoji : emojis) {
-            emojiService.updateEmoji(emoji.getId(),member.getId(),"이름바꿈", "설명도바꿈");
+            emojiService.updateEmoji(new EmojiUpdateDto(emoji.getId(), member.getId(),"이름바꿈", "설명도 바꿈"));
         }
 
         //then
@@ -91,16 +102,18 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
+
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
 
         //when
-        List<Emoji> emojis = emojiService.listEmoji();
+        List<Emoji> emojis = emojiRepository.findAll();
         Long emojiId = emojis.get(0).getId();
-        System.out.println("==========================");
-        System.out.println(emojiId);
+        EmojiDeleteDto emojiDeleteDto = new EmojiDeleteDto(emojiId, member.getId());
 
-        emojiService.deleteEmoji(emojiId, member.getId());
+        emojiService.deleteEmoji(emojiDeleteDto);
 
         //then
 
@@ -112,14 +125,17 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
 
-        List<Emoji> emojis = emojiService.listEmoji();
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
+
+        List<Emoji> emojis = emojiRepository.findAll();
         Emoji emoji = emojis.get(0);
 
         //when
-        Long emojiShopId = emojiService.makeEmojiShop(emoji, 1400);
+        Long emojiShopId = emojiService.makeEmojiShop(new EmojiShopCreateDto(emoji, 1400));
 
         //then
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopId).get();
@@ -133,15 +149,18 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
 
-        List<Emoji> emojis = emojiService.listEmoji();
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
 
-        Long emojiShopId1 = emojiService.makeEmojiShop(emojis.get(0), 1400);
+        List<Emoji> emojis = emojiRepository.findAll();
+
+        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(0), 1400));
 
         //when
-        emojiService.updateEmojiShop(emojiShopId1, member.getId(), 1499);
+        emojiService.updateEmojiShop(new EmojiShopUpdateDto(emojiShopId1, member.getId(), 1499));
 
         //then
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopId1).get();
@@ -156,13 +175,16 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        emojiService.makeEmoji("이름1","1234", "이모지 설명1", member.getId());
-        emojiService.makeEmoji("이름2","1235", "이모지 설명2", member.getId());
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto(member.getId(),"이름1","1234","이모지 설명1", member.getId());
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto(member.getId(),"이름2","1235", "이모지 설명2", member.getId());
 
-        List<Emoji> emojis = emojiService.listEmoji();
+        emojiService.makeEmoji(emojiCreateDto1);
+        emojiService.makeEmoji(emojiCreateDto2);
 
-        Long emojiShopId1 = emojiService.makeEmojiShop(emojis.get(0), 1400);
-        Long emojiShopId2 = emojiService.makeEmojiShop(emojis.get(1), 2000);
+        List<Emoji> emojis = emojiRepository.findAll();
+
+        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(0), 1400));
+        Long emojiShopId2 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(1), 2000));
 
         //when
         emojiService.deleteEmojiShop(emojiShopId1);
