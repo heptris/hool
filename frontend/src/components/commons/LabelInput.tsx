@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { InputStyle } from "styles/InputStyle";
+import { InputStyle } from "styles";
 
 import LabelWrapper from "./LabelWrapper";
 
