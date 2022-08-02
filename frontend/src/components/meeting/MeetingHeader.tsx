@@ -1,5 +1,4 @@
 import PageHeader from "components/commons/PageHeader";
-import React from "react";
 
 const MeetingHeader = () => {
   return (
