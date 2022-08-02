@@ -9,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.ssafy.hool.exception.ex.ErrorCode.INVALID_PARAMETER;
-import static com.ssafy.hool.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @Service
 @Transactional
@@ -31,7 +30,7 @@ public class DealHistoryService {
         Member buyer = memberRepository.findById(dealHistoryCreateDto.getBuyerMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Member seller = memberRepository.findById(dealHistoryCreateDto.getSellerMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        Emoji_shop emojiShop = emojiShopRepository.findById(dealHistoryCreateDto.getEmojiShopId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Emoji_shop emojiShop = emojiShopRepository.findById(dealHistoryCreateDto.getEmojiShopId()).orElseThrow(() -> new CustomException(EMOJI_SHOP_NOT_FOUND));
         Deal_history dealHistory = Deal_history.createDealHistory(dealHistoryCreateDto, emojiShop, buyer);
         dealHistoryRepository.save(dealHistory);
 
@@ -41,7 +40,7 @@ public class DealHistoryService {
             Point_history buyerPointHistory = Point_history.createPointHistory(-dealHistory.getDealPoint(), currentBuyerPoint, buyer, dealHistory, null);
             pointHistoryRepository.save(buyerPointHistory);
         } else {
-            throw new CustomException(INVALID_PARAMETER);
+            throw new CustomException(LACK_OF_POINT);
         }
 
         // 판매자 포인트기록(Point_History) 저장
@@ -49,7 +48,7 @@ public class DealHistoryService {
         Point_history sellerPointHistory = Point_history.createPointHistory(dealHistory.getDealPoint(), currentSellerPoint, seller, dealHistory, null);
         pointHistoryRepository.save(sellerPointHistory);
 
-        Emoji emoji = emojiRepository.findById(emojiShop.getEmoji().getId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Emoji emoji = emojiRepository.findById(emojiShop.getEmoji().getId()).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
         return new DealHistoryResponseDto(emoji.getName(), emoji.getDescription(), dealHistory.getDealPoint());
     }
 }

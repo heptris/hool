@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ssafy.hool.exception.ex.ErrorCode.CONFERENCE_NOT_FOUND;
 import static com.ssafy.hool.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
@@ -53,7 +54,7 @@ public class ConferenceService {
      */
     public void enterConference(ConferenceJoinDto conferenceJoinDto){
         Member member = memberRepository.findById(conferenceJoinDto.getMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(1);
         Member_conference memberConference = Member_conference.createMemberConference(member, conference);
         memberConferenceRepository.save(memberConference);
@@ -64,7 +65,7 @@ public class ConferenceService {
      * @param conferenceModifyDto
      */
     public ConferenceModifyResponseDto modifyConference(ConferenceModifyDto conferenceModifyDto){
-        Conference conference = conferenceRepository.findById(conferenceModifyDto.getConferenceId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Conference conference = conferenceRepository.findById(conferenceModifyDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.modifyConference(conferenceModifyDto);
         return new ConferenceModifyResponseDto(conference.getTitle(), conference.getDescription());
     }

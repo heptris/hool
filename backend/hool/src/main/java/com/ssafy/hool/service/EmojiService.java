@@ -91,7 +91,7 @@ public class EmojiService {
     @Transactional
     public EmojiShopCreateDto updateEmojiShop(EmojiShopUpdateDto emojiShopUpdateDto){
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopUpdateDto.getEmojiShopId())
-                .orElseThrow(() -> new CustomException(EMOJISHOP_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(EMOJI_SHOP_NOT_FOUND));
         Long creatorId = emojiShop.getEmoji().getCreatorId();
         if(emojiShopUpdateDto.getMemberId() == creatorId){
             emojiShop.setEmoji_price(emojiShopUpdateDto.getUpdatePrice());

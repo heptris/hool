@@ -24,12 +24,16 @@ public enum ErrorCode {
     MEMBER_NICKNAME_NOT_FOUND(404, "존재하지 않은 닉네임입니다."),
 
     EMOJI_NOT_FOUND(404, "존재하지 않는 이모지입니다."),
-    EMOJISHOP_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
+    EMOJI_SHOP_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
+
+    CONFERENCE_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
+    GAME_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
     ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
     ALREADY_SAVED_FRIEND(409, "이미 친구 상태입니다."),
+    LACK_OF_POINT(409, "보유 포인트가 부족합니다."),
 
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요!");
