@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
-import { CostsWrapper, Icon } from "./MarketItem";
 
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
@@ -25,7 +24,7 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
         <MyPointBox>
           <div>포인트</div>
           <MyPoint>
-            <Icon className="fa-solid fa-sack-dollar" />
+            <span className="fa-solid fa-sack-dollar" />
             <span>1,237</span>
           </MyPoint>
         </MyPointBox>
@@ -34,7 +33,9 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   );
 };
 const MyPointBox = styled.div``;
-const MyPoint = styled(CostsWrapper)`
+const MyPoint = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 0.5rem;
   margin-bottom: 1.5rem;
 `;

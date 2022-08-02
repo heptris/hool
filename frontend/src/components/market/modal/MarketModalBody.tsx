@@ -3,13 +3,14 @@ import { darkTheme } from "styles/Theme";
 
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
-import LabelText from "./LabelText";
+import LabelInput from "components/commons/LabelInput";
+import LabelTextarea from "components/commons/LabelTextarea";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
 const MarketModalBody = () => {
   return (
-    <div>
+    <>
       <LRContainer>
         <LeftContainer>
           <ItemList>
@@ -28,26 +29,28 @@ const MarketModalBody = () => {
         </LeftContainer>
         <RightContainer>
           <InputWrapper>
-            <LabelText
-              contentName={"상품명"}
-              isInput={true}
-              placeholder={"상품명"}
+            <LeftLabelInput
+              text={"상품명"}
+              info={"2~22자 내로 입력해주세요"}
               widthSize={"10rem"}
-              marginRight={"1rem"}
+              placeholderText={"여기에 상품명을 적어주세요"}
             />
-            <LabelText
-              contentName="판매가격"
-              isInput={true}
-              placeholder={"판매가격"}
+            <LabelInput
+              text="판매금액"
               widthSize={"10rem"}
+              placeholderText={"여기에 판매금액을 적어주세요"}
             />
           </InputWrapper>
-          <LabelText contentName="설명" isInput={false} />
+          <LabelTextarea
+            text="설명"
+            placeholderText="여기에 설명을 적어주세요"
+          />
         </RightContainer>
       </LRContainer>
-    </div>
+    </>
   );
 };
+
 const LRContainer = styled.div`
   display: flex;
   padding: 3rem;
@@ -90,9 +93,13 @@ const ItemList = styled.div`
     height: 0;
   }
 `;
+const LeftLabelInput = styled(LabelInput)`
+  margin-right: 1rem;
+`;
 const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `;
+
 export default MarketModalBody;

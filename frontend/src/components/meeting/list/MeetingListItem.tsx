@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import img from "assets/google-logo-img.png";
+import img from "assets/thumbnail_soccer_1920.jpg";
+import Card from "components/commons/Card";
 
 const ConferenceListItem = () => {
   return (
-    <ListItem>
+    <ListItem bgColor={darkTheme.mainColor}>
       <Thumbnail src={img} alt="" />
       <ItemTitle>Item 제목</ItemTitle>
       <div>
         <ItemDesc>Item 설명</ItemDesc>
         <InfoWrapper>
-          <Icon>사람아이콘</Icon>
+          <Icon className="fa-solid fa-users" />
           <Population>인원</Population>
           <Time>시간</Time>
         </InfoWrapper>
@@ -19,20 +20,18 @@ const ConferenceListItem = () => {
     </ListItem>
   );
 };
-const ListItem = styled.div`
-  border: 1px solid ${darkTheme.adaptiveGrey200};
+const ListItem = styled(Card)`
   padding: 1rem;
   box-sizing: border-box;
   height: fit-content;
+  cursor: pointer;
+  &:hover {
+    background-color: ${darkTheme.adaptiveGrey800};
+  }
 `;
 const ItemTitle = styled.h4`
   margin-top: 1rem;
   font-size: 2rem;
-`;
-const ThumbnailWrapper = styled.div`
-  width: 100%;
-  height: 50%;
-  overflow: hidden;
 `;
 const Thumbnail = styled.img`
   width: 100%;

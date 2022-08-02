@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { letterSpacingSize } from "styles/GlobalStyle";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
@@ -106,7 +105,6 @@ const MenuItem = styled.div`
   text-align: center;
 
   span {
-    margin-right: ${letterSpacingSize};
     color: ${darkTheme.adaptiveGrey200};
   }
 `;

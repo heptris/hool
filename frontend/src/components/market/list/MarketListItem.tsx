@@ -16,7 +16,7 @@ const MarketItem = () => {
       <ItemDesc>Lorem ipsum</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
-          <Icon className="fa-solid fa-sack-dollar" />
+          <span className="fa-solid fa-coins" />
           <span>500</span>
         </CostsWrapper>
         <BuyButton height={2.75} width={3.75} fontSize={0.875} text={"구매"} />
@@ -55,13 +55,10 @@ const BuyInfoWrapper = styled.div`
   position: absolute;
   bottom: 2rem;
 `;
-export const CostsWrapper = styled.div`
+const CostsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-export const Icon = styled.i`
-  margin-right: 0.4rem;
 `;
 const BuyButton = styled(Button)`
   margin-top: 2rem;

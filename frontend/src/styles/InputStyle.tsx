@@ -1,11 +1,14 @@
 import { css } from "styled-components";
 import { darkTheme } from "./Theme";
 
-import { FormPropsType } from "types/FormPropsType";
+interface InputType {
+  height?: string;
+  widthSize?: string;
+}
 
 export const InputStyle = css`
-  width: ${({ widthSize }: FormPropsType) => widthSize || `20rem`};
-  height: ${({ height }: FormPropsType) => height || `2.8rem`};
+  height: ${({ height }: InputType) => height || `2.8rem`};
+  width: ${({ widthSize }: InputType) => widthSize || `20rem`};
   font: inherit;
   font-size: 0.875rem;
   padding-left: 1rem;

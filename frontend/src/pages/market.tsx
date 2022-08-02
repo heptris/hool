@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Container from "components/commons/Container";
-import { MarketHeader, MarketItemList, MarketModal } from "components/market";
+import { MarketHeader, MarketList, MarketModal } from "components/market";
 
 const MarketPage = () => {
   const [isDisplayModal, setIsDisplayModal] = useState(false);
@@ -13,7 +13,7 @@ const MarketPage = () => {
   return (
     <Container>
       <MarketHeader onDisplayChange={onDisplayChange} />
-      <MarketItemList />
+      <MarketList />
       {isDisplayModal && <MarketModal onDisplayChange={onDisplayChange} />}
     </Container>
   );

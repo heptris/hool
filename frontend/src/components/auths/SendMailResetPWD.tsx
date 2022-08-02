@@ -1,8 +1,30 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import Form from "components/commons/Form";
+import LabelInput from "components/commons/LabelInput";
 import Button from "components/commons/Button";
+
+const SendMailResetPWD = () => {
+  return (
+    <Container>
+      <SendMailResetPWDBox>
+        <Logo>hool!</Logo>
+        <Title>이메일로 비밀번호 초기화</Title>
+        <SubTitle1>HOOL!에 가입한 이메일을 정확히 입력해 주세요.</SubTitle1>
+        <SubTitle2>이메일을 통해 비밀번호 수정 링크가 전송됩니다.</SubTitle2>
+        <LabelInput text="이메일" placeholderText="Email" type="email" />
+        <Button
+          text="비밀번호 찾기"
+          width={20}
+          height={3.125}
+          marginBottom={0.25}
+        />
+        <Info>*위 주소로 비밀번호 설정 메일이 전송되었습니다.</Info>
+        <Info>메일을 확인해주세요.</Info>
+      </SendMailResetPWDBox>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100vw;
@@ -54,27 +76,4 @@ const Info = styled.div`
   margin-bottom: 0.25rem;
   color: ${darkTheme.infoColor};
 `;
-
-const SendMailResetPWD = () => {
-  return (
-    <Container>
-      <SendMailResetPWDBox>
-        <Logo>hool!</Logo>
-        <Title>이메일로 비밀번호 초기화</Title>
-        <SubTitle1>HOOL!에 가입한 이메일을 정확히 입력해 주세요.</SubTitle1>
-        <SubTitle2>이메일을 통해 비밀번호 수정 링크가 전송됩니다.</SubTitle2>
-        <Form text="이메일" placeholderText="Email" type="email" />
-        <Button
-          text="비밀번호 찾기"
-          width={20}
-          height={3.125}
-          marginBottom={0.25}
-        />
-        <Info>*위 주소로 비밀번호 설정 메일이 전송되었습니다.</Info>
-        <Info>메일을 확인해주세요.</Info>
-      </SendMailResetPWDBox>
-    </Container>
-  );
-};
-
 export default SendMailResetPWD;

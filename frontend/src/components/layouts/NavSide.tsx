@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
-import { letterSpacingSize } from "styles/GlobalStyle";
 import { darkTheme } from "styles/Theme";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
@@ -77,10 +76,9 @@ const Btn = styled.button`
     background-color: ${adaptiveGrey700};
   }
 `;
-const Icon = styled.i`
+const Icon = styled.span`
   font-size: 1rem;
   color: ${adaptiveGrey200};
-  margin: 0 ${letterSpacingSize}rem 0 0;
 `;
 
 export default NavSide;

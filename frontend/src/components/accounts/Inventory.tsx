@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { letterSpacingSize } from "styles/GlobalStyle";
 
 import Button from "components/commons/Button";
 import Modal from "components/commons/Modal";
@@ -201,10 +200,6 @@ const SwitchItem = styled.button`
   color: ${darkTheme.white};
   margin: 0 2rem 0 0;
   padding: 0 0 0.25rem 0;
-
-  span {
-    margin-right: ${letterSpacingSize}rem;
-  }
 
   &:hover {
     cursor: pointer;

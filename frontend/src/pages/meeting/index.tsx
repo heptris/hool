@@ -1,7 +1,13 @@
-import { MeetingList } from "components/meeting";
+import Container from "components/commons/Container";
+import { MeetingHeader, MeetingList } from "components/meeting";
 
 const MeetingPage = () => {
-  return <MeetingList />;
+  return (
+    <Container>
+      <MeetingHeader />
+      <MeetingList />
+    </Container>
+  );
 };
 
 export default MeetingPage;
