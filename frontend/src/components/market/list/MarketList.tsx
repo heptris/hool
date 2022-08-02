@@ -23,6 +23,7 @@ const MarketList = () => {
   );
 };
 const ItemList = styled.section`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, 18rem);
   grid-gap: 2rem;
