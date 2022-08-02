@@ -1,11 +1,8 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.Friend;
-import com.ssafy.hool.domain.FriendRequest;
-import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.repository.FriendRepository;
-import com.ssafy.hool.repository.FriendRequestRepository;
-import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.repository.friend.FriendRepository;
+import com.ssafy.hool.service.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

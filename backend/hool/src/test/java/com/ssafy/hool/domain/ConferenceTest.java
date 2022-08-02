@@ -1,7 +1,10 @@
 package com.ssafy.hool.domain;
 
-import com.ssafy.hool.repository.ConferenceRepository;
-import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.domain.conference.Conference;
+import com.ssafy.hool.domain.conference.Conference_category;
+import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.repository.conference.ConferenceRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @Rollback(value = false)

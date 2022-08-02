@@ -1,9 +1,9 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.FriendRequest;
-import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.friend.FriendDto;
-import com.ssafy.hool.repository.FriendRequestRepository;
+import com.ssafy.hool.repository.friend.FriendRequestRepository;
+import com.ssafy.hool.service.friend.FriendService;
+import com.ssafy.hool.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

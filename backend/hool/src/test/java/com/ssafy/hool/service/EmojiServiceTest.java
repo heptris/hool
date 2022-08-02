@@ -1,15 +1,20 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.*;
+import com.ssafy.hool.domain.emoji.Emoji;
+import com.ssafy.hool.domain.emoji.EmojiType;
+import com.ssafy.hool.domain.emoji.Emoji_shop;
+import com.ssafy.hool.domain.emoji.Member_emoji;
+import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.emoji.EmojiCreateDto;
 import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
 import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopCreateDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
-import com.ssafy.hool.repository.EmojiRepository;
-import com.ssafy.hool.repository.EmojiShopRepository;
-import com.ssafy.hool.repository.MemberEmojiRepository;
-import com.ssafy.hool.repository.MemberRepository;
+import com.ssafy.hool.repository.emoji.EmojiRepository;
+import com.ssafy.hool.repository.emoji.EmojiShopRepository;
+import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.emoji.EmojiService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.*;
 //@Rollback(value = false)
 class EmojiServiceTest {
 
-    @Autowired EmojiService emojiService;
+    @Autowired
+    EmojiService emojiService;
     @Autowired EmojiRepository emojiRepository;
     @Autowired EmojiShopRepository emojiShopRepository;
     @Autowired MemberEmojiRepository memberEmojiRepository;

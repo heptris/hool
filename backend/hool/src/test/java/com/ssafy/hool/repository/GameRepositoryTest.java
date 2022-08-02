@@ -1,14 +1,23 @@
 package com.ssafy.hool.repository;
 
-import com.ssafy.hool.domain.*;
+import com.ssafy.hool.domain.conference.Conference;
+import com.ssafy.hool.domain.conference.Conference_category;
+import com.ssafy.hool.domain.game.Game;
+import com.ssafy.hool.domain.game.Game_history;
+import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
 import com.ssafy.hool.exception.ex.CustomException;
-import com.ssafy.hool.service.GameService;
-import com.ssafy.hool.service.MemberService;
+import com.ssafy.hool.repository.conference.ConferenceRepository;
+import com.ssafy.hool.repository.game.GameHistoryRepository;
+import com.ssafy.hool.repository.game.GameRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.repository.point.PointHistoryRepository;
+import com.ssafy.hool.service.game.GameService;
+import com.ssafy.hool.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
