@@ -26,8 +26,8 @@ public enum ErrorCode {
     EMOJI_NOT_FOUND(404, "존재하지 않는 이모지입니다."),
     EMOJI_SHOP_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
 
-    CONFERENCE_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
-    GAME_NOT_FOUND(404, "이모지 상점에 존재하지 않는 이모지입니다."),
+    CONFERENCE_NOT_FOUND(404, "존재하지 않는 응원방입니다."),
+    GAME_NOT_FOUND(404, "존재하지 않는 게임입니다."),
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
