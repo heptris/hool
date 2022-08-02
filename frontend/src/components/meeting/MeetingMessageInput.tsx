@@ -32,7 +32,7 @@ const BtnBox = styled.div`
   position: relative;
 `;
 
-const MeetingMessage = () => {
+const MeetingMessageInput = () => {
   return (
     <MessageBox>
       <IconBox>
@@ -65,4 +65,4 @@ const MeetingMessage = () => {
   );
 };
 
-export default MeetingMessage;
+export default MeetingMessageInput;

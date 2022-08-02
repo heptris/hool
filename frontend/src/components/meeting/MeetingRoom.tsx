@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import MeetingChat from "./MeetingChat";
-import MeetingMessage from "./MeetingMessage";
+import MeetingMessageShow from "./MeetingMessageShow";
+import MeetingMessageInput from "./MeetingMessageInput";
 
 import MeetingVideo from "./MeetingVideo";
+import MeetingGame from "./MeetingGame";
 
 const Container = styled.div`
   width: 100%;
@@ -33,7 +34,7 @@ const MeetingBox = styled.div`
   background-color: ${darkTheme.mainColor};
 `;
 
-const ChatBox = styled.div`
+const GameMessageBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -48,10 +49,11 @@ const MeetingRoom = () => {
           <MeetingVideo />
           <MeetingVideo />
         </MeetingBox>
-        <ChatBox>
-          <MeetingChat />
-          <MeetingMessage />
-        </ChatBox>
+        <GameMessageBox>
+          <MeetingGame />
+          <MeetingMessageShow />
+          <MeetingMessageInput />
+        </GameMessageBox>
       </FlexBox>
     </Container>
   );

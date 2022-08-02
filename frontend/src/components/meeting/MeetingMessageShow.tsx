@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { MessageBox } from "./MeetingMessage";
+import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
-const ChatBox = styled(MessageBox)`
+const MessageShowTopBox = styled(MessageBox)`
   margin-top: 2.5rem;
   height: 3rem;
   border-bottom-left-radius: 0px;
@@ -15,9 +15,9 @@ const ChatBox = styled(MessageBox)`
   align-items: center;
 `;
 
-const MessageChat = styled(MessageBox)`
+const MessageShowBottomBox = styled(MessageBox)`
   margin-top: 0rem;
-  height: 47rem;
+  height: 34.56rem;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   background-color: ${darkTheme.adaptiveGrey800};
@@ -68,14 +68,14 @@ const MessageText = styled.h1`
   padding: 0.5rem;
 `;
 
-const MeetingChat = () => {
+const MeetingMessageShow = () => {
   return (
     <>
-      <ChatBox>
+      <MessageShowTopBox>
         <Icon className="fa-solid fa-comment" />
         <h1>Chat</h1>
-      </ChatBox>
-      <MessageChat>
+      </MessageShowTopBox>
+      <MessageShowBottomBox>
         <UserBox>
           <ProfileImg
             src={profileDefaultImg}
@@ -88,9 +88,9 @@ const MeetingChat = () => {
             </MessageTextBox>
           </UserInfoMessageBox>
         </UserBox>
-      </MessageChat>
+      </MessageShowBottomBox>
     </>
   );
 };
 
-export default MeetingChat;
+export default MeetingMessageShow;
