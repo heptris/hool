@@ -1,39 +1,39 @@
 package com.ssafy.hool.controller;
 
 import com.ssafy.hool.domain.Game;
-import com.ssafy.hool.dto.game.GameCreateDto;
-import com.ssafy.hool.dto.game.GameHistoryCreateDto;
-import com.ssafy.hool.dto.game.GameResponseDto;
+import com.ssafy.hool.dto.game.*;
 import com.ssafy.hool.service.GameService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/game")
 @RequiredArgsConstructor
 public class GameController {
 
     private final GameService gameService;
 
-    @PostMapping("/game/save")
-    public ResponseEntity<GameResponseDto> saveGame(@RequestBody GameCreateDto gameCreateDto){
-        Game game = gameService.saveGame(gameCreateDto.getGameName(), gameCreateDto.getConferenceId());
-        GameResponseDto gameResponseDto = new GameResponseDto(game.getId(), game.getConference().getId(), game.getCreatedTime(), game.getResult());
+    @ApiOperation(value = "게임 생성", notes = "방장이 게임 생성버튼을 누르면 요청됨. (게임 이름, conference_id)")
+    @PostMapping("/create")
+    public ResponseEntity<GameResponseDto> createGame(@RequestBody GameCreateDto gameCreateDto){
+        GameResponseDto gameResponseDto = gameService.createGame(gameCreateDto);
         return new ResponseEntity<>(gameResponseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/game/save/history")
-    public void saveGameHistory(@RequestBody GameHistoryCreateDto gameHistoryCreateDto){
-        gameService.saveGameHistory(gameHistoryCreateDto);
+    @ApiOperation(value = "게임 기록 생성", notes = "게임 참여 인원 각각의 기록 생성. 포인트 베팅 제한시간이 지나면 한번에 요청. (베팅 포인트, 베팅 현황(True, False), 게임 진행상황(PROGRESS, OVER), 닉네임, game_id)")
+    @PostMapping("/create/history")
+    public ResponseEntity<GameHistoryResponseDto> saveGameHistory(@RequestBody GameHistoryCreateDto gameHistoryCreateDto){
+        return new ResponseEntity<>(gameService.createGameHistory(gameHistoryCreateDto), HttpStatus.OK);
     }
 
-    @PostMapping("/game/save/result")
-    public void saveGameResult(@RequestParam Long gameId, @RequestParam boolean result){
-        gameService.saveGameResult(gameId, result);
-        gameService.saveBettPointCal(gameId);
+    @ApiOperation(value = "게임 결과 저장", notes = "방장이 게임 결과 확정 시 요청됨. (game_id, 게임 결과(True, False))")
+    @PostMapping("/save/result")
+    public ResponseEntity<String> saveGameResult(@RequestBody GameSaveResultDto gameSaveResultDto){
+        gameService.saveGameResult(gameSaveResultDto.getGameId(), gameSaveResultDto.isResult());
+        gameService.saveBettPointCal(gameSaveResultDto.getGameId());
+        return new ResponseEntity<>("saveResult success", HttpStatus.OK);
     }
 }

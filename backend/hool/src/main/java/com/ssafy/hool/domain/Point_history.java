@@ -1,6 +1,7 @@
 package com.ssafy.hool.domain;
 
 import lombok.*;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Point_history extends BaseEntity{
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "point_history_id")
     private Long id;
 
@@ -41,8 +43,12 @@ public class Point_history extends BaseEntity{
                 .build();
 
         pointHistory.addMember(member);
-        pointHistory.addGameHistory(gameHistory);
-        pointHistory.addDealHistory(dealHistory);
+        if(gameHistory != null){
+            pointHistory.addGameHistory(gameHistory);
+        }
+        if(dealHistory != null){
+            pointHistory.addDealHistory(dealHistory);
+        }
         return pointHistory;
     }
 

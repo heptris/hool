@@ -28,8 +28,11 @@ public enum ErrorCode {
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
-    ALREADY_SAVED_FRIEND(409, "이미 친구 상태입니다.");
+    ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
+    ALREADY_SAVED_FRIEND(409, "이미 친구 상태입니다."),
 
+    //500 INTERNAL SERVER ERROR
+    INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요!");
 
     private final int status;
     private final String message;

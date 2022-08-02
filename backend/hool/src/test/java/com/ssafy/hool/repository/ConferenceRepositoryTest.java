@@ -4,7 +4,9 @@ import com.ssafy.hool.domain.Conference;
 import com.ssafy.hool.domain.Conference_category;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.domain.Member_conference;
-import com.ssafy.hool.dto.conference.ConferenceModifyDto;
+import com.ssafy.hool.dto.conference.*;
+import com.ssafy.hool.service.ConferenceService;
+import com.ssafy.hool.service.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class ConferenceRepositoryTest {
 
     @Autowired
@@ -28,61 +31,91 @@ class ConferenceRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     MemberConferenceRepository memberConferenceRepository;
-
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    ConferenceService conferenceService;
     @Test
     public void findAllConferenceTest(){
-        List<Conference> conferenceList = conferenceRepository.findAll();
-        Assertions.assertThat(conferenceList.get(0).getId()).isEqualTo(2);
-        Assertions.assertThat(conferenceList.size()).isEqualTo(7);
+        Member member1 = getMember("손흥민");
+        Member member2 = getMember("박지성");
+        Member member3 = getMember("김민재");
+
+        memberService.join(member1);
+        memberService.join(member2);
+        memberService.join(member3);
+
+        ConferenceCreateDto conferenceCreateDto1 = new ConferenceCreateDto("Title1", "Description1", "손흥민", "SOCCER");
+        ConferenceCreateDto conferenceCreateDto2 = new ConferenceCreateDto("Title2", "Description2", "박지성", "BASEBALL");
+        ConferenceCreateDto conferenceCreateDto3 = new ConferenceCreateDto("Title3", "Description3", "김민재", "BASKETBALL");
+
+        conferenceService.createConference(conferenceCreateDto1, Conference_category.SOCCER);
+        conferenceService.createConference(conferenceCreateDto2, Conference_category.BASEBALL);
+        conferenceService.createConference(conferenceCreateDto3, Conference_category.BASKETBALL);
+
+        List<ConferenceListResponseDto> conferenceList = conferenceRepository.findConferenceListDto();
+        assertThat(conferenceList.get(0).getTitle()).isEqualTo("Title1");
+        assertThat(conferenceList.get(0).getNickName()).isEqualTo("손흥민");
+        assertThat(conferenceList.size()).isEqualTo(3);
     }
 
     @Test
     public void createConferenceTest(){
-        Member member = getMember("Lee6");
-        memberRepository.save(member);
-        Conference conference = Conference.createConference("한국 vs 일본", "축구경기하고있어요", member, Conference_category.SOCCER);
-        conferenceRepository.save(conference);
+        Member member = getMember("Lee3");
+        memberService.join(member);
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기하고있어요", "Lee", "SOCCER");
+
+        Conference_category category = Enum.valueOf(Conference_category.class, conferenceCreateDto.getConferenceCategory());
+
+        ConferenceResponseDto conferenceResponseDto = conferenceService.createConference(conferenceCreateDto, category);
+
+        assertThat(conferenceResponseDto.getTitle()).isEqualTo("한국 vs 일본");
+        assertThat(conferenceResponseDto.getTotal()).isEqualTo(1);
     }
 
     @Test
     public void enterConferenceTest(){
-        Member member = getMember("Park0");
+        Member member = getMember("Park11");
         memberRepository.save(member);
         Conference conference = Conference.createConference("한국 vs 일본", "축구경기", member, Conference_category.SOCCER);
+
         conferenceRepository.save(conference);
 
-        Member member1 = getMember("Park1");
-        Member member2 = getMember("Park2");
-        Member member3 = getMember("Park3");
-        Member member4 = getMember("Park4");
+        Member member1 = getMember("Park22");
+        Member member2 = getMember("Park33");
+        Member member3 = getMember("Park44");
+        Member member4 = getMember("Park55");
 
         memberRepository.save(member1);
         memberRepository.save(member2);
         memberRepository.save(member3);
         memberRepository.save(member4);
 
-        Member_conference memberConference1 = Member_conference.createMemberConference(member1, conference);
-        Member_conference memberConference2 = Member_conference.createMemberConference(member2, conference);
-        Member_conference memberConference3 = Member_conference.createMemberConference(member3, conference);
-        Member_conference memberConference4 = Member_conference.createMemberConference(member4, conference);
+        ConferenceJoinDto conferenceJoinDto1 = new ConferenceJoinDto(conference.getId(), member1.getId());
+        ConferenceJoinDto conferenceJoinDto2 = new ConferenceJoinDto(conference.getId(), member2.getId());
+        ConferenceJoinDto conferenceJoinDto3 = new ConferenceJoinDto(conference.getId(), member3.getId());
+        ConferenceJoinDto conferenceJoinDto4 = new ConferenceJoinDto(conference.getId(), member4.getId());
 
-        memberConferenceRepository.save(memberConference1);
-        memberConferenceRepository.save(memberConference2);
-        memberConferenceRepository.save(memberConference3);
-        memberConferenceRepository.save(memberConference4);
+        conferenceService.enterConference(conferenceJoinDto1);
+        conferenceService.enterConference(conferenceJoinDto2);
+        conferenceService.enterConference(conferenceJoinDto3);
+        conferenceService.enterConference(conferenceJoinDto4);
+
+        assertThat(conference.getTotal()).isEqualTo(4);
     }
 
     @Test
     public void modifyConferenceTest(){
-//        Member member = getMember("con");
-//        Conference conference = Conference.createConference("한국 vs 일본", member, Conference_category.SOCCER);
-//        conferenceRepository.save(conference);
+        Member member = getMember("con1");
+        Conference conference1 = Conference.createConference("한국 vs 일본", "123123", member, Conference_category.SOCCER);
+        conferenceRepository.save(conference1);
 
-        Optional<Conference> conference = conferenceRepository.findById(41l);
-        ConferenceModifyDto conferenceModifyDto = new ConferenceModifyDto(41l, "한국 vs 중국", "예에");
-        conference.get().modifyConference(conferenceModifyDto);
-        Assertions.assertThat(conference.get().getTitle()).isEqualTo("한국 vs 중국");
-        Assertions.assertThat(conference.get().getDescription()).isEqualTo("예에");
+        Conference conference = conferenceRepository.findById(conference1.getId()).get();
+        ConferenceModifyDto conferenceModifyDto = new ConferenceModifyDto(conference.getId(), "한국 vs 중국", "예에");
+        conference.modifyConference(conferenceModifyDto);
+
+        assertThat(conference.getTitle()).isEqualTo("한국 vs 중국");
+        assertThat(conference.getDescription()).isEqualTo("예에");
     }
 
     private Member getMember(String nickName) {

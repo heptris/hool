@@ -1,12 +1,11 @@
 package com.ssafy.hool.service;
 
-import com.ssafy.hool.domain.Friend;
 import com.ssafy.hool.domain.FriendRequest;
 import com.ssafy.hool.domain.FriendRequestStatus;
 import com.ssafy.hool.domain.Member;
 import com.ssafy.hool.dto.friend.FriendDto;
+import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
-import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.FriendRepository;
 import com.ssafy.hool.repository.FriendRequestRepository;
 import com.ssafy.hool.repository.MemberRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
@@ -32,12 +30,13 @@ public class FriendService {
      * 친구추가할 친구를 닉네임으로 검색
      */
     @Transactional
-    public void searchAddFriend(Long memberId, String friendNickName) {
+    public FriendDto searchAddFriend(String friendNickName) {
         Member friend = memberRepository.findByNickName(friendNickName).orElseThrow(
                 () -> new CustomException(MEMBER_NICKNAME_NOT_FOUND));
 
         // dto로 변환
         FriendDto friendDto = friend.friendDto();
+        return friendDto;
     }
 
     /**
@@ -77,9 +76,10 @@ public class FriendService {
     /**
      * 나한테 온 친구 요청 메세지 조회
      */
-    public List<FriendRequest> getFriendRequestMessage(Long memberId) {
-        List<FriendRequest> friendRequestMessage = friendRequestRepository.findFriendRequest(memberId);
-        return friendRequestMessage;
+    public List<FriendRequestDto> getFriendRequestMessage(Long memberId) {
+        List<FriendRequestDto> friendRequestDtos = friendRequestRepository.findFriendRequest(memberId);
+        System.out.println("========================");
+        return friendRequestDtos;
     }
 
     /**
