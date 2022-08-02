@@ -2,7 +2,9 @@ package com.ssafy.hool.repository;
 
 import com.ssafy.hool.domain.*;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.service.GameService;
+import com.ssafy.hool.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +17,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Rollback(value = false)
+//@Rollback(value = false)
 @Transactional
 @SpringBootTest
 class GameRepositoryTest {
@@ -30,11 +32,15 @@ class GameRepositoryTest {
     GameHistoryRepository gameHistoryRepository;
     @Autowired
     GameService gameService;
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    PointHistoryRepository pointHistoryRepository;
 
     @Test
-    public void saveGameTest() {
-        Member member = getMember("Lee12");
-        memberRepository.save(member);
+    public void createGameTest() {
+        Member member = getMember("Lee");
+        memberService.join(member);
 
         Conference conference = Conference.createConference("123", "123", member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
@@ -54,20 +60,20 @@ class GameRepositoryTest {
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
 
-        Member member = memberRepository.findByNickName("Lee2").get();
-        Optional<Game> game = gameRepository.findById(g.getId());
+        Member member = memberRepository.findByNickName("Lee11").get();
+        Game game = gameRepository.findById(g.getId()).get();
 
-        Game_history gameHistory = Game_history.createGameHistory(member, 100, true, game.get());
+        Game_history gameHistory = Game_history.createGameHistory(member, 100, true, game);
         GameHistoryCreateDto gameHistoryCreateDto = new GameHistoryCreateDto(gameHistory.getBettPoint(),
                 gameHistory.getBettChoice(),
                 gameHistory.getGameStatus(),
                 member.getNickName(),
-                game.get().getId());
-        assertThrows(IllegalStateException.class, ()->{
-            gameService.saveGameHistory(gameHistoryCreateDto);
+                game.getId());
+        assertThrows(CustomException.class, ()->{
+            gameService.createGameHistory(gameHistoryCreateDto);
         });
 
-        assertThat(game.get().getGameHistoryList().get(0)).isEqualTo(gameHistory);
+        assertThat(game.getGameHistoryList().get(0)).isEqualTo(gameHistory);
     }
 
     @Test
@@ -128,13 +134,20 @@ class GameRepositoryTest {
 
         // 포인트 계산
         for(Game_history gameHistory : gameHistoryList){
+            double getPoint = 0;
+            int currentPoint;
             if(gameHistory.getBettChoice() == result){
                 double winRate = (double)gameHistory.getBettPoint()/winPoint; // 베팅한 포인트 / 정답에 배팅된 총 포인트 = 포인트 할당 비율
-                double getPoint = losePoint * winRate; // 포인트 할당량
+                getPoint = losePoint * winRate; // 포인트 할당량
+                currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate((int)getPoint);
             } else {
+                getPoint = -gameHistory.getBettPoint();
+                currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate(0); // 오답일 경우 포인트 0
             }
+            Point_history pointHistory = Point_history.createPointHistory((int)getPoint, currentPoint, gameHistory.getMember(), null, gameHistory);
+            pointHistoryRepository.save(pointHistory);
         }
 
         assertThat(gameHistoryList.get(0).getGetPoint()).isEqualTo(40);

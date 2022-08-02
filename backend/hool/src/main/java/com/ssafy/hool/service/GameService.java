@@ -1,7 +1,12 @@
 package com.ssafy.hool.service;
 
 import com.ssafy.hool.domain.*;
+import com.ssafy.hool.dto.game.GameCreateDto;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
+import com.ssafy.hool.dto.game.GameHistoryResponseDto;
+import com.ssafy.hool.dto.game.GameResponseDto;
+import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.INVALID_PARAMETER;
+import static com.ssafy.hool.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
 
 @Transactional
 @RequiredArgsConstructor
@@ -20,32 +28,51 @@ public class GameService {
     private final GameHistoryRepository gameHistoryRepository;
     private final PointHistoryRepository pointHistoryRepository;
 
-    public Game saveGame(String gameName, Long conferenceId){
-        Optional<Conference> conference = conferenceRepository.findById(conferenceId);
-        Game game = Game.createGame(gameName, null, conference.get());
+    /**
+     * 게임 생성
+     * @param gameCreateDto
+     */
+    public GameResponseDto createGame(GameCreateDto gameCreateDto){
+        Conference conference = conferenceRepository.findById(gameCreateDto.getConferenceId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Game game = Game.createGame(gameCreateDto.getGameName(), null, conference);
         gameRepository.save(game);
-        return game;
+        return new GameResponseDto(game.getName(), game.getCreatedTime());
     }
-    public void saveGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
-        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).get();
-        Game game = gameRepository.findById(gameHistoryCreateDto.getGameId()).get();
+
+    /**
+     * 게임 기록 생성
+     * @param gameHistoryCreateDto
+     */
+    public GameHistoryResponseDto createGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
+        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Game game = gameRepository.findById(gameHistoryCreateDto.getGameId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         // 회원이 보유한 포인트보다 많은 포인트를 베팅할 수 없음
         if(member.getPoint() >= gameHistoryCreateDto.getBettPoint()){
             Game_history gameHistory = Game_history.createGameHistory(member, gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), game);
             gameHistoryRepository.save(gameHistory);
         } else {
-            throw new IllegalStateException("포인트가 부족합니다.");
+            throw new CustomException(INVALID_PARAMETER);
         }
+        return new GameHistoryResponseDto(gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), member.getNickName());
     }
 
+    /**
+     * 게임 결과 저장
+     * @param gameId
+     * @param result
+     */
     public void saveGameResult(Long gameId, boolean result){
-        Optional<Game> game = gameRepository.findById(gameId);
-        game.get().resultUpdate(result);
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        game.resultUpdate(result);
     }
 
+    /**
+     * 베팅 결과 계산
+     * @param gameId
+     */
     public void saveBettPointCal(Long gameId){
-        Game game = gameRepository.findById(gameId).get();
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         boolean result = game.getResult();
         List<Game_history> gameHistoryList = game.getGameHistoryList();
 
