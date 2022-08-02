@@ -1,10 +1,8 @@
 import { css } from "styled-components";
 import { darkTheme } from "./Theme";
 
-import { FormPropsType } from "types/FormPropsType";
-
 export const InputStyle = css`
-  width: ${({ widthSize }: FormPropsType) => widthSize || `20rem`};
+  width: ${({ widthSize }: { widthSize?: string }) => widthSize || `20rem`};
   height: 2.8rem;
   font: inherit;
   font-size: 0.875rem;
