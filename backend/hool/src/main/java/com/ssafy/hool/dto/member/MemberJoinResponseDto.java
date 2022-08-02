@@ -1,6 +1,6 @@
 package com.ssafy.hool.dto.member;
 
-import com.ssafy.hool.domain.Member;
+import com.ssafy.hool.domain.member.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

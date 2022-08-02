@@ -1,15 +1,22 @@
 package com.ssafy.hool.repository;
 
-import com.ssafy.hool.domain.*;
+import com.ssafy.hool.domain.emoji.Emoji;
+import com.ssafy.hool.domain.emoji.Emoji_shop;
+import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.point.Deal_history;
+import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
+import com.ssafy.hool.repository.emoji.EmojiRepository;
+import com.ssafy.hool.repository.emoji.EmojiShopRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.repository.point.DealHistoryRepository;
+import com.ssafy.hool.repository.point.PointHistoryRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

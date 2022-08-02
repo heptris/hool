@@ -1,13 +1,14 @@
 package com.ssafy.hool.repository;
 
-import com.ssafy.hool.domain.Conference;
-import com.ssafy.hool.domain.Conference_category;
-import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.domain.Member_conference;
+import com.ssafy.hool.domain.conference.Conference;
+import com.ssafy.hool.domain.conference.Conference_category;
+import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.conference.*;
-import com.ssafy.hool.service.ConferenceService;
-import com.ssafy.hool.service.MemberService;
-import org.assertj.core.api.Assertions;
+import com.ssafy.hool.repository.conference.ConferenceRepository;
+import com.ssafy.hool.repository.conference.MemberConferenceRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.conference.ConferenceService;
+import com.ssafy.hool.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,14 +16,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Rollback(value = false)
+@Rollback(value = false)
 class ConferenceRepositoryTest {
 
     @Autowired
@@ -61,7 +60,7 @@ class ConferenceRepositoryTest {
 
     @Test
     public void createConferenceTest(){
-        Member member = getMember("Lee3");
+        Member member = getMember("Lee");
         memberService.join(member);
         ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기하고있어요", "Lee", "SOCCER");
 
