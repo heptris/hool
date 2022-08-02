@@ -1,9 +1,6 @@
 package com.ssafy.hool.repository;
 
-import com.ssafy.hool.domain.Deal_history;
-import com.ssafy.hool.domain.Emoji_shop;
-import com.ssafy.hool.domain.Member;
-import com.ssafy.hool.domain.Point_history;
+import com.ssafy.hool.domain.*;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,14 +22,25 @@ class DealHistoryRepositoryTest {
     DealHistoryRepository dealHistoryRepository;
     @Autowired
     PointHistoryRepository pointHistoryRepository;
+    @Autowired
+    EmojiRepository emojiRepository;
+    @Autowired
+    EmojiShopRepository emojiShopRepository;
 
     @Test
     public void makeDeal(){
         Member buyer = getMember("Lee");
         Member seller = getMember("park");
-//        Emoji_shop emojiShop = Emoji_shop.createEmojiShop();
-        Emoji_shop emojiShop = null;
-        DealHistoryCreateDto dealHistoryCreateDto = new DealHistoryCreateDto(100, 10l);
+        memberRepository.save(buyer);
+        memberRepository.save(seller);
+
+        Emoji emoji = Emoji.createEmoji(seller.getId(), "sonEmoji", "urltest", "손흥민 이모지");
+        emojiRepository.save(emoji);
+
+        Emoji_shop emojiShop = Emoji_shop.createEmojiShop(emoji, 100);
+        emojiShopRepository.save(emojiShop);
+
+        DealHistoryCreateDto dealHistoryCreateDto = new DealHistoryCreateDto(100, buyer.getId(), seller.getId(), emojiShop.getId());
         Deal_history dealHistory = Deal_history.createDealHistory(dealHistoryCreateDto, emojiShop, buyer);
         dealHistoryRepository.save(dealHistory);
 

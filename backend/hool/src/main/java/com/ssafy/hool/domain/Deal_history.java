@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Deal_history extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deal_history_id")
     private Long id;
 

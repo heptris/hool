@@ -17,7 +17,7 @@ import java.util.List;
 public class Conference extends BaseEntity{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "conference_id")
     private Long id;
 
@@ -25,6 +25,7 @@ public class Conference extends BaseEntity{
     private Boolean is_active;
     private String title;
     private String description;
+    private int total;
 
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
@@ -65,5 +66,7 @@ public class Conference extends BaseEntity{
         this.description = conferenceModifyDto.getDescription();
     }
 
-
+    public void totalUpdate(int value){
+        this.total += value;
+    }
 }

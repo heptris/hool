@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class GameResponseDto {
+public class GameSaveResultDto {
     // Game
-    private String gameName;
-    private LocalDateTime createdTime;
+    private Long gameId;
+    private boolean result;
 }

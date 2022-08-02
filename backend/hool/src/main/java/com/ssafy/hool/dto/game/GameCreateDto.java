@@ -9,6 +9,4 @@ public class GameCreateDto {
     // Game
     private String gameName;
     private Long conferenceId;
-    private LocalDateTime createdTime;
-    private boolean gameResult;
 }

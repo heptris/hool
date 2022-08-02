@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ConferenceJoinDto {
-    private Long conferenceId;
-    private Long memberId;
+public class ConferenceModifyResponseDto {
+    private String title;
+    private String description;
 }

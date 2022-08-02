@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DealHistoryCreateDto {
+public class DealHistoryResponseDto {
+    private String name;
+    private String description;
     private int dealPoint;
-    private Long buyerMemberId;
-    private Long sellerMemberId;
-    private Long emojiShopId;
 }
