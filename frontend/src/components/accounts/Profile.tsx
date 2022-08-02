@@ -36,7 +36,7 @@ function Profile() {
   );
 
   return (
-    <div style={{ width: "20rem" }}>
+    <>
       {isDisplayModal && (
         <Modal
           header={
@@ -46,18 +46,15 @@ function Profile() {
           }
           body={
             <PointLogBody>
-              <Card
-                children={
-                  <CardContent>
-                    <div>
-                      <Activity>로그인 보너스</Activity>
-                      <Date>2022.07.25</Date>
-                    </div>
-                    <Diff>+500</Diff>
-                  </CardContent>
-                }
-                marginTop={2}
-              />
+              <Card marginTop={1}>
+                <CardContent>
+                  <div>
+                    <Activity>로그인 보너스</Activity>
+                    <Date>2022.07.25</Date>
+                  </div>
+                  <Diff>+500</Diff>
+                </CardContent>
+              </Card>
             </PointLogBody>
           }
           onDisplayChange={switchIsDisplayModal}
@@ -95,14 +92,14 @@ function Profile() {
           </Info>
         </InfoBox>
       </ProfileBox>
-    </div>
+    </>
   );
 }
 
 const ProfileBox = styled.div`
   border: 1px solid ${darkTheme.adaptiveGrey700};
   border-radius: 4px;
-  width: 100%;
+  width: 30rem;
   background-color: ${darkTheme.mainColor};
   padding: 0.8rem;
   display: flex;
@@ -176,6 +173,22 @@ const PointLogHeader = styled.h1`
 const PointLogBody = styled.div`
   width: 100%;
   height: 30rem;
+  overflow: auto;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: ${darkTheme.adaptiveGrey500};
+  }
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
 `;
 
 const CardContent = styled.div`

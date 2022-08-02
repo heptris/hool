@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import Button from "components/commons/Button";
-import Card from "components/commons/Card";
+import EmojiCard from "components/commons/EmojiCard";
 import LabelText from "./LabelText";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
@@ -88,17 +88,6 @@ const ItemList = styled.div`
   ::-webkit-scrollbar-button {
     width: 0;
     height: 0;
-  }
-`;
-const EmojiCard = styled(Card)`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 8px;
-
-  &:hover {
-    cursor: pointer;
-    outline: 2px solid ${darkTheme.mainBadgeColor};
-    background-color: ${darkTheme.mainColor};
   }
 `;
 const InputWrapper = styled.div`
