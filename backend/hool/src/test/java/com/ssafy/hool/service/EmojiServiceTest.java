@@ -8,7 +8,7 @@ import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.emoji.EmojiCreateDto;
 import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
 import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
-import com.ssafy.hool.dto.emoji_shop.EmojiShopCreateDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.EmojiShopRepository;
@@ -141,7 +141,7 @@ class EmojiServiceTest {
         Emoji emoji = emojis.get(0);
 
         //when
-        Long emojiShopId = emojiService.makeEmojiShop(new EmojiShopCreateDto(emoji, 1400));
+        Long emojiShopId = emojiService.makeEmojiShop(new EmojiShopDto(1400, emoji.getId()));
 
         //then
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopId).get();
@@ -163,7 +163,7 @@ class EmojiServiceTest {
 
         List<Emoji> emojis = emojiRepository.findAll();
 
-        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(0), 1400));
+        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopDto(1400,emojis.get(0).getId()));
 
         //when
         emojiService.updateEmojiShop(new EmojiShopUpdateDto(emojiShopId1, member.getId(), 1499));
@@ -189,8 +189,8 @@ class EmojiServiceTest {
 
         List<Emoji> emojis = emojiRepository.findAll();
 
-        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(0), 1400));
-        Long emojiShopId2 = emojiService.makeEmojiShop(new EmojiShopCreateDto(emojis.get(1), 2000));
+        Long emojiShopId1 = emojiService.makeEmojiShop(new EmojiShopDto(1400, emojis.get(0).getId()));
+        Long emojiShopId2 = emojiService.makeEmojiShop(new EmojiShopDto(2000, emojis.get(1).getId()));
 
         //when
         emojiService.deleteEmojiShop(emojiShopId1);
