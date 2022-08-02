@@ -102,6 +102,7 @@ const GameAgreeRightBox = styled.div`
 
 const AgreeTitle = styled.h1`
   font-size: 1.25rem;
+  font-weight: bold;
   align-self: flex-end;
   color: ${darkTheme.mainBadgeColor};
 `;
@@ -179,6 +180,12 @@ const DisagreeInnerIcon = styled.i`
 
 const GameDisAgreeRightInnerBox = styled(GameAgreeLeftInnerBox)``;
 
+const GamePointChange = styled.h1`
+  font-size: 0.65rem;
+  text-decoration: underline;
+  margin-bottom: 1rem;
+`;
+
 const MeetingGame = () => {
   return (
     <>
@@ -242,6 +249,7 @@ const MeetingGame = () => {
             </GameDisAgreeRightBox>
           </GameDisAgreeBox>
         </GameBottomResultBox>
+        <GamePointChange>배팅 포인트 변경</GamePointChange>
       </GameShowBottomBox>
     </>
   );
