@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { letterSpacingSize } from "styles/GlobalStyle";
 
 import PageHeader from "components/commons/PageHeader";
 
@@ -75,10 +74,6 @@ const SwitchItem = styled.button`
   background-color: transparent;
   margin: 0 2rem 0 0;
   padding: 0 0 0.25rem 0;
-
-  span {
-    margin-right: ${letterSpacingSize}rem;
-  }
 
   &:hover {
     cursor: pointer;

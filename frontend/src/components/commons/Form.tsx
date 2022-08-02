@@ -23,7 +23,9 @@ const FlexBox = styled.div`
 
 const Info = styled.div`
   font-size: 0.7rem;
-  color: ${darkTheme.infoColor};
+  span {
+    color: ${darkTheme.infoColor};
+  }
 `;
 
 const Form = (props: FormPropsType) => {
@@ -33,7 +35,9 @@ const Form = (props: FormPropsType) => {
       {info ? (
         <FlexBox>
           <Label htmlFor={placeholderText}>{text}</Label>
-          <Info>{info}</Info>
+          <Info>
+            <span>{info}</span>
+          </Info>
         </FlexBox>
       ) : (
         <Label htmlFor={placeholderText}>{text}</Label>

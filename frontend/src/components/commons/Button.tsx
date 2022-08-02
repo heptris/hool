@@ -1,6 +1,5 @@
 import styled, { CSSProp } from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { letterSpacingSize } from "styles/GlobalStyle";
 
 type ButtonProps = {
   text?: string;
@@ -51,10 +50,6 @@ const Btn = styled.button`
   background-color: ${({ color }) =>
     color ? color : darkTheme.mainBadgeColor};
   cursor: pointer;
-
-  span {
-    margin-right: ${letterSpacingSize}rem;
-  }
 
   &:hover {
     background-color: ${({ color }) =>
