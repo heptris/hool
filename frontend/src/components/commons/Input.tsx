@@ -4,7 +4,7 @@ import { InputStyle } from "styles/InputStyle";
 import { FormPropsType } from "types/FormPropsType";
 
 const Input = (props: FormPropsType) => {
-  return <CommonInput {...props} />;
+  return <CommonInput placeholder={props.placeholderText} {...props} />;
 };
 
 const CommonInput = styled.input`

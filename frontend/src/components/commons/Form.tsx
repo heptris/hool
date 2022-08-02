@@ -38,7 +38,7 @@ const Form = (props: FormPropsType) => {
       ) : (
         <Label htmlFor={placeholderText}>{text}</Label>
       )}
-      <Input {...props} />
+      <Input id={placeholderText} {...props} />
     </FormDIV>
   );
 };
