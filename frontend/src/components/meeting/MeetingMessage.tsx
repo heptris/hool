@@ -2,11 +2,12 @@ import Button from "components/commons/Button";
 import Input from "components/commons/Input";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+import { IconStyle } from "styles/IconStyle";
 
-const MessageBox = styled.div`
+export const MessageBox = styled.div`
   width: 25rem;
   height: 6.125rem;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   margin-left: 1rem;
   box-sizing: border-box;
   border-radius: 4px;
@@ -21,10 +22,9 @@ const IconBox = styled.div`
 `;
 
 const Icon = styled.i`
-  font-size: 1rem;
-  color: ${darkTheme.adaptiveGrey200};
+  ${IconStyle}
   margin-bottom: 0.75rem;
-  margin-right: 0.75rem;
+  margin-right: 1rem;
 `;
 
 const BtnBox = styled.div`

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+import MeetingChat from "./MeetingChat";
 import MeetingMessage from "./MeetingMessage";
 
 import MeetingVideo from "./MeetingVideo";
@@ -17,7 +18,7 @@ const FlexBox = styled.div`
 
 const MeetingBox = styled.div`
   width: 66.375rem;
-  height: 57.68rem;
+  height: 57.2rem;
   margin-top: 2.5rem;
   margin-left: 3rem;
   display: grid;
@@ -32,6 +33,11 @@ const MeetingBox = styled.div`
   background-color: ${darkTheme.mainColor};
 `;
 
+const ChatBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const MeetingRoom = () => {
   return (
     <Container>
@@ -42,7 +48,10 @@ const MeetingRoom = () => {
           <MeetingVideo />
           <MeetingVideo />
         </MeetingBox>
-        <MeetingMessage />
+        <ChatBox>
+          <MeetingChat />
+          <MeetingMessage />
+        </ChatBox>
       </FlexBox>
     </Container>
   );
