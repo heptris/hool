@@ -49,7 +49,7 @@ public class FriendController {
      * 친구 요청 메세지 보내기
      */
     @ApiOperation(value = "친구 요청 메세지 보내기", notes = "친구의 회원아이디로 친구 요청 메세지를 보낸다.")
-    @PostMapping("/send/friend/message")
+    @PostMapping("/friend/add/message")
     public ResponseEntity<?> sendFriendMessage(Long friendMemberId) {
         Long memberId = SecurityUtil.getCurrentMemberId(); // 내 회원 id
         friendService.sendFriendMessage(memberId, friendMemberId);

@@ -1,6 +1,7 @@
 package com.ssafy.hool.service;
 
 import com.ssafy.hool.dto.friend.FriendDto;
+import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.repository.friend.FriendRequestRepository;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.service.member.MemberService;
@@ -27,24 +28,25 @@ class FriendServiceTest {
 
     @Test
     void 친구요청() {
-        friendService.sendFriendMessage(3L, 2L);
+        friendService.sendFriendMessage(1L, 2L);
+        friendService.sendFriendMessage(1L, 3L);
+        friendService.sendFriendMessage(2L, 3L);
 
     }
 
     @Test
     void 친구수락() {
-        friendService.friendAccept(1L, true);
-        friendService.friendAccept(4L, true);
+        friendService.friendAccept(2L, true);
+        friendService.friendAccept(3L, true);
     }
 
-//    @Test
-//    void 친구요청_메세지_조회() {
-//        List<FriendRequest> friendRequestMessage = friendService.getFriendRequestMessage(2L);
-//        for (FriendRequest friendRequest : friendRequestMessage) {
-//            System.out.println("fromMember :"  + friendRequest.getFromMember().getNickName());
-//            System.out.println("toMember : "+friendRequest.getToMember().getNickName());
-//        }
-//    }
+    @Test
+    void 친구요청_메세지_조회() {
+        List<FriendRequestDto> friendRequestMessage = friendService.getFriendRequestMessage(3L);
+        for (FriendRequestDto friendRequest : friendRequestMessage) {
+            System.out.println("fromMember :"  + friendRequest.getFriendNickName());
+        }
+    }
 
     @Test
     void 친구리스트() {
@@ -52,7 +54,6 @@ class FriendServiceTest {
         for (FriendDto friendDto : friendList) {
             System.out.println(friendDto);
         }
-
     }
 
     @Test
