@@ -1,4 +1,4 @@
-import Error from "components/commons/Error";
+import Error from "components/Error";
 
 const ErrorPage = ({ errorMessage }: { errorMessage: string }) => {
   return <Error errorMessage={errorMessage} />;
