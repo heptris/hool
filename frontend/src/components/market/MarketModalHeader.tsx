@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { darkTheme } from "styles/Theme";
 
 const MarketModalHeader = ({
   onDisplayChange,
@@ -13,9 +14,9 @@ const MarketModalHeader = ({
           직접 제작한 이모지를 판매해 포인트를 얻을 수 있어요!
         </SubTitle>
       </TitleWrapper>
-      <CloseButton onClick={onDisplayChange}>
+      {/* <CloseButton onClick={onDisplayChange}>
         <Icon className="fa-solid fa-xmark" />
-      </CloseButton>
+      </CloseButton> */}
     </Header>
   );
 };
@@ -27,7 +28,8 @@ const Title = styled.h3`
   font-size: 2rem;
 `;
 const SubTitle = styled.p`
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  color: ${darkTheme.adaptiveGrey200};
 `;
 const Header = styled.div`
   padding: 2rem 1rem 1rem;

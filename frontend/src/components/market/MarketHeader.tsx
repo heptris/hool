@@ -1,83 +1,43 @@
 import styled from "styled-components";
-import { darkTheme } from "styles/Theme";
-import { InputStyle } from "styles/InputStyle";
 
+import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
 import { CostsWrapper, Icon } from "./MarketItem";
 
-const { adaptiveGrey700 } = darkTheme;
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
-    <Header>
-      <div>
-        <MarketTitle>이모지 구매하기</MarketTitle>
-        <MarketDesc>이모지를 통해 당신의 기분을 친구와 공유해요!</MarketDesc>
-        <MyPoint>
-          <div>포인트</div>
-          <MyPointWrapper>
-            <Icon className="fa-solid fa-coins" />
-            <span>1,237</span>
-          </MyPointWrapper>
-        </MyPoint>
-      </div>
-      <UtilWrapper>
-        <InputWrapper>
-          <MagniFyingIcon
-            className="fa-solid fa-magnifying-glass"
-            htmlFor="search"
-          />
-          <MarketInput placeholder={"이모지 검색"} id="search" />
-        </InputWrapper>
+    <PageHeader
+      pageTitle="이모지 구매하기"
+      subtext="이모지를 통해 당신의 기분을 친구와 공유해요!"
+      isDisplaySearchBar={true}
+      searchPlaceholder="이모지 검색"
+      isDisplayBtn={true}
+      concreteBtn={
         <MarketButton
           height={2.8}
-          width={5}
+          width={7}
           text={"상품등록"}
           onClick={onDisplayChange}
         />
-      </UtilWrapper>
-    </Header>
+      }
+      isDisplayInfo={true}
+      concreteInfo={
+        <MyPointBox>
+          <div>포인트</div>
+          <MyPoint>
+            <Icon className="fa-solid fa-sack-dollar" />
+            <span>1,237</span>
+          </MyPoint>
+        </MyPointBox>
+      }
+    />
   );
 };
-const Header = styled.header`
-  border-bottom: solid 1px ${adaptiveGrey700};
-  padding-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-const MarketTitle = styled.h2`
-  font-size: 2.5rem;
-`;
-const MarketDesc = styled.p`
-  margin-top: 1rem;
-`;
-const MyPoint = styled.div`
-  margin-top: 1.5rem;
-`;
-const MyPointWrapper = styled(CostsWrapper)`
-  margin-top: 0.3rem;
-`;
-const UtilWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  height: 8rem;
-`;
-const InputWrapper = styled.div`
-  position: relative;
-`;
-const MagniFyingIcon = styled.label`
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-`;
-const MarketInput = styled.input`
-  ${InputStyle}
-  width: 20rem;
-  height: 2.8rem;
-  margin: 0;
-  padding-left: 3rem;
+const MyPointBox = styled.div``;
+const MyPoint = styled(CostsWrapper)`
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
 const MarketButton = styled(Button)<{ onClick: Function }>``;
+
 export default MarketHeader;

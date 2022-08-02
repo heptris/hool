@@ -17,7 +17,7 @@ const ConcreteContainer = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  padding: 1rem 0 0 0;
+  padding: 1rem 0 2rem 0;
 `;
 
 export default Container;
