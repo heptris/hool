@@ -1,0 +1,18 @@
+export const darkTheme = {
+  mainBadgeColor: "#00C6C1",
+  darkBadgeColor: "#178581",
+  infoColor: "#00FF85",
+  emphasisColor: "#638CF6",
+  mainColor: "#1C1F2E",
+  contrastColor: "#FF0090",
+  bgColor: "#181B2A",
+  adaptiveGrey200: "#CCCCCC",
+  adaptiveGrey500: "#6D6F82",
+  adaptiveGrey600: "#666666",
+  adaptiveGrey700: "#434556",
+  adaptiveGrey800: "#292B3B",
+  adaptiveGrey900: "#333333",
+  darkColor: "#121523",
+  black: "#000",
+  white: "#fff",
+};

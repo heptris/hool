@@ -1,0 +1,38 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Nodejs.gitlab-ci.yml
+
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+stages:
+  - test
+  - deploy
+
+image: node:16.16
+
+cache:
+  paths:
+    - node_modules/
+
+run test:
+  stage: test
+  only:
+    - master
+    - develop
+  script: |
+    cd frontend/
+    npm install
+    npm run test
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script: |
+    docker-compose up -d
+  variables:
+    GIT_STRATEGY: clone
+  tags:
+    - deployment
