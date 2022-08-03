@@ -1,6 +1,9 @@
 package com.ssafy.hool.controller.friend;
 
+import com.ssafy.hool.dto.friend.SearchFriendReqDto;
+import com.ssafy.hool.dto.friend.SendFriendMessageReqDto;
 import com.ssafy.hool.dto.conference.ConferenceJoinDto;
+import com.ssafy.hool.dto.friend.FriendAcceptDto;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.dto.response.ResponseDto;
@@ -39,8 +42,8 @@ public class FriendController {
      */
     @ApiOperation(value = "친구 요청할 친구 닉네임으로 검색", notes = "닉네임으로 검색한 친구의 회원Id, Email, 닉네임을 반환한다.")
     @PostMapping("/searchFriend")
-    public ResponseEntity<?> searchFriend(String nickName) {
-        FriendDto friendDto = friendService.searchAddFriend(nickName);
+    public ResponseEntity<?> searchFriend(@RequestBody SearchFriendReqDto searchFriendDto) {
+        FriendDto friendDto = friendService.searchAddFriend(searchFriendDto.getFriendNickName());
         return new ResponseEntity<>(new ResponseDto(200, "친구 추가할 친구 검색", friendDto)
                 , HttpStatus.OK);
     }
@@ -50,9 +53,9 @@ public class FriendController {
      */
     @ApiOperation(value = "친구 요청 메세지 보내기", notes = "친구의 회원아이디로 친구 요청 메세지를 보낸다.")
     @PostMapping("/friend/add/message")
-    public ResponseEntity<?> sendFriendMessage(Long friendMemberId) {
+    public ResponseEntity<?> sendFriendMessage(@RequestBody SendFriendMessageReqDto sendFriendMessageReqDto) {
         Long memberId = SecurityUtil.getCurrentMemberId(); // 내 회원 id
-        friendService.sendFriendMessage(memberId, friendMemberId);
+        friendService.sendFriendMessage(memberId, sendFriendMessageReqDto.getFriendMemberId());
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "친구 요청 메세지 보내기", null)
                 , HttpStatus.OK);
     }
@@ -75,8 +78,8 @@ public class FriendController {
      */
     @ApiOperation(value = "친구 메세지 수락 / 거부", notes = "accept의 값이 true이면 친구 수락, false이면 수락 거부이다.")
     @PostMapping("/friend/accept")
-    public ResponseEntity<?> friendAccept(Long friendMemberId, Boolean accept) {
-        friendService.friendAccept(friendMemberId, accept);
+    public ResponseEntity<?> friendAccept(@RequestBody FriendAcceptDto friendAcceptDto) {
+        friendService.friendAccept(friendAcceptDto.getFriendRequestId(), friendAcceptDto.getAccept());
         return new ResponseEntity<>(new ResponseDto(200, "친구 수락", null), HttpStatus.OK);
     }
 

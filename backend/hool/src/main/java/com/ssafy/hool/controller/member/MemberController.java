@@ -1,6 +1,7 @@
 package com.ssafy.hool.controller.member;
 
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.emoji.EmojiDetailRequestDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
 import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.ResponseDto;
@@ -14,10 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
-@Api(tags = {"회원프로필, 프로필 수정, 닉네임 중복체크와 관련된 Controller"})
+@Api(tags = {"회원프로필과 관련된 Controller"})
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
@@ -25,26 +27,20 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /**
-     * 닉네임 중복 체크
-     */
     @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 시 에러 발생")
     @ApiResponses({
             @ApiResponse(code = 200, message = "닉네임 중복 X"),
             @ApiResponse(code = 409, message = "닉네임 중복")
     })
-    @GetMapping("/nickname/check")
-    public ResponseDto checkNickNameDuplication(@RequestParam("nickName") String nickName) {
-        if (memberService.existsByNickName(nickName) == true) {
+    @PostMapping("/nickname/check")
+    public ResponseDto checkNickNameDuplication(@RequestBody MemberNickNameDuplicateDto memberNickNameDuplicateDto) {
+        if (memberService.existsByNickName(memberNickNameDuplicateDto.getNickName()) == true) {
             throw new CustomException(ALREADY_USED_NICKNAME);
         } else {
             return new ResponseDto<String>(200, "success", "사용가능한 닉네임입니다.");
         }
     }
-
-    /**
-     * 회원 프로필 수정
-     */
+    
     @ApiOperation(value = "회원 프로필 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
@@ -57,10 +53,7 @@ public class MemberController {
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "회원 수정 완료")
                 ,HttpStatus.OK);
     }
-
-    /**
-     * 회원 프로필 조회
-     */
+    
     @ApiOperation(value = "회원 프로필 조회", notes = "회원 프로필을 반환해줍니다.")
     @GetMapping("/myprofile")
     public ResponseEntity memberProfile() {
@@ -82,9 +75,7 @@ public class MemberController {
                 memberProfile), HttpStatus.OK);
     }
 
-    /**
-     * 소유중인 이모지 가져 오기
-     */
+    @ApiOperation(value = "보유중인 이모지", notes = "이모지 url과 이모지 Id 반환")
     @GetMapping("/my/emoji")
     public ResponseEntity<?> getMyEmojis() {
         Long memberId = SecurityUtil.getCurrentMemberId();
@@ -92,9 +83,7 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
-    /**
-     * 즐겨찾기 이모지 가져오기
-     */
+    @ApiOperation(value = "즐겨찾기 이모지", notes = "즐겨찾기 된 이모지 url과 Id 반환")
     @GetMapping("/my/favorite/emoji")
     public ResponseEntity<?> getMyFavoriteEmojis() {
         Long memberId = SecurityUtil.getCurrentMemberId();
@@ -104,11 +93,15 @@ public class MemberController {
 
     @ApiOperation(value = "이모지 상세정보")
     @PostMapping("/detail/emoji")
-    public ResponseEntity<?> detailEmoji(Long emojiId) {
+    public ResponseEntity<?> detailEmoji(@RequestBody EmojiDetailRequestDto emojiDetailRequestDto) {
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "상세 이모지",
-                memberService.getDetailEmoji(emojiId)), HttpStatus.OK);
+                memberService.getDetailEmoji(emojiDetailRequestDto.getEmojiId())), HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "이모지 즐겨찾기 등록 / 해제")
+    @ApiOperation(value = "이모지 즐겨찾기 등록 / 해제")
+    @PostMapping("/detail/emoji/favorite")
+    public ResponseEntity<?> detailEmojiFavorite() {
+        return null;
+    }
 
 }
