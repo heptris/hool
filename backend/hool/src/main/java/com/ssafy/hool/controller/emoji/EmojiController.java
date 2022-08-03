@@ -1,9 +1,6 @@
 package com.ssafy.hool.controller.emoji;
 
-import com.ssafy.hool.dto.emoji.EmojiCreateDto;
-import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
-import com.ssafy.hool.dto.emoji.EmojiDto;
-import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
+import com.ssafy.hool.dto.emoji.*;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.emoji.EmojiService;
 import io.swagger.annotations.ApiOperation;
@@ -50,9 +47,9 @@ public class EmojiController {
 
     @ApiOperation(value = "이모지 리스트", notes = "현재 저장되어있는 이모지들을 반환", response = Map.class)
     @GetMapping("/api/emoji/list")
-    public ResponseEntity listEmoji(){
+    public ResponseEntity listMemberEmoji(){
         return  new ResponseEntity<ResponseDto>(
-                new ResponseDto<List<EmojiDto>>(200,"success", emojiService.listEmoji())
+                new ResponseDto<List<MemberEmojiDto>>(200,"success", emojiService.listMemberEmoji())
                 , HttpStatus.ACCEPTED);
     }
 
