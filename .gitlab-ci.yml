@@ -26,12 +26,20 @@ run test:
     npm run test
 
 deploy:
-  image: docker/compose
+  image: docker:latest
+  services:
+    - docker:dind
   stage: deploy
+  before_script: |
+    docker info
+    curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    docker-compose -version
   only:
     - master
   script: |
-    sudo docker-compose up -d
+    docker-compose up -d
   variables:
     GIT_STRATEGY: clone
   tags:
