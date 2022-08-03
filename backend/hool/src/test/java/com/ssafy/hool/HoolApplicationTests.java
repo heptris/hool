@@ -8,6 +8,7 @@ class HoolApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
