@@ -3,6 +3,7 @@ package com.ssafy.hool.domain.point;
 import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.game.Game_history;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,6 @@ public class Point_history extends BaseEntity {
     @Column(name = "point_history_id")
     private Long id;
 
-    private LocalDateTime point_date;
     private int deal_point;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,11 +37,17 @@ public class Point_history extends BaseEntity {
     private Game_history game_history;
 
     private int current_point;
+    private String description;
 
-    public static Point_history createPointHistory(int dealPoint, int currentPoint, Member member, Deal_history dealHistory, Game_history gameHistory){
+    @Enumerated(EnumType.STRING)
+    private PointType pointType;
+
+    public static Point_history createPointHistory(PointHistoryCreateDto pointHistoryCreateDto, Member member, Deal_history dealHistory, Game_history gameHistory){
         Point_history pointHistory = Point_history.builder()
-                .deal_point(dealPoint)
-                .current_point(currentPoint)
+                .description(pointHistoryCreateDto.getDescription())
+                .deal_point(pointHistoryCreateDto.getDealtPoint())
+                .current_point(pointHistoryCreateDto.getCurrentPoint())
+                .pointType(pointHistoryCreateDto.getPointType())
                 .build();
 
         pointHistory.addMember(member);

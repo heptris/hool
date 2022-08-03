@@ -22,8 +22,6 @@ public class Deal_history extends BaseEntity {
     @Column(name = "deal_history_id")
     private Long id;
 
-    private LocalDateTime deal_date;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emoji_store_id")
     private Emoji_shop emojiShop;

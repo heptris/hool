@@ -4,11 +4,13 @@ import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.game.Game;
 import com.ssafy.hool.domain.game.Game_history;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.point.PointType;
 import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.game.GameCreateDto;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
 import com.ssafy.hool.dto.game.GameHistoryResponseDto;
 import com.ssafy.hool.dto.game.GameResponseDto;
+import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.game.GameHistoryRepository;
@@ -106,7 +108,15 @@ public class GameService {
                 currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate(0); // 오답일 경우 포인트 0
             }
-            Point_history pointHistory = Point_history.createPointHistory((int)getPoint, currentPoint, gameHistory.getMember(), null, gameHistory);
+
+            PointHistoryCreateDto pointHistoryCreateDto = null;
+            if(getPoint < 0){
+                pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 승리", (int) getPoint, currentPoint, PointType.GAME);
+            } else {
+                pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 패배", (int) getPoint, currentPoint, PointType.GAME);
+            }
+
+            Point_history pointHistory = Point_history.createPointHistory(pointHistoryCreateDto, gameHistory.getMember(), null, gameHistory);
             pointHistoryRepository.save(pointHistory);
         }
     }
