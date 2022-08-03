@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { InputStyle } from "styles/InputStyle";
+
+import SearchBar from "./SearchBar";
 
 type PropsType = {
   pageTitle: string;
@@ -36,13 +37,7 @@ function PageHeader(props: PropsType) {
       >
         <HeaderText>{pageTitle}</HeaderText>
         {isDisplaySearchBar && (
-          <SearchBar>
-            <MagIcon
-              className="fa-solid fa-magnifying-glass"
-              htmlFor="search"
-            />
-            <ConcreteInput placeholder={searchPlaceholder} id="search" />
-          </SearchBar>
+          <SearchBar searchPlaceholder={searchPlaceholder} />
         )}
       </div>
 
@@ -74,25 +69,6 @@ const SubText = styled.span`
   font-size: 1.25rem;
   color: ${darkTheme.adaptiveGrey200};
   margin: 0 0 4rem 0;
-`;
-
-const SearchBar = styled.div`
-  position: relative;
-`;
-
-const MagIcon = styled.label`
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  color: ${darkTheme.adaptiveGrey200};
-`;
-
-const ConcreteInput = styled.input`
-  ${InputStyle}
-  width: 20rem;
-  height: 2.8rem;
-  margin: 0;
-  padding-left: 3rem;
 `;
 
 const UtilBox = styled.div`
