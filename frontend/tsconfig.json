@@ -21,7 +21,7 @@
       "api/*": ["src/api/*"],
       "assets/*": ["src/assets/*"],
       "components/*": ["src/components/*"],
-      "constants/*": ["src/constants/*"],
+      "constant/*": ["src/constant/*"],
       "data/*": ["src/data/*"],
       "hooks/*": ["src/hooks/*"],
       "pages/*": ["src/pages/*"],
@@ -31,8 +31,7 @@
       "utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src","src/custom.d.ts"],
+  "include": ["src", "src/custom.d.ts"],
   "exclude": ["node_modules", ".vscode"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

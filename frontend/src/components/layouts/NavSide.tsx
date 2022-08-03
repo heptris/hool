@@ -1,33 +1,48 @@
 import { Link } from "@tanstack/react-location";
+import { useDispatch } from "react-redux";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
+
+import { ROUTES_NAME } from "constant";
+
+import { setIsCreatingRoom } from "store";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
+const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
+  const dispatch = useDispatch();
+  const openCreatingModal = () => {
+    dispatch(setIsCreatingRoom(true));
+  };
   return (
     <Side>
-      <NavLink to="/">
+      <NavLink to={MAIN}>
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        <NavLink to="/meeting">
+        <NavLink to={MEETING}>
           <Btn>
             <Icon className="fa-solid fa-list" />
           </Btn>
         </NavLink>
-        <NavLink to="/social">
+        <NavLink to={SOCIAL}>
           <Btn>
             <Icon className="fa-solid fa-users" />
           </Btn>
         </NavLink>
-        <NavLink to={"/market"}>
+        <NavLink to={MARKET}>
           <Btn>
             <Icon className="fa-solid fa-face-grin-wide" />
           </Btn>
         </NavLink>
+        <UtilButton onClick={openCreatingModal}>
+          <Btn>
+            <Icon className="fa-solid fa-plus" />
+          </Btn>
+        </UtilButton>
         <Btn>
           <Icon className="fa-solid fa-gear" />
         </Btn>
@@ -47,9 +62,15 @@ const Side = styled.div`
   width: 3rem;
   background-color: ${bgColor};
 `;
-const NavLink = styled(Link)`
+const ButtonStyle = css`
   text-decoration: none;
   margin-bottom: 1.75rem;
+`;
+const NavLink = styled(Link)`
+  ${ButtonStyle}
+`;
+const UtilButton = styled.div`
+  ${ButtonStyle}
 `;
 const Logo = styled.h1`
   font-family: "Lobster", cursive;

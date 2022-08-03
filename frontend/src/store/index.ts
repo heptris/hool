@@ -6,7 +6,7 @@ const navbar = createSlice({
   name: "navbar",
   initialState: {
     isNavbar: true,
-    isCreatingRoom: true,
+    isCreatingRoom: false,
   },
   reducers: {
     setIsNavbar(state, actions) {
