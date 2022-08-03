@@ -26,7 +26,7 @@ const MarketItem = () => {
 };
 const Item = styled(Card)`
   position: relative;
-  height: 30rem;
+  height: 28rem;
   display: flex;
   flex-direction: column;
   align-items: center;

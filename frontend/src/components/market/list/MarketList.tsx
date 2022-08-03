@@ -25,9 +25,10 @@ const MarketList = () => {
 const ItemList = styled.section`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 18rem);
-  grid-gap: 2rem;
-  margin-top: 5rem;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5vw;
+  margin-top: 2rem;
   justify-content: center;
 `;
 

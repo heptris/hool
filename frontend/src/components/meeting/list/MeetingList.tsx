@@ -21,10 +21,10 @@ const MeetingList = () => {
 const ItemList = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 20rem);
-  grid-gap: 2rem;
-  padding-top: 5rem;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5vw;
+  margin-top: 2rem;
   justify-content: center;
-  margin: auto;
 `;
 export default MeetingList;
