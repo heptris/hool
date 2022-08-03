@@ -4,8 +4,11 @@ import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.point.Deal_history;
+import com.ssafy.hool.domain.point.PointType;
 import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
+import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
@@ -17,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.ssafy.hool.exception.ex.ErrorCode.LACK_OF_POINT;
 
 @SpringBootTest
 @Transactional
@@ -51,14 +56,18 @@ class DealHistoryRepositoryTest {
         Deal_history dealHistory = Deal_history.createDealHistory(dealHistoryCreateDto, emojiShop, buyer);
         dealHistoryRepository.save(dealHistory);
 
+        PointHistoryCreateDto pointHistoryCreateDto = null;
+
         // 구매자 포인트기록(Point_History) 저장
         int currentBuyerPoint = buyer.getPoint() - dealHistory.getDealPoint();
-        Point_history buyerPointHistory = Point_history.createPointHistory(-dealHistory.getDealPoint(), currentBuyerPoint, buyer, dealHistory, null);
+        pointHistoryCreateDto = new PointHistoryCreateDto("이모지 구매", -dealHistory.getDealPoint(), currentBuyerPoint, PointType.DEAL);
+        Point_history buyerPointHistory = Point_history.createPointHistory(pointHistoryCreateDto, buyer, dealHistory, null);
         pointHistoryRepository.save(buyerPointHistory);
 
         // 판매자 포인트기록(Point_History) 저장
         int currentSellerPoint = seller.getPoint() + dealHistory.getDealPoint();
-        Point_history sellerPointHistory = Point_history.createPointHistory(dealHistory.getDealPoint(), currentSellerPoint, seller, dealHistory, null);
+        pointHistoryCreateDto = new PointHistoryCreateDto("이모지 판매", dealHistory.getDealPoint(), currentSellerPoint, PointType.DEAL);
+        Point_history sellerPointHistory = Point_history.createPointHistory(pointHistoryCreateDto, seller, dealHistory, null);
         pointHistoryRepository.save(sellerPointHistory);
 
         Assertions.assertThat(sellerPointHistory.getDeal_point()).isEqualTo(-buyerPointHistory.getDeal_point());

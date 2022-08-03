@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain.game;
 
+import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.conference.Conference;
 import lombok.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @Setter
 @Entity
-public class Game {
+public class Game extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

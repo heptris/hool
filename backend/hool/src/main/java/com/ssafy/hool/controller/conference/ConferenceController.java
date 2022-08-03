@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/conference")
+@RequestMapping("/api/conference")
 @RequiredArgsConstructor
 public class ConferenceController {
 

@@ -5,8 +5,10 @@ import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.domain.game.Game;
 import com.ssafy.hool.domain.game.Game_history;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.point.PointType;
 import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
+import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.game.GameHistoryRepository;
@@ -18,6 +20,7 @@ import com.ssafy.hool.service.member.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-//@Rollback(value = false)
+@Rollback(value = false)
 @Transactional
 @SpringBootTest
 class GameRepositoryTest {
@@ -48,7 +51,7 @@ class GameRepositoryTest {
 
     @Test
     public void createGameTest() {
-        Member member = getMember("Lee");
+        Member member = getMember("Lee5");
         memberService.join(member);
 
         Conference conference = Conference.createConference("123", "123", member, Conference_category.SOCCER);
@@ -155,7 +158,14 @@ class GameRepositoryTest {
                 currentPoint = gameHistory.getMember().getPoint() + (int)getPoint;
                 gameHistory.gameResultUpdate(0); // 오답일 경우 포인트 0
             }
-            Point_history pointHistory = Point_history.createPointHistory((int)getPoint, currentPoint, gameHistory.getMember(), null, gameHistory);
+
+            PointHistoryCreateDto pointHistoryCreateDto = null;
+            if(getPoint < 0){
+                pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 승리", (int) getPoint, currentPoint, PointType.GAME);
+            } else {
+                pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 패배", (int) getPoint, currentPoint, PointType.GAME);
+            }
+            Point_history pointHistory = Point_history.createPointHistory(pointHistoryCreateDto, gameHistory.getMember(), null, gameHistory);
             pointHistoryRepository.save(pointHistory);
         }
 
