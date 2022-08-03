@@ -7,14 +7,21 @@ interface LabelTextareaProps {
   placeholderText: string;
   text?: string;
   info?: string;
+  height?: string;
+  width?: string;
 }
 
 const LabelTextarea = (props: LabelTextareaProps) => {
-  const { text, placeholderText, info } = props;
+  const { text, placeholderText, info, height, width } = props;
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <LabelWrapper htmlFor={placeholderText} text={text} info={info} />
-      <TextArea id={placeholderText}></TextArea>
+      <TextArea
+        id={placeholderText}
+        height={height}
+        widthSize={width}
+        placeholder={placeholderText}
+      ></TextArea>
     </Wrapper>
   );
 };
@@ -27,8 +34,6 @@ const Wrapper = styled.div`
 `;
 const TextArea = styled.textarea`
   ${InputStyle}
-  height: 100%;
-  width: 100%;
   padding: 1rem;
   margin: 0;
 `;
