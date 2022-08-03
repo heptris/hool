@@ -4,10 +4,7 @@ import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.emoji.Member_emoji;
-import com.ssafy.hool.dto.emoji.EmojiCreateDto;
-import com.ssafy.hool.dto.emoji.EmojiDeleteDto;
-import com.ssafy.hool.dto.emoji.EmojiDto;
-import com.ssafy.hool.dto.emoji.EmojiUpdateDto;
+import com.ssafy.hool.dto.emoji.*;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.exception.ex.CustomException;
@@ -114,8 +111,13 @@ public class EmojiService {
         return list;
     }
 
-    public List<Member_emoji> listMemberEmoji(){
-        return memberEmojiRepository.findAll();
+    public List<MemberEmojiDto> listMemberEmoji(){
+        List<Member_emoji> memberEmojis = memberEmojiRepository.findAll();
+        List<MemberEmojiDto> list = new ArrayList<>();
+        for (Member_emoji memberEmoji : memberEmojis) {
+            list.add(new MemberEmojiDto(memberEmoji.getEmoji().getId(), memberEmoji.getEmoji().getUrl()));
+        }
+        return list;
     }
 
     public List<EmojiShopDto> listEmojiShop(){
