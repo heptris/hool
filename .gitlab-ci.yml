@@ -10,13 +10,12 @@ stages:
   - test
   - deploy
 
-image: node:16.16
-
 cache:
   paths:
     - node_modules/
 
 run test:
+  image: node:16.16
   stage: test
   only:
     - master
@@ -27,6 +26,7 @@ run test:
     npm run test
 
 deploy:
+  image: docker/compose
   stage: deploy
   only:
     - master
