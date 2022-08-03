@@ -1,18 +1,17 @@
 package com.ssafy.hool.controller.friend;
 
+import com.ssafy.hool.dto.conference.ConferenceJoinDto;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.dto.response.ResponseDto;
+import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ import java.util.List;
 public class FriendController {
 
     private final FriendService friendService;
+    private final ConferenceService conferenceService;
 
     /**
      * 나의 친구 리스트 조회
@@ -67,7 +67,7 @@ public class FriendController {
         Long memberId = SecurityUtil.getCurrentMemberId();
         List<FriendRequestDto> friendRequestMessage = friendService.getFriendRequestMessage(memberId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "친구 요청 메세지", friendRequestMessage)
-        , HttpStatus.OK);
+                , HttpStatus.OK);
     }
 
     /**
@@ -78,5 +78,22 @@ public class FriendController {
     public ResponseEntity<?> friendAccept(Long friendMemberId, Boolean accept) {
         friendService.friendAccept(friendMemberId, accept);
         return new ResponseEntity<>(new ResponseDto(200, "친구 수락", null), HttpStatus.OK);
+    }
+
+    /**
+     * 같이 하기(친구가 접속해 있는 응원 방에 들어가기)
+     */
+    @ApiOperation(value = "같이하기", notes = "친구의 응원방에 따라 들어가기")
+    @PostMapping("/join/friend/conference")
+    public ResponseEntity<?> joinFriendConference(@RequestBody ConferenceJoinDto conferenceJoinDto) {
+        conferenceService.enterConference(conferenceJoinDto);
+        return new ResponseEntity<>(new ResponseDto(200, "success", "Enter Friend Room")
+                , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "응원방으로 친구 초대하기")
+    @PostMapping("/invite/friend")
+    public void inviteFriend() {
+        return;
     }
 }

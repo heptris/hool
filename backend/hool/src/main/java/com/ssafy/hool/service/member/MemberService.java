@@ -1,8 +1,14 @@
 package com.ssafy.hool.service.member;
 
+import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.emoji.DetailMemberEmojiDto;
+import com.ssafy.hool.dto.emoji.EmojiDto;
+import com.ssafy.hool.dto.emoji.MemberEmojiDto;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.repository.emoji.EmojiRepository;
+import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.friend.FriendRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
@@ -24,7 +30,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final FriendRepository friendRepository;
-
+    private final MemberEmojiRepository memberEmojiRepository;
+    private final EmojiRepository emojiRepository;
 
 
     // 회원 가입
@@ -74,6 +81,14 @@ public class MemberService {
         return memberRepository.getEmojiCount(memberId);
     }
 
+    public List<MemberEmojiDto> getEmojis(Long memberId) {
+        return memberEmojiRepository.getMyEmojis(memberId);
+    }
+
+    public List<MemberEmojiDto> getFavoriteEmojis(Long memberId) {
+        return memberEmojiRepository.getFavoriteEmojis(memberId);
+    }
+
     // 현재 SecurityContext 에 있는 유저 정보 가져오기
     @Transactional(readOnly = true)
     public MemberJoinResponseDto getMyInfo() {
@@ -82,4 +97,16 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
+    public DetailMemberEmojiDto getDetailEmoji(Long emojiId) {
+        Emoji emoji = emojiRepository.findById(emojiId).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
+        Member emojiCreator = memberRepository.findById(emoji.getCreatorId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        DetailMemberEmojiDto detailEmoji = DetailMemberEmojiDto.builder()
+                .emojiId(emojiId)
+                .name(emoji.getName())
+                .description(emoji.getDescription())
+                .url(emoji.getUrl())
+                .creatorName(emojiCreator.getName())
+                .build();
+        return detailEmoji;
+    }
 }
