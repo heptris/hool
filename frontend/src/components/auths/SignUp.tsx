@@ -1,7 +1,62 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import Form from "components/commons/Form";
+
+import LabelInput from "components/commons/LabelInput";
 import Button from "components/commons/Button";
+
+const SignUp = () => {
+  return (
+    <Container>
+      <SignupBox>
+        <Logo>hool!</Logo>
+        <Title>회원가입</Title>
+        <BtnBox>
+          <LabelInput
+            text="이메일"
+            placeholderText="Email"
+            type="email"
+            info="*필수 정보입니다"
+          />
+          <Button
+            CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
+            text="본인인증"
+            width={3.75}
+            height={1.875}
+            marginLeft={0.5}
+            fontSize={0.75}
+          />
+        </BtnBox>
+
+        <FlexBox>
+          <LabelInput
+            text="이름"
+            placeholderText="Name"
+            widthSize="8.6rem"
+            type="text"
+          />
+          <LabelInput
+            text="별명"
+            placeholderText="Nickname"
+            widthSize="8.6rem"
+            type="text"
+            info="*사용 중인 별명입니다"
+          />
+        </FlexBox>
+        <LabelInput
+          text="비밀번호"
+          placeholderText="Password"
+          type="password"
+        />
+        <LabelInput
+          text="비밀번호 확인"
+          placeholderText="Password Confirm"
+          type="password"
+        />
+        <Button text="회원가입" height={3.125} width={20} marginTop={1} />
+      </SignupBox>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100vw;
@@ -43,55 +98,5 @@ const BtnBox = styled.div`
   width: 20rem;
   position: relative;
 `;
-
-const SignUp = () => {
-  return (
-    <Container>
-      <SignupBox>
-        <Logo>hool!</Logo>
-        <Title>회원가입</Title>
-        <BtnBox>
-          <Form
-            text="이메일"
-            placeholderText="Email"
-            type="email"
-            info="*필수 정보입니다"
-          />
-          <Button
-            CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
-            text="본인인증"
-            width={3.75}
-            height={1.875}
-            marginLeft={0.5}
-            fontSize={0.75}
-          />
-        </BtnBox>
-
-        <FlexBox>
-          <Form
-            text="이름"
-            placeholderText="Name"
-            widthSize="8.6rem"
-            type="text"
-          />
-          <Form
-            text="별명"
-            placeholderText="Nickname"
-            widthSize="8.6rem"
-            type="text"
-            info="*사용 중인 별명입니다"
-          />
-        </FlexBox>
-        <Form text="비밀번호" placeholderText="Password" type="password" />
-        <Form
-          text="비밀번호 확인"
-          placeholderText="Password Confirm"
-          type="password"
-        />
-        <Button text="회원가입" height={3.125} width={20} marginTop={1} />
-      </SignupBox>
-    </Container>
-  );
-};
 
 export default SignUp;

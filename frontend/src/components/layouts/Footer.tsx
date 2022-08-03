@@ -38,12 +38,13 @@ const Footer = () => {
 };
 
 const FooterBox = styled.footer`
-  width: 100%;
+  width: 75%;
   height: 50vh;
   background-color: #121520;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  padding-left: 25%;
 `;
 
 const FooterContent = styled.div`

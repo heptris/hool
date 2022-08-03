@@ -18,9 +18,9 @@ const Card = (props: PropsType) => {
 };
 
 const CardDiv = styled.div`
-  margin-top: ${({ marginTop }: PropsType) => `${marginTop || 2}`}rem;
+  margin-top: ${({ marginTop }: PropsType) => `${marginTop || 0}`}rem;
   margin-right: ${({ marginRight }: PropsType) => `${marginRight || 0}`}rem;
-  margin-bottom: ${({ marginBottom }: PropsType) => `${marginBottom || 2}`}rem;
+  margin-bottom: ${({ marginBottom }: PropsType) => `${marginBottom || 0}`}rem;
   margin-left: ${({ marginLeft }: PropsType) => `${marginLeft || 0}`}rem;
   background: ${({ bgColor }: PropsType) => bgColor || darkTheme.darkColor};
   border: 1px solid

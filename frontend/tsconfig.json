@@ -21,17 +21,17 @@
       "api/*": ["src/api/*"],
       "assets/*": ["src/assets/*"],
       "components/*": ["src/components/*"],
-      "constants/*": ["src/constants/*"],
+      "constant/*": ["src/constant/*"],
       "data/*": ["src/data/*"],
       "hooks/*": ["src/hooks/*"],
       "pages/*": ["src/pages/*"],
-      "state/*": ["src/state/*"],
+      "store/*": ["src/store/*"],
       "styles/*": ["src/styles/*"],
       "types/*": ["src/types/*"],
       "utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/custom.d.ts"],
   "exclude": ["node_modules", ".vscode"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

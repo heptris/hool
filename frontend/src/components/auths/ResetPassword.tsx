@@ -1,7 +1,30 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import Form from "components/commons/Form";
+
 import Button from "components/commons/Button";
+import LabelInput from "components/commons/LabelInput";
+
+const ResetPassword = () => {
+  return (
+    <Container>
+      <ResetPasswordBox>
+        <Logo>hool!</Logo>
+        <Title>비밀번호 초기화</Title>
+        <LabelInput
+          text="비밀번호"
+          placeholderText="Password"
+          type="password"
+        />
+        <LabelInput
+          text="비밀번호 확인"
+          placeholderText="Password Confirm"
+          type="password"
+        />
+        <Button text="회원가입" height={3.125} width={20} marginTop={1} />
+      </ResetPasswordBox>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100vw;
@@ -32,23 +55,5 @@ const Title = styled.div`
   align-self: start;
   margin-bottom: 1.25rem;
 `;
-
-const ResetPassword = () => {
-  return (
-    <Container>
-      <ResetPasswordBox>
-        <Logo>hool!</Logo>
-        <Title>비밀번호 초기화</Title>
-        <Form text="비밀번호" placeholderText="Password" type="password" />
-        <Form
-          text="비밀번호 확인"
-          placeholderText="Password Confirm"
-          type="password"
-        />
-        <Button text="회원가입" height={3.125} width={20} marginTop={1} />
-      </ResetPasswordBox>
-    </Container>
-  );
-};
 
 export default ResetPassword;
