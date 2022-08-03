@@ -1,46 +1,44 @@
 import styled from "styled-components";
 
-import { darkTheme } from "styles/Theme";
-
+import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
-import { CostsWrapper, Icon } from "./MarketItem";
 
-const { adaptiveGrey700 } = darkTheme;
-const MarketHeader = () => {
+const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
-    <Header>
-      <div>
-        <MarketTitle>이모지 구매하기</MarketTitle>
-        <MarketDesc>이모지를 통해 당신의 기분을 친구와 공유해요!</MarketDesc>
-        <MyPoint>
+    <PageHeader
+      pageTitle="이모지 구매하기"
+      subtext="이모지를 통해 당신의 기분을 친구와 공유해요!"
+      isDisplaySearchBar={true}
+      searchPlaceholder="이모지 검색"
+      isDisplayBtn={true}
+      concreteBtn={
+        <MarketButton
+          height={2.8}
+          width={7}
+          text={"상품등록"}
+          onClick={onDisplayChange}
+        />
+      }
+      isDisplayInfo={true}
+      concreteInfo={
+        <MyPointBox>
           <div>포인트</div>
-          <MyPointWrapper>
-            <Icon className="fa-solid fa-coins" />
+          <MyPoint>
+            <span className="fa-solid fa-sack-dollar" />
             <span>1,237</span>
-          </MyPointWrapper>
-        </MyPoint>
-      </div>
-      <Button height={2.8} width={5} />
-    </Header>
+          </MyPoint>
+        </MyPointBox>
+      }
+    />
   );
 };
-const Header = styled.header`
-  border-bottom: solid 1px ${adaptiveGrey700};
-  padding-bottom: 1.5rem;
+const MyPointBox = styled.div``;
+const MyPoint = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
-const MarketTitle = styled.h2`
-  font-size: 2.5rem;
-`;
-const MarketDesc = styled.p`
-  margin-top: 1rem;
-`;
-const MyPoint = styled.div`
-  margin-top: 1.5rem;
-`;
-const MyPointWrapper = styled(CostsWrapper)`
-  margin-top: 0.3rem;
-`;
+const MarketButton = styled(Button)<{ onClick: Function }>``;
+
 export default MarketHeader;

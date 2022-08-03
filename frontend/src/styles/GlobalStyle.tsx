@@ -6,6 +6,9 @@ const { darkColor, white } = darkTheme;
 export const letterSpacingSize = 0.08;
 
 export const GlobalStyle = createGlobalStyle`
+  /* * {
+    box-sizing:border-box
+  } */
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -52,5 +55,11 @@ export const GlobalStyle = createGlobalStyle`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+  span {
+    margin: 0 ${letterSpacingSize}rem 0 0;
+  }
+  textarea {
+    resize: none;
   }
 `;

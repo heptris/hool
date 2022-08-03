@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "@tanstack/react-location";
 
-import profileDefaultImg from "assets/profile-default-imgs/1.png";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-import { letterSpacingSize } from "styles/GlobalStyle";
+
+import profileDefaultImg from "assets/profile-default-imgs/1.png";
+import { ROUTES_NAME } from "constant";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
+const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
 
   return (
     <Header>
+      <Link to={LOGIN}>
+        <LoginBtn>로그인</LoginBtn>
+      </Link>
       <NavUser
         onMouseEnter={() => setIsDisplayMenu(true)}
         onMouseLeave={() => setIsDisplayMenu(false)}
@@ -22,11 +27,11 @@ const NavHeader = () => {
             onMouseEnter={() => setIsDisplayMenu(true)}
             onMouseLeave={() => setIsDisplayMenu(false)}
           >
-            <NavLink to="/profile" style={{ textDecoration: "none" }}>
+            <Link to={PROFILE}>
               <MenuItem>
                 <span>프로필</span>
               </MenuItem>
-            </NavLink>
+            </Link>
             <Hr />
             <MenuItem>
               <span>로그아웃</span>
@@ -102,7 +107,6 @@ const MenuItem = styled.div`
   text-align: center;
 
   span {
-    margin-right: ${letterSpacingSize};
     color: ${darkTheme.adaptiveGrey200};
   }
 `;
@@ -110,6 +114,17 @@ const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey800};
   background-color: ${darkTheme.adaptiveGrey800};
   margin: 0;
+`;
+const LoginBtn = styled.button`
+  width: 4rem;
+  height: 2rem;
+  border-radius: 2rem;
+  background-color: ${darkTheme.darkColor};
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
 
 export default NavHeader;
