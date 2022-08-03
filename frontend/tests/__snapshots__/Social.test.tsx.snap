@@ -3,65 +3,190 @@
 exports[`<SocialPage /> matches snapshot 1`] = `
 <div>
   <div
-    class="sc-kDDrLX jOJsjf"
+    class="sc-bczRLJ eCLeRz"
   >
     <div
-      class="sc-bczRLJ kZjMcT"
+      class="sc-eCYdqJ ggKycM"
     >
       <div
         style="display: flex; justify-content: space-between; align-items: center;"
       >
         <h1
-          class="sc-gsnTZi cXCULo"
+          class="sc-jSMfEi iXlUyX"
         >
           친구찾기
         </h1>
         <div
-          class="sc-hKMtZM fzQXhC"
-          tabindex="1"
+          class="sc-gsnTZi gFfhsY"
         >
-          <i
-            class="sc-eCYdqJ idJwBR fa-solid fa-magnifying-glass"
+          <label
+            class="sc-dkzDqf epKNRO fa-solid fa-magnifying-glass"
+            for="친구 검색"
           />
           <input
-            class="sc-jSMfEi fdhgPC"
+            class="sc-hKMtZM dgdFEi"
+            id="친구 검색"
             placeholder="친구 검색"
-            type="text"
           />
         </div>
       </div>
       <span
-        class="sc-dkzDqf kUfBCy"
+        class="sc-gKXOVf gYKlfH"
       >
         친구와 함께하면 즐거움이 두배에요.
       </span>
       <div
-        class="sc-gKXOVf"
+        class="sc-iBkjds ivzvnu"
       >
-        <button
-          class="sc-iBkjds kjPVbo"
+        <div
+          class="sc-papXJ"
         >
-          <span
-            style="color: rgb(0, 198, 193);"
+          <button
+            class="sc-jqUVSM fcFrw"
           >
-            내친구
-          </span>
-        </button>
-        <button
-          class="sc-iBkjds kjPVbo"
-        >
-          <span>
-            친구요청
-          </span>
-        </button>
+            <span
+              style="color: rgb(0, 198, 193);"
+            >
+              내친구
+            </span>
+          </button>
+          <button
+            class="sc-jqUVSM fcFrw"
+          >
+            <span>
+              친구요청
+            </span>
+          </button>
+        </div>
       </div>
       <hr
         class="sc-ftvSup bHOoiT"
       />
     </div>
     <div
-      class="sc-papXJ"
-    />
+      class="sc-fEOsli cxWCnN"
+    >
+      <div
+        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+      >
+        <img
+          class="sc-crXcEl fBtUlZ"
+          src="default"
+        />
+        <div
+          class="sc-evZas fKCALh"
+        >
+          <h1
+            class="sc-breuTD edYVkl"
+          >
+            Thomas
+          </h1>
+          <h2
+            class="sc-ksZaOG eetmvE"
+          >
+            tho@gmail.com
+          </h2>
+          <span
+            class="sc-hAZoDl lbICOn"
+          >
+            일본 vs 대한민국 같이봐요
+          </span>
+        </div>
+        <i
+          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
+        />
+      </div>
+      <div
+        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+      >
+        <img
+          class="sc-crXcEl fBtUlZ"
+          src="default"
+        />
+        <div
+          class="sc-evZas fKCALh"
+        >
+          <h1
+            class="sc-breuTD edYVkl"
+          >
+            Bell
+          </h1>
+          <h2
+            class="sc-ksZaOG eetmvE"
+          >
+            bell@gmail.com
+          </h2>
+          <span
+            class="sc-hAZoDl lbICOn"
+          >
+            접속중
+          </span>
+        </div>
+        <i
+          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
+        />
+      </div>
+      <div
+        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+      >
+        <img
+          class="sc-crXcEl fBtUlZ"
+          src="default"
+        />
+        <div
+          class="sc-evZas fKCALh"
+        >
+          <h1
+            class="sc-breuTD edYVkl"
+          >
+            Dijkstra
+          </h1>
+          <h2
+            class="sc-ksZaOG eetmvE"
+          >
+            graph@gmail.com
+          </h2>
+          <span
+            class="sc-hAZoDl lbICOn"
+          >
+            12 minutes ago
+          </span>
+        </div>
+        <i
+          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
+        />
+      </div>
+      <div
+        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+      >
+        <img
+          class="sc-crXcEl fBtUlZ"
+          src="default"
+        />
+        <div
+          class="sc-evZas fKCALh"
+        >
+          <h1
+            class="sc-breuTD edYVkl"
+          >
+            Perry
+          </h1>
+          <h2
+            class="sc-ksZaOG eetmvE"
+          >
+            graph@gmail.com
+          </h2>
+          <span
+            class="sc-hAZoDl lbICOn"
+          >
+            12 minutes ago
+          </span>
+        </div>
+        <i
+          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;
