@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import SocialPage from "../src/pages/SocialPage";
+import SocialPage from "../src/pages/social";
 
 describe("<SocialPage />", () => {
   it("matches snapshot", () => {
