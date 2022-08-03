@@ -31,8 +31,9 @@ deploy:
   only:
     - master
   script: |
-    docker-compose up -d
+    sudo docker-compose up -d
   variables:
     GIT_STRATEGY: clone
   tags:
     - deployment
+  when: on_success
