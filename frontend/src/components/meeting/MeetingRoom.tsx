@@ -3,13 +3,10 @@ import { darkTheme } from "styles/Theme";
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
 
+import Container from "components/commons/Container";
 import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-`;
+import VideoContainer from "./VideoContainer";
 
 const FlexBox = styled.div`
   width: 100%;
@@ -18,19 +15,16 @@ const FlexBox = styled.div`
 `;
 
 const MeetingBox = styled.div`
-  width: 66.375rem;
-  height: 57.2rem;
-  margin-top: 2.5rem;
-  margin-left: 3rem;
-  display: grid;
-  flex-shrink: 3;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  height: 100%;
+  /* display: grid; */
+  /* flex-shrink: 3; */
+  /* justify-content: center; */
+  /* align-items: center; */
   box-sizing: border-box;
   border-radius: 4px;
-  padding-left: 1rem;
-  grid-template-rows: repeat(2, 21rem);
-  grid-template-columns: repeat(2, 33rem);
+  /* grid-template-rows: repeat(auto-fit, minmax(15rem, 1rem)); */
+  /* grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr)); */
   background-color: ${darkTheme.mainColor};
 `;
 
@@ -44,10 +38,7 @@ const MeetingRoom = () => {
     <Container>
       <FlexBox>
         <MeetingBox>
-          <MeetingVideo />
-          <MeetingVideo />
-          <MeetingVideo />
-          <MeetingVideo />
+          <VideoContainer />
         </MeetingBox>
         <GameMessageBox>
           <MeetingGame />

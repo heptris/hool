@@ -10,7 +10,7 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig({
   server: {
     host: "0.0.0.0",
-    port: 5173,
+    port: 5442,
     fs: {
       strict: false,
     },
