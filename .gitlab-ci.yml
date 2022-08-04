@@ -9,6 +9,7 @@
 stages:
   - react-test
   - spring-test
+  - dockerize
   - deploy
 
 cache:
@@ -18,34 +19,57 @@ cache:
 run react tests:
   image: node:16.16
   stage: react-test
-  only:
-    - master
-    - develop
   script: |
     cd frontend/
     npm install
     npm run test
+  only:
+    - master
+    - develop
 
 run spring tests:
   image: 8-jdk-oracle
   stage: spring-test
+  script: |
+    cd backend/
+    ./gradlew test
   only:
     - master
     - develop
     - feature/backend
+
+dockerize:
+  image: docker:latest
+  stage: dockerize
+  services:
+    - docker:dind
+  before_script: |
+    docker login -u $DOCKER_HUB_USER --password-stdin < $DOCKER_HUB_PW
   script: |
+    docker build -t $IMAGE_NAME .
+    docker push $IMAGE_NAME
+  after_script: |
+    docker logout
+  only:
+    - master
 
 deploy:
   image: docker:latest
+  stage: deploy
   services:
     - docker:dind
-  stage: deploy
-  only:
-    - master
-  script: |
-    docker-compose up -d
-  variables:
-    GIT_STRATEGY: clone
   tags:
     - deployment
+  before_script: |
+    docker login -u $DOCKER_HUB_USER --password-stdin < $DOCKER_HUB_PW
+  script: |
+    cd /opt/openvidu/
+    ./openvidu stop
+    docker rm $FRONT_CON_NAME
+    docker rmi $IMAGE_NAME
+    ./openvidu start
+  after_script: |
+    docker logout
   when: on_success
+  only:
+    - master
