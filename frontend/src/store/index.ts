@@ -7,6 +7,7 @@ const navbar = createSlice({
   initialState: {
     isNavbar: true,
     isCreatingRoom: false,
+    isCreatingGame: false,
   },
   reducers: {
     setIsNavbar(state, actions) {
@@ -15,6 +16,9 @@ const navbar = createSlice({
     setIsCreatingRoom(state, actions) {
       state.isCreatingRoom = actions.payload;
     },
+    setIsCreatingGame(state, actions) {
+      state.isCreatingGame = actions.payload;
+    }
   },
 });
 export const store = configureStore({
@@ -22,7 +26,7 @@ export const store = configureStore({
     navbar: navbar.reducer,
   },
 });
-export const { setIsNavbar, setIsCreatingRoom } = navbar.actions;
+export const { setIsNavbar, setIsCreatingRoom, setIsCreatingGame } = navbar.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

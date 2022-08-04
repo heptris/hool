@@ -9,14 +9,21 @@ type LabelInputPropsType = {
   widthSize?: string;
   type?: string;
   info?: string;
+  height: string;
 };
 
 const LabelInput = (props: LabelInputPropsType) => {
-  const { text, placeholderText, widthSize, type, info } = props;
+  const { text, placeholderText, widthSize, type, info, height } = props;
   return (
     <LabelInputDiv {...props}>
       <LabelWrapper htmlFor={placeholderText} text={text} info={info} />
-      <Input widthSize={widthSize} type={type} id={placeholderText} />
+      <Input
+        widthSize={widthSize}
+        height={height}
+        type={type}
+        id={placeholderText}
+        placeholder={placeholderText}
+      />
     </LabelInputDiv>
   );
 };

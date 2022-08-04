@@ -6,7 +6,7 @@ import { darkTheme } from "styles/Theme";
 
 import { ROUTES_NAME } from "constant";
 
-import { setIsCreatingRoom } from "store";
+import { setIsCreatingRoom, setIsCreatingGame } from "store";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
@@ -16,6 +16,9 @@ const NavSide = () => {
   const dispatch = useDispatch();
   const openCreatingModal = () => {
     dispatch(setIsCreatingRoom(true));
+  };
+  const openCreatingGameModal = () => {
+    dispatch(setIsCreatingGame(true));
   };
   return (
     <Side>
@@ -43,9 +46,11 @@ const NavSide = () => {
             <Icon className="fa-solid fa-plus" />
           </Btn>
         </UtilButton>
-        <Btn>
-          <Icon className="fa-solid fa-gear" />
-        </Btn>
+        <UtilButton onClick={openCreatingGameModal}>
+          <Btn>
+            <Icon className="fa-solid fa-gear" />
+          </Btn>
+        </UtilButton>
       </ButtonGroup>
     </Side>
   );

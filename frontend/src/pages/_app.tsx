@@ -6,6 +6,7 @@ import { RootState, setIsNavbar } from "store";
 
 import { Layout } from "components/layouts/Layout";
 import { MeetingModal } from "components/meeting";
+import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function App({ children }: { children: React.ReactNode }) {
       : dispatch(setIsNavbar(true));
   });
 
-  const { isNavbar, isCreatingRoom } = useSelector(
+  const { isNavbar, isCreatingRoom, isCreatingGame } = useSelector(
     (state: RootState) => state.navbar
   );
 
@@ -30,6 +31,7 @@ export default function App({ children }: { children: React.ReactNode }) {
         <Layout>
           {children}
           {isCreatingRoom && <MeetingModal />}
+          {isCreatingGame && <MeetingGameModal/>}
         </Layout>
       ) : (
         <>{children}</>
