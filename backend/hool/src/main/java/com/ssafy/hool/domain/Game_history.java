@@ -17,11 +17,11 @@ public class Game_history {
     @Column(name = "game_history_id")
     private Long id;
 
-    private int bett_point;
+    private int bettPoint;
 
-    private int get_point;
+    private int getPoint;
 
-    private Boolean bettChoice; // 베팅 현황
+    private Boolean bettChoice; // 베팅현황
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -31,17 +31,21 @@ public class Game_history {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    @OneToOne(mappedBy = "game_history", fetch = FetchType.LAZY)
+    private Point_history pointHistory;
+
     private LocalDateTime createdTime;
 
-    private GameStatus status;
+    @Enumerated(EnumType.STRING)
+    private GameStatus gameStatus;
 
-    public static Game_history createGameHistory(Member member, Game game, int bett_point, Boolean bett) {
+    public static Game_history createGameHistory(Member member, int bettPoint, Boolean bett, Game game) {
         // getPoint 계산 메서드로 getPoint 넣기
         Game_history gameHistory = Game_history.builder()
-                .bett_point(bett_point)
+                .bettPoint(bettPoint)
                 .bettChoice(bett)
                 .createdTime(LocalDateTime.now())
-                .status(GameStatus.PROGRESS)
+                .gameStatus(GameStatus.PROGRESS)
                 .build();
         gameHistory.addGame(game);
         gameHistory.addMember(member);
@@ -56,5 +60,14 @@ public class Game_history {
     public void addMember(Member member) {
         this.member = member;
         member.getGameHistoryList().add(this);
+    }
+
+    public void gameResultUpdate(int getPoint){
+        this.getPoint = getPoint;
+        this.gameStatus = GameStatus.OVER;
+    }
+
+    public void setPointHistory(Point_history pointHistory){
+        this.pointHistory = pointHistory;
     }
 }

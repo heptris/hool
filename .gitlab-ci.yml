@@ -7,17 +7,17 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/node/tags/
 stages:
-  - test
+  - react-test
+  - spring-test
   - deploy
-
-image: node:16.16
 
 cache:
   paths:
     - node_modules/
 
-run test:
-  stage: test
+run react tests:
+  image: node:16.16
+  stage: react-test
   only:
     - master
     - develop
@@ -26,7 +26,19 @@ run test:
     npm install
     npm run test
 
+run spring tests:
+  image: 8-jdk-oracle
+  stage: spring-test
+  only:
+    - master
+    - develop
+    - feature/backend
+  script: |
+
 deploy:
+  image: docker:latest
+  services:
+    - docker:dind
   stage: deploy
   only:
     - master
@@ -36,3 +48,4 @@ deploy:
     GIT_STRATEGY: clone
   tags:
     - deployment
+  when: on_success
