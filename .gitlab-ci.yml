@@ -7,25 +7,25 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/node/tags/
 stages:
-  - react-test
+  # - react-test
   - spring-test
   - dockerize
   - deploy
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
-run react tests:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    npm install
-    npm run test
-  only:
-    - master
-    - develop
+# run react tests:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     npm install
+#     npm run test
+#   only:
+#     - master
+#     - develop
 
 run spring tests:
   image: 8-jdk-oracle
