@@ -31,7 +31,7 @@ run spring tests:
   image: openjdk:8
   stage: spring-test
   script: |
-    cd backend/
+    cd backend/hool/
     ./gradlew test
   only:
     - master
