@@ -47,8 +47,7 @@ dockerize:
   before_script: |
     echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
-    cd frontend/
-    docker build -t $IMAGE_NAME .
+    docker build -t $IMAGE_NAME ./frontend/
     docker push $IMAGE_NAME
   after_script: |
     docker logout
