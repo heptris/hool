@@ -1,0 +1,54 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Nodejs.gitlab-ci.yml
+
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+stages:
+  - react-test
+  - spring-test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+run react tests:
+  image: node:16.16
+  stage: react-test
+  only:
+    - master
+    - develop
+  script: |
+    cd frontend/
+    npm install
+    npm run test
+
+run spring tests:
+  image: 8-jdk-oracle
+  stage: spring-test
+  only:
+    - master
+    - develop
+    - feature/backend
+  script: |
+    cd backend
+    ./gradlew test
+
+
+deploy:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: deploy
+  only:
+    - master
+  script: |
+    docker-compose up -d
+  variables:
+    GIT_STRATEGY: clone
+  tags:
+    - deployment
+  when: on_success
