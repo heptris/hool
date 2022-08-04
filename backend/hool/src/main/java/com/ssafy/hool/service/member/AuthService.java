@@ -28,8 +28,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-    private final RedisService redisService;
-
     /**
      * 회원가입
      */

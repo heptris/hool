@@ -15,7 +15,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
             "from Friend f join f.member m where f.friend.id = :memberId")
     List<FriendDto> findFriendList(@Param("memberId") Long memberId);
 
-    @Query(value = "select f.friend_id from Friend f where f.friend_member_id = :friendMemberId", nativeQuery = true)
+    @Query(value = "select f.friend_id from friend f where f.friend_member_id = :friendMemberId", nativeQuery = true)
     List<Long> findByFriendMemberId(@Param("friendMemberId") Long friendMemberId);
 
     @Modifying
@@ -23,7 +23,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     int deleteFriend(@Param("memberId") Long memberId, @Param("friendMemberId") Long friendMemberId);
 
     @Modifying
-    @Query(value = "INSERT INTO FRIEND(member_id, friend_member_id, friend_request_id)" +
+    @Query(value = "INSERT INTO friend (member_id, friend_member_id, friend_request_id)" +
             "VALUES(:fromMember, :toMember, :friendRequestId)", nativeQuery = true)
     void accept(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember, @Param("friendRequestId") Long friendRequestId);
 
