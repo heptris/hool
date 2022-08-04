@@ -45,7 +45,7 @@ dockerize:
   services:
     - docker:dind
   before_script: |
-    docker login -u $DOCKER_HUB_USER --password-stdin < $DOCKER_HUB_PW
+    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $IMAGE_NAME .
     docker push $IMAGE_NAME
@@ -62,7 +62,7 @@ deploy:
   tags:
     - deployment
   before_script: |
-    docker login -u $DOCKER_HUB_USER --password-stdin < $DOCKER_HUB_PW
+    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
     cd /opt/openvidu/
     ./openvidu stop
