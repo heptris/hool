@@ -28,7 +28,7 @@ stages:
 #     - develop
 
 run spring tests:
-  image: 8-jdk-oracle
+  image: openjdk:8
   stage: spring-test
   script: |
     cd backend/
