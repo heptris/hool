@@ -32,6 +32,7 @@ run spring tests:
   stage: spring-test
   script: |
     cd backend/hool/
+    chmod +x gradlew
     ./gradlew test
   only:
     - master
