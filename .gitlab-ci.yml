@@ -27,7 +27,7 @@ run react tests:
     npm run test
 
 run spring tests:
-  image: 8-jdk-oracle
+  image: openjdk:8
   stage: spring-test
   only:
     - master
