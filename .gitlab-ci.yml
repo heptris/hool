@@ -55,6 +55,7 @@ dockerize:
     docker logout
   only:
     - master
+    - develop
 
 deploy:
   image: docker:latest
@@ -78,3 +79,4 @@ deploy:
   when: on_success
   only:
     - master
+    - develop
