@@ -16,7 +16,7 @@ services:
     container_name: frontend
     restart: "on-failure"
     expose:
-      - 5173
+      - 5442
     volumes:
       - './frontend:/app'
       - '/app/node_modules'
