@@ -27,17 +27,17 @@ stages:
 #     - master
 #     - develop
 
-run spring tests:
-  image: openjdk:8
-  stage: spring-test
-  script: |
-    cd backend/hool/
-    chmod +x gradlew
-    ./gradlew test
-  only:
-    - master
-    - develop
-    - feature/backend
+# run spring tests:
+#   image: openjdk:8
+#   stage: spring-test
+#   script: |
+#     cd backend/hool/
+#     chmod +x gradlew
+#     ./gradlew test
+#   only:
+#     - master
+#     - develop
+#     - feature/backend
 
 dockerize:
   image: docker:latest
