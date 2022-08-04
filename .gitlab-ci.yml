@@ -7,16 +7,17 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/node/tags/
 stages:
-  - test
+  - react-test
+  - spring-test
   - deploy
 
 cache:
   paths:
     - node_modules/
 
-run test:
+run react tests:
   image: node:16.16
-  stage: test
+  stage: react-test
   only:
     - master
     - develop
@@ -25,17 +26,20 @@ run test:
     npm install
     npm run test
 
+run spring tests:
+  image: 8-jdk-oracle
+  stage: spring-test
+  only:
+    - master
+    - develop
+    - feature/backend
+  script: |
+
 deploy:
   image: docker:latest
   services:
     - docker:dind
   stage: deploy
-  before_script: |
-    docker info
-    curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-    docker-compose -version
   only:
     - master
   script: |
