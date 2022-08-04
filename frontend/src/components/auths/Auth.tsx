@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-location";
+import { useEffect } from "react";
+import { gapi } from "gapi-script";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -7,8 +9,21 @@ import googleLogoImg from "assets/google-logo-img.png";
 
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
+import GoogleLoginBtn from "./GoogleLoginBtn";
+
+const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
 const Auth = () => {
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: { google_key },
+        scope: "",
+      });
+    }
+    gapi.load("client:auth2", start);
+  });
+
   return (
     <Container>
       <FormBox>
@@ -25,10 +40,7 @@ const Auth = () => {
         <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
         <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
         <Text>계정이 없으신가요? 회원가입</Text>
-        <GoogleDIV>
-          <GoogleLogoImg src={googleLogoImg} alt="google-logo-img" />
-          <GoogleText>구글 계정으로 로그인</GoogleText>
-        </GoogleDIV>
+        <GoogleLoginBtn />
       </FormBox>
     </Container>
   );
