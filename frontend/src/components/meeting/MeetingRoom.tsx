@@ -1,10 +1,39 @@
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
+import { RootState } from "store";
+
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
-
 import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
+import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
+
+const MeetingRoom = () => {
+  const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
+  return (
+    <>
+      <Container>
+        <FlexBox>
+          <MeetingBox>
+            <MeetingVideo />
+            <MeetingVideo />
+            <MeetingVideo />
+            <MeetingVideo />
+          </MeetingBox>
+          <GameMessageBox>
+            <MeetingGame />
+            <MeetingMessageShow />
+            <MeetingMessageInput />
+          </GameMessageBox>
+        </FlexBox>
+      </Container>
+      {isCreatingGame && <MeetingGameModal />}
+    </>
+  );
+};
 
 const Container = styled.div`
   width: 100%;
@@ -38,25 +67,5 @@ const GameMessageBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-const MeetingRoom = () => {
-  return (
-    <Container>
-      <FlexBox>
-        <MeetingBox>
-          <MeetingVideo />
-          <MeetingVideo />
-          <MeetingVideo />
-          <MeetingVideo />
-        </MeetingBox>
-        <GameMessageBox>
-          <MeetingGame />
-          <MeetingMessageShow />
-          <MeetingMessageInput />
-        </GameMessageBox>
-      </FlexBox>
-    </Container>
-  );
-};
 
 export default MeetingRoom;

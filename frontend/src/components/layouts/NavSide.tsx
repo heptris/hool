@@ -20,10 +20,7 @@ const NavSide = () => {
   const openCreatingGameModal = () => {
     dispatch(setIsCreatingGame(true));
   };
-  const { isNavbar, isMeetingNavbar } = useSelector((state: RootState) => {
-    console.log("NavSIde selector");
-    return state.navbar;
-  });
+  const { navMode } = useSelector((state: RootState) => state.navbar);
 
   return (
     <Side>
@@ -31,7 +28,7 @@ const NavSide = () => {
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        {isMeetingNavbar && (
+        {navMode === "meetingRoom" ? (
           <>
             <UtilButton>
               <Btn>
@@ -54,8 +51,7 @@ const NavSide = () => {
               </Btn>
             </UtilButton>
           </>
-        )}
-        {isNavbar && (
+        ) : (
           <>
             <NavLink to={MEETING}>
               <Btn>
