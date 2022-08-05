@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -9,6 +10,8 @@ import pdi3 from "assets/profile-default-imgs/3.jpg";
 import pdi4 from "assets/profile-default-imgs/4.png";
 import pdi5 from "assets/profile-default-imgs/5.jpg";
 import pdi6 from "assets/profile-default-imgs/6.jpg";
+
+import { UserType } from "./MyFriends";
 
 import Card from "components/commons/Card";
 
@@ -26,7 +29,8 @@ function SocialItem({
   email,
   curPos,
   status,
-}: PropsType) {
+  isDisplayMyFriends,
+}: UserType & { isDisplayMyFriends: boolean }) {
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
   const [isDisplayOption, setIsDisplayOption] = useState(false);
 
@@ -38,12 +42,26 @@ function SocialItem({
         <Email>{email}</Email>
         <CurrentPos>{curPos}</CurrentPos>
       </UserInfo>
-      <MenuIcon
-        onClick={() => {
-          setIsDisplayOption(!isDisplayOption);
-        }}
-        className="fa-solid fa-ellipsis-vertical"
-      />
+      <div>
+        <MenuIcon
+          onClick={() => {
+            setIsDisplayOption(!isDisplayOption);
+          }}
+          className="fa-solid fa-ellipsis-vertical"
+        ></MenuIcon>
+        {isDisplayOption && (
+          <Menu>
+            <Link
+              to={curPos}
+              onClick={() => {
+                setIsDisplayOption(!isDisplayOption);
+              }}
+            >
+              <div>친구와 함께하기</div>
+            </Link>
+          </Menu>
+        )}
+      </div>
     </SocialCard>
   );
 }
@@ -92,6 +110,40 @@ const MenuIcon = styled.i`
   &:hover {
     cursor: pointer;
     color: ${darkTheme.adaptiveGrey200};
+  }
+`;
+
+const Menu = styled.div`
+  width: 7vw;
+  height: 2.5vw;
+  background-color: ${darkTheme.adaptiveGrey800};
+  transform: translate(-50%, -50%);
+  position: absolute;
+  margin-top: 2rem;
+  border-radius: 4px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  display: flex;
+  justify-content: center;
+  align-self: center;
+
+  a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: normal;
+      width: 100%;
+      height: 60%;
+
+      &:hover {
+        background-color: ${darkTheme.adaptiveGrey500};
+      }
+    }
   }
 `;
 

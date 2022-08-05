@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import SocialItem from "./SocialItem";
 
-type UserType = {
+export type UserType = {
   profileImg: number;
   nickname: string;
   email: string;
