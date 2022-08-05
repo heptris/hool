@@ -109,4 +109,11 @@ public class MemberService {
                 .build();
         return detailEmoji;
     }
+
+    /**
+     * 회원 이모지 즐겨찾기 등록 / 해제
+     */
+    public void EmojiFavorite() {
+        
+    }
 }
