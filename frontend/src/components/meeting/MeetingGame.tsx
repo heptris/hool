@@ -4,11 +4,8 @@ import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 
 const GameShowTopBox = styled(MessageBox)`
-  margin-top: 2.5rem;
   height: 1.5rem;
   padding: 0px 1rem;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
   background-color: ${darkTheme.mainColor};
   display: flex;
   flex-direction: row;
@@ -218,7 +215,7 @@ const MeetingGame = () => {
               <AgreePercent>8%</AgreePercent>
               <AgreeGraph></AgreeGraph>
               <AgreeBtn>
-                <BtnIcon className="fa-solid fa-moon" />
+                <BtnIcon className="fa-solid fa-cube" />
                 <AgreePoint>10</AgreePoint>
               </AgreeBtn>
             </GameAgreeRightBox>
@@ -229,7 +226,7 @@ const MeetingGame = () => {
               <DisAgreePercent>92%</DisAgreePercent>
               <DisAgreeGraph></DisAgreeGraph>
               <DisAgreeBtn>
-                <BtnIcon className="fa-solid fa-moon" />
+                <BtnIcon className="fa-solid fa-cube" />
                 <AgreePoint>10</AgreePoint>
               </DisAgreeBtn>
             </GameDisAgreeLeftBox>
