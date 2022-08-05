@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
+import { darkTheme } from "styles";
 
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
@@ -22,9 +23,9 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
       isDisplayInfo={true}
       concreteInfo={
         <MyPointBox>
-          <div>포인트</div>
+          <div>큐브</div>
           <MyPoint>
-            <span className="fa-solid fa-sack-dollar" />
+            <i className="fa-solid fa-cube"></i>
             <span>1,237</span>
           </MyPoint>
         </MyPointBox>
@@ -38,6 +39,11 @@ const MyPoint = styled.div`
   align-items: center;
   margin-top: 0.5rem;
   margin-bottom: 1.5rem;
+
+  i {
+    margin-right: 0.5rem;
+    color: ${darkTheme.emphasisColor};
+  }
 `;
 const MarketButton = styled(Button)<{ onClick: Function }>``;
 
