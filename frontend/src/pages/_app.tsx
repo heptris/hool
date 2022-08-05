@@ -1,41 +1,26 @@
 import { useEffect } from "react";
-import { useRouter } from "@tanstack/react-location";
+import { useLocation } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState, setIsNavbar } from "store";
+import { RootState, setNavMode } from "store";
 
 import { Layout } from "components/layouts/Layout";
-import { MeetingModal } from "components/meeting";
-import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
+  const { navMode } = useSelector((state: RootState) => state.navbar);
   const dispatch = useDispatch();
-  const router = useRouter();
-  useEffect(() => {
-    console.log(router.state.location.pathname);
-    router.state.location.pathname === "/auth/login" ||
-    router.state.location.pathname === "/auth/signup" ||
-    router.state.location.pathname === "/auth/find" ||
-    router.state.location.pathname === "/error"
-      ? dispatch(setIsNavbar(false))
-      : dispatch(setIsNavbar(true));
-  });
+  const location = useLocation();
 
-  const { isNavbar, isCreatingRoom, isCreatingGame } = useSelector(
-    (state: RootState) => state.navbar
-  );
+  useEffect(() => {
+    location.current.pathname.slice(0, 6) === `/auth/` ||
+    location.current.pathname === "/error"
+      ? dispatch(setNavMode("unseen"))
+      : location.current.pathname.slice(0, 9) === "/meeting/"
+      ? dispatch(setNavMode("meetingRoom"))
+      : dispatch(setNavMode("default"));
+  }, [location.current.pathname]);
 
   return (
-    <>
-      {isNavbar ? (
-        <Layout>
-          {children}
-          {isCreatingRoom && <MeetingModal />}
-          {isCreatingGame && <MeetingGameModal/>}
-        </Layout>
-      ) : (
-        <>{children}</>
-      )}
-    </>
+    <>{navMode !== "unseen" ? <Layout>{children}</Layout> : <>{children}</>}</>
   );
 }
