@@ -50,9 +50,6 @@ class MemberRepositoryTest {
         Friend friend1 = Friend.createFriend(member3, member.getNickName(), member.getName());//친구 -> 나 추가
         friendRepository.save(friend1);
 
-
-
-
     }
 
 }
