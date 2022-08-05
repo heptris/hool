@@ -234,7 +234,7 @@ class VideoContainer extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="container">
+      <Container>
         {this.state.session === undefined ? (
           <div id="join">
             <div id="join-dialog" className="jumbotron vertical-center">
@@ -276,56 +276,57 @@ class VideoContainer extends Component {
         ) : null}
 
         {this.state.session !== undefined ? (
-          <div id="session">
-            <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
+          <Session>
+            <SessionHeader>
+              <SessionTitle>{mySessionId}</SessionTitle>
               <input
-                className="btn btn-large btn-danger"
                 type="button"
                 id="buttonLeaveSession"
                 onClick={this.leaveSession}
                 value="Leave session"
               />
-            </div>
+            </SessionHeader>
 
-            {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null}
-            <div id="video-container" className="col-md-6">
-              {this.state.publisher !== undefined ? (
-                <div
+            <SessionBody>
+              {this.state.mainStreamManager !== undefined ? (
+                <MainVideoContainer>
+                  <UserVideoComponent
+                    streamManager={this.state.mainStreamManager}
+                  />
+                  {/* <input
+                    type="button"
+                    id="buttonSwitchCamera"
+                    onClick={this.switchCamera}
+                    value="Switch Camera"
+                  /> */}
+                </MainVideoContainer>
+              ) : null}
+              {/* <div id="video-container" className="col-md-6"> */}
+
+              {/* {this.state.publisher !== undefined ? (
+                <StreamContainer
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
-                </div>
-              ) : null}
+                </StreamContainer>
+              ) : null} */}
+
               {this.state.subscribers.map((sub, i) => (
-                <div
+                <StreamContainer
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent streamManager={sub} />
-                </div>
+                </StreamContainer>
               ))}
-            </div>
-          </div>
+              {/* </div> */}
+            </SessionBody>
+          </Session>
         ) : null}
-      </div>
+      </Container>
     );
   }
 
@@ -354,12 +355,12 @@ class VideoContainer extends Component {
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+              "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          console.log("CREATE SESSION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -404,7 +405,7 @@ class VideoContainer extends Component {
           {
             headers: {
               Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+                "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
               "Content-Type": "application/json",
             },
           }
@@ -417,5 +418,38 @@ class VideoContainer extends Component {
     });
   }
 }
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Session = styled.div`
+  width: 100%;
+  height: auto;
+`;
+const SessionHeader = styled.div``;
+const SessionTitle = styled.h1``;
+const SessionBody = styled.div`
+  width: 100%;
+  height: auto;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  /* ratio 4:3 */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.5rem;
+`;
+const MainVideoContainer = styled.div`
+  max-width: 100%;
+  height: auto;
+`;
+const StreamContainer = styled.div`
+  max-width: 100%;
+  height: auto;
+`;
 
 export default VideoContainer;

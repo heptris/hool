@@ -17,11 +17,12 @@ const FlexBox = styled.div`
 const MeetingBox = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
   /* display: grid; */
   /* flex-shrink: 3; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  /* box-sizing: border-box; */
   border-radius: 4px;
   /* grid-template-rows: repeat(auto-fit, minmax(15rem, 1rem)); */
   /* grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr)); */
@@ -35,7 +36,7 @@ const GameMessageBox = styled.div`
 
 const MeetingRoom = () => {
   return (
-    <Container>
+    <ConcreteContainer>
       <FlexBox>
         <MeetingBox>
           <VideoContainer />
@@ -46,8 +47,14 @@ const MeetingRoom = () => {
           <MeetingMessageInput />
         </GameMessageBox>
       </FlexBox>
-    </Container>
+    </ConcreteContainer>
   );
 };
+
+const ConcreteContainer = styled(Container)`
+  padding: 0;
+  width: 100%;
+  height: 92vh;
+`;
 
 export default MeetingRoom;

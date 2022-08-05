@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Publisher, Subscriber } from "openvidu-browser";
 
+import styled from "styled-components";
+import { darkTheme } from "styles/Theme";
+
 type PropsType = {
   streamManager: Publisher | Subscriber;
 };
@@ -20,7 +23,13 @@ function OpenViduVideoComponent(props: PropsType) {
     }
   }, []);
 
-  return <video autoPlay={true} ref={videoRef} />;
+  return <Video autoPlay={true} ref={videoRef} />;
 }
+
+const Video = styled.video`
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+`;
 
 export default OpenViduVideoComponent;
