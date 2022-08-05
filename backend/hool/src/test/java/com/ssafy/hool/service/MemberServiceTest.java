@@ -2,6 +2,7 @@ package com.ssafy.hool.service;
 
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.repository.friend.FriendRepository;
+import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.service.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,9 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private FriendRepository friendRepository;
@@ -76,5 +80,13 @@ class MemberServiceTest {
     @Test
     void 회원조회() {
         Member member = memberService.findByMemberId(20L);
+    }
+
+    @Test
+    void querydslTest() {
+        List<Member> members = memberRepository.findAllCustom();
+        for (Member member : members) {
+            System.out.println(member.getMemberEmail());
+        }
     }
 }

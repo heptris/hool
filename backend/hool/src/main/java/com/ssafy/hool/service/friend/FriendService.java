@@ -78,7 +78,6 @@ public class FriendService {
      */
     public List<FriendRequestDto> getFriendRequestMessage(Long memberId) {
         List<FriendRequestDto> friendRequestDtos = friendRequestRepository.findFriendRequest(memberId);
-        System.out.println("========================");
         return friendRequestDtos;
     }
 

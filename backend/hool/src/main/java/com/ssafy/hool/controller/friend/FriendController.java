@@ -83,9 +83,7 @@ public class FriendController {
         return new ResponseEntity<>(new ResponseDto(200, "친구 수락", null), HttpStatus.OK);
     }
 
-    /**
-     * 같이 하기(친구가 접속해 있는 응원 방에 들어가기)
-     */
+   
     @ApiOperation(value = "같이하기", notes = "친구의 응원방에 따라 들어가기")
     @PostMapping("/join/friend/conference")
     public ResponseEntity<?> joinFriendConference(@RequestBody ConferenceJoinDto conferenceJoinDto) {
@@ -94,7 +92,7 @@ public class FriendController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "응원방으로 친구 초대하기")
+    @ApiOperation(value = "초대하기", notes = "응원방으로 친구 초대하기")
     @PostMapping("/invite/friend")
     public void inviteFriend() {
         return;
