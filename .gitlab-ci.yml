@@ -38,8 +38,7 @@ spring-build:
   artifacts:
     paths: 
       - build/libs/*.jar
-    expire_in:
-      - 10 min
+    expire_in: 10 min
   only:
     - master
     - develop
