@@ -54,7 +54,7 @@ spring-package:
     - cd backend/hool
     - pwd
     - ls -al 
-    - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
+    - echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
   script:
     - docker build -t $IMAGE_NAME_BACK .
     - docker images
