@@ -50,6 +50,7 @@ spring-package:
   services:
     - docker:dind
   before_script:
+    - pwd
    # - cd backend/hool
     - ls -al 
     - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
