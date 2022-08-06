@@ -55,6 +55,7 @@ spring-package:
     - cd backend/hool
     - ls -al
     - docker build -t $IMAGE_NAME_BACK .
+    - docker images
     - docker push $IMAGE_NAME_BACK
   after_script:
     - docker logout
