@@ -28,21 +28,21 @@ run react tests:
     - master
     - develop
 
-spring-build:
-  image: openjdk:8
-  stage: spring-build
-  script: |
-    cd backend/hool/
-    chmod +x gradlew
-    ./gradlew build -x test
-  artifacts:
-    paths: 
-      - ./backend/hool/build/libs/*.jar
-    expire_in: 60 min
-  only:
-    - master
-    - develop
-    - feature/backend
+# spring-build:
+#   image: openjdk:8
+#   stage: spring-build
+#   script: |
+#     cd backend/hool/
+#     chmod +x gradlew
+#     ./gradlew build -x test
+#   artifacts:
+#     paths: 
+#       - ./backend/hool/build/libs/*.jar
+#     expire_in: 60 min
+#   only:
+#     - master
+#     - develop
+#     - feature/backend
 
 spring-package:
   image: docker:latest
@@ -50,7 +50,7 @@ spring-package:
   services:
     - docker:dind
   before_script:
-    - cd backend/hool
+   # - cd backend/hool
     - ls -al 
     - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
   script:
