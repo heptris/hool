@@ -45,7 +45,7 @@ dockerize:
   services:
     - docker:dind
   before_script: |
-    docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
+     echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $IMAGE_NAME ./frontend/
     docker push $IMAGE_NAME
