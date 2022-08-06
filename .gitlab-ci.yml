@@ -32,7 +32,8 @@ spring-build:
   image: java:8-jdk
   stage: spring-build
   script:
-    - ./backend/hool/ gradlew build -x test
+    - cd/backend/hool
+    - ./gradlew build -x test
   artifacts:
     paths:
       - ./backend/hool/build/libs/*.jar
