@@ -73,13 +73,10 @@ deploy:
     chmod 644 ~/.ssh/known_hosts
     chmod 600 $SSH_KEY
     ssh-add $SSH_KEY
-  script:
-    - ssh ubuntu@"$DEPLOY_SERVER_IP" ls
-    - ssh ubuntu@"$DEPLOY_SERVER_IP" bash deploy.sh
-    # - ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu stop
-    # - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rm $FRONT_CON_NAME
-    # - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rmi $IMAGE_NAME
-    # - ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu start
+  script: |
+    ssh ubuntu@"$DEPLOY_SERVER_IP" bash deploy.sh
+  after_script: |
+    ssh ubuntu@"$DEPLOY_SERVER_IP" docker stop $FRONT_CON_NAME && docker start $FRONT_CON_NAME
   when: on_success
   only:
     - master
