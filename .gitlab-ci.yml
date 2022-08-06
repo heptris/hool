@@ -9,6 +9,7 @@
 stages:
   - react-test
   - spring-build
+  - spring-package
   - dockerize
   - deploy
 
@@ -33,11 +34,31 @@ spring-build:
   script: |
     cd backend/hool/
     chmod +x gradlew
-    ./gradlew test
+    ./gradlew build -x test
+  artifacts:
+    paths: 
+      - build/libs/*.jar
+    expire_in:
+      - 10 min
   only:
     - master
     - develop
     - feature/backend
+
+spring-package:
+  image: docker:latest
+  stage: spring-package
+  services:
+    - docker:dind
+  before_script: 
+    - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
+  script:
+    - cd backend/hool
+    - ls -al
+    - docker build -t $IMAGE_NAME_BACK .
+    - docker push $IMAGE_NAME_BACK
+  after_script:
+    - docker logout
 
 # dockerize:
 #   image: docker:latest
