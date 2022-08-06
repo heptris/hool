@@ -66,8 +66,6 @@ spring-build:
 back-dockerize:
   image: docker:latest
   stage: back-dockerize
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script: |
