@@ -49,11 +49,11 @@ spring-package:
   stage: spring-package
   services:
     - docker:dind
-  before_script: 
+  before_script:
+    - cd backend/hool
+    - ls -al 
     - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
   script:
-    - cd backend/hool
-    - ls -al
     - docker build -t $IMAGE_NAME_BACK .
     - docker images
     - docker push $IMAGE_NAME_BACK
