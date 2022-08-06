@@ -42,12 +42,10 @@ run react tests:
 dockerize:
   image: docker:latest
   stage: dockerize
-  variables:
-    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script: |
-    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+    docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
   script: |
     docker build -t $IMAGE_NAME ./frontend/
     docker push $IMAGE_NAME
