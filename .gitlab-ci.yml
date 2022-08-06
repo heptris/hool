@@ -77,7 +77,7 @@ spring-deploy:
   before_script: |
     echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
   script: |
-    cd dockertest
+    cd home/ubuntu/dockertest
     ls -al
   after_script: |
     docker logout
