@@ -80,8 +80,6 @@ spring-deploy:
     cd ..
     pwd
     ls
-    cd /opt/openvidu
-    pwd
   after_script: |
     docker logout
   when: on_success
