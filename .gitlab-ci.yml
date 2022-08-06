@@ -64,7 +64,7 @@ spring-build:
 #     - develop
 
 back-dockerize:
-  image: docker:latest
+  image: docker:git
   stage: back-dockerize
   services:
     - docker:dind
