@@ -50,13 +50,9 @@ spring-package:
   services:
     - docker:dind
   before_script:
-    - pwd
-    - cd backend/hool
-    - pwd
-    - ls -al 
     - echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
   script:
-    - docker build -t $IMAGE_NAME_BACK .
+    - docker build -t $IMAGE_NAME_BACK ./backend/hool/
     - docker images
     - docker push $IMAGE_NAME_BACK
   after_script:
