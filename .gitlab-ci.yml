@@ -71,9 +71,10 @@ back-dockerize:
   services:
     - docker:dind
   before_script: |
-    docker login -u $DOCKER_HUB_USER_BACK --password-stin < $DOCKER_HUB_PW_BACK
+    docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
   script: |
-    docker build -t $IMAGE_NAME_BACK ./backend/hool/
+    cd backend/hool
+    docker build -t $IMAGE_NAME_BACK .
     docker push $IMAGE_NAME_BACK
   after_script: |
     docker logout
