@@ -59,6 +59,10 @@ spring-package:
     - docker push $IMAGE_NAME_BACK
   after_script:
     - docker logout
+  only:
+    - master
+    - develop
+    - feature/backend
 
 # dockerize:
 #   image: docker:latest
