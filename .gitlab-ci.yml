@@ -33,7 +33,8 @@ spring-build:
   stage: spring-build
   script:
     - cd backend/hool
-    - chmod +x ./gradlew build -x test
+    - chmod +x ./gradlew
+    - ./gradlew build -x test
   artifacts:
     paths:
       - ./backend/hool/build/libs/*.jar
