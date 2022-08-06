@@ -10,6 +10,7 @@ stages:
   - react-test
   - spring-build
   - spring-package
+  - spring-deploy
   - dockerize
   - deploy
 
@@ -63,6 +64,29 @@ spring-package:
     - master
     - develop
     - feature/backend
+
+spring-deploy:
+  image: docker:latest
+  stage: spring-deploy
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind
+  tags:
+    - deployment
+  before_script: |
+    echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
+  script: |
+    cd dockertest
+    ls -al
+  after_script: |
+    docker logout
+  when: on_success
+  only:
+    - master
+    - develop
+    - feature/backend
+
 
 # dockerize:
 #   image: docker:latest
