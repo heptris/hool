@@ -71,7 +71,7 @@ back-dockerize:
   before_script: |
     cd backend/hool
     ls -al
-    docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
+    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $IMAGE_NAME_BACK .
     docker push $IMAGE_NAME_BACK
