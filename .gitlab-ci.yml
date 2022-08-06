@@ -42,6 +42,8 @@ run react tests:
 dockerize:
   image: docker:latest
   stage: dockerize
+  variables:
+    DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
   before_script: |
