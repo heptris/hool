@@ -55,7 +55,6 @@ dockerize:
     docker logout
   only:
     - master
-    - develop
 
 deploy:
   image: docker:latest
@@ -75,9 +74,6 @@ deploy:
     ssh-add $SSH_KEY
   script: |
     ssh ubuntu@"$DEPLOY_SERVER_IP" bash deploy.sh
-  after_script: |
-    ssh ubuntu@"$DEPLOY_SERVER_IP" docker stop $FRONT_CON_NAME && docker start $FRONT_CON_NAME
   when: on_success
   only:
     - master
-    - develop
