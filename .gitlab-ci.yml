@@ -53,7 +53,7 @@ spring-package:
     - docker:dind
   before_script:
     - docker images
-    - echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
+    - echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script:
     - docker build -t $IMAGE_NAME_BACK ./backend/hool/
     - docker images
