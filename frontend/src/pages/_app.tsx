@@ -11,7 +11,7 @@ export default function App({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
-    console.log(router.state.location.pathname);
+    console.log(router?.state?.location?.pathname);
     router?.state?.location?.pathname === "/auth/login" ||
     router?.state?.location?.pathname === "/auth/signup" ||
     router?.state?.location?.pathname === "/auth/find" ||
