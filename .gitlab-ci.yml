@@ -10,22 +10,23 @@ stages:
   - react-test
   - spring-test
   - dockerize
+  - back-dockerize
   - deploy
 
 cache:
   paths:
     - node_modules/
 
-run react tests:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    npm install --force
-    npm run test
-  only:
-    - master
-    - develop
+# run react tests:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     npm install --force
+#     npm run test
+#   only:
+#     - master
+#     - develop
 
 # run spring tests:
 #   image: openjdk:8
@@ -39,44 +40,63 @@ run react tests:
 #     - develop
 #     - feature/backend
 
-dockerize:
-  image: docker:latest
-  stage: dockerize
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-  services:
-    - docker:dind
-  before_script: |
-    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
-  script: |
-    docker build -t $IMAGE_NAME ./frontend/
-    docker push $IMAGE_NAME
-  after_script: |
-    docker logout
-  only:
-    - master
-    - develop
+# dockerize:
+#   image: docker:latest
+#   stage: dockerize
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#   services:
+#     - docker:dind
+#   before_script: |
+#     echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+#   script: |
+#     docker build -t $IMAGE_NAME ./frontend/
+#     docker push $IMAGE_NAME
+#   after_script: |
+#     docker logout
+#   only:
+#     - master
+#     - develop
 
-deploy:
+back-dockerize:
   image: docker:latest
-  stage: deploy
+  stage: back-dockerize
   variables:
     DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
-  tags:
-    - deployment
   before_script: |
-    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+    echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
   script: |
-    cd /opt/openvidu/
-    ./openvidu stop
-    docker rm $FRONT_CON_NAME
-    docker rmi $IMAGE_NAME
-    ./openvidu start
+    docker build -t $IMAGE_NAME_BACK ./backend/hool/
+    docker push $IMAGE_NAME_BACK
   after_script: |
     docker logout
-  when: on_success
   only:
     - master
     - develop
+    - feature/backend
+
+# deploy:
+#   image: docker:latest
+#   stage: deploy
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#   services:
+#     - docker:dind
+#   tags:
+#     - deployment
+#   before_script: |
+#     echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+#   script: |
+#     cd /opt/openvidu/
+#     ./openvidu stop
+#     docker rm $FRONT_CON_NAME
+#     docker rmi $IMAGE_NAME
+#     ./openvidu start
+#   after_script: |
+#     docker logout
+#   when: on_success
+#   only:
+#     - master
+#     - develop
