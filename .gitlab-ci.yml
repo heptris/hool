@@ -77,7 +77,10 @@ spring-deploy:
   before_script: |
     echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
   script: |
-    ls -al
+    pwd
+    ls
+    cd /opt/openvidu
+    pwd
   after_script: |
     docker logout
   when: on_success
