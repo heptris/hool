@@ -51,15 +51,13 @@ spring-package:
     DOCKER_TLS_CERTDIR: ""
   services:
     - docker:dind
-  before_script:
-    - docker images
-    - echo $DOCKER_HUB_PW | winpty docker login -u $DOCKER_HUB_USER --password-stdin
-  script:
-    - docker build -t $IMAGE_NAME_BACK ./backend/hool/
-    - docker images
-    - docker push $IMAGE_NAME_BACK
-  after_script:
-    - docker logout
+  before_script: |
+    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+  script: |
+    docker build -t $IMAGE_NAME_BACK ./backend/hool/
+    docker push $IMAGE_NAME_BACK
+  after_script: |
+    docker logout
   only:
     - master
     - develop
