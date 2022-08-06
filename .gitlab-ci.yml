@@ -13,9 +13,9 @@ stages:
   - dockerize
   - deploy
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
 run react tests:
   image: node:16.16
@@ -51,7 +51,8 @@ spring-package:
     - docker:dind
   before_script:
     - pwd
-   # - cd backend/hool
+    - cd backend/hool
+    - pwd
     - ls -al 
     - docker login -u $DOCKER_HUB_USER_BACK --password-stdin < $DOCKER_HUB_PW_BACK
   script:
