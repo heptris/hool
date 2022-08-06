@@ -47,7 +47,7 @@ dockerize:
   services:
     - docker:dind
   before_script: |
-     echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $IMAGE_NAME ./frontend/
     docker push $IMAGE_NAME
@@ -66,19 +66,19 @@ deploy:
     - docker:dind
   tags:
     - deployment
-  before_script: |
-    mkdir -p ~/.ssh
-    eval $(ssh-agent -s)
-    echo $SSH_KNOWN_HOSTS >> ~/.ssh/known_hosts
-    chmod 644 ~/.ssh/known_hosts
-    chmod 600 $SSH_KEY
-    ssh-add $SSH_KEY
-  script: |
-    ssh ubuntu@"$DEPLOY_SERVER_IP" cd /opt/openvidu/
-    ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu stop
-    ssh ubuntu@"$DEPLOY_SERVER_IP" docker rm $FRONT_CON_NAME
-    ssh ubuntu@"$DEPLOY_SERVER_IP" docker rmi $IMAGE_NAME
-    ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu start
+  before_script:
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo $SSH_KNOWN_HOSTS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - chmod 600 $SSH_KEY
+    - ssh-add $SSH_KEY
+  script:
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" cd /opt/openvidu/
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu stop
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rm $FRONT_CON_NAME
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rmi $IMAGE_NAME
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu start
   when: on_success
   only:
     - master
