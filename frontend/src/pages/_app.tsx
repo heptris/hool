@@ -18,7 +18,7 @@ export default function App({ children }: { children: React.ReactNode }) {
     router.state.location.pathname === "/error"
       ? dispatch(setIsNavbar(false))
       : dispatch(setIsNavbar(true));
-  });
+  }, []);
 
   const { isNavbar, isCreatingRoom } = useSelector(
     (state: RootState) => state.navbar
