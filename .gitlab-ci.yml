@@ -75,7 +75,7 @@ deploy:
     ssh-add $SSH_KEY
   script:
     - ssh ubuntu@"$DEPLOY_SERVER_IP" ls
-    - ssh ubuntu@"$DEPLOY_SERVER_IP" deploy.sh
+    - ssh ubuntu@"$DEPLOY_SERVER_IP" bash deploy.sh
     # - ssh ubuntu@"$DEPLOY_SERVER_IP" ./openvidu stop
     # - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rm $FRONT_CON_NAME
     # - ssh ubuntu@"$DEPLOY_SERVER_IP" docker rmi $IMAGE_NAME
