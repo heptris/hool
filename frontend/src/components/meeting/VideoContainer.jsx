@@ -9,7 +9,10 @@ import { darkTheme } from "styles";
 import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
 
-const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
+const OPENVIDU_SERVER_URL =
+  "https://" +
+  window.location.hostname +
+  import.meta.env.VITE_OPENVIDU_SERVER_PORT;
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 class VideoContainer extends Component {
