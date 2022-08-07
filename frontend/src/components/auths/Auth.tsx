@@ -5,8 +5,6 @@ import { gapi } from "gapi-script";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import googleLogoImg from "assets/google-logo-img.png";
-
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import GoogleLoginBtn from "./GoogleLoginBtn";
@@ -37,9 +35,13 @@ const Auth = () => {
           placeholderText="Password"
           type="password"
         />
-        <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
+        <Link to={"/auth/find"}>
+          <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
+        </Link>
         <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
-        <Text>계정이 없으신가요? 회원가입</Text>
+        <Link to={"/auth/signup"}>
+          <Text>계정이 없으신가요? 회원가입</Text>
+        </Link>
         <GoogleLoginBtn />
       </FormBox>
     </Container>
