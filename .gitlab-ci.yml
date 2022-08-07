@@ -80,8 +80,7 @@ spring-deploy:
     chmod 600 $SSH_KEY
     ssh-add $SSH_KEY
   script: |
-    pwd
-    ls
+     ssh ubuntu@"$DEPLOY_SERVER_IP" bash springdeploy.sh
   when: on_success
   only:
     - master
