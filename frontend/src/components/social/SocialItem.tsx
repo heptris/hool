@@ -16,20 +16,12 @@ import { UserType } from "pages/social";
 import Card from "components/commons/Card";
 
 type PropsType = {
-  key: number;
   isDisplayMyFriends: boolean;
 } & UserType;
 
 function SocialItem(props: PropsType) {
-  const {
-    key,
-    profileImg,
-    nickname,
-    email,
-    curPos,
-    status,
-    isDisplayMyFriends,
-  } = props;
+  const { profileImg, nickname, email, curPos, status, isDisplayMyFriends } =
+    props;
 
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
   const [isDisplayOption, setIsDisplayOption] = useState(false);
