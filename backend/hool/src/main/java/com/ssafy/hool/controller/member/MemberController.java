@@ -3,6 +3,7 @@ package com.ssafy.hool.controller.member;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.emoji.EmojiDetailRequestDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
+import com.ssafy.hool.dto.emoji.MemberEmojiFavoriteReqDto;
 import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.exception.ex.CustomException;
@@ -100,8 +101,10 @@ public class MemberController {
 
     @ApiOperation(value = "이모지 즐겨찾기 등록 / 해제")
     @PostMapping("/detail/emoji/favorite")
-    public ResponseEntity<?> detailEmojiFavorite() {
-        return null;
+    public ResponseEntity<?> detailEmojiFavorite(@RequestBody MemberEmojiFavoriteReqDto memberEmojiFavoriteReqDto) {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        memberService.memberEmojiFavoriteToggle(memberId, memberEmojiFavoriteReqDto.getEmojiId());
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "즐겨찾기 토글", null), HttpStatus.OK);
     }
 
 }
