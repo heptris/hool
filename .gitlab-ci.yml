@@ -18,52 +18,52 @@ stages:
 #   paths:
 #     - node_modules/
 
-run react tests:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    npm install --force
-    npm run test
-  only:
-    - master
-    - develop
+# run react tests:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     npm install --force
+#     npm run test
+#   only:
+#     - master
+#     - develop
 
-spring-build:
-  image: openjdk:8
-  stage: spring-build
-  script: |
-    cd backend/hool/
-    chmod +x gradlew
-    ./gradlew build -x test
-  artifacts:
-    paths: 
-      - ./backend/hool/build/libs/*.jar
-    expire_in: 60 min
-  only:
-    - master
-    - develop
-    - feature/backend
+# spring-build:
+#   image: openjdk:8
+#   stage: spring-build
+#   script: |
+#     cd backend/hool/
+#     chmod +x gradlew
+#     ./gradlew build -x test
+#   artifacts:
+#     paths: 
+#       - ./backend/hool/build/libs/*.jar
+#     expire_in: 60 min
+#   only:
+#     - master
+#     - develop
+#     - feature/backend
 
-spring-package:
-  image: docker:latest
-  stage: spring-package
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-  services:
-    - docker:dind
-  before_script: |
-    cd backend/hool
-    echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
-  script: |
-    docker build -t $IMAGE_NAME_BACK .
-    docker push $IMAGE_NAME_BACK
-  after_script: |
-    docker logout
-  only:
-    - master
-    - develop
-    - feature/backend
+# spring-package:
+#   image: docker:latest
+#   stage: spring-package
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#   services:
+#     - docker:dind
+#   before_script: |
+#     cd backend/hool
+#     echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
+#   script: |
+#     docker build -t $IMAGE_NAME_BACK .
+#     docker push $IMAGE_NAME_BACK
+#   after_script: |
+#     docker logout
+#   only:
+#     - master
+#     - develop
+#     - feature/backend
 
 spring-deploy:
   image: docker:latest
