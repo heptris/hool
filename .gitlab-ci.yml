@@ -29,41 +29,41 @@ stages:
 #     - master
 #     - develop
 
-# spring-build:
-#   image: openjdk:8
-#   stage: spring-build
-#   script: |
-#     cd backend/hool/
-#     chmod +x gradlew
-#     ./gradlew build -x test
-#   artifacts:
-#     paths: 
-#       - ./backend/hool/build/libs/*.jar
-#     expire_in: 60 min
-#   only:
-#     - master
-#     - develop
-#     - feature/backend
+spring-build:
+  image: openjdk:8
+  stage: spring-build
+  script: |
+    cd backend/hool/
+    chmod +x gradlew
+    ./gradlew build -x test
+  artifacts:
+    paths: 
+      - ./backend/hool/build/libs/*.jar
+    expire_in: 60 min
+  only:
+    - master
+    - develop
+    - feature/backend
 
-# spring-package:
-#   image: docker:latest
-#   stage: spring-package
-#   variables:
-#     DOCKER_TLS_CERTDIR: ""
-#   services:
-#     - docker:dind
-#   before_script: |
-#     cd backend/hool
-#     echo $BACK_DOCKER_HUB_PW | docker login -u $BACK_DOCKER_HUB_USER --password-stdin
-#   script: |
-#     docker build -t $BACK_IMAGE_NAME .
-#     docker push $BACK_IMAGE_NAME
-#   after_script: |
-#     docker logout
-#   only:
-#     - master
-#     - develop
-#     - feature/backend
+spring-package:
+  image: docker:latest
+  stage: spring-package
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind
+  before_script: |
+    cd backend/hool
+    echo $BACK_DOCKER_HUB_PW | docker login -u $BACK_DOCKER_HUB_USER --password-stdin
+  script: |
+    docker build -t $BACK_IMAGE_NAME .
+    docker push $BACK_IMAGE_NAME
+  after_script: |
+    docker logout
+  only:
+    - master
+    - develop
+    - feature/backend
 
 spring-deploy:
   image: docker:latest
