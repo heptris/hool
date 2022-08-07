@@ -453,6 +453,8 @@ class VideoContainer extends Component {
             Authorization:
               "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,POST",
           },
         })
         .then((response) => {
@@ -503,6 +505,8 @@ class VideoContainer extends Component {
               Authorization:
                 "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
               "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET,POST",
             },
           }
         )
