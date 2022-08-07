@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-location";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import { ROUTES_NAME } from "constant";
 
-import { setIsCreatingRoom, setIsCreatingGame } from "store";
+import { RootState, setIsCreatingRoom, setIsCreatingGame } from "store";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
@@ -20,33 +20,62 @@ const NavSide = () => {
   const openCreatingGameModal = () => {
     dispatch(setIsCreatingGame(true));
   };
+  const { navMode } = useSelector((state: RootState) => state.navbar);
+
   return (
     <Side>
       <NavLink to={MAIN}>
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        <NavLink to={MEETING}>
-          <Btn>
-            <Icon className="fa-solid fa-list" />
-          </Btn>
-        </NavLink>
-        <NavLink to={SOCIAL}>
-          <Btn>
-            <Icon className="fa-solid fa-users" />
-          </Btn>
-        </NavLink>
-        <NavLink to={MARKET}>
-          <Btn>
-            <Icon className="fa-solid fa-face-grin-wide" />
-          </Btn>
-        </NavLink>
-        <UtilButton onClick={openCreatingModal}>
-          <Btn>
-            <Icon className="fa-solid fa-plus" />
-          </Btn>
-        </UtilButton>
-        <UtilButton onClick={openCreatingGameModal}>
+        {navMode === "meetingRoom" ? (
+          <>
+            <UtilButton>
+              <Btn>
+                <Icon className="fa-solid fa-microphone"></Icon>
+              </Btn>
+            </UtilButton>
+            <UtilButton>
+              <Btn>
+                <Icon className="fa-solid fa-video"></Icon>
+              </Btn>
+            </UtilButton>
+            <UtilButton>
+              <Btn>
+                <Icon className="fa-solid fa-comment"></Icon>
+              </Btn>
+            </UtilButton>
+            <UtilButton onClick={openCreatingGameModal}>
+              <Btn>
+                <Icon className="fa-solid fa-gamepad"></Icon>
+              </Btn>
+            </UtilButton>
+          </>
+        ) : (
+          <>
+            <NavLink to={MEETING}>
+              <Btn>
+                <Icon className="fa-solid fa-list" />
+              </Btn>
+            </NavLink>
+            <NavLink to={SOCIAL}>
+              <Btn>
+                <Icon className="fa-solid fa-users" />
+              </Btn>
+            </NavLink>
+            <NavLink to={MARKET}>
+              <Btn>
+                <Icon className="fa-solid fa-face-grin-wide" />
+              </Btn>
+            </NavLink>
+            <UtilButton onClick={openCreatingModal}>
+              <Btn>
+                <Icon className="fa-solid fa-plus" />
+              </Btn>
+            </UtilButton>
+          </>
+        )}
+        <UtilButton>
           <Btn>
             <Icon className="fa-solid fa-gear" />
           </Btn>
