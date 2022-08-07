@@ -89,4 +89,9 @@ class MemberServiceTest {
             System.out.println(member.getMemberEmail());
         }
     }
+
+    @Test
+    void 이모지즐겨찾기() {
+        memberService.memberEmojiFavoriteToggle(4L, 2L);
+    }
 }

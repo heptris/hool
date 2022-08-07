@@ -97,4 +97,6 @@ public class FriendService {
         friendRepository.deleteFriend(memberId, friendMemberId);
         friendRepository.deleteFriend(friendMemberId, memberId);
     }
+
+
 }

@@ -18,6 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
@@ -52,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/admin").hasAnyRole("ADMIN")
+                .antMatchers("/api/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/**").permitAll()
 
@@ -66,7 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("*");
+    //    configuration.addAllowedOrigin("*");
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5442", "https://i7a408.p.ssafy.io",
+                "https://i7a408.p.ssafy.io:5442"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

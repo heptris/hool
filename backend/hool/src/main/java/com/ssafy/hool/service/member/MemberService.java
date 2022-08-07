@@ -1,6 +1,7 @@
 package com.ssafy.hool.service.member;
 
 import com.ssafy.hool.domain.emoji.Emoji;
+import com.ssafy.hool.domain.emoji.Member_emoji;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.emoji.DetailMemberEmojiDto;
 import com.ssafy.hool.dto.emoji.EmojiDto;
@@ -12,6 +13,7 @@ import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.friend.FriendRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,10 +112,9 @@ public class MemberService {
         return detailEmoji;
     }
 
-    /**
-     * 회원 이모지 즐겨찾기 등록 / 해제
-     */
-    public void EmojiFavorite() {
-        
+    @ApiOperation(value = "이모지 즐겨찾기", notes = "토글 방식 예상")
+    public void memberEmojiFavoriteToggle(Long memberId, Long emojiId) {
+        Member_emoji member_emoji = memberEmojiRepository.findByMemberIdAndEmojiId(memberId, emojiId);
+        member_emoji.setIs_favorite(!member_emoji.getIs_favorite());
     }
 }
