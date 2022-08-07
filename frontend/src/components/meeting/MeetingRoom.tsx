@@ -1,12 +1,44 @@
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
+import { RootState } from "store";
+
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
-
-import Container from "components/commons/Container";
 import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
-import VideoContainer from "./VideoContainer";
+import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
+
+const MeetingRoom = () => {
+  const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
+  return (
+    <>
+      <Container>
+        <FlexBox>
+          <MeetingBox>
+            <MeetingVideo />
+            <MeetingVideo />
+            <MeetingVideo />
+            <MeetingVideo />
+          </MeetingBox>
+          <GameMessageBox>
+            <MeetingGame />
+            <MeetingMessageShow />
+            <MeetingMessageInput />
+          </GameMessageBox>
+        </FlexBox>
+      </Container>
+      {isCreatingGame && <MeetingGameModal />}
+    </>
+  );
+};
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const FlexBox = styled.div`
   width: 100%;
@@ -17,11 +49,12 @@ const FlexBox = styled.div`
 const MeetingBox = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
   /* display: grid; */
   /* flex-shrink: 3; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  /* box-sizing: border-box; */
   border-radius: 4px;
   /* grid-template-rows: repeat(auto-fit, minmax(15rem, 1rem)); */
   /* grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr)); */
@@ -32,22 +65,5 @@ const GameMessageBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-const MeetingRoom = () => {
-  return (
-    <Container>
-      <FlexBox>
-        <MeetingBox>
-          <VideoContainer />
-        </MeetingBox>
-        <GameMessageBox>
-          <MeetingGame />
-          <MeetingMessageShow />
-          <MeetingMessageInput />
-        </GameMessageBox>
-      </FlexBox>
-    </Container>
-  );
-};
 
 export default MeetingRoom;

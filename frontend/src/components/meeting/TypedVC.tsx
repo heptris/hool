@@ -387,7 +387,7 @@ class VideoContainer extends Component {
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+              "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
@@ -437,7 +437,7 @@ class VideoContainer extends Component {
           {
             headers: {
               Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+                "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
               "Content-Type": "application/json",
             },
           }

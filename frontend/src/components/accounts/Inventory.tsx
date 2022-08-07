@@ -134,9 +134,10 @@ function Inventory() {
 
       <InventoryContent>
         {isOwnItems
-          ? myOwnItems.map((item) => {
+          ? myOwnItems.map((item, i) => {
               return (
                 <div
+                  key={i}
                   onClick={() => {
                     switchIsDisplayDetail();
                     setDetailInfo(item);

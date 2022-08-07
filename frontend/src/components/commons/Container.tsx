@@ -12,7 +12,7 @@ function Container(props: PropsType) {
 
 const ConcreteContainer = styled.div`
   width: 83.333333%;
-  min-height: 100vh;
+  min-height: 92vh;
   display: flex;
   flex-direction: column;
   justify-content: start;
