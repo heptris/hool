@@ -1,34 +1,32 @@
 import styled from "styled-components";
 
-import SocialItem from "./SocialItem";
+import { UserType } from "pages/social";
 
-export type UserType = {
-  profileImg: number;
-  nickname: string;
-  email: string;
-  curPos: string;
-  status: string;
-};
+import SocialItem from "./SocialItem";
 
 type PropsType = {
   myFriends: UserType[];
+  isDisplayMyFriends: boolean;
 };
 
-function MyFriends({ myFriends }: PropsType) {
+function MyFriends({ myFriends, isDisplayMyFriends }: PropsType) {
   return (
     <MyFriendsBox>
-      {myFriends.map((user: UserType) => {
-        return <SocialItem {...user} />;
-      })}
+      {myFriends.map((user, i) => (
+        <SocialItem key={i} isDisplayMyFriends={isDisplayMyFriends} {...user} />
+      ))}
     </MyFriendsBox>
   );
 }
 
 const MyFriendsBox = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5vw;
+  margin-top: 2rem;
+  justify-content: center;
 `;
 
 export default MyFriends;
