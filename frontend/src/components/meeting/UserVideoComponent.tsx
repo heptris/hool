@@ -1,6 +1,9 @@
 import React from "react";
 import { Publisher, Subscriber } from "openvidu-browser";
 
+import styled from "styled-components";
+import { darkTheme } from "styles";
+
 import OpenViduVideoComponent from "./OvVideo";
 
 type PropsType = {
@@ -22,15 +25,34 @@ function UserVideoComponent(props: PropsType) {
   return (
     <div>
       {props.streamManager !== undefined ? (
-        <div className="streamcomponent">
+        <StreamComponent>
           <OpenViduVideoComponent streamManager={props.streamManager} />
-          <div>
+          <NameBox>
             <p>{getNickNameTag()}</p>
-          </div>
-        </div>
+          </NameBox>
+        </StreamComponent>
       ) : null}
     </div>
   );
 }
+
+const StreamComponent = styled.div`
+  max-width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const NameBox = styled.div`
+  display: flex;
+  justify-content: center;
+
+  p {
+    background-color: ${darkTheme.emphasisColor};
+    border-radius: 4px;
+    padding: 0.3rem 0.3rem;
+  }
+`;
 
 export default UserVideoComponent;

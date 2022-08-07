@@ -41,7 +41,7 @@ function Profile() {
         <Modal
           header={
             <PointLogHeader>
-              <span>포인트 내역</span>
+              <span>큐브 획득 내역</span>
             </PointLogHeader>
           }
           body={
@@ -77,7 +77,7 @@ function Profile() {
           <Clickable onClick={switchIsDisplayModal}>
             <Info>
               <InfoNumber>{userPoint}</InfoNumber>
-              <InfoContent>포인트</InfoContent>
+              <InfoContent>큐브</InfoContent>
             </Info>
           </Clickable>
 

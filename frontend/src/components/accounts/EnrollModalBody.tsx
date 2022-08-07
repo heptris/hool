@@ -49,6 +49,11 @@ const InfoText = styled.span`
 
 const SubmitBtn = styled(Button)`
   margin-top: 2rem;
+  background-color: ${darkTheme.darkColor};
+
+  &:hover {
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
 
 export default EnrollModalBody;

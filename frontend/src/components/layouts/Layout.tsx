@@ -1,12 +1,18 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
+
+import { RootState } from "store";
 
 import Footer from "./Footer";
 import NavHeader from "./NavHeader";
 import NavSide from "./NavSide";
+import { MeetingModal } from "components/meeting";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { isCreatingRoom } = useSelector((state: RootState) => state.navbar);
+
   return (
     <>
       <NavSide />
@@ -15,6 +21,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Container>{children}</Container>
         <Footer />
       </Main>
+      {isCreatingRoom && <MeetingModal />}
     </>
   );
 };
