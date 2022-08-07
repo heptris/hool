@@ -5,23 +5,22 @@ import { darkTheme } from "styles/Theme";
 
 import { RootState } from "store";
 
+import Container from "components/commons/Container";
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
 import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
+import VideoContainer from "./VideoContainer";
 
 const MeetingRoom = () => {
   const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
   return (
     <>
-      <Container>
+      <ConcreteContainer>
         <FlexBox>
           <MeetingBox>
-            <MeetingVideo />
-            <MeetingVideo />
-            <MeetingVideo />
-            <MeetingVideo />
+            <VideoContainer />
           </MeetingBox>
           <GameMessageBox>
             <MeetingGame />
@@ -29,23 +28,22 @@ const MeetingRoom = () => {
             <MeetingMessageInput />
           </GameMessageBox>
         </FlexBox>
-      </Container>
+      </ConcreteContainer>
       {isCreatingGame && <MeetingGameModal />}
     </>
   );
 };
 
-const Container = styled.div`
+const ConcreteContainer = styled(Container)`
+  padding: 0;
   width: 100%;
-  height: 100%;
+  height: 92vh;
 `;
-
 const FlexBox = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
 `;
-
 const MeetingBox = styled.div`
   width: 100%;
   height: 100%;
@@ -60,7 +58,6 @@ const MeetingBox = styled.div`
   /* grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr)); */
   background-color: ${darkTheme.mainColor};
 `;
-
 const GameMessageBox = styled.div`
   display: flex;
   flex-direction: column;
