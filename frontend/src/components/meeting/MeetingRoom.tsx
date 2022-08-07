@@ -15,6 +15,8 @@ import VideoContainer from "./VideoContainer";
 
 const MeetingRoom = () => {
   const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
+  const { isShowingMessage } = useSelector((state: RootState) => state.navbar);
+  const { isShowingGame } = useSelector((state: RootState) => state.navbar);
   return (
     <>
       <ConcreteContainer>
@@ -23,9 +25,9 @@ const MeetingRoom = () => {
             <VideoContainer />
           </MeetingBox>
           <GameMessageBox>
-            <MeetingGame />
-            <MeetingMessageShow />
-            <MeetingMessageInput />
+            {isShowingGame && <MeetingGame />}
+            {isShowingMessage && <MeetingMessageShow />}
+            {isShowingMessage && <MeetingMessageInput />}
           </GameMessageBox>
         </FlexBox>
       </ConcreteContainer>

@@ -3,12 +3,44 @@ import { darkTheme } from "styles/Theme";
 import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+
+const MeetingMessageShow = () => {
+  const isShowingGame = useSelector(
+    (state: RootState) => state.navbar.isShowingGame
+  );
+  return (
+    <>
+      <MessageShowTopBox isShowingGame={isShowingGame}>
+        <Icon className="fa-solid fa-comment" />
+        <h1>Chat</h1>
+      </MessageShowTopBox>
+      <MessageShowBottomBox isShowingGame={isShowingGame}>
+        <UserBox>
+          <ProfileImg
+            src={profileDefaultImg}
+            alt={`${profileDefaultImg}의 프로필 이미지`}
+          />
+          <UserInfoMessageBox>
+            <UsernameText>Andrew</UsernameText>
+            <MessageTextBox>
+              <MessageText>안녕하세요ㅎㅎ</MessageText>
+            </MessageTextBox>
+          </UserInfoMessageBox>
+        </UserBox>
+      </MessageShowBottomBox>
+    </>
+  );
+};
 
 const MessageShowTopBox = styled(MessageBox)`
   height: 3rem;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   background-color: ${darkTheme.mainColor};
+  margin-top: ${(props) =>
+    props.isShowingGame ? "1rem" : "0rem"}; //  게임 컴포넌트 없을때,
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -16,7 +48,8 @@ const MessageShowTopBox = styled(MessageBox)`
 
 const MessageShowBottomBox = styled(MessageBox)`
   margin-top: 0rem;
-  height: 34.56rem;
+  height: ${(props) =>
+    props.isShowingGame ? "52%" : "100%"}; //게임 컴포넌트 없을때,
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   background-color: ${darkTheme.adaptiveGrey800};
@@ -66,30 +99,5 @@ const MessageText = styled.h1`
   font-size: 0.8rem;
   padding: 0.5rem;
 `;
-
-const MeetingMessageShow = () => {
-  return (
-    <>
-      <MessageShowTopBox>
-        <Icon className="fa-solid fa-comment" />
-        <h1>Chat</h1>
-      </MessageShowTopBox>
-      <MessageShowBottomBox>
-        <UserBox>
-          <ProfileImg
-            src={profileDefaultImg}
-            alt={`${profileDefaultImg}의 프로필 이미지`}
-          />
-          <UserInfoMessageBox>
-            <UsernameText>Andrew</UsernameText>
-            <MessageTextBox>
-              <MessageText>안녕하세요ㅎㅎ</MessageText>
-            </MessageTextBox>
-          </UserInfoMessageBox>
-        </UserBox>
-      </MessageShowBottomBox>
-    </>
-  );
-};
 
 export default MeetingMessageShow;

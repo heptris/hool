@@ -4,11 +4,15 @@ interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
   isCreatingRoom: boolean;
   isCreatingGame: boolean;
+  isShowingGame: boolean;
+  isShowingMessage: boolean;
 }
 const initialState: NavMode = {
   navMode: "default",
   isCreatingRoom: false,
   isCreatingGame: false,
+  isShowingGame: false,
+  isShowingMessage: false,
 };
 const navbar = createSlice({
   name: "navbar",
@@ -23,6 +27,12 @@ const navbar = createSlice({
     setIsCreatingGame(state, actions) {
       state.isCreatingGame = actions.payload;
     },
+    setIsShowingGame(state, actions) {
+      state.isShowingGame = actions.payload;
+    },
+    setIsShowingMessage(state, actions) {
+      state.isShowingMessage = actions.payload;
+    }
   },
 });
 export const store = configureStore({
@@ -30,7 +40,7 @@ export const store = configureStore({
     navbar: navbar.reducer,
   },
 });
-export const { setNavMode, setIsCreatingRoom, setIsCreatingGame } =
+export const { setNavMode, setIsCreatingRoom, setIsCreatingGame, setIsShowingGame, setIsShowingMessage } =
   navbar.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
