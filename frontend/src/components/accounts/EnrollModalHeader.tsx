@@ -15,18 +15,21 @@ function EnrollModalHeader() {
 }
 
 const TitleWrapper = styled.div`
+  width: 39vh;
   display: flex;
   flex-direction: column;
 `;
 const Title = styled.h3`
-  font-size: 2rem;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
 `;
 const SubTitle = styled.p`
+  font-size: 0.8rem;
   margin-top: 1rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const Header = styled.div`
-  padding: 2rem 1rem;
+  padding: 1rem 0.5rem;
   width: 100%;
   display: flex;
   align-items: center;

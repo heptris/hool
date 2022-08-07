@@ -31,13 +31,13 @@ const SignUp = () => {
           <LabelInput
             text="이름"
             placeholderText="Name"
-            widthSize="8.6rem"
+            widthSize="9.5rem"
             type="text"
           />
           <LabelInput
             text="별명"
             placeholderText="Nickname"
-            widthSize="8.6rem"
+            widthSize="9.5rem"
             type="text"
             info="*사용 중인 별명입니다"
           />

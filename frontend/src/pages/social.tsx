@@ -7,6 +7,14 @@ import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
 import Requests from "components/social/Requests";
 
+export type UserType = {
+  profileImg: number;
+  nickname: string;
+  email: string;
+  curPos: string;
+  status: string;
+};
+
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
 
@@ -41,9 +49,25 @@ function SocialPage() {
     },
   ];
 
-  const requests = [{ nickname: "Ronaldo", msg: "친해지고싶어요." }];
+  const requests = [
+    {
+      profileImg: 0,
+      nickname: "Thomas",
+      email: "tho@gmail.com",
+      curPos: "일본 vs 대한민국 같이봐요",
+      status: "live",
+    },
+  ];
 
-  const searchRes = [{ nickname: "Kruskal", email: "mst@gmail.com" }];
+  const searchRes = [
+    {
+      profileImg: 0,
+      nickname: "Thomas",
+      email: "tho@gmail.com",
+      curPos: "일본 vs 대한민국 같이봐요",
+      status: "live",
+    },
+  ];
 
   return (
     <Container>
@@ -51,8 +75,15 @@ function SocialPage() {
         isDisplayMyFriends={isDisplayMyFriends}
         setIsDisplayMyFriends={setIsDisplayMyFriends}
       />
-      {isDisplayMyFriends && <MyFriends myFriends={myFriends} />}
-      {!isDisplayMyFriends && <Requests />}
+      {isDisplayMyFriends && (
+        <MyFriends
+          isDisplayMyFriends={isDisplayMyFriends}
+          myFriends={myFriends}
+        />
+      )}
+      {!isDisplayMyFriends && (
+        <Requests isDisplayMyFriends={isDisplayMyFriends} requests={requests} />
+      )}
     </Container>
   );
 }

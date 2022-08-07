@@ -1,9 +1,32 @@
 import styled from "styled-components";
 
-function Requests() {
-  return <RequestsBox></RequestsBox>;
+import { UserType } from "pages/social";
+
+import SocialItem from "./SocialItem";
+
+type PropsType = {
+  requests: UserType[];
+  isDisplayMyFriends: boolean;
+};
+
+function Requests({ requests, isDisplayMyFriends }: PropsType) {
+  return (
+    <RequestsBox>
+      {requests.map((user, i) => (
+        <SocialItem key={i} isDisplayMyFriends={isDisplayMyFriends} {...user} />
+      ))}
+    </RequestsBox>
+  );
 }
 
-const RequestsBox = styled.div``;
+const RequestsBox = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  row-gap: 2rem;
+  column-gap: 1.5vw;
+  margin-top: 2rem;
+  justify-content: center;
+`;
 
 export default Requests;

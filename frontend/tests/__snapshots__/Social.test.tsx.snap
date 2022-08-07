@@ -3,7 +3,7 @@
 exports[`<SocialPage /> matches snapshot 1`] = `
 <div>
   <div
-    class="sc-bczRLJ eCLeRz"
+    class="sc-bczRLJ dEIXcx"
   >
     <div
       class="sc-eCYdqJ ggKycM"
@@ -64,127 +64,151 @@ exports[`<SocialPage /> matches snapshot 1`] = `
       />
     </div>
     <div
-      class="sc-fEOsli cxWCnN"
+      class="sc-dIouRR cRmNfs"
     >
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
       >
-        <img
-          class="sc-crXcEl fBtUlZ"
-          src="default"
-        />
         <div
-          class="sc-evZas fKCALh"
+          class="sc-crXcEl cuWCOu"
         >
-          <h1
-            class="sc-breuTD edYVkl"
+          <img
+            class="sc-evZas dpauwO"
+            src="default"
+          />
+          <div
+            class="sc-breuTD hspVCW"
           >
-            Thomas
-          </h1>
-          <h2
-            class="sc-ksZaOG eetmvE"
-          >
-            tho@gmail.com
-          </h2>
-          <span
-            class="sc-hAZoDl lbICOn"
-          >
-            일본 vs 대한민국 같이봐요
-          </span>
+            <h1
+              class="sc-ksZaOG czhzBS"
+            >
+              Thomas
+            </h1>
+            <h2
+              class="sc-hAZoDl iIFmZq"
+            >
+              tho@gmail.com
+            </h2>
+            <span
+              class="sc-fnykZs faHzkp"
+            >
+              일본 vs 대한민국 같이봐요
+            </span>
+          </div>
         </div>
-        <i
-          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
-        />
+        <div>
+          <i
+            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+          />
+        </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
       >
-        <img
-          class="sc-crXcEl fBtUlZ"
-          src="default"
-        />
         <div
-          class="sc-evZas fKCALh"
+          class="sc-crXcEl cuWCOu"
         >
-          <h1
-            class="sc-breuTD edYVkl"
+          <img
+            class="sc-evZas dpauwO"
+            src="default"
+          />
+          <div
+            class="sc-breuTD hspVCW"
           >
-            Bell
-          </h1>
-          <h2
-            class="sc-ksZaOG eetmvE"
-          >
-            bell@gmail.com
-          </h2>
-          <span
-            class="sc-hAZoDl lbICOn"
-          >
-            접속중
-          </span>
+            <h1
+              class="sc-ksZaOG czhzBS"
+            >
+              Bell
+            </h1>
+            <h2
+              class="sc-hAZoDl iIFmZq"
+            >
+              bell@gmail.com
+            </h2>
+            <span
+              class="sc-fnykZs faHzkp"
+            >
+              접속중
+            </span>
+          </div>
         </div>
-        <i
-          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
-        />
+        <div>
+          <i
+            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+          />
+        </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
       >
-        <img
-          class="sc-crXcEl fBtUlZ"
-          src="default"
-        />
         <div
-          class="sc-evZas fKCALh"
+          class="sc-crXcEl cuWCOu"
         >
-          <h1
-            class="sc-breuTD edYVkl"
+          <img
+            class="sc-evZas dpauwO"
+            src="default"
+          />
+          <div
+            class="sc-breuTD hspVCW"
           >
-            Dijkstra
-          </h1>
-          <h2
-            class="sc-ksZaOG eetmvE"
-          >
-            graph@gmail.com
-          </h2>
-          <span
-            class="sc-hAZoDl lbICOn"
-          >
-            12 minutes ago
-          </span>
+            <h1
+              class="sc-ksZaOG czhzBS"
+            >
+              Dijkstra
+            </h1>
+            <h2
+              class="sc-hAZoDl iIFmZq"
+            >
+              graph@gmail.com
+            </h2>
+            <span
+              class="sc-fnykZs faHzkp"
+            >
+              12 minutes ago
+            </span>
+          </div>
         </div>
-        <i
-          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
-        />
+        <div>
+          <i
+            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+          />
+        </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie cwyjvJ"
+        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
       >
-        <img
-          class="sc-crXcEl fBtUlZ"
-          src="default"
-        />
         <div
-          class="sc-evZas fKCALh"
+          class="sc-crXcEl cuWCOu"
         >
-          <h1
-            class="sc-breuTD edYVkl"
+          <img
+            class="sc-evZas dpauwO"
+            src="default"
+          />
+          <div
+            class="sc-breuTD hspVCW"
           >
-            Perry
-          </h1>
-          <h2
-            class="sc-ksZaOG eetmvE"
-          >
-            graph@gmail.com
-          </h2>
-          <span
-            class="sc-hAZoDl lbICOn"
-          >
-            12 minutes ago
-          </span>
+            <h1
+              class="sc-ksZaOG czhzBS"
+            >
+              Perry
+            </h1>
+            <h2
+              class="sc-hAZoDl iIFmZq"
+            >
+              graph@gmail.com
+            </h2>
+            <span
+              class="sc-fnykZs faHzkp"
+            >
+              12 minutes ago
+            </span>
+          </div>
         </div>
-        <i
-          class="sc-fnykZs etdBAw fa-solid fa-ellipsis-vertical"
-        />
+        <div>
+          <i
+            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+          />
+        </div>
       </div>
     </div>
   </div>

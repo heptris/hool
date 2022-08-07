@@ -20,7 +20,7 @@ const BodyBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 0;
+  padding: 4rem 0rem;
 `;
 
 const ImgBox = styled.div`
@@ -49,6 +49,11 @@ const InfoText = styled.span`
 
 const SubmitBtn = styled(Button)`
   margin-top: 2rem;
+  background-color: ${darkTheme.darkColor};
+
+  &:hover {
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
 
 export default EnrollModalBody;
