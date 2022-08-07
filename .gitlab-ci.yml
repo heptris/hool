@@ -26,6 +26,7 @@ run react tests:
   only:
     - master
     - develop
+    - feature/frontend
 
 # run spring tests:
 #   image: openjdk:8
@@ -47,10 +48,10 @@ dockerize:
   services:
     - docker:dind
   before_script: |
-    echo $DOCKER_HUB_PW | docker login -u $DOCKER_HUB_USER --password-stdin
+    echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
   script: |
-    docker build -t $IMAGE_NAME ./frontend/
-    docker push $IMAGE_NAME
+    docker build -t $FRONT_IMAGE_NAME ./frontend/
+    docker push $FRONT_IMAGE_NAME
   after_script: |
     docker logout
   only:
@@ -61,8 +62,6 @@ deploy:
   stage: deploy
   variables:
     DOCKER_TLS_CERTDIR: ""
-  services:
-    - docker:dind
   tags:
     - deployment
   before_script: |
