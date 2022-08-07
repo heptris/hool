@@ -54,10 +54,10 @@ stages:
 #     - docker:dind
 #   before_script: |
 #     cd backend/hool
-#     echo $DOCKER_HUB_PW_BACK | docker login -u $DOCKER_HUB_USER_BACK --password-stdin
+#     echo $BACK_DOCKER_HUB_PW | docker login -u $BACK_DOCKER_HUB_USER --password-stdin
 #   script: |
-#     docker build -t $IMAGE_NAME_BACK .
-#     docker push $IMAGE_NAME_BACK
+#     docker build -t $BACK_IMAGE_NAME .
+#     docker push $BACK_IMAGE_NAME
 #   after_script: |
 #     docker logout
 #   only:
