@@ -9,10 +9,7 @@ import { darkTheme } from "styles";
 import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
 
-const OPENVIDU_SERVER_URL =
-  "https://" +
-  window.location.hostname +
-  import.meta.env.VITE_OPENVIDU_SERVER_PORT;
+const OPENVIDU_SERVER_URL = "https://" + window.location.hostname;
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 class VideoContainer extends Component {
@@ -454,7 +451,7 @@ class VideoContainer extends Component {
               "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,POST",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
           },
         })
         .then((response) => {
@@ -506,7 +503,7 @@ class VideoContainer extends Component {
                 "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "GET,POST",
+              "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
             },
           }
         )
