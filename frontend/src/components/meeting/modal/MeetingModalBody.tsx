@@ -11,7 +11,7 @@ const MeetingModalBody = () => {
     <BodyContainer>
       <Wrapper>
         <LabelTextarea
-          height={"6rem"}
+          height={"5rem"}
           width={"100%"}
           placeholderText="여기에 응원방 제목을 적어주세요"
           text="응원방 제목"
@@ -20,7 +20,7 @@ const MeetingModalBody = () => {
       </Wrapper>
       <Wrapper>
         <LabelTextarea
-          height={"6rem"}
+          height={"5rem"}
           width={"100%"}
           placeholderText="여기에 설명을 적어주세요"
           text="설명"
@@ -42,30 +42,32 @@ const MeetingModalBody = () => {
       <ToggleWrapper>
         <ToggleButtonInputWrapper>
           <ToggleTitle>방 공개 여부</ToggleTitle>
-          <ToggleButtonWrapper htmlFor="toggle">
-            <input type={"checkbox"} id={"toggle"} hidden />
-            <ToggleButton />
-            <ButtonText>
-              <TextSpan htmlFor="toggle">공 개</TextSpan>
-              <TextSpan htmlFor="toggle">비공개</TextSpan>
-            </ButtonText>
-          </ToggleButtonWrapper>
+          <RowDiv>
+            <ToggleButtonWrapper htmlFor="toggle">
+              <input type={"checkbox"} id={"toggle"} hidden />
+              <ToggleButton />
+              <ButtonText>
+                <TextSpan htmlFor="toggle">공 개</TextSpan>
+                <TextSpan htmlFor="toggle">비공개</TextSpan>
+              </ButtonText>
+            </ToggleButtonWrapper>
+            <Desc>
+              응원방을 비공개로 만들 경우 친구 초대 또는 친구 따라가기만을 통해
+              입장이 가능합니다.
+            </Desc>
+          </RowDiv>
         </ToggleButtonInputWrapper>
-        <Desc>
-          응원방을 비공개로 만들 경우 친구 초대 또는 친구 따라가기만을 통해
-          입장이 가능합니다.
-        </Desc>
       </ToggleWrapper>
       <ButtonWrapper>
         <Button
-          height={3}
-          width={6}
+          height={2}
+          width={4}
           text={"취소"}
-          marginBottom={2}
+          marginBottom={1.5}
           color={darkTheme.adaptiveGrey500}
-          marginRight={1}
+          marginRight={0.5}
         />
-        <Button height={3} width={6} text={"완료"} marginBottom={2} />
+        <Button height={2} width={4} text={"완료"} marginBottom={1.5} />
       </ButtonWrapper>
     </BodyContainer>
   );
@@ -75,12 +77,12 @@ const BodyContainer = styled.div`
   max-height: 70vh;
   max-width: 30rem;
   padding: 1rem;
-  overflow: auto;
 `;
 const Wrapper = styled.div`
   margin-bottom: 2rem;
 `;
 const ToggleTitle = styled.span`
+  width: 20%;
   font-size: 1rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
@@ -88,22 +90,24 @@ const ToggleWrapper = styled.div`
   position: relative;
   margin: 0;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `;
 const ToggleButtonInputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   position: relative;
 `;
 const ToggleButtonWrapper = styled.label`
   position: relative;
-  width: 40%;
+  width: 45%;
   height: 2rem;
   background-color: ${darkTheme.adaptiveGrey500};
   border-radius: 4px;
   float: right;
   cursor: pointer;
+  display: flex;
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
 `;
 const ButtonText = styled.div`
   display: flex;
@@ -134,9 +138,16 @@ const ToggleButton = styled.span`
   transition: all 0.2s ease-in;
 `;
 const Desc = styled.span`
-  font-size: 0.75rem;
+  text-align: end;
+  font-size: 0.5rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
+const RowDiv = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const ButtonWrapper = styled.div`
   float: right;
 `;

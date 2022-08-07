@@ -20,7 +20,7 @@ const BodyBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 0;
+  padding: 4rem 0rem;
 `;
 
 const ImgBox = styled.div`

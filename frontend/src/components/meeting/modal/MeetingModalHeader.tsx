@@ -14,10 +14,11 @@ const MeetingModalHeader = ({
   );
 };
 const Title = styled.h3`
-  font-size: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
 `;
 const Header = styled.div`
-  padding: 2rem 1rem 1rem;
+  padding: 1rem 1rem;
   width: 100%;
   display: flex;
   align-items: center;
