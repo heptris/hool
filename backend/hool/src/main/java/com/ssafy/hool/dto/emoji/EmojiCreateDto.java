@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 public class EmojiCreateDto {
 
-    private Long memberId;
     private String name;
     private String url;
     private String description;

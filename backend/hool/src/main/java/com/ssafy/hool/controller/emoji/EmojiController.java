@@ -3,6 +3,7 @@ package com.ssafy.hool.controller.emoji;
 import com.ssafy.hool.dto.emoji.*;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.emoji.EmojiService;
+import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,8 @@ public class EmojiController {
     @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
     @PostMapping("/api/emoji")
     public ResponseEntity createEmoji(@RequestBody EmojiCreateDto emojiCreateDto){
-        emojiService.makeEmoji(emojiCreateDto);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        emojiService.makeEmoji(emojiCreateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 만들기 완료"),
                 HttpStatus.ACCEPTED);
@@ -30,7 +32,8 @@ public class EmojiController {
     @ApiOperation(value = "이모지 수정", notes = "memberId와 emojiId, 수정된 이모지 이름, 설명 받아서 이모지 수정하고 이모지 기본 요소를 반환", response = Map.class)
     @PutMapping("/api/emoji")
     public ResponseEntity updateEmoji(@RequestBody EmojiUpdateDto emojiUpdateDto){
-        emojiService.updateEmoji(emojiUpdateDto);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        emojiService.updateEmoji(emojiUpdateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 수정 완료")
                 , HttpStatus.ACCEPTED);
@@ -39,7 +42,8 @@ public class EmojiController {
     @ApiOperation(value = "이모지 삭제", notes = "memberId와 emojiId를 받아서 확인하고 삭제", response = Map.class)
     @DeleteMapping("/api/emoji")
     public ResponseEntity deleteMemberEmoji(@RequestBody EmojiDeleteDto emojiDeleteDto){
-        emojiService.deleteEmoji(emojiDeleteDto);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        emojiService.deleteEmoji(emojiDeleteDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 삭제 완료")
                 , HttpStatus.ACCEPTED);
