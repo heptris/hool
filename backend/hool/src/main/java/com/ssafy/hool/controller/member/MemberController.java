@@ -28,20 +28,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 시 에러 발생")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "닉네임 중복 X"),
-            @ApiResponse(code = 409, message = "닉네임 중복")
-    })
-    @PostMapping("/nickname/check")
-    public ResponseDto checkNickNameDuplication(@RequestBody MemberNickNameDuplicateDto memberNickNameDuplicateDto) {
-        if (memberService.existsByNickName(memberNickNameDuplicateDto.getNickName()) == true) {
-            throw new CustomException(ALREADY_USED_NICKNAME);
-        } else {
-            return new ResponseDto<String>(200, "success", "사용가능한 닉네임입니다.");
-        }
-    }
-    
     @ApiOperation(value = "회원 프로필 수정")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
@@ -64,6 +50,7 @@ public class MemberController {
         int emojiCount = memberService.getEmojiCount(memberId);
         List<MemberEmojiDto> memberEmojis = memberService.getEmojis(memberId);
         MemberResponseDto memberProfile = MemberResponseDto.builder()
+                .memberId(member.getId())
                 .nickName(member.getNickName())
                 .memberEmail(member.getMemberEmail())
                 .point(member.getPoint())

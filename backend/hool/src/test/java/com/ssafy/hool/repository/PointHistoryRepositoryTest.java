@@ -3,13 +3,8 @@ package com.ssafy.hool.repository;
 import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.domain.member.Member;
-import com.ssafy.hool.domain.point.Deal_history;
-import com.ssafy.hool.domain.point.PointType;
-import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
-import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.dto.point_history.PointHistoryListResponseDto;
-import com.ssafy.hool.dto.point_history.PointHistoryRequestDto;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
@@ -25,8 +20,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

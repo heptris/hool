@@ -1,8 +1,8 @@
 package com.ssafy.hool.service.member;
 
 import com.ssafy.hool.config.jwt.TokenProvider;
-import com.ssafy.hool.config.redis.RedisService;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
 import com.ssafy.hool.dto.token.TokenDto;
@@ -10,6 +10,7 @@ import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -47,8 +48,8 @@ public class AuthService {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberLoginDto.toAuthentication();
 
-        memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(() ->
-            new CustomException(MEMBER_EMAIL_NOT_FOUND));
+        Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(() ->
+                new CustomException(MEMBER_EMAIL_NOT_FOUND));
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
@@ -56,6 +57,7 @@ public class AuthService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        member.setMemberStatus(MemberStatus.ONLINE);
         // 5. 토큰 발급
         return tokenDto;
     }

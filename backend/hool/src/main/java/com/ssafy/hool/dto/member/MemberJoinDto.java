@@ -2,6 +2,7 @@ package com.ssafy.hool.dto.member;
 
 import com.ssafy.hool.domain.member.Authority;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class MemberJoinDto {
                 .memberEmail(memberEmail)
                 .password(passwordEncoder.encode(password))
                 .authority(Authority.ROLE_USER)
+                .memberStatus(MemberStatus.OFFLINE)
                 .name(name)
                 .nickName(nickName)
                 .build();
