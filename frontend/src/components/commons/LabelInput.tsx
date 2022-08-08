@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import styled from "styled-components";
 import { InputStyle } from "styles";
 
@@ -9,11 +10,24 @@ type LabelInputPropsType = {
   widthSize?: string;
   type?: string;
   info?: string;
-  height: string;
+  height?: string;
+  inputRef?: RefObject<HTMLInputElement>;
+  inputOnChange?: Function;
+  inputValue?: string;
 };
 
 const LabelInput = (props: LabelInputPropsType) => {
-  const { text, placeholderText, widthSize, type, info, height } = props;
+  const {
+    text,
+    placeholderText,
+    widthSize,
+    type,
+    info,
+    height,
+    inputRef,
+    inputOnChange,
+    inputValue,
+  } = props;
   return (
     <LabelInputDiv {...props}>
       <LabelWrapper htmlFor={placeholderText} text={text} info={info} />
@@ -23,6 +37,9 @@ const LabelInput = (props: LabelInputPropsType) => {
         type={type}
         id={placeholderText}
         placeholder={placeholderText}
+        ref={inputRef}
+        value={inputValue}
+        onChange={inputOnChange}
       />
     </LabelInputDiv>
   );
