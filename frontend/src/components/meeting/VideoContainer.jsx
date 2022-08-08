@@ -6,6 +6,7 @@ import { OpenVidu } from "openvidu-browser";
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
+import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
 
 const OPENVIDU_SERVER_URL = "https://" + window.location.hostname + ":4443";
@@ -22,6 +23,8 @@ class VideoContainer extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
+      audioEnabled: false,
+      videoEnabled: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -31,6 +34,11 @@ class VideoContainer extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.sendTextMessage = this.sendTextMessage.bind(this);
+    this.sendEmojiSignal = this.sendEmojiSignal.bind(this);
+    this.recvSignal = this.recvSignal.bind(this);
+    this.switchVideoEnabled = this.switchVideoEnabled.bind(this);
+    this.switchAudioEnabled = this.switchAudioEnabled.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +96,7 @@ class VideoContainer extends Component {
         session: this.OV.initSession(),
       },
       () => {
-        var mySession = this.state.session;
+        const mySession = this.state.session;
 
         // --- 3) Specify the actions when events take place in the session ---
 
@@ -136,11 +144,11 @@ class VideoContainer extends Component {
 
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
-              let publisher = this.OV.initPublisher(undefined, {
+              const publisher = this.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                publishVideo: true, // Whether you want to start publishing with your video enabled or not
+                publishAudio: this.state.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
+                publishVideo: this.state.videoEnabled, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
@@ -229,6 +237,67 @@ class VideoContainer extends Component {
     }
   }
 
+  sendTextMessage() {
+    const mySession = this.state.session;
+
+    mySession
+      .signal({
+        data: "My custom message",
+        to: [],
+        type: "text-chat",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  sendEmojiSignal() {
+    const mySession = this.state.session;
+
+    mySession
+      .signal({
+        data: "My custom emoji",
+        to: [],
+        type: "emoji",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  recvSignal() {
+    const mySession = this.state.session;
+
+    mySession.on("signal", (event) => {
+      console.log(event.data);
+      console.log(event.from);
+      console.log(event.type);
+    });
+  }
+
+  switchAudioEnabled() {
+    const audioState = !this.state.audioEnabled;
+
+    this.setState({ audioEnabled: audioState }, () => {
+      this.state.publisher.publishAudio(audioState);
+    });
+  }
+
+  switchVideoEnabled() {
+    const videoState = !this.state.videoEnabled;
+
+    this.setState({ videoEnabled: videoState }, () => {
+      this.state.publisher.publishVideo(videoState);
+      console.log(videoState);
+    });
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
@@ -284,6 +353,30 @@ class VideoContainer extends Component {
                 id="buttonLeaveSession"
                 onClick={this.leaveSession}
                 value="Leave session"
+              />
+              <Button
+                width={3}
+                height={3}
+                text={"메시지"}
+                onClick={this.sendTextMessage}
+              />
+              <Button
+                width={3}
+                height={3}
+                text={"이모지"}
+                onClick={this.sendEmojiSignal}
+              />
+              <Button
+                width={3}
+                height={3}
+                text={"비디오"}
+                onClick={this.switchVideoEnabled}
+              />
+              <Button
+                width={3}
+                height={3}
+                text={"오디오"}
+                onClick={this.switchAudioEnabled}
               />
             </SessionHeader>
 
