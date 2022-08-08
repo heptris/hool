@@ -22,6 +22,7 @@ type VideoRoomState = {
   mainStreamManager: Publisher | Subscriber | Stream | undefined;
   publisher: Publisher | undefined;
   subscribers: Subscriber[];
+  currentVideoDevice?: any;
 };
 
 type SessionEvent = {
@@ -67,18 +68,24 @@ const MeetingVideo = () => {
       deleteSubscriber(e.stream.streamManager);
     });
 
-    mySession?.on("exception", (exception) => {
+    mySession?.on("exception", (exception: any) => {
       console.warn(exception);
     });
 
     getToken().then((token: string) => {
       mySession
         ?.connect(token, { clientData: state.myUserName })
-        .then(() => {
+        .then(async () => {
+          const devices = await OV.getDevices();
+          const videoDevices = devices.filter(
+            (device: any) => device.kind === "videoinput"
+          );
+
           const publisher: Publisher = OV.initPublisher(
             undefined as unknown as HTMLElement,
             {
               audioSource: undefined,
+              videoSource: undefined,
               publishAudio: true,
               publishVideo: true,
               resolution: "640x480",
@@ -92,11 +99,12 @@ const MeetingVideo = () => {
 
           setState({
             ...state,
+            currentVideoDevice: videoDevices[0],
             mainStreamManager: publisher,
             publisher: publisher,
           });
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(
             "There was an error connecting to the session:",
             error.code,
@@ -104,7 +112,7 @@ const MeetingVideo = () => {
           );
         });
     });
-  }, [state]);
+  }, [state.session]);
 
   const handleMainVideoStream = (stream: Stream) => {
     if (state.mainStreamManager !== stream) {
@@ -132,11 +140,11 @@ const MeetingVideo = () => {
             "Content-Type": "application/json",
           },
         })
-        .then((response) => {
+        .then((response: any) => {
           console.log("CREATE SESSION", response);
           resolve(response.data.id);
         })
-        .catch((response) => {
+        .catch((response: any) => {
           var error = Object.assign({}, response);
           if (error?.response?.status === 409) {
             resolve(sessionId);
@@ -178,16 +186,16 @@ const MeetingVideo = () => {
           {
             headers: {
               Authorization:
-                "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+                "Basic " + window.btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
               "Content-Type": "application/json",
             },
           }
         )
-        .then((response) => {
+        .then((response: any) => {
           console.log("TOKEN", response);
           resolve(response.data.token);
         })
-        .catch((error) => reject(error));
+        .catch((error: any) => reject(error));
     });
   };
 

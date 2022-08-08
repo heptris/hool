@@ -17,16 +17,22 @@ class VideoContainer extends Component {
     super(props);
 
     this.state = {
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
-      session: undefined,
-      mainStreamManager: undefined,
-      publisher: undefined,
-      subscribers: [],
-      audioEnabled: false,
-      videoEnabled: false,
+      mySessionId: props.sessionState.mySessionId,
+      myUserName: props.sessionState.myUserName,
+      session: props.sessionState.session,
+      mainStreamManager: props.sessionState.mainStreamManager,
+      publisher: props.sessionState.publisher,
+      subscribers: props.sessionState.subscribers,
+      audioEnabled: props.sessionState.audioEnabled,
+      videoEnabled: props.sessionState.videoEnabled,
+      msgToSend: props.sessionState.msgToSend,
+      emojiEvents: props.sessionState.emojiEvents,
+      chatEvents: props.sessionState.chatEvents,
     };
 
+    console.log(props);
+
+    this.handleSessionState = props.handleSessionState.bind(this);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
@@ -43,6 +49,7 @@ class VideoContainer extends Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -54,9 +61,12 @@ class VideoContainer extends Component {
   }
 
   handleChangeSessionId(e) {
-    this.setState({
+    this.handleSessionState({
+      ...this.props.sessionState,
       mySessionId: e.target.value,
     });
+
+    console.log("do!");
   }
 
   handleChangeUserName(e) {
@@ -67,9 +77,14 @@ class VideoContainer extends Component {
 
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
-      this.setState({
-        mainStreamManager: stream,
-      });
+      this.setState(
+        {
+          mainStreamManager: stream,
+        },
+        () => {
+          this.props.handleSessionState({ ...this.state });
+        }
+      );
     }
   }
 
@@ -78,12 +93,18 @@ class VideoContainer extends Component {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
-      this.setState({
-        subscribers: subscribers,
-      });
+      this.setState(
+        {
+          subscribers: subscribers,
+        },
+        () => {
+          this.props.handleSessionState({ ...this.state });
+        }
+      );
     }
   }
 
+  // 수정완료
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -135,8 +156,8 @@ class VideoContainer extends Component {
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
-              var devices = await this.OV.getDevices();
-              var videoDevices = devices.filter(
+              const devices = await this.OV.getDevices();
+              const videoDevices = devices.filter(
                 (device) => device.kind === "videoinput"
               );
 
@@ -146,7 +167,7 @@ class VideoContainer extends Component {
               // element: we will manage it on our own) and with the desired properties
               const publisher = this.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
-                videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+                videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: this.state.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: this.state.videoEnabled, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
@@ -165,6 +186,12 @@ class VideoContainer extends Component {
                 mainStreamManager: publisher,
                 publisher: publisher,
               });
+
+              this.recvSignal();
+
+              this.props.handleSessionState({
+                ...this.state,
+              });
             })
             .catch((error) => {
               console.log(
@@ -178,6 +205,7 @@ class VideoContainer extends Component {
     );
   }
 
+  // 수정완료
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -189,32 +217,40 @@ class VideoContainer extends Component {
 
     // Empty all properties...
     this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
-      mainStreamManager: undefined,
-      publisher: undefined,
-    });
+    this.setState(
+      {
+        mySessionId: "SessionA",
+        myUserName: "Participant" + Math.floor(Math.random() * 100),
+        session: undefined,
+        mainStreamManager: undefined,
+        publisher: undefined,
+        subscribers: new Array(),
+        audioEnabled: false,
+        videoEnabled: false,
+        msgToSend: "",
+      },
+      () => {
+        this.props.handleSessionState({ ...this.state });
+      }
+    );
   }
 
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
+      const videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
 
       if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
+        const newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
+          const newPublisher = this.OV.initPublisher(undefined, {
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: true,
             publishVideo: true,
@@ -244,7 +280,7 @@ class VideoContainer extends Component {
       .signal({
         data: "My custom message",
         to: [],
-        type: "text-chat",
+        type: "chat",
       })
       .then(() => {
         console.log("Message successfully sent");
@@ -286,6 +322,7 @@ class VideoContainer extends Component {
 
     this.setState({ audioEnabled: audioState }, () => {
       this.state.publisher.publishAudio(audioState);
+      this.props.handleSessionState({ ...this.state });
     });
   }
 
@@ -294,13 +331,22 @@ class VideoContainer extends Component {
 
     this.setState({ videoEnabled: videoState }, () => {
       this.state.publisher.publishVideo(videoState);
-      console.log(videoState);
+      this.props.handleSessionState({ ...this.state });
     });
   }
 
   render() {
-    const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
+    const {
+      mySessionId,
+      myUserName,
+      session,
+      mainStreamManager,
+      publisher,
+      subscribers,
+      audioEnabled,
+      videoEnabled,
+      msgToSend,
+    } = this.props.sessionState;
 
     return (
       <Container>
@@ -443,7 +489,7 @@ class VideoContainer extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
+      const data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -457,7 +503,7 @@ class VideoContainer extends Component {
           resolve(response.data.id);
         })
         .catch((response) => {
-          var error = Object.assign({}, response);
+          const error = Object.assign({}, response);
           if (error?.response?.status === 409) {
             resolve(sessionId);
           } else {
@@ -487,7 +533,7 @@ class VideoContainer extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = {};
+      const data = {};
       axios
         .post(
           OPENVIDU_SERVER_URL +

@@ -1,4 +1,9 @@
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import { getMyProfile } from "api/profile";
+
+import { Session, Publisher, Subscriber } from "openvidu-react";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -6,28 +11,79 @@ import { darkTheme } from "styles/Theme";
 import { RootState } from "store";
 
 import Container from "components/commons/Container";
+import VideoContainer from "./VideoContainer";
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
-import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
-import VideoContainer from "./VideoContainer";
+
+export type SessionStateType = {
+  mySessionId: string;
+  myUserName: string;
+  session: typeof Session | undefined;
+  mainStreamManager: typeof Publisher | typeof Subscriber | undefined;
+  publisher: typeof Publisher | undefined;
+  subscribers: Array<typeof Subscriber>;
+  audioEnabled: boolean;
+  videoEnabled: boolean;
+  msgToSend: string;
+  emojiEvents: Array<Object>;
+  chatEvents: Array<Object>;
+};
 
 const MeetingRoom = () => {
+  const queryClient = useQueryClient();
   const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
   const { isShowingMessage } = useSelector((state: RootState) => state.navbar);
   const { isShowingGame } = useSelector((state: RootState) => state.navbar);
+
+  const myProfile = useQuery(["myProfile"], getMyProfile, {
+    refetchOnWindowFocus: true,
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (e: any) => {
+      console.error(e.message);
+    },
+  });
+
+  const [sessionState, setSessionState] = useState({
+    mySessionId: "SessionA",
+    myUserName: myProfile.data.data?.nickName,
+    session: undefined,
+    mainStreamManager: undefined,
+    publisher: undefined,
+    subscribers: new Array(),
+    audioEnabled: false,
+    videoEnabled: false,
+    msgToSend: "",
+    emojiEvents: new Array(),
+    chatEvents: new Array(),
+  });
+  const handleSessionState = (state: SessionStateType) => {
+    setSessionState(state);
+  };
+
   return (
     <>
       <ConcreteContainer>
         <FlexBox>
           <MeetingBox>
-            <VideoContainer />
+            <VideoContainer
+              sessionState={sessionState}
+              handleSessionState={handleSessionState}
+            />
           </MeetingBox>
           <GameMessageBox>
             {isShowingGame && <MeetingGame />}
-            {isShowingMessage && <MeetingMessageShow />}
-            {isShowingMessage && <MeetingMessageInput />}
+            {!isShowingMessage && <MeetingMessageShow />}
+            {!isShowingMessage && (
+              <MeetingMessageInput
+                sessionState={sessionState}
+                handleSessionState={handleSessionState}
+              />
+            )}
           </GameMessageBox>
         </FlexBox>
       </ConcreteContainer>
