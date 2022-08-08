@@ -30,6 +30,7 @@ public class EmojiShopController {
                 HttpStatus.ACCEPTED);
     }
 
+
     @GetMapping("/api/emoji_shop/makelist")
     public ResponseEntity createEmojiShopList(){
         Long memberId = SecurityUtil.getCurrentMemberId();

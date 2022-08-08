@@ -28,6 +28,48 @@ values (now(), now(), "손흥민 2골 가능?", null, "PROGRESS", 1),
        (now(), now(), "토트넘 4골 가능?", null, "PROGRESS", 2),
        (now(), now(), "맨유 승리?", null, "OVER", 3),
        (now(), now(), "전반전 끝나기 전에 우리나라 한골", null, "OVER", 4);
+
+insert into emoji (created_date, last_modified_date, creator_id, description, name, url)
+values (now(), now(), 1, "아스날은 불타야쥐~~", "불타는 아스날", "https://picsum.photos/200/300"),
+       (now(), now(), 1, "맨유는 9위가 맞지 ㅎㅎ", "맹구", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "토트넘 우승 가즈아~~", "토황", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 화이팅 !!", "쏘황", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 아까비 !!", "쏘아", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 할 수 있다 !!", "쏘할", "https://picsum.photos/200/300"),
+       (now(), now(), 3, "루카쿠 떠나라~~ 우우우", "쓰레기 루카쿠", "https://picsum.photos/200/300"),
+       (now(), now(), 4, "뉴캐슬 돈싸대기 !!", "뉴캐슬 돈", "https://picsum.photos/200/300"),
+       (now(), now(), 5, "윙백은 리버풀이지 ㅎㅎ", "리버풀", "https://picsum.photos/200/300"),
+       (now(), now(), 5, "쏘니의 골골골~~~", "쏘골", "https://picsum.photos/200/300");
+
+insert into member_emoji (created_date, last_modified_date, emoji_type, is_favorite, emoji_id, member_id)
+values (now(), now(), "DEFAULT", 0, 1, 1),
+       (now(), now(), "DEFAULT", 0, 2, 1),
+       (now(), now(), "DEFAULT", 0, 1, 2),
+       (now(), now(), "DEFAULT", 0, 2, 2),
+       (now(), now(), "DEFAULT", 0, 1, 3),
+       (now(), now(), "DEFAULT", 0, 2, 3),
+       (now(), now(), "DEFAULT", 0, 1, 4),
+       (now(), now(), "DEFAULT", 0, 2, 4),
+       (now(), now(), "DEFAULT", 0, 1, 5),
+       (now(), now(), "DEFAULT", 0, 2, 5),
+       (now(), now(), "MADE", 0, 3, 2),
+       (now(), now(), "MADE", 0, 4, 2),
+       (now(), now(), "MADE", 0, 5, 2),
+       (now(), now(), "MADE", 0, 6, 2),
+       (now(), now(), "MADE", 0, 7, 3),
+       (now(), now(), "MADE", 0, 8, 4),
+       (now(), now(), "MADE", 0, 9, 5),
+       (now(), now(), "MADE", 0, 9, 10),
+       -- 4번 회원이 3번 이모지를 산경우
+       (now(), now(), "BUY", 0, 3, 4),
+       (now(), now(), "BUY", 0, 5, 4),
+       (now(), now(), "BUY", 0, 3, 5);
+
+insert into emoji_shop (created_date, last_modified_date, emoji_price, emoji_id)
+values (now(), now(), 1300, 3),
+       (now(), now(), 100, 5),
+       (now(), now(), 900, 9);
+
 --
 -- insert into deal_history (created_date, last_modified_date, deal_point, seller_member_id, emoji_store_id, member_id)
 -- values (now(), now(), 40, 1, 1, 2),
@@ -55,11 +97,11 @@ values (true, 40, now(), now(), "PROGRESS", 30, 1, 1),
 --        (now(), now(), 1000, 100, "이모지 판매", "DEAL", 3, null, 2),
 --        (now(), now(), 500, -30, "이모지 구매", "DEAL", 4, null, 3);
 --
-insert into member_conference (created_date, last_modified_date, conference_id, member_id)
-values (now(), now(), 1, 1),
-       (now(), now(), 1, 2),
-       (now(), now(), 1, 3),
-       (now(), now(), 1, 4);
+insert into member_conference (created_date, last_modified_date, conference_id, member_id, enter_status)
+values (now(), now(), 1, 1, "ENTER"),
+       (now(), now(), 1, 2, "ENTER"),
+       (now(), now(), 1, 3, "ENTER"),
+       (now(), now(), 1, 4, "ENTER");
 
 
 
