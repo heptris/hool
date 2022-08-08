@@ -1,26 +1,24 @@
-import { useEffect } from "react";
-import { useLocation } from "@tanstack/react-location";
-import { useDispatch, useSelector } from "react-redux";
-
-import { RootState, setNavMode } from "store";
-
+import { requestLogin } from "api/auth";
+import axios from "axios";
 import { Layout } from "components/layouts/Layout";
 
 export default function App({ children }: { children: React.ReactNode }) {
-  const { navMode } = useSelector((state: RootState) => state.navbar);
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  useEffect(() => {
-    location.current.pathname.slice(0, 6) === `/auth/` ||
-    location.current.pathname === "/error"
-      ? dispatch(setNavMode("unseen"))
-      : location.current.pathname.slice(0, 9) === "/meeting/"
-      ? dispatch(setNavMode("meetingRoom"))
-      : dispatch(setNavMode("default"));
-  }, [location.current.pathname]);
-
+  // axios.interceptors.request.use(
+  //   (config) => {
+  //     const token = localStorage.getItem("token");
+  //     config.headers!.Authorization = `Bearer ${token}`;
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
   return (
-    <>{navMode !== "unseen" ? <Layout>{children}</Layout> : <>{children}</>}</>
+    <Layout>
+      {children}
+      <button onClick={() => requestLogin("aa@naver.com", "1234")}>
+        로그인
+      </button>
+    </Layout>
   );
 }

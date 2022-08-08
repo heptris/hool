@@ -1,10 +1,16 @@
+import { useDispatch } from "react-redux";
+
 import styled from "styled-components";
 import { darkTheme, InputStyle } from "styles";
 
 import Button from "components/commons/Button";
 import { useState } from "react";
 
+import { setIsShowingGame } from "store";
+
 const MeetingGameModalBody = () => {
+  const dispatch = useDispatch();
+
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAgree, setEnteredAgree] = useState("");
   const [enteredDisagree, setEnteredDisagree] = useState("");
@@ -39,8 +45,13 @@ const MeetingGameModalBody = () => {
     setEnteredDisagree("");
     setEnteredTime(1);
   };
+
+  const showingGame = () => {
+    dispatch(setIsShowingGame(true));
+  };
   const submitHandler = () => {
     console.log(enteredTime, enteredTitle, enteredAgree, enteredDisagree);
+    showingGame();
     clearHandler();
   };
 

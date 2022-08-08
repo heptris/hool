@@ -1,10 +1,3 @@
-const ROUTES = [
-  {
-    ID: 0,
-    PATH: "/",
-    LABEL: "메인 화면",
-  },
-];
 export const ROUTES_NAME = {
   FIND: "/auth/find",
   LOGIN: "/auth/login",
@@ -17,3 +10,6 @@ export const ROUTES_NAME = {
   PROFILE: "/profile",
   SOCIAL: "/social",
 };
+
+export const HOOL_API_ENDPOINT = "http://i7a408.p.ssafy.io:8080/api/";
+export const HOOL_AUTH_ENDPOINT = "http://i7a408.p.ssafy.io:8080/auth/";

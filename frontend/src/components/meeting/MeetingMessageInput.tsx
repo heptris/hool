@@ -1,8 +1,35 @@
-import Button from "components/commons/Button";
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
 
-const MeetingMessageInput = () => {
+import { SessionStateType } from "./MeetingRoom";
+
+import Button from "components/commons/Button";
+
+type PropsType = {
+  sessionState: SessionStateType;
+  handleSessionState: Function;
+};
+
+const MeetingMessageInput = (props: PropsType) => {
+  const {
+    mySessionId,
+    myUserName,
+    session,
+    mainStreamManager,
+    publisher,
+    subscribers,
+    audioEnabled,
+    videoEnabled,
+    msgToSend,
+  } = props.sessionState;
+
+  const onChangeSessionState = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.handleSessionState({
+      ...props.sessionState,
+      msgToSend: e.target.value,
+    });
+  };
+
   return (
     <MessageBox>
       <IconBox>
@@ -21,6 +48,7 @@ const MeetingMessageInput = () => {
           placeholder={"Type to write a message"}
           height="2.25rem"
           widthSize="100%"
+          onChange={onChangeSessionState}
         />
         <Button
           CSSProps={"position:absolute; top: 0.2rem; right:0.2rem"}
@@ -34,10 +62,10 @@ const MeetingMessageInput = () => {
     </MessageBox>
   );
 };
+
 const Input = styled.input`
   ${InputStyle}
 `;
-
 export const MessageBox = styled.div`
   width: 25rem;
   height: 6.125rem;
@@ -48,21 +76,19 @@ export const MessageBox = styled.div`
   padding: 1rem;
   background-color: ${darkTheme.mainColor};
 `;
-
 const IconBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
-
 const Icon = styled.i`
   ${IconStyle}
   margin-bottom: 0.75rem;
   margin-right: 1rem;
 `;
-
 const BtnBox = styled.div`
   width: 100%;
   position: relative;
 `;
+
 export default MeetingMessageInput;
