@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain.conference;
 
+import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.member.Member;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Setter
 @Entity
-public class Member_conference {
+public class Member_conference extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +27,14 @@ public class Member_conference {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
+    @Enumerated(EnumType.STRING)
+    private EnterStatus enterStatus;
+
     public static Member_conference createMemberConference(Member member, Conference conference) {
         Member_conference memberConference = Member_conference.builder()
                 .member(member)
                 .conference(conference)
+                .enterStatus(EnterStatus.ENTER)
                 .build();
         memberConference.addConference(conference);
         memberConference.addMember(member);
@@ -44,5 +49,9 @@ public class Member_conference {
     public void addMember(Member member){
         this.member = member;
         member.getMemberConferenceList().add(this);
+    }
+
+    public void updateEnterState(EnterStatus enterStatus){
+        this.enterStatus = enterStatus;
     }
 }

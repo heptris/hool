@@ -1,15 +1,13 @@
-package com.ssafy.hool.dto.point_history;
+package com.ssafy.hool.dto.conference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PointHistoryListRequestDto {
-
+@AllArgsConstructor
+public class ConferenceExitDto {
+    private Long conferenceId;
     private Long memberId;
 }

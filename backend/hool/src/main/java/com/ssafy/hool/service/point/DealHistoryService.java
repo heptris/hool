@@ -15,6 +15,7 @@ import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.repository.point.DealHistoryRepository;
 import com.ssafy.hool.repository.point.PointHistoryRepository;
+import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +37,8 @@ public class DealHistoryService {
      * 이모지상점에서 이모지 구매
      * @param dealHistoryCreateDto
      */
-    public DealHistoryResponseDto makeDeal(DealHistoryCreateDto dealHistoryCreateDto){
-        Member buyer = memberRepository.findById(dealHistoryCreateDto.getBuyerMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+    public DealHistoryResponseDto makeDeal(DealHistoryCreateDto dealHistoryCreateDto, Long memberId){
+        Member buyer = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Member seller = memberRepository.findById(dealHistoryCreateDto.getSellerMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         Emoji_shop emojiShop = emojiShopRepository.findById(dealHistoryCreateDto.getEmojiShopId()).orElseThrow(() -> new CustomException(EMOJI_SHOP_NOT_FOUND));

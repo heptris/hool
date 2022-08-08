@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class GameHistoryResponseDto {
     private int bettPoint;
     private boolean bettChoice;
-    private String memberNickName;
+    private Long memberId;
 }

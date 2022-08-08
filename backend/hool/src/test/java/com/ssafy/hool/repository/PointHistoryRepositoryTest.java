@@ -3,13 +3,8 @@ package com.ssafy.hool.repository;
 import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.domain.member.Member;
-import com.ssafy.hool.domain.point.Deal_history;
-import com.ssafy.hool.domain.point.PointType;
-import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
-import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.dto.point_history.PointHistoryListResponseDto;
-import com.ssafy.hool.dto.point_history.PointHistoryRequestDto;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
@@ -26,11 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class PointHistoryRepositoryTest {
 
     @Autowired
@@ -66,11 +59,11 @@ class PointHistoryRepositoryTest {
         emojiShopRepository.save(emojiShop1);
         emojiShopRepository.save(emojiShop2);
 
-        DealHistoryCreateDto dealHistoryCreateDto1 = new DealHistoryCreateDto(emojiShop1.getEmoji_price(), member1.getId(), member2.getId(), emojiShop1.getId());
-        DealHistoryCreateDto dealHistoryCreateDto2 = new DealHistoryCreateDto(emojiShop2.getEmoji_price(), member1.getId(), member3.getId(), emojiShop2.getId());
+        DealHistoryCreateDto dealHistoryCreateDto1 = new DealHistoryCreateDto(member2.getId(), emojiShop1.getId());
+        DealHistoryCreateDto dealHistoryCreateDto2 = new DealHistoryCreateDto(member3.getId(), emojiShop2.getId());
 
-        dealHistoryService.makeDeal(dealHistoryCreateDto1);
-        dealHistoryService.makeDeal(dealHistoryCreateDto2);
+        dealHistoryService.makeDeal(dealHistoryCreateDto1, member1.getId());
+        dealHistoryService.makeDeal(dealHistoryCreateDto2, member1.getId());
 
         List<PointHistoryListResponseDto> pointList = pointHistoryService.pointList(member1.getId());
 
@@ -89,4 +82,5 @@ class PointHistoryRepositoryTest {
                 .build();
         return member;
     }
+
 }

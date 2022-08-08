@@ -38,7 +38,7 @@ public class Deal_history extends BaseEntity {
 
     public static Deal_history createDealHistory(DealHistoryCreateDto dealHistoryCreateDto, Emoji_shop emojiShop, Member member){
         Deal_history dealHistory = Deal_history.builder()
-                .dealPoint(dealHistoryCreateDto.getDealPoint())
+                .dealPoint(emojiShop.getEmoji_price())
                 .sellerMemberId(dealHistoryCreateDto.getSellerMemberId())
                 .build();
 

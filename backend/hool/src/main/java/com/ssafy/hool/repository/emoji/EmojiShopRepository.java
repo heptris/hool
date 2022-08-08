@@ -11,4 +11,8 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
     @Modifying
     @Query(value = "delete from emoji_shop where emoji_store_id = :emojiShopId", nativeQuery = true)
     void deleteEmojiShop(@Param("emojiShopId") Long emojiShopId);
+
+
+    @Query(value = "select count(me.id) from emoji_shop me where me.emoji_id = :emojiId", nativeQuery = true)
+    int checkEmojiShop(@Param("emojiId") Long emojiId);
 }

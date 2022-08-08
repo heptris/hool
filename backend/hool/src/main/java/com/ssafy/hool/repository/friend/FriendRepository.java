@@ -1,6 +1,7 @@
 package com.ssafy.hool.repository.friend;
 
 import com.ssafy.hool.domain.friend.Friend;
+import com.ssafy.hool.dto.friend.FriendConferenceDto;
 import com.ssafy.hool.dto.friend.FriendDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,8 +12,9 @@ import java.util.List;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
-    @Query("select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName)" +
-            "from Friend f join f.member m where f.friend.id = :memberId")
+    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.memberStatus)" +
+            "from Friend f join f.member m join m.memberConferenceList mc join mc.conference c " +
+            "where f.friend.id = :memberId")
     List<FriendDto> findFriendList(@Param("memberId") Long memberId);
 
     @Query(value = "select f.friend_id from friend f where f.friend_member_id = :friendMemberId", nativeQuery = true)
@@ -29,4 +31,8 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query("select count(f.id) > 0 from Friend f where f.member.id = :memberId and f.friend.id = :friendMemberId")
     boolean isAlreadyFriend(@Param("memberId") Long memberId, @Param("friendMemberId") Long friendMemberId);
+
+    @Query("select new com.ssafy.hool.dto.friend.FriendConferenceDto(c.id, c.title) from Member m join m.memberConferenceList mc" +
+            " join mc.conference c where m.id = :friendMemberId and mc.enterStatus = 'ENTER'")
+    FriendConferenceDto findFriendConference(@Param("friendMemberId") Long friendMemberId);
 }

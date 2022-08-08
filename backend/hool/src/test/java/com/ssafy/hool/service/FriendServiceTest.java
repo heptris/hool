@@ -20,11 +20,6 @@ class FriendServiceTest {
 
     @Autowired
     private FriendService friendService;
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private FriendRequestRepository friendRequestRepository;
 
     @Test
     void 친구요청() {

@@ -87,7 +87,7 @@ public class FriendController {
     @ApiOperation(value = "같이하기", notes = "친구의 응원방에 따라 들어가기")
     @PostMapping("/join/friend/conference")
     public ResponseEntity<?> joinFriendConference(@RequestBody ConferenceJoinDto conferenceJoinDto) {
-        conferenceService.enterConference(conferenceJoinDto);
+        conferenceService.enterConference(conferenceJoinDto, SecurityUtil.getCurrentMemberId());
         return new ResponseEntity<>(new ResponseDto(200, "success", "Enter Friend Room")
                 , HttpStatus.OK);
     }

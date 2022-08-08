@@ -28,13 +28,12 @@ public class Game extends BaseEntity {
     @Column(name = "game_result")
     private Boolean result;
 
+    @Enumerated(EnumType.STRING)
+    private GameStatus gameStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id")
     private Conference conference;
-
-    //게임생성시간
-    @Column(name = "created_time")
-    private LocalDateTime createdTime;
 
     @Builder.Default
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
@@ -44,7 +43,7 @@ public class Game extends BaseEntity {
         Game game = Game.builder()
                 .name(name)
                 .result(result)
-                .createdTime(LocalDateTime.now())
+                .gameStatus(GameStatus.PROGRESS)
                 .build();
         game.addConference(conference);
         return game;
@@ -62,5 +61,6 @@ public class Game extends BaseEntity {
 
     public void resultUpdate(boolean result){
         this.result = result;
+        this.gameStatus = GameStatus.OVER;
     }
 }

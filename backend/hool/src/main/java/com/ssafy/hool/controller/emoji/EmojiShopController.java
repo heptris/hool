@@ -1,9 +1,11 @@
 package com.ssafy.hool.controller.emoji;
 
+import com.ssafy.hool.dto.emoji.EmojiDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.emoji.EmojiService;
+import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,12 +30,22 @@ public class EmojiShopController {
                 HttpStatus.ACCEPTED);
     }
 
+
+    @GetMapping("/api/emoji_shop/makelist")
+    public ResponseEntity createEmojiShopList(){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        return new ResponseEntity<ResponseDto>(
+                new ResponseDto<List<EmojiDto>>(200,"success", emojiService.listCanEmojiShop(memberId))
+                , HttpStatus.ACCEPTED);
+    }
+
     @ApiOperation(value = "상점이모지 수정",
             notes = "상점이모지 아이디와 memberId와 수정한 가격을 받아 이모지상점에 저장 후 이모지 객체와 가격을 담은 dto로 반환", response = Map.class)
     @PutMapping("/api/emoji_shop")
     public ResponseEntity updateEmojiShop(@RequestBody EmojiShopUpdateDto emojiShopUpdateDto){
+        Long memberId = SecurityUtil.getCurrentMemberId();
         return new ResponseEntity<ResponseDto>(
-                new ResponseDto<EmojiShopDto>(200,"success", emojiService.updateEmojiShop(emojiShopUpdateDto))
+                new ResponseDto<EmojiShopDto>(200,"success", emojiService.updateEmojiShop(emojiShopUpdateDto, memberId))
                 , HttpStatus.ACCEPTED);
     }
 

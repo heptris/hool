@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class ConferenceCreateDto {
     private String title;
     private String description;
-    private String nickName;
     private String conferenceCategory;
 }
