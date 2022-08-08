@@ -79,8 +79,8 @@ public class ConferenceService {
      * 응원방 나가기
      * @param conferenceExitDto
      */
-    public void exitConference(ConferenceExitDto conferenceExitDto){
-        Member member = memberRepository.findById(conferenceExitDto.getMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+    public void exitConference(ConferenceExitDto conferenceExitDto, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(-1);
 

@@ -45,7 +45,8 @@ public class ConferenceController {
     @ApiOperation(value = "응원방 나가기", notes = "응원방 나가기")
     @PostMapping("/exit")
     public ResponseEntity exitConference(@RequestBody ConferenceExitDto conferenceExitDto){
-        conferenceService.exitConference(conferenceExitDto);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        conferenceService.exitConference(conferenceExitDto, memberId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "Exit Room"), HttpStatus.OK);
     }
 }
