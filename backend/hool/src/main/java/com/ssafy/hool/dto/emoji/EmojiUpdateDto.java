@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class EmojiUpdateDto {
 
     private Long emojiId;
-    private Long memberId;
     private String updateName;
     private String updateDes;
 
