@@ -17,6 +17,7 @@ import com.ssafy.hool.repository.game.GameHistoryRepository;
 import com.ssafy.hool.repository.game.GameRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.repository.point.PointHistoryRepository;
+import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,7 @@ public class GameService {
         Conference conference = conferenceRepository.findById(gameCreateDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         Game game = Game.createGame(gameCreateDto.getGameName(), null, conference);
         gameRepository.save(game);
-        return new GameResponseDto(game.getName(), game.getCreatedTime());
+        return new GameResponseDto(game.getId(), game.getName(), game.getCreatedTime());
     }
 
     /**
@@ -51,7 +52,7 @@ public class GameService {
      * @param gameHistoryCreateDto
      */
     public GameHistoryResponseDto createGameHistory(GameHistoryCreateDto gameHistoryCreateDto){
-        Member member = memberRepository.findByNickName(gameHistoryCreateDto.getMemberNickName()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Game game = gameRepository.findById(gameHistoryCreateDto.getGameId()).orElseThrow(() -> new CustomException(GAME_NOT_FOUND));
 
         // 회원이 보유한 포인트보다 많은 포인트를 베팅할 수 없음
@@ -61,7 +62,7 @@ public class GameService {
         } else {
             throw new CustomException(LACK_OF_POINT);
         }
-        return new GameHistoryResponseDto(gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), member.getNickName());
+        return new GameHistoryResponseDto(gameHistoryCreateDto.getBettPoint(), gameHistoryCreateDto.isBettChoice(), member.getId());
     }
 
     /**

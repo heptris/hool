@@ -4,9 +4,9 @@ import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.point_history.PointHistoryListResponseDto;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

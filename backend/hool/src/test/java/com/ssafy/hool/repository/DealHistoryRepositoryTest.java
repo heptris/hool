@@ -25,7 +25,7 @@ import static com.ssafy.hool.exception.ex.ErrorCode.LACK_OF_POINT;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class DealHistoryRepositoryTest {
 
     @Autowired
@@ -52,7 +52,7 @@ class DealHistoryRepositoryTest {
         Emoji_shop emojiShop = Emoji_shop.createEmojiShop(emoji, 100);
         emojiShopRepository.save(emojiShop);
 
-        DealHistoryCreateDto dealHistoryCreateDto = new DealHistoryCreateDto(100, buyer.getId(), seller.getId(), emojiShop.getId());
+        DealHistoryCreateDto dealHistoryCreateDto = new DealHistoryCreateDto(seller.getId(), emojiShop.getId());
         Deal_history dealHistory = Deal_history.createDealHistory(dealHistoryCreateDto, emojiShop, buyer);
         dealHistoryRepository.save(dealHistory);
 

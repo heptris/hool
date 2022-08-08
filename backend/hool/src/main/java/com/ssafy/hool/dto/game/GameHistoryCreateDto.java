@@ -12,6 +12,5 @@ public class GameHistoryCreateDto {
     private int bettPoint;
     private boolean bettChoice;
     private GameStatus gameStatus;
-    private String memberNickName;
     private Long gameId;
 }

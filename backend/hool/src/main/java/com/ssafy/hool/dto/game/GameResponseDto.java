@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GameResponseDto {
     // Game
+    private Long gameId;
     private String gameName;
     private LocalDateTime createdTime;
 }

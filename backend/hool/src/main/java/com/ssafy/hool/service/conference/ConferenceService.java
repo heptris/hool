@@ -9,6 +9,7 @@ import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +39,8 @@ public class ConferenceService {
      * @param conferenceCreateDto
      * @param conference_category
      */
-    public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category){
-        Member member = memberRepository.findByNickName(conferenceCreateDto.getNickName()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+    public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = Conference.createConference(conferenceCreateDto.getTitle(), conferenceCreateDto.getDescription(), member, conference_category);
         conference.totalUpdate(1);
         conferenceRepository.save(conference);
@@ -51,8 +52,8 @@ public class ConferenceService {
      * 응원방 입장
      * @param conferenceJoinDto
      */
-    public void enterConference(ConferenceJoinDto conferenceJoinDto){
-        Member member = memberRepository.findById(conferenceJoinDto.getMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+    public void enterConference(ConferenceJoinDto conferenceJoinDto, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(1);
         Member_conference memberConference = Member_conference.createMemberConference(member, conference);

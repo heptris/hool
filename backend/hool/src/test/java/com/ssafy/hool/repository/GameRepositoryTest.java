@@ -29,7 +29,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Rollback(value = false)
+//@Rollback(value = false)
 @Transactional
 @SpringBootTest
 class GameRepositoryTest {
@@ -79,7 +79,6 @@ class GameRepositoryTest {
         GameHistoryCreateDto gameHistoryCreateDto = new GameHistoryCreateDto(gameHistory.getBettPoint(),
                 gameHistory.getBettChoice(),
                 gameHistory.getGameStatus(),
-                member.getNickName(),
                 game.getId());
         assertThrows(CustomException.class, ()->{
             gameService.createGameHistory(gameHistoryCreateDto);

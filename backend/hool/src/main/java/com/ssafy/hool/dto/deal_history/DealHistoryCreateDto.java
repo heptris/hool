@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DealHistoryCreateDto {
-    private int dealPoint;
-    private Long buyerMemberId;
     private Long sellerMemberId;
     private Long emojiShopId;
 }

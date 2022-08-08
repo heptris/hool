@@ -66,11 +66,11 @@ class PointHistoryRepositoryTest {
         emojiShopRepository.save(emojiShop1);
         emojiShopRepository.save(emojiShop2);
 
-        DealHistoryCreateDto dealHistoryCreateDto1 = new DealHistoryCreateDto(emojiShop1.getEmoji_price(), member1.getId(), member2.getId(), emojiShop1.getId());
-        DealHistoryCreateDto dealHistoryCreateDto2 = new DealHistoryCreateDto(emojiShop2.getEmoji_price(), member1.getId(), member3.getId(), emojiShop2.getId());
+        DealHistoryCreateDto dealHistoryCreateDto1 = new DealHistoryCreateDto(member2.getId(), emojiShop1.getId());
+        DealHistoryCreateDto dealHistoryCreateDto2 = new DealHistoryCreateDto(member3.getId(), emojiShop2.getId());
 
-        dealHistoryService.makeDeal(dealHistoryCreateDto1);
-        dealHistoryService.makeDeal(dealHistoryCreateDto2);
+        dealHistoryService.makeDeal(dealHistoryCreateDto1, member1.getId());
+        dealHistoryService.makeDeal(dealHistoryCreateDto2, member1.getId());
 
         List<PointHistoryListResponseDto> pointList = pointHistoryService.pointList(member1.getId());
 
@@ -89,4 +89,5 @@ class PointHistoryRepositoryTest {
                 .build();
         return member;
     }
+
 }
