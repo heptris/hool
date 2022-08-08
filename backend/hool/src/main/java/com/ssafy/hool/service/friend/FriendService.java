@@ -3,6 +3,8 @@ package com.ssafy.hool.service.friend;
 import com.ssafy.hool.domain.friend.FriendRequest;
 import com.ssafy.hool.domain.friend.FriendRequestStatus;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.member.MemberStatus;
+import com.ssafy.hool.dto.friend.FriendConferenceDto;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
@@ -86,6 +88,12 @@ public class FriendService {
      */
     public List<FriendDto> friendList(Long memberId) {
         List<FriendDto> friendList = friendRepository.findFriendList(memberId);
+        for (FriendDto friendDto : friendList) {
+            if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
+                FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                friendDto.setFriendConferenceDto(friendConference);
+            }
+        }
         return friendList;
     }
 

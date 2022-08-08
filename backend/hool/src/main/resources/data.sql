@@ -1,8 +1,8 @@
 insert into member (created_date, last_modified_date, authority, member_email, member_status, name, nick_name, password, point)
 values (now(), now(), 'ROLE_USER', 'aa@naver.com', 'OFFLINE', 'aa', 'aa', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
        (now(), now(), 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bb', 'bb', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_USER', 'cc@naver.com', 'OFFLINE', 'cc', 'cc', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_USER', 'dd@naver.com', 'OFFLINE', 'dd', 'dd', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       (now(), now(), 'ROLE_USER', 'cc@naver.com', 'ONLINE', 'cc', 'cc', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       (now(), now(), 'ROLE_USER', 'dd@naver.com', 'ONLINE', 'dd', 'dd', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
        (now(), now(), 'ROLE_ADMIN', 'ee@naver.com', 'OFFLINE', 'ee', 'ee', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000);
 
 insert into friend_request (created_date, last_modified_date, friend_request_status, from_member_id, to_member_id)
@@ -59,7 +59,7 @@ values (now(), now(), "DEFAULT", 0, 1, 1),
        (now(), now(), "MADE", 0, 7, 3),
        (now(), now(), "MADE", 0, 8, 4),
        (now(), now(), "MADE", 0, 9, 5),
-       (now(), now(), "MADE", 0, 9, 10),
+       (now(), now(), "MADE", 0, 10, 5),
        -- 4번 회원이 3번 이모지를 산경우
        (now(), now(), "BUY", 0, 3, 4),
        (now(), now(), "BUY", 0, 5, 4),
@@ -68,14 +68,15 @@ values (now(), now(), "DEFAULT", 0, 1, 1),
 insert into emoji_shop (created_date, last_modified_date, emoji_price, emoji_id)
 values (now(), now(), 1300, 3),
        (now(), now(), 100, 5),
+       (now(), now(), 500, 7),
        (now(), now(), 900, 9);
 
 --
--- insert into deal_history (created_date, last_modified_date, deal_point, seller_member_id, emoji_store_id, member_id)
--- values (now(), now(), 40, 1, 1, 2),
---        (now(), now(), 100, 1, 2, 3),
---        (now(), now(), 50, 2, 3, 1),
---        (now(), now(), 60, 3, 4, 5);
+insert into deal_history (created_date, last_modified_date, deal_point, seller_member_id, emoji_store_id, member_id)
+values (now(), now(), 40, 1, 1, 2),
+       (now(), now(), 100, 1, 2, 3),
+       (now(), now(), 50, 2, 3, 1),
+       (now(), now(), 60, 3, 4, 5);
 --
 insert into game_history (bett_choice, bett_point, created_date, last_modified_date, game_status, get_point, game_id, member_id)
 values (true, 40, now(), now(), "PROGRESS", 30, 1, 1),
@@ -87,15 +88,15 @@ values (true, 40, now(), now(), "PROGRESS", 30, 1, 1),
        (false, 100, now(), now(), "OVER", 0, 2, 3),
        (true, 40, now(), now(), "OVER", 30, 2, 4);
 --
--- insert into point_history (created_date, last_modified_date, current_point, deal_point, description, point_type, deal_history_id, game_history_id, member_id)
--- values (now(), now(), 100, 30, "게임 승리", "GAME", null, 1, 1),
---        (now(), now(), 200, 30, "게임 승리", "GAME", null, 2, 2),
---        (now(), now(), 1000, -100, "게임 패배", "GAME", null, 3, 3),
---        (now(), now(), 500, 30, "게임 승리", "GAME", null, 4, 4),
---        (now(), now(), 100, -30, "이모지 구매", "DEAL", 1, null, 1),
---        (now(), now(), 130, 30, "이모지 판매", "DEAL", 2, null, 1),
---        (now(), now(), 1000, 100, "이모지 판매", "DEAL", 3, null, 2),
---        (now(), now(), 500, -30, "이모지 구매", "DEAL", 4, null, 3);
+insert into point_history (created_date, last_modified_date, current_point, deal_point, description, point_type, deal_history_id, game_history_id, member_id)
+values (now(), now(), 100, 30, "게임 승리", "GAME", null, 1, 1),
+       (now(), now(), 200, 30, "게임 승리", "GAME", null, 2, 2),
+       (now(), now(), 1000, -100, "게임 패배", "GAME", null, 3, 3),
+       (now(), now(), 500, 30, "게임 승리", "GAME", null, 4, 4),
+       (now(), now(), 100, -30, "이모지 구매", "DEAL", 1, null, 1),
+       (now(), now(), 130, 30, "이모지 판매", "DEAL", 2, null, 1),
+       (now(), now(), 1000, 100, "이모지 판매", "DEAL", 3, null, 2),
+       (now(), now(), 500, -30, "이모지 구매", "DEAL", 4, null, 3);
 --
 insert into member_conference (created_date, last_modified_date, conference_id, member_id, enter_status)
 values (now(), now(), 1, 1, "ENTER"),
