@@ -32,11 +32,11 @@ public class EmojiService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void makeEmoji(EmojiCreateDto emojiCreateDto){
+    public void makeEmoji(EmojiCreateDto emojiCreateDto, Long memberId){
 
-        Member member = memberRepository.findById(emojiCreateDto.getMemberId()).
+        Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        Emoji emoji = Emoji.createEmoji(member.getId(), emojiCreateDto.getName(), emojiCreateDto.getUrl(), emojiCreateDto.getDescription());
+        Emoji emoji = Emoji.createEmoji(memberId, emojiCreateDto.getName(), emojiCreateDto.getUrl(), emojiCreateDto.getDescription());
 
         Emoji savedEmoji = emojiRepository.save(emoji);
 
@@ -49,11 +49,11 @@ public class EmojiService {
      * 멤버 이모지만 삭제되는 경우
      */
     @Transactional
-    public void deleteEmoji(EmojiDeleteDto emojiDeleteDto){
+    public void deleteEmoji(EmojiDeleteDto emojiDeleteDto, Long memberId){
         Emoji emoji = emojiRepository.findById(emojiDeleteDto.getEmojiId())
                 .orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
 
-        Member member = memberRepository.findById(emojiDeleteDto.getMemberId()).
+        Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         // 연관관계 삭제
         member.getEmojis().remove(emoji);
@@ -62,12 +62,12 @@ public class EmojiService {
     }
 
     @Transactional
-    public void updateEmoji(EmojiUpdateDto emojiUpdateDto){
+    public void updateEmoji(EmojiUpdateDto emojiUpdateDto, Long memberId){
 
         Emoji emoji = emojiRepository.findById(emojiUpdateDto.getEmojiId())
                 .orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
         // 받아오는 멤버 아이디와 만든이가 같을 경우 수정
-        if(emojiUpdateDto.getMemberId() == emoji.getCreatorId()){
+        if(memberId == emoji.getCreatorId()){
             emoji.setName(emojiUpdateDto.getUpdateName());
             emoji.setDescription(emojiUpdateDto.getUpdateDes());
         }else{
@@ -84,11 +84,11 @@ public class EmojiService {
     }
 
     @Transactional
-    public EmojiShopDto updateEmojiShop(EmojiShopUpdateDto emojiShopUpdateDto){
+    public EmojiShopDto updateEmojiShop(EmojiShopUpdateDto emojiShopUpdateDto, Long memberId){
         Emoji_shop emojiShop = emojiShopRepository.findById(emojiShopUpdateDto.getEmojiShopId())
                 .orElseThrow(() -> new CustomException(EMOJI_SHOP_NOT_FOUND));
         Long creatorId = emojiShop.getEmoji().getCreatorId();
-        if(emojiShopUpdateDto.getMemberId() == creatorId){
+        if(memberId == creatorId){
             emojiShop.setEmoji_price(emojiShopUpdateDto.getUpdatePrice());
         }else{
             throw new CustomException(CANNOT_MODIFY_EMOJI);
@@ -127,6 +127,12 @@ public class EmojiService {
             list.add(new EmojiShopDto(emojiShop.getEmoji_price(), emojiShop.getEmoji().getId()));
         }
         return list;
+    }
+
+    public List<EmojiDto> listCanEmojiShop(Long memberId){
+        List<Long> sellingEmojiList = emojiRepository.sellingEmojis(memberId);
+
+        return emojiRepository.madeByMeEmojis(sellingEmojiList);
     }
 
 }

@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class EmojiDeleteDto {
 
     private Long emojiId;
-    private Long memberId;
 }
