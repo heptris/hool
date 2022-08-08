@@ -3,15 +3,21 @@ import { apiInstance } from "api";
 import axios from "axios";
 import { HOOL_AUTH_ENDPOINT } from "constant";
 import { Cookies } from "react-cookie";
+import { LoginFormType } from "types/LoginFormTypes";
 
 const api = apiInstance(HOOL_AUTH_ENDPOINT);
 const cookies = new Cookies();
 
-export const requestLogin = async (email: string, pw: string) => {
-  const [ret, retApi] = await api
+export const requestLogin = async ({
+  memberEmail,
+  password,
+}: LoginFormType) => {
+  console.log(memberEmail, password);
+
+  return await api
     .post(`login`, {
-      memberEmail: email,
-      password: pw,
+      memberEmail,
+      password,
     })
     .then((response) => {
       localStorage.setItem("token", response.data.data.accessToken);
@@ -20,10 +26,8 @@ export const requestLogin = async (email: string, pw: string) => {
       //   "Authorization"
       // ] = `Bearer ${response.data.data.accessToken}`;
 
-      return [response.data, api];
+      return response.data;
     });
-
-  return ret;
 };
 
 export const requestLogout = async () => {
