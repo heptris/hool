@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-location";
-import { useEffect } from "react";
+import { Link, Navigate, useNavigate } from "@tanstack/react-location";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { gapi } from "gapi-script";
 
 import styled from "styled-components";
@@ -8,10 +8,46 @@ import { darkTheme } from "styles/Theme";
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import GoogleLoginBtn from "./GoogleLoginBtn";
+import { requestLogin } from "api/auth";
+
+import { LoginFormType } from "types/LoginFormTypes";
+import { ROUTES_NAME } from "constant";
 
 const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
 const Auth = () => {
+  const eMailRef = useRef<HTMLInputElement>(null);
+  const [form, setForm] = useState({
+    memberEmail: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { placeholder, value } = e.target;
+    setForm({
+      ...form,
+      [placeholder]: value,
+    });
+    console.log(form);
+  };
+  const onSubmit = (form: LoginFormType) => {
+    requestLogin(form)
+      .then(() => navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true }))
+      .catch((err) => {
+        console.log(err, "로그인 실패");
+      });
+  };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      memberEmail: "",
+      password: "",
+    });
+    eMailRef.current?.focus();
+  };
+
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -24,16 +60,25 @@ const Auth = () => {
 
   return (
     <Container>
-      <FormBox>
+      <FormBox onSubmit={handleSubmit}>
         <Link to={"/"}>
           <Logo>hool!</Logo>
         </Link>
         <Title>로그인</Title>
-        <LabelInput text="이메일" placeholderText="Email" type="email" />
+        <LabelInput
+          inputRef={eMailRef}
+          inputValue={form.memberEmail}
+          text="이메일"
+          placeholderText="memberEmail"
+          type="email"
+          inputOnChange={onChange}
+        />
         <LabelInput
           text="비밀번호"
-          placeholderText="Password"
+          placeholderText="password"
           type="password"
+          inputValue={form.password}
+          inputOnChange={onChange}
         />
         <Link to={"/auth/find"}>
           <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
@@ -57,7 +102,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const FormBox = styled.div`
+const FormBox = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
