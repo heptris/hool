@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ConferenceExitDto {
     private Long conferenceId;
-    private Long memberId;
 }
