@@ -3,10 +3,15 @@ package com.ssafy.hool.controller.auth;
 
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
+import com.ssafy.hool.dto.member.MemberNickNameDuplicateDto;
 import com.ssafy.hool.dto.response.ResponseDto;
+import com.ssafy.hool.dto.token.TokenDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.exception.ex.CustomValidationException;
 import com.ssafy.hool.service.member.AuthService;
+import com.ssafy.hool.service.member.MemberService;
+import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,12 +28,16 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ssafy.hool.exception.ex.ErrorCode.ALREADY_USED_NICKNAME;
+
 @Api(tags = {"회원가입, 로그인, 로그아웃, 토큰 재발행을 제공하는 Controller"})
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    private final MemberService memberService;
 
     @ApiOperation(value = "회원가입", notes = "회원가입 성공 시 이메일을 반환해줍니다.")
     @ApiResponses({
@@ -64,8 +73,9 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberLoginDto memberLoginDto) {
+        TokenDto token = authService.login(memberLoginDto);
         return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "로그인 성공",
-                authService.login(memberLoginDto)), HttpStatus.OK);
+                token), HttpStatus.OK);
     }
 
 
@@ -91,8 +101,24 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization").substring(7);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        memberService.logoutStatus(memberId);
         authService.logout(accessToken);
         return new ResponseEntity<>(new ResponseDto<Object>(200, "로그아웃 완료", null)
                 , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "닉네임 중복 검사", notes = "닉네임 중복 시 에러 발생")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "닉네임 중복 X"),
+            @ApiResponse(code = 409, message = "닉네임 중복")
+    })
+    @PostMapping("/auth/nickname/check")
+    public ResponseDto checkNickNameDuplication(@RequestBody MemberNickNameDuplicateDto memberNickNameDuplicateDto) {
+        if (memberService.existsByNickName(memberNickNameDuplicateDto.getNickName()) == true) {
+            throw new CustomException(ALREADY_USED_NICKNAME);
+        } else {
+            return new ResponseDto<String>(200, "success", "사용가능한 닉네임입니다.");
+        }
     }
 }

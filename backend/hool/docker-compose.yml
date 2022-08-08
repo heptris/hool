@@ -30,7 +30,7 @@ services:
     networks:
       - test_network_02
   redis:
-    image: redis
+    image: localhost
     ports:
       - 6379:6379
     container_name: redis

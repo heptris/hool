@@ -13,6 +13,6 @@ import java.util.List;
 public interface PointHistoryRepository extends JpaRepository<Point_history, Long> {
 
     @Query("select new com.ssafy.hool.dto.point_history.PointHistoryListResponseDto(p.description, p.deal_point, p.createdDate) " +
-            "from Point_history p where p.member.id = :member_id order by p.createdDate desc ")
+            "from Point_history p where p.member.id = :member_id order by p.createdDate desc")
     List<PointHistoryListResponseDto> findPointListDto(@Param("member_id") Long member_id);
 }

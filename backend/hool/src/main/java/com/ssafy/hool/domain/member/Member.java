@@ -48,6 +48,9 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus;
+
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Member_conference> memberConferenceList = new ArrayList<>();
