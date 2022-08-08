@@ -27,10 +27,14 @@ public class Member_conference extends BaseEntity {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
+    @Enumerated(EnumType.STRING)
+    private EnterStatus enterStatus;
+
     public static Member_conference createMemberConference(Member member, Conference conference) {
         Member_conference memberConference = Member_conference.builder()
                 .member(member)
                 .conference(conference)
+                .enterStatus(EnterStatus.ENTER)
                 .build();
         memberConference.addConference(conference);
         memberConference.addMember(member);
@@ -45,5 +49,9 @@ public class Member_conference extends BaseEntity {
     public void addMember(Member member){
         this.member = member;
         member.getMemberConferenceList().add(this);
+    }
+
+    public void updateEnterState(EnterStatus enterStatus){
+        this.enterStatus = enterStatus;
     }
 }

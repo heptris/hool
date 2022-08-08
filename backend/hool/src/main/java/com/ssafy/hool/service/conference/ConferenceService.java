@@ -2,6 +2,7 @@ package com.ssafy.hool.service.conference;
 
 import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
+import com.ssafy.hool.domain.conference.EnterStatus;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.conference.Member_conference;
 import com.ssafy.hool.domain.member.MemberStatus;
@@ -42,12 +43,14 @@ public class ConferenceService {
      */
     public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setMemberStatus(MemberStatus.ROOM);
         Conference conference = Conference.createConference(conferenceCreateDto.getTitle(), conferenceCreateDto.getDescription(), member, conference_category);
         conference.totalUpdate(1);
         conferenceRepository.save(conference);
 
-        return new ConferenceResponseDto(conference.getTitle(), conference.getDescription(), conference.getConference_category().name(), conference.getTotal());
+        Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
+        memberConference.updateEnterState(EnterStatus.ENTER);
+
+        return new ConferenceResponseDto(conference.getId(), conference.getTitle(), conference.getDescription(), conference.getConference_category().name(), conference.getTotal());
     }
 
     /**
@@ -56,7 +59,6 @@ public class ConferenceService {
      */
     public void enterConference(ConferenceJoinDto conferenceJoinDto, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setMemberStatus(MemberStatus.ROOM);
         Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(1);
         Member_conference memberConference = Member_conference.createMemberConference(member, conference);
@@ -79,8 +81,10 @@ public class ConferenceService {
      */
     public void exitConference(ConferenceExitDto conferenceExitDto){
         Member member = memberRepository.findById(conferenceExitDto.getMemberId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setMemberStatus(MemberStatus.ONLINE);
         Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(-1);
+
+        Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
+        memberConference.updateEnterState(EnterStatus.EXIT);
     }
 }

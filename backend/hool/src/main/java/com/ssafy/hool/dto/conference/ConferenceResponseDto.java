@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConferenceResponseDto {
+    private Long conferenceId;
     private String title;
     private String description;
     private String category;

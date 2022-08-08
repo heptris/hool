@@ -2,9 +2,13 @@ package com.ssafy.hool.repository;
 
 import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
+import com.ssafy.hool.domain.conference.EnterStatus;
+import com.ssafy.hool.domain.conference.Member_conference;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.conference.*;
+import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
@@ -69,7 +73,9 @@ class ConferenceRepositoryTest {
 
         ConferenceResponseDto conferenceResponseDto = conferenceService.createConference(conferenceCreateDto, category, member.getId());
 
-        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+        Conference conference = conferenceRepository.findById(conferenceResponseDto.getConferenceId()).orElseThrow(()->new CustomException(ErrorCode.CONFERENCE_NOT_FOUND));
+
+        assertThat(memberConferenceRepository.findByConferenceAndMember(conference, member).getEnterStatus()).isEqualTo(EnterStatus.ENTER);
         assertThat(conferenceResponseDto.getTitle()).isEqualTo("한국 vs 일본");
         assertThat(conferenceResponseDto.getTotal()).isEqualTo(1);
     }
@@ -102,10 +108,15 @@ class ConferenceRepositoryTest {
         conferenceService.enterConference(conferenceJoinDto3, member3.getId());
         conferenceService.enterConference(conferenceJoinDto4, member4.getId());
 
-        assertThat(member1.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
-        assertThat(member2.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
-        assertThat(member3.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
-        assertThat(member4.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+        Member_conference memberConference1 = memberConferenceRepository.findByConferenceAndMember(conference, member1);
+        Member_conference memberConference2 = memberConferenceRepository.findByConferenceAndMember(conference, member2);
+        Member_conference memberConference3 = memberConferenceRepository.findByConferenceAndMember(conference, member3);
+        Member_conference memberConference4 = memberConferenceRepository.findByConferenceAndMember(conference, member4);
+
+        assertThat(memberConference1.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+        assertThat(memberConference2.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+        assertThat(memberConference3.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+        assertThat(memberConference4.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
 
         assertThat(conference.getTotal()).isEqualTo(4);
     }
@@ -135,7 +146,7 @@ class ConferenceRepositoryTest {
         ConferenceExitDto conferenceExitDto = new ConferenceExitDto(conference.getId(), member.getId());
         conferenceService.exitConference(conferenceExitDto);
 
-        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.ONLINE);
+        assertThat(memberConferenceRepository.findByConferenceAndMember(conference, member).getEnterStatus()).isEqualTo(EnterStatus.EXIT);
         assertThat(conference.getTotal()).isEqualTo(-1);
     }
 
