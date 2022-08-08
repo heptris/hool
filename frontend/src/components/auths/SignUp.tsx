@@ -9,8 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import { apiInstance } from "api";
 import { HOOL_AUTH_ENDPOINT } from "constant";
-
-const REST_API = `http://i7a408.p.ssafy.io:8080`;
+import { Link } from "@tanstack/react-location";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +17,25 @@ const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+  const [toggle, setToggled] = useState(false);
+
+  const emailAuthHandler = async () => {
+    if (!email) {
+      return alert("이메일을 입력해주세요");
+    }
+    setToggled(true);
+    const api = apiInstance(HOOL_AUTH_ENDPOINT);
+    api
+      .post("email", {
+        memberEmail: email,
+      })
+      .then((res) => {
+        window.alert(res.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const emailInputChangeHandler = (event) => {
     setEmail(event.target.value);
@@ -36,14 +54,14 @@ const SignUp = () => {
   };
 
   const signupHandler = () => {
-    const api = apiInstance(HOOL_AUTH_ENDPOINT)
-    api.post("signup", {
-      memberEmail: email,
-      name: name,
-      nickName: nickname,
-      password: password,
-
-    })
+    const api = apiInstance(HOOL_AUTH_ENDPOINT);
+    api
+      .post("signup", {
+        memberEmail: email,
+        name: name,
+        nickName: nickname,
+        password: password,
+      })
       .then((res) => {
         window.alert(res.data.message);
       })
@@ -51,15 +69,13 @@ const SignUp = () => {
         console.log(error);
       });
   };
-  // const emailAuthHandler = () => {
-  //   console.log(email);
-  //   sendSecretMail(email, "12345");
-  // };
 
   return (
     <Container>
       <SignupBox>
-        <Logo>hool!</Logo>
+        <Link to={"/"}>
+          <Logo>hool!</Logo>
+        </Link>
         <Title>회원가입</Title>
         <BtnBox>
           <LabelInput
@@ -76,10 +92,16 @@ const SignUp = () => {
             height={1.875}
             marginLeft={0.5}
             fontSize={0.75}
-            // onClick={emailAuthHandler}
+            onClick={emailAuthHandler}
           />
         </BtnBox>
-
+        {toggle && (
+          <LabelInput
+            text="인증번호"
+            placeholderText="이메일로 발송된 인증번호를 입력해주세요"
+            type="text"
+          />
+        )}
         <FlexBox>
           <LabelInput
             text="이름"
