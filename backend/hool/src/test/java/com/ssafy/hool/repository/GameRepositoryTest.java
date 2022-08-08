@@ -78,7 +78,6 @@ class GameRepositoryTest {
         Game_history gameHistory = Game_history.createGameHistory(member, 100, true, game);
         GameHistoryCreateDto gameHistoryCreateDto = new GameHistoryCreateDto(gameHistory.getBettPoint(),
                 gameHistory.getBettChoice(),
-                gameHistory.getGameStatus(),
                 game.getId());
         assertThrows(CustomException.class, ()->{
             gameService.createGameHistory(gameHistoryCreateDto);

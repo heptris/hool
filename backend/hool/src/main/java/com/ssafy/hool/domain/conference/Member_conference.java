@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain.conference;
 
+import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.member.Member;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Setter
 @Entity
-public class Member_conference {
+public class Member_conference extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 public class GameHistoryCreateDto {
     private int bettPoint;
     private boolean bettChoice;
-    private GameStatus gameStatus;
     private Long gameId;
 }

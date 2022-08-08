@@ -3,6 +3,7 @@ package com.ssafy.hool.repository;
 import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.conference.*;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
@@ -53,9 +54,9 @@ class ConferenceRepositoryTest {
         conferenceService.createConference(conferenceCreateDto3, Conference_category.BASKETBALL, member3.getId());
 
         List<ConferenceListResponseDto> conferenceList = conferenceRepository.findConferenceListDto();
-        assertThat(conferenceList.get(0).getTitle()).isEqualTo("Title1");
-        assertThat(conferenceList.get(0).getNickName()).isEqualTo("손흥민");
-        assertThat(conferenceList.size()).isEqualTo(3);
+        assertThat(conferenceList.get(4).getTitle()).isEqualTo("Title1");
+        assertThat(conferenceList.get(4).getDescription()).isEqualTo("Description1");
+        assertThat(conferenceList.size()).isEqualTo(7);
     }
 
     @Test
@@ -68,6 +69,7 @@ class ConferenceRepositoryTest {
 
         ConferenceResponseDto conferenceResponseDto = conferenceService.createConference(conferenceCreateDto, category, member.getId());
 
+        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
         assertThat(conferenceResponseDto.getTitle()).isEqualTo("한국 vs 일본");
         assertThat(conferenceResponseDto.getTotal()).isEqualTo(1);
     }
@@ -100,12 +102,18 @@ class ConferenceRepositoryTest {
         conferenceService.enterConference(conferenceJoinDto3, member3.getId());
         conferenceService.enterConference(conferenceJoinDto4, member4.getId());
 
+        assertThat(member1.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+        assertThat(member2.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+        assertThat(member3.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+        assertThat(member4.getMemberStatus()).isEqualTo(MemberStatus.ROOM);
+
         assertThat(conference.getTotal()).isEqualTo(4);
     }
 
     @Test
     public void modifyConferenceTest(){
         Member member = getMember("con1");
+        memberRepository.save(member);
         Conference conference1 = Conference.createConference("한국 vs 일본", "123123", member, Conference_category.SOCCER);
         conferenceRepository.save(conference1);
 
@@ -115,6 +123,20 @@ class ConferenceRepositoryTest {
 
         assertThat(conference.getTitle()).isEqualTo("한국 vs 중국");
         assertThat(conference.getDescription()).isEqualTo("예에");
+    }
+
+    @Test
+    public void exitConference(){
+        Member member = getMember("exitTest");
+        memberRepository.save(member);
+        Conference conference = Conference.createConference("한국 vs 일본", "exitTest!!", member, Conference_category.SOCCER);
+        conferenceRepository.save(conference);
+
+        ConferenceExitDto conferenceExitDto = new ConferenceExitDto(conference.getId(), member.getId());
+        conferenceService.exitConference(conferenceExitDto);
+
+        assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.ONLINE);
+        assertThat(conference.getTotal()).isEqualTo(-1);
     }
 
     private Member getMember(String nickName) {

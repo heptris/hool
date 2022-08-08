@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain.game;
 
+import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.point.Point_history;
 import com.ssafy.hool.domain.member.Member;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @Setter
 @Entity
-public class Game_history {
+public class Game_history extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +38,6 @@ public class Game_history {
     @OneToOne(mappedBy = "game_history", fetch = FetchType.LAZY)
     private Point_history pointHistory;
 
-    private LocalDateTime createdTime;
-
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;
 
@@ -47,7 +46,6 @@ public class Game_history {
         Game_history gameHistory = Game_history.builder()
                 .bettPoint(bettPoint)
                 .bettChoice(bett)
-                .createdTime(LocalDateTime.now())
                 .gameStatus(GameStatus.PROGRESS)
                 .build();
         gameHistory.addGame(game);

@@ -20,12 +20,6 @@ public class ConferenceController {
 
     private final ConferenceService conferenceService;
 
-    @ApiOperation(value = "응원방 리스트(메인화면)", notes = "메인화면에 보여지는 응원방 리스트. (제목, 설명, 방장 닉네임, 카테고리, 인원수)")
-    @GetMapping
-    public ResponseEntity findAllConference(){
-        return new ResponseEntity<ResponseDto>(new ResponseDto<List<ConferenceListResponseDto>>(200, "success", conferenceService.findAllConference()), HttpStatus.OK);
-    }
-
     @ApiOperation(value = "응원방 생성", notes = "응원방 생성 (제목, 설명, 카테고리-SOCCER, BASEBALL, BASKETBALL, VOLLEYBALL, ESPORTS)")
     @PostMapping("/create")
     public ResponseEntity createConference(@RequestBody ConferenceCreateDto conferenceCreateDto){
@@ -50,7 +44,8 @@ public class ConferenceController {
 
     @ApiOperation(value = "응원방 나가기", notes = "응원방 나가기")
     @PostMapping("/exit")
-    public ResponseEntity exitConference(@RequestBody ConferenceModifyDto conferenceModifyDto){
+    public ResponseEntity exitConference(@RequestBody ConferenceExitDto conferenceExitDto){
+        conferenceService.exitConference(conferenceExitDto);
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "Exit Room"), HttpStatus.OK);
     }
 }

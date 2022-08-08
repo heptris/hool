@@ -44,7 +44,7 @@ public class GameService {
         Conference conference = conferenceRepository.findById(gameCreateDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         Game game = Game.createGame(gameCreateDto.getGameName(), null, conference);
         gameRepository.save(game);
-        return new GameResponseDto(game.getId(), game.getName(), game.getCreatedTime());
+        return new GameResponseDto(game.getId(), game.getName());
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+//@Rollback(value = false)
 class PointHistoryRepositoryTest {
 
     @Autowired
