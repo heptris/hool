@@ -143,8 +143,8 @@ class ConferenceRepositoryTest {
         Conference conference = Conference.createConference("한국 vs 일본", "exitTest!!", member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
 
-        ConferenceExitDto conferenceExitDto = new ConferenceExitDto(conference.getId(), member.getId());
-        conferenceService.exitConference(conferenceExitDto);
+        ConferenceExitDto conferenceExitDto = new ConferenceExitDto(conference.getId());
+        conferenceService.exitConference(conferenceExitDto, member.getId());
 
         assertThat(memberConferenceRepository.findByConferenceAndMember(conference, member).getEnterStatus()).isEqualTo(EnterStatus.EXIT);
         assertThat(conference.getTotal()).isEqualTo(-1);
