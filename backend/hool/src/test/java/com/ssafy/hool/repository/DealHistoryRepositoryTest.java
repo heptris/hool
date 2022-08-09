@@ -43,7 +43,7 @@ class DealHistoryRepositoryTest {
         memberRepository.save(buyer);
         memberRepository.save(seller);
 
-        Emoji emoji = Emoji.createEmoji(seller.getId(), "sonEmoji", "urltest", "손흥민 이모지");
+        Emoji emoji = Emoji.createEmoji(seller.getId(), "sonEmoji", "손흥민 이모지");
         emojiRepository.save(emoji);
 
         Emoji_shop emojiShop = Emoji_shop.createEmojiShop(emoji, 100);

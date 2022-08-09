@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ public class EmojiController {
 
     @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
     @PostMapping("/")
-    public ResponseEntity createEmoji(@RequestBody EmojiCreateDto emojiCreateDto){
+    public ResponseEntity createEmoji(@RequestPart(required = false) EmojiCreateDto emojiCreateDto, @RequestPart("file") MultipartFile multipartFile){
+//        Long memberId = 1l;
+//        emojiCreateDto = new EmojiCreateDto("s3Test", "s3Test");
         Long memberId = SecurityUtil.getCurrentMemberId();
-        emojiService.makeEmoji(emojiCreateDto, memberId);
+        emojiService.makeEmoji(multipartFile, emojiCreateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 만들기 완료"),
                 HttpStatus.ACCEPTED);
