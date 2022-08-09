@@ -25,11 +25,15 @@ const MeetingMessageInput = (props: PropsType) => {
     dispatch(setMsgToSend(e.target.value));
   };
   const sendTextMessage = () => {
+    if (msgToSend.trim() === "") {
+      return;
+    }
+
     const mySession = session;
 
     mySession
       .signal({
-        data: myUserName + "::" + msgToSend,
+        data: myUserName + "::" + msgToSend.trim(),
         to: [],
         type: "chat",
       })

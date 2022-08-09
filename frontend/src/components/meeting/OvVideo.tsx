@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { Publisher, Subscriber } from "openvidu-browser";
 
 import styled from "styled-components";
-import { darkTheme } from "styles/Theme";
 
 type PropsType = {
   streamManager: Publisher | Subscriber;
 };
 
 function OpenViduVideoComponent(props: PropsType) {
-  const videoRef: React.RefObject<HTMLVideoElement> = React.createRef();
+  const videoRef: React.RefObject<HTMLVideoElement> = React.useRef(null);
 
   useEffect(() => {
     if (props && !!videoRef) {
