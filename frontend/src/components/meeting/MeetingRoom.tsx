@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { RootState } from "store";
+import { RootState, setNavMode } from "store";
 
 import Container from "components/commons/Container";
 import MeetingMessageShow from "./MeetingMessageShow";
@@ -12,11 +12,21 @@ import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 import VideoContainer from "./VideoContainer";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const MeetingRoom = () => {
-  const { isCreatingGame } = useSelector((state: RootState) => state.navbar);
-  const { isShowingMessage } = useSelector((state: RootState) => state.navbar);
-  const { isShowingGame } = useSelector((state: RootState) => state.navbar);
+  const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
+    (state: RootState) => state.navbar
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setNavMode("meetingRoom"));
+    return () => {
+      dispatch(setNavMode("default"));
+    };
+  }, []);
+
   return (
     <>
       <ConcreteContainer>

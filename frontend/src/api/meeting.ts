@@ -5,7 +5,6 @@ const getMeetingList = () => getRequest("");
 const postCreateMeetingRoom = async (obj: {
   conferenceCategory: string;
   description: string;
-  nickName: string;
   title: string;
 }) => postRequest("conference/create", obj);
 
