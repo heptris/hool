@@ -1,5 +1,5 @@
-import React from "react";
 import { Publisher, Subscriber } from "openvidu-browser";
+import _ from "lodash";
 
 import styled from "styled-components";
 import { darkTheme } from "styles";
@@ -16,20 +16,16 @@ function UserVideoComponent(props: PropsType) {
     return JSON.parse(props.streamManager.stream.connection.data).clientData;
   };
 
-  const handleVideoClicked = (e: React.MouseEvent) => {
-    if (props.mainVideoStream) {
-      props.mainVideoStream(props.streamManager);
-    }
-  };
-
   return (
     <div>
       {props.streamManager !== undefined ? (
         <StreamComponent>
-          <OpenViduVideoComponent streamManager={props.streamManager} />
-          <NameBox>
-            <p>{getNickNameTag()}</p>
-          </NameBox>
+          <VideoBox>
+            <OpenViduVideoComponent streamManager={props.streamManager} />
+            <NameBox>
+              <p>{getNickNameTag()}</p>
+            </NameBox>
+          </VideoBox>
         </StreamComponent>
       ) : null}
     </div>
@@ -44,12 +40,22 @@ const StreamComponent = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const VideoBox = styled.div`
+  position: relative;
+`;
 const NameBox = styled.div`
   display: flex;
   justify-content: center;
+  position: absolute;
+  top: 8px;
+  left: 8px;
 
   p {
-    background-color: ${darkTheme.emphasisColor};
+    background-color: ${_.sample([
+      darkTheme.emphasisColor,
+      darkTheme.darkBadgeColor,
+      darkTheme.contrastColor,
+    ])};
     border-radius: 4px;
     padding: 0.3rem 0.3rem;
   }

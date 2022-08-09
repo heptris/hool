@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { setChatEvents } from "store";
+import { addChatEvents } from "store";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -39,6 +39,7 @@ function MeetingMessageShow(props: PropsType) {
   }, [session]);
 
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
+  const scrollToBottom: React.RefObject<HTMLDivElement> = React.useRef(null);
 
   const recvSignal = () => {
     const mySession = session;
@@ -48,7 +49,7 @@ function MeetingMessageShow(props: PropsType) {
       console.log(event.type);
 
       console.log(chatEvents);
-      dispatch(setChatEvents(event.data));
+      dispatch(addChatEvents(event.data));
     });
   };
 
@@ -124,6 +125,7 @@ const MessageShowBody = styled(MessageBox)`
   border-top-right-radius: 0px;
   background-color: ${darkTheme.adaptiveGrey800};
   transition: height 0.3s ease;
+  overflow-y: auto;
 `;
 const Icon = styled.i`
   ${IconStyle}

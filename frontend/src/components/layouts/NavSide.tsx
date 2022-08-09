@@ -11,7 +11,10 @@ import {
   setIsCreatingRoom,
   setIsCreatingGame,
   setIsShowingMessage,
+  setAudioEnabled,
+  setVideoEnabled,
 } from "store";
+import { useState } from "react";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
@@ -27,6 +30,12 @@ const NavSide = () => {
   };
 
   const { navMode } = useSelector((state: RootState) => state.navbar);
+  const { audioEnabled, videoEnabled } = useSelector(
+    (state: RootState) => state.clientSession
+  );
+  const [audio, setAudio] = useState(audioEnabled);
+  const [video, setVideo] = useState(videoEnabled);
+
   const isShowingMessage = useSelector(
     (state: RootState) => state.navbar.isShowingMessage
   );
@@ -39,6 +48,27 @@ const NavSide = () => {
     }
   };
 
+  const audioEnabledHandler = () => {
+    if (audio) {
+      setAudio(false);
+      console.log(audio);
+      dispatch(setAudioEnabled(false));
+    } else {
+      setAudio(true);
+      console.log(audio);
+      dispatch(setAudioEnabled(true));
+    }
+  };
+  const videoEnabledHandler = () => {
+    if (video) {
+      setVideo(false);
+      dispatch(setVideoEnabled(false));
+    } else {
+      setVideo(true);
+      dispatch(setVideoEnabled(true));
+    }
+  };
+
   return (
     <Side>
       <NavLink to={MAIN}>
@@ -47,15 +77,23 @@ const NavSide = () => {
       <ButtonGroup>
         {navMode === "meetingRoom" ? (
           <>
-            <UtilButton>
-              <Btn>
-                <Icon className="fa-solid fa-microphone"></Icon>
-              </Btn>
+            <UtilButton onClick={audioEnabledHandler}>
+              <AudioBtn audio={audio}>
+                {audio ? (
+                  <Icon className="fa-solid fa-microphone"></Icon>
+                ) : (
+                  <Icon className="fa-solid fa-microphone-slash"></Icon>
+                )}
+              </AudioBtn>
             </UtilButton>
-            <UtilButton>
-              <Btn>
-                <Icon className="fa-solid fa-video"></Icon>
-              </Btn>
+            <UtilButton onClick={videoEnabledHandler}>
+              <VideoBtn video={video}>
+                {video ? (
+                  <Icon className="fa-solid fa-video"></Icon>
+                ) : (
+                  <Icon className="fa-solid fa-video-slash"></Icon>
+                )}
+              </VideoBtn>
             </UtilButton>
             <UtilButton onClick={showMessageHandler}>
               <Btn>
@@ -141,12 +179,18 @@ const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 4px;
-  background-color: ${adaptiveGrey800};
+  background-color: ${darkTheme.adaptiveGrey800};
   cursor: pointer;
 
   &:hover {
     background-color: ${adaptiveGrey700};
   }
+`;
+const AudioBtn = styled(Btn)`
+  background-color: ${(props) => (props.audio ? "#292B3B" : "#FF0090")};
+`;
+const VideoBtn = styled(Btn)`
+  background-color: ${(props) => (props.video ? "#292B3B" : "#FF0090")};
 `;
 const Icon = styled.span`
   font-size: 1rem;

@@ -6,7 +6,6 @@ import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 
 import styled from "styled-components";
-import { darkTheme } from "styles";
 
 import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
@@ -38,8 +37,6 @@ class VideoContainer extends Component {
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.sendEmojiSignal = this.sendEmojiSignal.bind(this);
     this.recvSignal = this.recvSignal.bind(this);
-    this.switchVideoEnabled = this.switchVideoEnabled.bind(this);
-    this.switchAudioEnabled = this.switchAudioEnabled.bind(this);
   }
 
   componentDidMount() {
@@ -56,18 +53,11 @@ class VideoContainer extends Component {
   }
 
   handleChangeSessionId(e) {
-    this.handleSessionState({
-      ...this.props.sessionState,
-      mySessionId: e.target.value,
-    });
-
-    console.log("do!");
+    this.props.setMySessionId(e.target.value);
   }
 
   handleChangeUserName(e) {
-    this.setState({
-      myUserName: e.target.value,
-    });
+    this.props.setMyUserName(e.target.value);
   }
 
   handleMainVideoStream(stream) {
@@ -302,23 +292,9 @@ class VideoContainer extends Component {
     });
   }
 
-  switchAudioEnabled() {
-    const audioState = !this.props.audioEnabled;
-
-    this.props.setAudioEnabled(audioState);
-    this.state.publisher.publishAudio(audioState);
-  }
-
-  switchVideoEnabled() {
-    const videoState = !this.props.videoEnabled;
-
-    this.props.setVideoEnabled(videoState);
-    this.state.publisher.publishVideo(videoState);
-  }
-
   render() {
     const { mySessionId, myUserName, audioEnabled, videoEnabled, msgToSend } =
-      this.props.sessionState;
+      this.props;
 
     return (
       <Container>
@@ -375,26 +351,8 @@ class VideoContainer extends Component {
               <Button
                 width={3}
                 height={3}
-                text={"메시지"}
-                onClick={this.sendTextMessage}
-              />
-              <Button
-                width={3}
-                height={3}
                 text={"이모지"}
                 onClick={this.sendEmojiSignal}
-              />
-              <Button
-                width={3}
-                height={3}
-                text={"비디오"}
-                onClick={this.switchVideoEnabled}
-              />
-              <Button
-                width={3}
-                height={3}
-                text={"오디오"}
-                onClick={this.switchAudioEnabled}
               />
             </SessionHeader>
 
@@ -417,7 +375,6 @@ class VideoContainer extends Component {
 
               {this.state.publisher !== undefined ? (
                 <StreamContainer
-                  className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
                     this.handleMainVideoStream(this.state.publisher)
                   }
