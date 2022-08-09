@@ -32,10 +32,9 @@ public class Emoji extends BaseEntity {
     @OneToOne(mappedBy = "emoji", fetch = FetchType.LAZY)
     private Emoji_shop emoji_shop;
 
-    public static Emoji createEmoji(Long creatorId, String name, String url, String description){
+    public static Emoji createEmoji(Long creatorId, String name, String description){
         Emoji emoji = Emoji.builder()
                 .name(name)
-                .url(url)
                 .description(description)
                 .creatorId(creatorId)
                 .build();
