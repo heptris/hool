@@ -131,11 +131,13 @@ public class AuthController {
         }
     }
 
+    @ApiOperation(value = "회원가입 시 이메일 본인인증", notes = "해당 이메일에게 인증코드를 보내준다.")
     @PostMapping("/mail")
     public void emailConfirm(@RequestBody EmailConfirmDto emailConfirmDto) {
         mailService.sendSimpleMessage(emailConfirmDto.getEmail());
     }
 
+    @ApiOperation(value = "본인 인증 코드 확인")
     @PostMapping("/verifyCode")
     public ResponseEntity<?> verifyCode(@RequestBody EmailVerifyDto emailVerifyDto) {
         if (MailServiceImpl.ePW.equals(emailVerifyDto.getCode())) {
