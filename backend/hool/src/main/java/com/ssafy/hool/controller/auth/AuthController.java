@@ -1,6 +1,9 @@
 package com.ssafy.hool.controller.auth;
 
 
+import com.ssafy.hool.config.jwt.TokenProvider;
+import com.ssafy.hool.dto.auth.EmailConfirmDto;
+import com.ssafy.hool.dto.auth.EmailVerifyDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
 import com.ssafy.hool.dto.member.MemberNickNameDuplicateDto;
@@ -9,7 +12,10 @@ import com.ssafy.hool.dto.token.TokenDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.exception.ex.CustomValidationException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.service.member.AuthService;
+import com.ssafy.hool.service.member.MailService;
+import com.ssafy.hool.service.member.MailServiceImpl;
 import com.ssafy.hool.service.member.MemberService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.Api;
@@ -28,6 +34,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 import static com.ssafy.hool.exception.ex.ErrorCode.ALREADY_USED_NICKNAME;
 
 @Api(tags = {"회원가입, 로그인, 로그아웃, 토큰 재발행을 제공하는 Controller"})
@@ -36,6 +43,8 @@ import static com.ssafy.hool.exception.ex.ErrorCode.ALREADY_USED_NICKNAME;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    private final MailService mailService;
 
     private final MemberService memberService;
 
@@ -113,12 +122,27 @@ public class AuthController {
             @ApiResponse(code = 200, message = "닉네임 중복 X"),
             @ApiResponse(code = 409, message = "닉네임 중복")
     })
-    @PostMapping("/auth/nickname/check")
+    @PostMapping("/nickname/check")
     public ResponseDto checkNickNameDuplication(@RequestBody MemberNickNameDuplicateDto memberNickNameDuplicateDto) {
         if (memberService.existsByNickName(memberNickNameDuplicateDto.getNickName()) == true) {
             throw new CustomException(ALREADY_USED_NICKNAME);
         } else {
             return new ResponseDto<String>(200, "success", "사용가능한 닉네임입니다.");
+        }
+    }
+
+    @PostMapping("/mail")
+    public void emailConfirm(@RequestBody EmailConfirmDto emailConfirmDto) {
+        mailService.sendSimpleMessage(emailConfirmDto.getEmail());
+    }
+
+    @PostMapping("/verifyCode")
+    public ResponseEntity<?> verifyCode(@RequestBody EmailVerifyDto emailVerifyDto) {
+        if (MailServiceImpl.ePW.equals(emailVerifyDto.getCode())) {
+            return new ResponseEntity<>(new ResponseDto(200, "메일 인증 완료", true), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDto(MAIL_CODE_ERROR.getStatus(), MAIL_CODE_ERROR.getMessage(), false)
+                    , HttpStatus.UNAUTHORIZED);
         }
     }
 }

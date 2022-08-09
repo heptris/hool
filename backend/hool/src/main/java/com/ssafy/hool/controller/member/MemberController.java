@@ -21,7 +21,7 @@ import java.util.Map;
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @Api(tags = {"회원프로필과 관련된 Controller"})
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -32,7 +32,7 @@ public class MemberController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
     })
-    @PutMapping("/myprofile")
+    @PutMapping("/")
     public ResponseEntity memberUpdate(@RequestBody MemberUpdateDto memberUpdateDto) {
         Long memberId = SecurityUtil.getCurrentMemberId();
         memberService.updateMember(memberId, memberUpdateDto.getPassword(), memberUpdateDto.getName(), memberUpdateDto.getNickName());
@@ -42,7 +42,7 @@ public class MemberController {
     }
     
     @ApiOperation(value = "회원 프로필 조회", notes = "회원 프로필을 반환해줍니다.")
-    @GetMapping("/myprofile")
+    @GetMapping("/")
     public ResponseEntity memberProfile() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberService.findByMemberId(memberId);

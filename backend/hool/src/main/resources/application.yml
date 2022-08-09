@@ -29,6 +29,16 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  mail:
+    host: stmp.naver.com
+    port: 465
+    username: ENC(ZOSfAM2jNybfpqjFdM6bgl26V//9GVQ79roe4eN0pAc=)
+    password: ENC(03Vsdw6YO2zcwHdnegOXg5jFss9CLTRJ)
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+
 
 
 logging:
@@ -39,4 +49,8 @@ jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
   blacklist:
     access-token: BlackList_AccessToken_
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 

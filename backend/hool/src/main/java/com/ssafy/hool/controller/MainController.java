@@ -12,23 +12,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class MainController {
     @Autowired
     private ConferenceService conferenceService;
 
     @ApiOperation(value = "응원방 리스트(메인화면)", notes = "메인화면에 보여지는 응원방 리스트. (제목, 설명, 방장 닉네임, 카테고리, 인원수)")
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity findAllConference(){
         return new ResponseEntity<ResponseDto>(new ResponseDto<List<ConferenceListResponseDto>>(200, "success", conferenceService.findAllConference()), HttpStatus.OK);
     }
 
-    @GetMapping("/api/admin")
+    @GetMapping("/admin")
     public String admin() {
         return "admin";
     }

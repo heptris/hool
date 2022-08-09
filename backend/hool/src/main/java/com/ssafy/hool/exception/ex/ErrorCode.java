@@ -18,6 +18,8 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(401, "만료된 accessToken 입니다."),
     CANNOT_MODIFY_EMOJI(401, "이모지를 수정할 권한이 없습니다."),
 
+    MAIL_CODE_ERROR(401, "메일 인증 실패"),
+
     // 404 NOT FOUND 잘못된 리소스 접근
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),
     MEMBER_EMAIL_NOT_FOUND(404, "존재하지 않은 이메일입니다."),
@@ -34,6 +36,8 @@ public enum ErrorCode {
     ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
     ALREADY_SAVED_FRIEND(409, "이미 친구 상태입니다."),
     LACK_OF_POINT(409, "보유 포인트가 부족합니다."),
+
+    MAIL_ERROR(421, "메일 오류"),
 
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요!");

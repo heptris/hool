@@ -13,8 +13,7 @@ import java.util.List;
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.memberStatus)" +
-            "from Friend f join f.member m join m.memberConferenceList mc join mc.conference c " +
-            "where f.friend.id = :memberId")
+            "from Friend f join f.member m where f.friend.id = :memberId")
     List<FriendDto> findFriendList(@Param("memberId") Long memberId);
 
     @Query(value = "select f.friend_id from friend f where f.friend_member_id = :friendMemberId", nativeQuery = true)

@@ -132,7 +132,23 @@ public class EmojiService {
     public List<EmojiDto> listCanEmojiShop(Long memberId){
         List<Long> sellingEmojiList = emojiRepository.sellingEmojis(memberId);
 
-        return emojiRepository.madeByMeEmojis(sellingEmojiList);
+//        System.out.println("================================");
+//
+//        for (Long sE : sellingEmojiList) {
+//            System.out.println("sE = " + sE);
+//        }
+//        System.out.println("===================================end=========================");
+
+//        List<Long> emojiIdlist = emojiRepository.madeByMeEmojis(sellingEmojiList, memberId);
+//        List<EmojiDto> list = new ArrayList<>();
+//        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+//        for (Long emojiId : emojiIdlist) {
+//            Emoji emoji = emojiRepository.findById(emojiId).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
+//            list.add(new EmojiDto(emoji.getName(), emoji.getUrl(), emoji.getDescription(), emoji.getCreatorId()));
+//        }
+//        System.out.println("==============================================aaaaaaaaaaaaaa===================");
+        return emojiRepository.madeByMeEmojis(sellingEmojiList, memberId);
     }
+
 
 }
