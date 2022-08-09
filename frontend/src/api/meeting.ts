@@ -2,29 +2,29 @@ import { getRequest, postRequest } from "api";
 
 const getMeetingList = () => getRequest("");
 
-const createMeetingRoom = async (obj: {
+const postCreateMeetingRoom = async (obj: {
   conferenceCategory: string;
   description: string;
   nickName: string;
   title: string;
 }) => postRequest("conference/create", obj);
 
-const enterMeetingRoom = async (obj: {
+const postEnterMeetingRoom = async (obj: {
   conferenceId: number;
   memberId: number;
 }) => postRequest("conference/enter", obj);
 
-const modifyMeetingRoom = async (obj: {
+const postModifyMeetingRoom = async (obj: {
   conferenceId: number;
   description: string;
   title: string;
 }) => postRequest("conference/modify", obj);
 
 // game controller
-const createGame = (obj: { conferenceId: number; gameName: string }) =>
+const postCreateGame = (obj: { conferenceId: number; gameName: string }) =>
   postRequest("game/create", obj);
 
-const createGameHistory = (obj: {
+const postCreateGameHistory = (obj: {
   bettChoice: boolean;
   bettPoint: number;
   gameId: number;
@@ -32,15 +32,15 @@ const createGameHistory = (obj: {
   memberNickName: string;
 }) => postRequest("game/create/history", obj);
 
-const saveGameResult = (obj: { gameId: number; result: boolean }) =>
+const postSaveGameResult = (obj: { gameId: number; result: boolean }) =>
   postRequest("game/save/result", obj);
 
 export {
   getMeetingList,
-  createMeetingRoom,
-  enterMeetingRoom,
-  modifyMeetingRoom,
-  createGame,
-  createGameHistory,
-  saveGameResult,
+  postCreateMeetingRoom,
+  postEnterMeetingRoom,
+  postModifyMeetingRoom,
+  postCreateGame,
+  postCreateGameHistory,
+  postSaveGameResult,
 };

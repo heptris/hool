@@ -17,7 +17,7 @@ const putMarketItem = (obj: {
 const deleteMarketItem = (id: number) =>
   deleteRequest(`${EMOJI_SHOP}?emojiShopId=${id}`);
 
-const buyEmoji = (obj: {
+const postBuyEmoji = (obj: {
   buyerMemberId: number;
   dealPoint: number;
   emojiShopId: number;
@@ -29,5 +29,5 @@ export {
   postMarketItem,
   putMarketItem,
   deleteMarketItem,
-  buyEmoji,
+  postBuyEmoji,
 };
