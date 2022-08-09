@@ -17,12 +17,13 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/emojishop")
 public class EmojiShopController {
 
     private final EmojiService emojiService;
 
     @ApiOperation(value = "상점이모지 만들기", notes = "이모지 객체와 가격을 받아 이모지상점에 저장", response = Map.class)
-    @PostMapping("/api/emoji_shop")
+    @PostMapping("/")
     public ResponseEntity createEmojiShop(@RequestBody EmojiShopDto emojiShopDto){
         emojiService.makeEmojiShop(emojiShopDto);
         return new ResponseEntity<ResponseDto>(
@@ -32,7 +33,7 @@ public class EmojiShopController {
 
     @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
             notes = "현재 접속한 memberId를 줄 필요없이 알아서 얻어 login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다", response = Map.class)
-    @GetMapping("/api/emoji_shop/makelist")
+    @GetMapping("/makelist")
     public ResponseEntity createEmojiShopList(){
         Long memberId = SecurityUtil.getCurrentMemberId();
         List<EmojiDto> dtos = emojiService.listCanEmojiShop(memberId);
@@ -46,7 +47,7 @@ public class EmojiShopController {
 
     @ApiOperation(value = "상점이모지 수정",
             notes = "상점이모지 아이디와 memberId와 수정한 가격을 받아 이모지상점에 저장 후 이모지 객체와 가격을 담은 dto로 반환", response = Map.class)
-    @PutMapping("/api/emoji_shop")
+    @PutMapping("/")
     public ResponseEntity updateEmojiShop(@RequestBody EmojiShopUpdateDto emojiShopUpdateDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
         return new ResponseEntity<ResponseDto>(
@@ -55,7 +56,7 @@ public class EmojiShopController {
     }
 
     @ApiOperation(value = "상점이모지 삭제", notes = "이모지 상점 아이디를 받아 해당되는 이모지를 상점에서 삭제", response = Map.class)
-    @DeleteMapping("/api/emoji_shop")
+    @DeleteMapping("/")
     public ResponseEntity deleteEmojiShop(@RequestParam Long emojiShopId){
         emojiService.deleteEmojiShop(emojiShopId);
         return new ResponseEntity<ResponseDto>(
@@ -64,7 +65,7 @@ public class EmojiShopController {
     }
 
     @ApiOperation(value = "상점이모지 리스트", notes = "이모지 상점에 저장된 이모지 리스트 반환", response = Map.class)
-    @GetMapping("/api/emoji_shop/list")
+    @GetMapping("/list")
     public ResponseEntity listEmojiShop(){
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto<List<EmojiShopDto>>(200,"success",emojiService.listEmojiShop())
