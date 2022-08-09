@@ -7,11 +7,16 @@ import MeetingListItem from "./MeetingListItem";
 import { MeetingRoomType } from "types/MeetingRoomType";
 import Loading from "components/Loading";
 import { Link, Navigate } from "@tanstack/react-location";
+import { useDispatch } from "react-redux";
+import { setMySessionId, setMyUserName } from "store";
 
 const MeetingList = () => {
   const { status, data, isLoading, isError } = useQuery(["meetings"], () =>
     getMeetingList()
   );
+  console.log(data);
+
+  const dispatch = useDispatch();
 
   if (isLoading) return <Loading />;
   if (isError) return <Navigate to={"/error"} />;
@@ -19,7 +24,13 @@ const MeetingList = () => {
   return (
     <ItemList>
       {data.data.map((el: MeetingRoomType) => (
-        <Link to={`meeting/${el.conferenceId}`} key={el.conferenceId}>
+        <Link
+          to={`meeting/${el.conferenceId}`}
+          key={el.conferenceId}
+          onClick={() => {
+            dispatch(setMySessionId(el.conferenceId));
+          }}
+        >
           <MeetingListItem {...el} />
         </Link>
       ))}
