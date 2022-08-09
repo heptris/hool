@@ -18,7 +18,13 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
             "where me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE")
     List<Long> sellingEmojis(@Param("memberId") Long memberId);
 
-    @Query(value = "select new com.ssafy.hool.dto.emoji.EmojiDto(e.name, e.url, e.description, m.id) " +
-            "from Member_emoji me join me.member m join me.emoji e where me.emoji.id not in (:sellingEmojiList)")
-    List<EmojiDto> madeByMeEmojis(@Param("sellingEmojiList") List<Long> sellingEmojiList);
+//    @Query(value = "select emoji_id " +
+//            "from member_emoji where emoji_id not in (:sellingEmojiList) "
+//            + "and member_id = :memberId and emoji_type = 'MADE' ", nativeQuery = true)
+//    List<Long> madeByMeEmojis(@Param("sellingEmojiList") List<Long> sellingEmojiList, @Param("memberId") Long memberId);
+
+    @Query(value = "select new com.ssafy.hool.dto.emoji.EmojiDto(e.name, e.url, e.description, e.creatorId) " +
+            "from Member_emoji me join me.emoji e where me.emoji.id not in (:sellingEmojiList) "
+            + "and me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE")
+    List<EmojiDto> madeByMeEmojis(@Param("sellingEmojiList") List<Long> sellingEmojiList, @Param("memberId") Long memberId);
 }
