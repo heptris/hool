@@ -5,7 +5,7 @@ const SearchBar = (props: {
   searchPlaceholder?: string;
   widthSize?: string;
   inputOnChange?: Function;
-  inputValue: string;
+  inputValue?: string;
 }) => {
   const { searchPlaceholder, widthSize, inputValue, inputOnChange } = props;
   return (

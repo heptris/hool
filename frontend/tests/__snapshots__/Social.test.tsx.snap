@@ -6,43 +6,30 @@ exports[`<SocialPage /> matches snapshot 1`] = `
     class="sc-bczRLJ dEIXcx"
   >
     <div
-      class="sc-eCYdqJ ggKycM"
+      class="sc-gsnTZi fIvucl"
     >
       <div
         style="display: flex; justify-content: space-between; align-items: center;"
       >
         <h1
-          class="sc-jSMfEi iXlUyX"
+          class="sc-dkzDqf ubOrv"
         >
           친구찾기
         </h1>
-        <div
-          class="sc-gsnTZi gFfhsY"
-        >
-          <label
-            class="sc-dkzDqf epKNRO fa-solid fa-magnifying-glass"
-            for="친구 검색"
-          />
-          <input
-            class="sc-hKMtZM dgdFEi"
-            id="친구 검색"
-            placeholder="친구 검색"
-          />
-        </div>
       </div>
       <span
-        class="sc-gKXOVf gYKlfH"
+        class="sc-hKMtZM fCQPYB"
       >
         친구와 함께하면 즐거움이 두배에요.
       </span>
       <div
-        class="sc-iBkjds ivzvnu"
+        class="sc-eCYdqJ cAgjmv"
       >
         <div
-          class="sc-papXJ"
+          class="sc-gKXOVf"
         >
           <button
-            class="sc-jqUVSM fcFrw"
+            class="sc-iBkjds kSKSbT"
           >
             <span
               style="color: rgb(0, 198, 193);"
@@ -51,7 +38,7 @@ exports[`<SocialPage /> matches snapshot 1`] = `
             </span>
           </button>
           <button
-            class="sc-jqUVSM fcFrw"
+            class="sc-iBkjds kSKSbT"
           >
             <span>
               친구요청
@@ -60,37 +47,37 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
       </div>
       <hr
-        class="sc-ftvSup bHOoiT"
+        class="sc-jSMfEi bchyHn"
       />
     </div>
     <div
-      class="sc-dIouRR cRmNfs"
+      class="sc-fEOsli iLpJxV"
     >
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
+        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
       >
         <div
-          class="sc-crXcEl cuWCOu"
+          class="sc-jqUVSM gLtmvn"
         >
           <img
-            class="sc-evZas dpauwO"
+            class="sc-kDDrLX ckljJQ"
             src="default"
           />
           <div
-            class="sc-breuTD hspVCW"
+            class="sc-iqcoie cbRpQG"
           >
             <h1
-              class="sc-ksZaOG czhzBS"
+              class="sc-crXcEl gtxtSW"
             >
               Thomas
             </h1>
             <h2
-              class="sc-hAZoDl iIFmZq"
+              class="sc-evZas kvSCWJ"
             >
               tho@gmail.com
             </h2>
             <span
-              class="sc-fnykZs faHzkp"
+              class="sc-breuTD hMqIoS"
             >
               일본 vs 대한민국 같이봐요
             </span>
@@ -98,35 +85,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
+        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
       >
         <div
-          class="sc-crXcEl cuWCOu"
+          class="sc-jqUVSM gLtmvn"
         >
           <img
-            class="sc-evZas dpauwO"
+            class="sc-kDDrLX ckljJQ"
             src="default"
           />
           <div
-            class="sc-breuTD hspVCW"
+            class="sc-iqcoie cbRpQG"
           >
             <h1
-              class="sc-ksZaOG czhzBS"
+              class="sc-crXcEl gtxtSW"
             >
               Bell
             </h1>
             <h2
-              class="sc-hAZoDl iIFmZq"
+              class="sc-evZas kvSCWJ"
             >
               bell@gmail.com
             </h2>
             <span
-              class="sc-fnykZs faHzkp"
+              class="sc-breuTD hMqIoS"
             >
               접속중
             </span>
@@ -134,35 +121,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
+        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
       >
         <div
-          class="sc-crXcEl cuWCOu"
+          class="sc-jqUVSM gLtmvn"
         >
           <img
-            class="sc-evZas dpauwO"
+            class="sc-kDDrLX ckljJQ"
             src="default"
           />
           <div
-            class="sc-breuTD hspVCW"
+            class="sc-iqcoie cbRpQG"
           >
             <h1
-              class="sc-ksZaOG czhzBS"
+              class="sc-crXcEl gtxtSW"
             >
               Dijkstra
             </h1>
             <h2
-              class="sc-hAZoDl iIFmZq"
+              class="sc-evZas kvSCWJ"
             >
               graph@gmail.com
             </h2>
             <span
-              class="sc-fnykZs faHzkp"
+              class="sc-breuTD hMqIoS"
             >
               12 minutes ago
             </span>
@@ -170,35 +157,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-kDDrLX giRhHT sc-iqcoie dmVUc"
+        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
       >
         <div
-          class="sc-crXcEl cuWCOu"
+          class="sc-jqUVSM gLtmvn"
         >
           <img
-            class="sc-evZas dpauwO"
+            class="sc-kDDrLX ckljJQ"
             src="default"
           />
           <div
-            class="sc-breuTD hspVCW"
+            class="sc-iqcoie cbRpQG"
           >
             <h1
-              class="sc-ksZaOG czhzBS"
+              class="sc-crXcEl gtxtSW"
             >
               Perry
             </h1>
             <h2
-              class="sc-hAZoDl iIFmZq"
+              class="sc-evZas kvSCWJ"
             >
               graph@gmail.com
             </h2>
             <span
-              class="sc-fnykZs faHzkp"
+              class="sc-breuTD hMqIoS"
             >
               12 minutes ago
             </span>
@@ -206,7 +193,7 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-fEOsli XiJap fa-solid fa-ellipsis-vertical"
+            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
