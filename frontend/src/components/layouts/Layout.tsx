@@ -12,10 +12,12 @@ import { MeetingModal } from "components/meeting";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { isCreatingRoom } = useSelector((state: RootState) => state.navbar);
-
+  const { audioEnabled, videoEnabled } = useSelector(
+    (state: RootState) => state.clientSession
+  );
   return (
     <>
-      <NavSide />
+      <NavSide audioEnabled={audioEnabled} videoEnabled={videoEnabled} />
       <Main>
         <NavHeader />
         <Container>{children}</Container>
