@@ -58,7 +58,7 @@ public class EmojiService {
         // 연관관계 삭제
         member.getEmojis().remove(emoji);
 
-        memberEmojiRepository.deleteEmoji(emojiDeleteDto.getEmojiId());
+        memberEmojiRepository.deleteEmoji(emojiDeleteDto.getEmojiId(), memberId);
     }
 
     @Transactional
@@ -111,22 +111,12 @@ public class EmojiService {
         return list;
     }
 
-    public List<MemberEmojiDto> listMemberEmoji(){
-        List<Member_emoji> memberEmojis = memberEmojiRepository.findAll();
-        List<MemberEmojiDto> list = new ArrayList<>();
-        for (Member_emoji memberEmoji : memberEmojis) {
-            list.add(new MemberEmojiDto(memberEmoji.getEmoji().getId(), memberEmoji.getEmoji().getUrl()));
-        }
-        return list;
+    public List<MemberEmojiDto> listMemberEmoji(Long memberId){
+        return memberEmojiRepository.getMyEmojis(memberId);
     }
 
     public List<EmojiShopDto> listEmojiShop(){
-        List<Emoji_shop> emojiShops = emojiShopRepository.findAll();
-        List<EmojiShopDto> list = new ArrayList<>();
-        for (Emoji_shop emojiShop : emojiShops) {
-            list.add(new EmojiShopDto(emojiShop.getEmoji_price(), emojiShop.getEmoji().getId()));
-        }
-        return list;
+        return emojiShopRepository.getEmojiShop();
     }
 
     public List<EmojiDto> listCanEmojiShop(Long memberId){
