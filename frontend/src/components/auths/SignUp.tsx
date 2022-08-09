@@ -1,15 +1,14 @@
+import { ChangeEvent, useState } from "react";
+import { Link } from "@tanstack/react-location";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import LabelInput from "components/commons/LabelInput";
 import Button from "components/commons/Button";
-import axios from "axios";
 
-// import { sendSecretMail } from "./EmailAuth";
-import { useState } from "react";
 import { apiInstance } from "api";
 import { HOOL_AUTH_ENDPOINT } from "constant";
-import { Link } from "@tanstack/react-location";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -60,19 +59,21 @@ const SignUp = () => {
       });
   };
 
-  const emailInputChangeHandler = (event) => {
+  const emailInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
-  const nameInputChangeHandler = (event) => {
+  const nameInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-  const nicknameInputChangeHandler = (event) => {
+  const nicknameInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
   };
-  const passwordInputChangeHandler = (event) => {
+  const passwordInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-  const checkPasswordInputChangeHandler = (event) => {
+  const checkPasswordInputChangeHandler = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setCheckPassword(event.target.value);
   };
 
@@ -106,7 +107,7 @@ const SignUp = () => {
             placeholderText="Email"
             type="email"
             info="*필수 정보입니다"
-            onChange={emailInputChangeHandler}
+            inputOnChange={emailInputChangeHandler}
           />
           <Button
             CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
@@ -115,7 +116,7 @@ const SignUp = () => {
             height={1.875}
             marginLeft={0.5}
             fontSize={0.75}
-            onClick={emailSendHandler}
+            buttonOnClick={emailSendHandler}
           />
         </BtnBox>
         {toggle && (
@@ -124,7 +125,9 @@ const SignUp = () => {
               text="인증번호"
               placeholderText="이메일로 발송된 인증번호를 입력해주세요"
               type="text"
-              onChange={(e) => setCode(e.target.value)}
+              inputOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setCode(e.target.value)
+              }
             />
             <Button
               CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
@@ -133,7 +136,7 @@ const SignUp = () => {
               height={1.875}
               marginLeft={0.5}
               fontSize={0.75}
-              onClick={emailAuthHandler}
+              buttonOnClick={emailAuthHandler}
             />
           </BtnBox>
         )}
@@ -143,7 +146,7 @@ const SignUp = () => {
             placeholderText="Name"
             widthSize="9.5rem"
             type="text"
-            onChange={nameInputChangeHandler}
+            inputOnChange={nameInputChangeHandler}
           />
           <LabelInput
             text="별명"
@@ -151,27 +154,27 @@ const SignUp = () => {
             widthSize="9.5rem"
             type="text"
             info="*사용 중인 별명입니다"
-            onChange={nicknameInputChangeHandler}
+            inputOnChange={nicknameInputChangeHandler}
           />
         </FlexBox>
         <LabelInput
           text="비밀번호"
           placeholderText="Password"
           type="password"
-          onChange={passwordInputChangeHandler}
+          inputOnChange={passwordInputChangeHandler}
         />
         <LabelInput
           text="비밀번호 확인"
           placeholderText="Password Confirm"
           type="password"
-          onChange={passwordInputChangeHandler}
+          inputOnChange={passwordInputChangeHandler}
         />
         <Button
           text="회원가입"
           height={3.125}
           width={20}
           marginTop={1}
-          onClick={signupHandler}
+          buttonOnClick={signupHandler}
         />
       </SignupBox>
     </Container>

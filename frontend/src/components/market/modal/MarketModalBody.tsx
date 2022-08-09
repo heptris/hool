@@ -33,17 +33,19 @@ const MarketModalBody = () => {
               text={"상품명"}
               info={"2~22자 내로 입력해주세요"}
               widthSize={"10rem"}
-              placeholderText={"여기에 상품명을 적어주세요"}
+              placeholderText={"상품명을 적어주세요"}
             />
             <LabelInput
               text="판매금액"
               widthSize={"10rem"}
-              placeholderText={"여기에 판매금액을 적어주세요"}
+              placeholderText={"판매금액을 적어주세요"}
             />
           </InputWrapper>
           <LabelTextarea
             text="설명"
             placeholderText="여기에 설명을 적어주세요"
+            height="100%"
+            width="100%"
           />
         </RightContainer>
       </LRContainer>

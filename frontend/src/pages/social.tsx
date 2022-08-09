@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import styled from "styled-components";
-
 import Container from "components/commons/Container";
 import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
