@@ -85,12 +85,13 @@ const NavUser = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
+  & i {
+    transition: transform ease 0.3s;
+  }
   &:hover {
     cursor: pointer;
-
     i {
       transform: rotate(180deg);
-      transition: transform ease 0.3s;
     }
   }
 `;

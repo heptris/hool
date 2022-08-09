@@ -1,17 +1,15 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import SearchBar from "./SearchBar";
-
 type PropsType = {
   pageTitle: string;
   subtext: string;
   isDisplaySearchBar: boolean;
-  searchPlaceholder?: string;
   isDisplayBtn: boolean;
   concreteBtn?: React.ReactElement;
   isDisplayInfo: boolean;
   concreteInfo?: React.ReactElement;
+  SearchBar?: React.ReactElement;
 };
 
 function PageHeader(props: PropsType) {
@@ -19,11 +17,11 @@ function PageHeader(props: PropsType) {
     pageTitle,
     subtext,
     isDisplaySearchBar,
-    searchPlaceholder,
     isDisplayBtn,
     concreteBtn,
     isDisplayInfo,
     concreteInfo,
+    SearchBar,
   } = props;
 
   return (
@@ -36,9 +34,7 @@ function PageHeader(props: PropsType) {
         }}
       >
         <HeaderText>{pageTitle}</HeaderText>
-        {isDisplaySearchBar && (
-          <SearchBar searchPlaceholder={searchPlaceholder} />
-        )}
+        {isDisplaySearchBar && <>{SearchBar}</>}
       </div>
 
       <SubText>{subtext}</SubText>
@@ -75,42 +71,6 @@ const UtilBox = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-
-// const SearchBar = styled.div`
-//   display: flex;
-//   align-items: center;
-//   background-color: ${darkTheme.adaptiveGrey500};
-//   padding: 0.5rem 1rem;
-//   border-radius: 4px;
-//   width: 16rem;
-//   height: 2rem;
-
-//   &:focus-within {
-//     outline: 2px solid ${darkTheme.mainBadgeColor};
-//   }
-// `;
-
-// const MagIcon = styled.i`
-//   color: ${darkTheme.adaptiveGrey200};
-// `;
-
-// const SearchInput = styled.input`
-//   background-color: transparent;
-//   border: 0;
-//   width: 100%;
-//   padding-left: 1rem;
-//   font: inherit;
-//   font-size: 0.875rem;
-//   color: ${darkTheme.adaptiveGrey200};
-
-//   &:focus {
-//     outline: none;
-//   }
-
-//   ::placeholder {
-//     color: ${darkTheme.adaptiveGrey200};
-//   }
-// `;
 
 const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey700};

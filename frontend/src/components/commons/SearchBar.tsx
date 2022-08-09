@@ -4,8 +4,10 @@ import { darkTheme, InputStyle } from "styles";
 const SearchBar = (props: {
   searchPlaceholder?: string;
   widthSize?: string;
+  inputOnChange?: Function;
+  inputValue: string;
 }) => {
-  const { searchPlaceholder, widthSize } = props;
+  const { searchPlaceholder, widthSize, inputValue, inputOnChange } = props;
   return (
     <Wrapper {...props}>
       <MagIcon
@@ -16,6 +18,8 @@ const SearchBar = (props: {
         placeholder={searchPlaceholder}
         id={searchPlaceholder}
         widthSize={widthSize}
+        value={inputValue}
+        onChange={inputOnChange}
       />
     </Wrapper>
   );

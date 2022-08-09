@@ -6,6 +6,7 @@ import { IconStyle } from "styles/IconStyle";
 const GameShowTopBox = styled(MessageBox)`
   height: 1.5rem;
   padding: 0px 1rem;
+  margin-top: 0rem;
   background-color: ${darkTheme.mainColor};
   display: flex;
   flex-direction: row;

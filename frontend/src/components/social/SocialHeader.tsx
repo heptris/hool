@@ -17,7 +17,6 @@ function SocialHeader({
       pageTitle="친구찾기"
       subtext="친구와 함께하면 즐거움이 두배에요."
       isDisplaySearchBar={true}
-      searchPlaceholder="친구 검색"
       isDisplayBtn={false}
       isDisplayInfo={true}
       concreteInfo={

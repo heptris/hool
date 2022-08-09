@@ -6,7 +6,12 @@ import { darkTheme } from "styles/Theme";
 
 import { ROUTES_NAME } from "constant";
 
-import { RootState, setIsCreatingRoom, setIsCreatingGame } from "store";
+import {
+  RootState,
+  setIsCreatingRoom,
+  setIsCreatingGame,
+  setIsShowingMessage,
+} from "store";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
@@ -20,7 +25,19 @@ const NavSide = () => {
   const openCreatingGameModal = () => {
     dispatch(setIsCreatingGame(true));
   };
+
   const { navMode } = useSelector((state: RootState) => state.navbar);
+  const isShowingMessage = useSelector(
+    (state: RootState) => state.navbar.isShowingMessage
+  );
+
+  const showMessageHandler = () => {
+    if (isShowingMessage) {
+      dispatch(setIsShowingMessage(false));
+    } else {
+      dispatch(setIsShowingMessage(true));
+    }
+  };
 
   return (
     <Side>
@@ -40,7 +57,7 @@ const NavSide = () => {
                 <Icon className="fa-solid fa-video"></Icon>
               </Btn>
             </UtilButton>
-            <UtilButton>
+            <UtilButton onClick={showMessageHandler}>
               <Btn>
                 <Icon className="fa-solid fa-comment"></Icon>
               </Btn>
