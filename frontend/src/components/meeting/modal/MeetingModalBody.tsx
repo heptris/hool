@@ -1,3 +1,12 @@
+import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "@tanstack/react-location";
+import { ChangeEvent, useState } from "react";
+
+import { postCreateMeetingRoom } from "api/meeting";
+
+import { setMySessionId } from "store";
+
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
@@ -5,10 +14,6 @@ import Button from "components/commons/Button";
 import LabelTextarea from "components/commons/LabelTextarea";
 import SearchBar from "components/commons/SearchBar";
 import LabelWrapper from "components/commons/LabelWrapper";
-import { useMutation } from "@tanstack/react-query";
-import { postCreateMeetingRoom } from "api/meeting";
-import { ChangeEvent, useState } from "react";
-import { useNavigate } from "@tanstack/react-location";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -22,10 +27,11 @@ const MeetingModalBody = ({
     tag: "",
   });
   const navigate = useNavigate();
-  const mutatedInfo = useMutation(postCreateMeetingRoom);
+  const createRoomMutation = useMutation(postCreateMeetingRoom);
+  const dispatch = useDispatch();
 
-  console.log(mutatedInfo);
-  const { mutate, isLoading, isError, error, isSuccess, data } = mutatedInfo;
+  const { mutate, isLoading, isError, error, isSuccess, data } =
+    createRoomMutation;
 
   const onChange = (
     key: "conferenceCategory" | "description" | "title" | "tag",
@@ -40,6 +46,7 @@ const MeetingModalBody = ({
 
   if (isSuccess) {
     onDisplayChange();
+    dispatch(setMySessionId(data.data.conferenceId));
     navigate({ to: `/meeting/${data.data.conferenceId}` });
   }
 
@@ -131,9 +138,7 @@ const MeetingModalBody = ({
           width={4}
           text={"완료"}
           marginBottom={1.5}
-          buttonOnClick={() => {
-            mutate(roomCreatingForm);
-          }}
+          buttonOnClick={() => mutate(roomCreatingForm)}
         />
       </ButtonWrapper>
     </BodyContainer>
@@ -194,7 +199,7 @@ const ToggleButton = styled.span`
   line-height: 1;
   background-color: ${darkTheme.mainBadgeColor};
   cursor: pointer;
-  width: 49%;
+  width: 48%;
   position: absolute;
   top: 50%;
   left: 0.2rem;
