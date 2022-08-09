@@ -35,7 +35,9 @@ const MagIcon = styled.label`
   color: ${darkTheme.adaptiveGrey200};
 `;
 
-const ConcreteInput = styled.input`
+const ConcreteInput = styled.input.attrs((props) => {
+  onChange: Function;
+})`
   ${InputStyle}
   margin: 0;
   padding-left: 3rem;
