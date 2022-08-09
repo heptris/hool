@@ -24,8 +24,9 @@ public class EmojiController {
     @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
     @PostMapping("/")
     public ResponseEntity createEmoji(@RequestPart(required = false) EmojiCreateDto emojiCreateDto, @RequestPart("file") MultipartFile multipartFile){
+//        Long memberId = 1l;
+//        emojiCreateDto = new EmojiCreateDto("s3Test", "s3Test");
         Long memberId = SecurityUtil.getCurrentMemberId();
-
         emojiService.makeEmoji(multipartFile, emojiCreateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 만들기 완료"),
