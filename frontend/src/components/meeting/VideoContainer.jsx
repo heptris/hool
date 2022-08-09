@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "store";
 
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
@@ -9,7 +11,10 @@ import { darkTheme } from "styles";
 import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
 
-const OPENVIDU_SERVER_URL = "https://" + window.location.hostname;
+const OPENVIDU_SERVER_URL =
+  "https://" +
+  window.location.hostname +
+  (import.meta.env.VITE_OPENVIDU_SERVER_PORT || "");
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 class VideoContainer extends Component {
@@ -17,20 +22,11 @@ class VideoContainer extends Component {
     super(props);
 
     this.state = {
-      mySessionId: props.sessionState.mySessionId,
-      myUserName: props.sessionState.myUserName,
       session: props.sessionState.session,
       mainStreamManager: props.sessionState.mainStreamManager,
       publisher: props.sessionState.publisher,
       subscribers: props.sessionState.subscribers,
-      audioEnabled: props.sessionState.audioEnabled,
-      videoEnabled: props.sessionState.videoEnabled,
-      msgToSend: props.sessionState.msgToSend,
-      emojiEvents: props.sessionState.emojiEvents,
-      chatEvents: props.sessionState.chatEvents,
     };
-
-    console.log(props);
 
     this.handleSessionState = props.handleSessionState.bind(this);
     this.joinSession = this.joinSession.bind(this);
@@ -40,7 +36,6 @@ class VideoContainer extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
-    this.sendTextMessage = this.sendTextMessage.bind(this);
     this.sendEmojiSignal = this.sendEmojiSignal.bind(this);
     this.recvSignal = this.recvSignal.bind(this);
     this.switchVideoEnabled = this.switchVideoEnabled.bind(this);
@@ -154,7 +149,7 @@ class VideoContainer extends Component {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, { clientData: this.props.myUserName })
             .then(async () => {
               const devices = await this.OV.getDevices();
               const videoDevices = devices.filter(
@@ -168,8 +163,8 @@ class VideoContainer extends Component {
               const publisher = this.OV.initPublisher(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: this.state.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
-                publishVideo: this.state.videoEnabled, // Whether you want to start publishing with your video enabled or not
+                publishAudio: this.props.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
+                publishVideo: this.props.videoEnabled, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
@@ -181,17 +176,20 @@ class VideoContainer extends Component {
               mySession.publish(publisher);
 
               // Set the main video in the page to display our webcam and store our Publisher
-              this.setState({
-                currentVideoDevice: videoDevices[0],
-                mainStreamManager: publisher,
-                publisher: publisher,
-              });
+              this.setState(
+                {
+                  currentVideoDevice: videoDevices[0],
+                  mainStreamManager: publisher,
+                  publisher: publisher,
+                },
+                () => {
+                  this.props.handleSessionState({
+                    ...this.state,
+                  });
+                }
+              );
 
               this.recvSignal();
-
-              this.props.handleSessionState({
-                ...this.state,
-              });
             })
             .catch((error) => {
               console.log(
@@ -219,18 +217,22 @@ class VideoContainer extends Component {
     this.OV = null;
     this.setState(
       {
-        mySessionId: "SessionA",
-        myUserName: "Participant" + Math.floor(Math.random() * 100),
         session: undefined,
         mainStreamManager: undefined,
         publisher: undefined,
         subscribers: new Array(),
-        audioEnabled: false,
-        videoEnabled: false,
-        msgToSend: "",
       },
       () => {
         this.props.handleSessionState({ ...this.state });
+        this.props.setMySessionId("SessionA");
+        this.props.setMyUserName(
+          "Participant" + Math.floor(Math.random() * 100)
+        );
+        this.props.setAudioEnabled(false);
+        this.props.setVideoEnabled(false);
+        this.props.setMsgToSend("");
+        this.props.setChatEvents(new Array());
+        this.props.setEmojiEvents(new Array());
       }
     );
   }
@@ -273,23 +275,6 @@ class VideoContainer extends Component {
     }
   }
 
-  sendTextMessage() {
-    const mySession = this.state.session;
-
-    mySession
-      .signal({
-        data: "My custom message",
-        to: [],
-        type: "chat",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
-
   sendEmojiSignal() {
     const mySession = this.state.session;
 
@@ -310,7 +295,7 @@ class VideoContainer extends Component {
   recvSignal() {
     const mySession = this.state.session;
 
-    mySession.on("signal", (event) => {
+    mySession.on("signal:emoji", (event) => {
       console.log(event.data);
       console.log(event.from);
       console.log(event.type);
@@ -318,35 +303,22 @@ class VideoContainer extends Component {
   }
 
   switchAudioEnabled() {
-    const audioState = !this.state.audioEnabled;
+    const audioState = !this.props.audioEnabled;
 
-    this.setState({ audioEnabled: audioState }, () => {
-      this.state.publisher.publishAudio(audioState);
-      this.props.handleSessionState({ ...this.state });
-    });
+    this.props.setAudioEnabled(audioState);
+    this.state.publisher.publishAudio(audioState);
   }
 
   switchVideoEnabled() {
-    const videoState = !this.state.videoEnabled;
+    const videoState = !this.props.videoEnabled;
 
-    this.setState({ videoEnabled: videoState }, () => {
-      this.state.publisher.publishVideo(videoState);
-      this.props.handleSessionState({ ...this.state });
-    });
+    this.props.setVideoEnabled(videoState);
+    this.state.publisher.publishVideo(videoState);
   }
 
   render() {
-    const {
-      mySessionId,
-      myUserName,
-      session,
-      mainStreamManager,
-      publisher,
-      subscribers,
-      audioEnabled,
-      videoEnabled,
-      msgToSend,
-    } = this.props.sessionState;
+    const { mySessionId, myUserName, audioEnabled, videoEnabled, msgToSend } =
+      this.props.sessionState;
 
     return (
       <Container>
@@ -427,22 +399,23 @@ class VideoContainer extends Component {
             </SessionHeader>
 
             <SessionBody>
-              {this.state.mainStreamManager !== undefined ? (
+              {/* PIP */}
+              {/* {this.state.mainStreamManager !== undefined ? (
                 <MainVideoContainer>
                   <UserVideoComponent
                     streamManager={this.state.mainStreamManager}
                   />
-                  {/* <input
+                  <input
                     type="button"
                     id="buttonSwitchCamera"
                     onClick={this.switchCamera}
                     value="Switch Camera"
-                  /> */}
+                  />
                 </MainVideoContainer>
-              ) : null}
+              ) : null} */}
               {/* <div id="video-container" className="col-md-6"> */}
 
-              {/* {this.state.publisher !== undefined ? (
+              {this.state.publisher !== undefined ? (
                 <StreamContainer
                   className="stream-container col-md-6 col-xs-6"
                   onClick={() =>
@@ -451,7 +424,7 @@ class VideoContainer extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </StreamContainer>
-              ) : null} */}
+              ) : null}
 
               {this.state.subscribers.map((sub, i) => (
                 <StreamContainer
@@ -482,7 +455,7 @@ class VideoContainer extends Component {
    */
 
   getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) =>
+    return this.createSession(this.props.mySessionId).then((sessionId) =>
       this.createToken(sessionId)
     );
   }
@@ -595,4 +568,15 @@ const StreamContainer = styled.div`
   height: auto;
 `;
 
-export default VideoContainer;
+const mapStateToProps = (state) => ({ ...state.clientSession });
+const mapDispatchToProps = (dispatch) => ({
+  setMySessionId: (payload) => dispatch(actions.setMySessionId(payload)),
+  setMyUserName: (payload) => dispatch(actions.setMyUserName(payload)),
+  setAudioEnabled: (payload) => dispatch(actions.setAudioEnabled(payload)),
+  setVideoEnabled: (payload) => dispatch(actions.setVideoEnabled(payload)),
+  setMsgToSend: (payload) => dispatch(actions.setMsgToSend(payload)),
+  setChatEvents: (payload) => dispatch(actions.setChatEvents(payload)),
+  setEmojiEvents: (payload) => dispatch(actions.setEmojiEvents(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoContainer);
