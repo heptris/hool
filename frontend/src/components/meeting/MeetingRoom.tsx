@@ -1,43 +1,100 @@
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getMyProfile } from "api/profile";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setNavMode,
+  //   setMySessionId,
+  //   setMyUserName,
+  //   setAudioEnabled,
+  //   setVideoEnabled,
+  //   setMsgToSend,
+  //   setChatEvents,
+  //   setEmojiEvents,
+} from "store";
+
+import { Session, Publisher, Subscriber } from "openvidu-react";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { RootState, setNavMode } from "store";
+import type { RootState, ClientSessionType } from "store";
 
 import Container from "components/commons/Container";
+import VideoContainer from "./VideoContainer";
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
-import MeetingVideo from "./MeetingVideo";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
-import VideoContainer from "./VideoContainer";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+
+export type SessionStateType = {
+  session: typeof Session | undefined;
+  mainStreamManager: typeof Publisher | typeof Subscriber | undefined;
+  publisher: typeof Publisher | undefined;
+  subscribers: Array<typeof Subscriber>;
+};
 
 const MeetingRoom = () => {
+  // const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
     (state: RootState) => state.navbar
   );
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setNavMode("meetingRoom"));
     return () => {
       dispatch(setNavMode("default"));
     };
   }, []);
+  // const {
+  //   mySessionId,
+  //   myUserName,
+  //   audioEnabled,
+  //   videoEnabled,
+  //   msgToSend,
+  //   chatEvents,
+  //   emojiEvents,
+  // } = useSelector((state: RootState) => state.sessionState);
+
+  // const myProfile = useQuery(["myProfile"], getMyProfile, {
+  //   refetchOnWindowFocus: false,
+  //   retry: 0,
+  //   onSuccess: (data) => {
+  //     console.log(data);
+  //   },
+  //   onError: (e: any) => {
+  //     console.error(e.message);
+  //   },
+  // });
+
+  const [sessionState, setSessionState] = useState({
+    session: undefined,
+    mainStreamManager: undefined,
+    publisher: undefined,
+    subscribers: new Array(),
+  });
+  const handleSessionState = (state: SessionStateType) => {
+    setSessionState(state);
+  };
 
   return (
     <>
       <ConcreteContainer>
         <FlexBox>
           <MeetingBox>
-            <VideoContainer />
+            <VideoContainer
+              sessionState={sessionState}
+              handleSessionState={handleSessionState}
+            />
           </MeetingBox>
           <GameMessageBox>
             {isShowingGame && <MeetingGame />}
-            {isShowingMessage && <MeetingMessageShow />}
-            {isShowingMessage && <MeetingMessageInput />}
+            {!isShowingMessage && (
+              <MeetingMessageShow sessionState={sessionState} />
+            )}
+            {!isShowingMessage && (
+              <MeetingMessageInput sessionState={sessionState} />
+            )}
           </GameMessageBox>
         </FlexBox>
       </ConcreteContainer>

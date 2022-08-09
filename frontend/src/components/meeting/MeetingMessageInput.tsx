@@ -1,8 +1,44 @@
-import Button from "components/commons/Button";
+import { useSelector, useDispatch } from "react-redux";
+import { setMsgToSend } from "store";
+
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
 
-const MeetingMessageInput = () => {
+import type { SessionStateType } from "./MeetingRoom";
+import type { RootState } from "store";
+
+import Button from "components/commons/Button";
+import React from "react";
+
+type PropsType = {
+  sessionState: SessionStateType;
+};
+
+const MeetingMessageInput = (props: PropsType) => {
+  const dispatch = useDispatch();
+  const { myUserName, msgToSend, chatEvents } = useSelector(
+    (state: RootState) => state.clientSession
+  );
+  const { session } = props.sessionState;
+
+  const onChangeMsgToSend = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setMsgToSend(e.target.value));
+  };
+  const sendTextMessage = () => {
+    const mySession = session;
+
+    mySession
+      .signal({
+        data: myUserName + "::" + msgToSend,
+        to: [],
+        type: "chat",
+      })
+      .then(() => {
+        dispatch(setMsgToSend(""));
+      })
+      .catch((err: any) => console.error(err));
+  };
+
   return (
     <MessageBox>
       <IconBox>
@@ -15,29 +51,37 @@ const MeetingMessageInput = () => {
           <Icon className="fa-solid fa-circle-info"></Icon>
         </div>
       </IconBox>
-      <BtnBox>
+      <MsgForm onSubmit={sendTextMessage}>
         <Input
           type="text"
           placeholder={"Type to write a message"}
           height="2.25rem"
           widthSize="100%"
+          value={msgToSend}
+          onChange={onChangeMsgToSend}
         />
-        <Button
-          CSSProps={"position:absolute; top: 0.2rem; right:0.2rem"}
-          text="Send"
-          width={3.75}
-          height={1.875}
-          marginLeft={0.5}
-          fontSize={0.75}
-        />
-      </BtnBox>
+        <div
+          onClick={(e: React.FormEvent) => {
+            e.preventDefault();
+            sendTextMessage();
+          }}
+        >
+          <Button
+            CSSProps={"position:absolute; top: 0.2rem; right:0.2rem"}
+            text="Send"
+            width={3.75}
+            height={1.875}
+            fontSize={0.875}
+          />
+        </div>
+      </MsgForm>
     </MessageBox>
   );
 };
+
 const Input = styled.input`
   ${InputStyle}
 `;
-
 export const MessageBox = styled.div`
   width: 25rem;
   height: 6.125rem;
@@ -48,21 +92,19 @@ export const MessageBox = styled.div`
   padding: 1rem;
   background-color: ${darkTheme.mainColor};
 `;
-
 const IconBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
-
 const Icon = styled.i`
   ${IconStyle}
   margin-bottom: 0.75rem;
   margin-right: 1rem;
 `;
-
-const BtnBox = styled.div`
+const MsgForm = styled.form`
   width: 100%;
   position: relative;
 `;
+
 export default MeetingMessageInput;
