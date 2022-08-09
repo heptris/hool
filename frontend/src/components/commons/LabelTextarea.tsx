@@ -9,10 +9,20 @@ interface LabelTextareaProps {
   info?: string;
   height?: string;
   width?: string;
+  textareaOnChange?: Function;
+  textareaValue?: string;
 }
 
 const LabelTextarea = (props: LabelTextareaProps) => {
-  const { text, placeholderText, info, height, width } = props;
+  const {
+    text,
+    placeholderText,
+    info,
+    height,
+    width,
+    textareaValue,
+    textareaOnChange,
+  } = props;
   return (
     <Wrapper {...props}>
       <LabelWrapper htmlFor={placeholderText} text={text} info={info} />
@@ -21,7 +31,9 @@ const LabelTextarea = (props: LabelTextareaProps) => {
         height={height}
         widthSize={width}
         placeholder={placeholderText}
-      ></TextArea>
+        value={textareaValue}
+        onChange={textareaOnChange}
+      />
     </Wrapper>
   );
 };

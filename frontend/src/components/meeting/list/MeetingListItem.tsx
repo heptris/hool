@@ -3,18 +3,20 @@ import { darkTheme } from "styles/Theme";
 
 import img from "assets/thumbnail_soccer_1920.jpg";
 import Card from "components/commons/Card";
+import { MeetingRoomType } from "types/MeetingRoomType";
 
-const ConferenceListItem = () => {
+const ConferenceListItem = (props: MeetingRoomType) => {
+  const { category, conferenceId, description, nickName, title, total } = props;
   return (
     <ListItem bgColor={darkTheme.mainColor}>
       <Thumbnail src={img} alt="" />
-      <ItemTitle>Item 제목</ItemTitle>
+      <ItemTitle>{title}</ItemTitle>
       <div>
-        <ItemDesc>Item 설명</ItemDesc>
+        <ItemDesc>{description}</ItemDesc>
         <InfoWrapper>
           <Icon className="fa-solid fa-users" />
-          <Population>인원</Population>
-          <Time>시간</Time>
+          <Population>{total} 명</Population>
+          <Time>{category}</Time>
         </InfoWrapper>
       </div>
     </ListItem>

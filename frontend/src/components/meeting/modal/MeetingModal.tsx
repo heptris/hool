@@ -14,7 +14,7 @@ const MeetingModal = () => {
   return (
     <Modal
       header={<MeetingModalHeader onDisplayChange={closeCreatingModal} />}
-      body={<MeetingModalBody />}
+      body={<MeetingModalBody onDisplayChange={closeCreatingModal} />}
       onDisplayChange={closeCreatingModal}
     />
   );

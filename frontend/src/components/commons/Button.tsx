@@ -11,6 +11,7 @@ type ButtonProps = {
   marginLeft?: number;
   marginRight?: number;
   fontSize?: number;
+  buttonOnClick?: Function;
   CSSProps?: CSSProp;
 };
 
