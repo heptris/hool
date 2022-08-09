@@ -46,7 +46,9 @@ const LabelInput = (props: LabelInputPropsType) => {
 };
 
 const LabelInputDiv = styled.div``;
-const Input = styled.input`
+const Input = styled.input.attrs((props) => {
+  onChange: Function;
+})`
   ${InputStyle}
 `;
 
