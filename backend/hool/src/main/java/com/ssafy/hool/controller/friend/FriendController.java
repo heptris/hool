@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/friend")
 @RestController
 public class FriendController {
 
@@ -30,7 +30,7 @@ public class FriendController {
      * 나의 친구 리스트 조회
      */
     @ApiOperation(value = "내 친구 목록 조회", notes = "친구의 회원id, email, 닉네임을 반환한다.(추후 프로필 주소도 포함할 예정)")
-    @GetMapping("/friendList")
+    @GetMapping("/list")
     public ResponseEntity<?> myFriendList() {
         Long memberId = SecurityUtil.getCurrentMemberId(); // 내 회원Id
         List<FriendDto> friendList = friendService.friendList(memberId);
@@ -41,7 +41,7 @@ public class FriendController {
      * 닉네임으로 친구 추가할 친구 검색
      */
     @ApiOperation(value = "친구 요청할 친구 닉네임으로 검색", notes = "닉네임으로 검색한 친구의 회원Id, Email, 닉네임을 반환한다.")
-    @PostMapping("/searchFriend")
+    @PostMapping("/search")
     public ResponseEntity<?> searchFriend(@RequestBody SearchFriendReqDto searchFriendDto) {
         FriendDto friendDto = friendService.searchAddFriend(searchFriendDto.getFriendNickName());
         return new ResponseEntity<>(new ResponseDto(200, "친구 추가할 친구 검색", friendDto)
@@ -52,7 +52,7 @@ public class FriendController {
      * 친구 요청 메세지 보내기
      */
     @ApiOperation(value = "친구 요청 메세지 보내기", notes = "친구의 회원아이디로 친구 요청 메세지를 보낸다.")
-    @PostMapping("/friend/add/message")
+    @PostMapping("/send/message")
     public ResponseEntity<?> sendFriendMessage(@RequestBody SendFriendMessageReqDto sendFriendMessageReqDto) {
         Long memberId = SecurityUtil.getCurrentMemberId(); // 내 회원 id
         friendService.sendFriendMessage(memberId, sendFriendMessageReqDto.getFriendMemberId());
@@ -65,7 +65,7 @@ public class FriendController {
      */
     @ApiOperation(value = "나한테 친구 요청 온 메세지", notes = "나한테 친구 요청 온 친구요청메세지Id, 친구닉네임, 친구의 회원Id" +
             "를 반환한다.")
-    @GetMapping("/friend/add/message")
+    @GetMapping("/send/message")
     public ResponseEntity<?> getFriendRequestMessage() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         List<FriendRequestDto> friendRequestMessage = friendService.getFriendRequestMessage(memberId);
@@ -77,7 +77,7 @@ public class FriendController {
      * 친구 메세지 수락 / 거부
      */
     @ApiOperation(value = "친구 메세지 수락 / 거부", notes = "accept의 값이 true이면 친구 수락, false이면 수락 거부이다.")
-    @PostMapping("/friend/accept")
+    @PostMapping("/accept")
     public ResponseEntity<?> friendAccept(@RequestBody FriendAcceptDto friendAcceptDto) {
         friendService.friendAccept(friendAcceptDto.getFriendRequestId(), friendAcceptDto.getAccept());
         return new ResponseEntity<>(new ResponseDto(200, "친구 수락", null), HttpStatus.OK);
@@ -85,7 +85,7 @@ public class FriendController {
 
    
     @ApiOperation(value = "같이하기", notes = "친구의 응원방에 따라 들어가기")
-    @PostMapping("/join/friend/conference")
+    @PostMapping("/join/conference")
     public ResponseEntity<?> joinFriendConference(@RequestBody ConferenceJoinDto conferenceJoinDto) {
         conferenceService.enterConference(conferenceJoinDto, SecurityUtil.getCurrentMemberId());
         return new ResponseEntity<>(new ResponseDto(200, "success", "Enter Friend Room")
@@ -93,7 +93,7 @@ public class FriendController {
     }
 
     @ApiOperation(value = "초대하기", notes = "응원방으로 친구 초대하기")
-    @PostMapping("/invite/friend")
+    @PostMapping("/invite")
     public void inviteFriend() {
         return;
     }

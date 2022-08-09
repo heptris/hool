@@ -109,5 +109,9 @@ public class Member extends BaseEntity {
 
         return friend;
     }
+
+    public void updateMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
+    }
 }
 

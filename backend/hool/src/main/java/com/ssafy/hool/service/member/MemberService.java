@@ -1,5 +1,7 @@
 package com.ssafy.hool.service.member;
 
+import com.ssafy.hool.domain.conference.EnterStatus;
+import com.ssafy.hool.domain.conference.Member_conference;
 import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Member_emoji;
 import com.ssafy.hool.domain.member.Member;
@@ -8,6 +10,7 @@ import com.ssafy.hool.dto.emoji.DetailMemberEmojiDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.friend.FriendRepository;
@@ -34,6 +37,8 @@ public class MemberService {
     private final FriendRepository friendRepository;
     private final MemberEmojiRepository memberEmojiRepository;
     private final EmojiRepository emojiRepository;
+
+    private final MemberConferenceRepository memberConferenceRepository;
 
 
     // 회원 가입
@@ -118,16 +123,14 @@ public class MemberService {
         member_emoji.setIs_favorite(!member_emoji.getIs_favorite());
     }
 
-    @Transactional
-    public void loginStatus(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setMemberStatus(MemberStatus.ONLINE);
-    }
 
     @Transactional
     public void logoutStatus(Long memberId) {
-        System.out.println("--------------실행-----------");
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setMemberStatus(MemberStatus.OFFLINE);
+        List<Member_conference> memberConferences = memberConferenceRepository.findEnterStatus(memberId);
+        for (Member_conference memberConference : memberConferences) {
+            memberConference.updateEnterState(EnterStatus.EXIT);
+        }
+        member.updateMemberStatus(MemberStatus.OFFLINE);
     }
 }
