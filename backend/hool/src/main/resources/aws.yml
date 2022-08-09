@@ -1,0 +1,11 @@
+#cloud:
+#  aws:
+#    credentials:
+#      accessKey: AKIA2EDEFCNPWHDJELTB
+#      secretKey: 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
+#    s3:
+#      bucket: hool-bucket
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false
