@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Session, Publisher, Subscriber } from "openvidu-react";
 
 interface NavMode {
@@ -41,22 +41,25 @@ const navbar = createSlice({
   name: "navbar",
   initialState,
   reducers: {
-    setNavMode(state, actions) {
+    setNavMode(
+      state: NavMode,
+      actions: PayloadAction<"default" | "meetingRoom" | "unseen">
+    ) {
       state.navMode = actions.payload;
     },
-    setIsCreatingRoom(state, actions) {
+    setIsCreatingRoom(state: NavMode, actions: PayloadAction<boolean>) {
       state.isCreatingRoom = actions.payload;
     },
-    setIsCreatingGame(state, actions) {
+    setIsCreatingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isCreatingGame = actions.payload;
     },
-    setIsShowingGame(state, actions) {
+    setIsShowingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingGame = actions.payload;
     },
-    setIsShowingMessage(state, actions) {
+    setIsShowingMessage(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingMessage = actions.payload;
     },
-    setIsLoggedIn(state, actions) {
+    setIsLoggedIn(state: NavMode, actions: PayloadAction<boolean>) {
       state.isLoggedIn = actions.payload;
     },
   },
@@ -65,25 +68,37 @@ const clientSession = createSlice({
   name: "clientSession",
   initialState: sessionInitialState,
   reducers: {
-    setMySessionId(state: any, actions: any) {
+    setMySessionId(state: ClientSessionType, actions: PayloadAction<string>) {
       state.mySessionId = actions.payload;
     },
-    setMyUserName(state: any, actions: any) {
+    setMyUserName(state: ClientSessionType, actions: PayloadAction<string>) {
       state.myUserName = actions.payload;
     },
-    setAudioEnabled(state: any, actions: any) {
+    setAudioEnabled(state: ClientSessionType, actions: PayloadAction<boolean>) {
       state.audioEnabled = actions.payload;
     },
-    setVideoEnabled(state: any, actions: any) {
+    setVideoEnabled(state: ClientSessionType, actions: PayloadAction<boolean>) {
       state.videoEnabled = actions.payload;
     },
-    setMsgToSend(state: any, actions: any) {
+    setMsgToSend(state: ClientSessionType, actions: PayloadAction<string>) {
       state.msgToSend = actions.payload;
     },
-    setChatEvents(state: any, actions: any) {
+    setChatEvents(
+      state: ClientSessionType,
+      actions: PayloadAction<Array<string>>
+    ) {
+      state.chatEvents = actions.payload;
+    },
+    setEmojiEvents(
+      state: ClientSessionType,
+      actions: PayloadAction<Array<string>>
+    ) {
+      state.emojiEvents = actions.payload;
+    },
+    addChatEvents(state: ClientSessionType, actions: PayloadAction<string>) {
       state.chatEvents = [...state.chatEvents, actions.payload];
     },
-    setEmojiEvents(state: any, actions: any) {
+    addEmojiEvents(state: ClientSessionType, actions: PayloadAction<string>) {
       state.emojiEvents = [...state.emojiEvents, actions.payload];
     },
   },
@@ -110,6 +125,8 @@ export const {
   setMsgToSend,
   setChatEvents,
   setEmojiEvents,
+  addChatEvents,
+  addEmojiEvents,
 } = clientSession.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

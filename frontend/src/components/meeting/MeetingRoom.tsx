@@ -34,7 +34,7 @@ export type SessionStateType = {
   subscribers: Array<typeof Subscriber>;
 };
 
-const MeetingRoom = () => {
+function MeetingRoom() {
   // const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
@@ -46,15 +46,22 @@ const MeetingRoom = () => {
       dispatch(setNavMode("default"));
     };
   }, []);
-  // const {
-  //   mySessionId,
-  //   myUserName,
-  //   audioEnabled,
-  //   videoEnabled,
-  //   msgToSend,
-  //   chatEvents,
-  //   emojiEvents,
-  // } = useSelector((state: RootState) => state.sessionState);
+
+  const { audioEnabled, videoEnabled } = useSelector(
+    (state: RootState) => state.clientSession
+  );
+  useEffect(() => {
+    if (sessionState.publisher === undefined) {
+      return;
+    }
+    switchAudioEnabled(audioEnabled);
+  }, [audioEnabled]);
+  useEffect(() => {
+    if (sessionState.publisher === undefined) {
+      return;
+    }
+    switchVideoEnabled(videoEnabled);
+  }, [videoEnabled]);
 
   // const myProfile = useQuery(["myProfile"], getMyProfile, {
   //   refetchOnWindowFocus: false,
@@ -67,7 +74,7 @@ const MeetingRoom = () => {
   //   },
   // });
 
-  const [sessionState, setSessionState] = useState({
+  const [sessionState, setSessionState] = useState<SessionStateType>({
     session: undefined,
     mainStreamManager: undefined,
     publisher: undefined,
@@ -75,6 +82,12 @@ const MeetingRoom = () => {
   });
   const handleSessionState = (state: SessionStateType) => {
     setSessionState(state);
+  };
+  const switchAudioEnabled = (audioState: boolean) => {
+    sessionState.publisher.publishAudio(audioState);
+  };
+  const switchVideoEnabled = (videoState: boolean) => {
+    sessionState.publisher.publishVideo(videoState);
   };
 
   return (
@@ -89,10 +102,10 @@ const MeetingRoom = () => {
           </MeetingBox>
           <GameMessageBox>
             {isShowingGame && <MeetingGame />}
-            {!isShowingMessage && (
+            {isShowingMessage && (
               <MeetingMessageShow sessionState={sessionState} />
             )}
-            {!isShowingMessage && (
+            {isShowingMessage && (
               <MeetingMessageInput sessionState={sessionState} />
             )}
           </GameMessageBox>
@@ -101,7 +114,7 @@ const MeetingRoom = () => {
       {isCreatingGame && <MeetingGameModal />}
     </>
   );
-};
+}
 
 const ConcreteContainer = styled(Container)`
   padding: 0;

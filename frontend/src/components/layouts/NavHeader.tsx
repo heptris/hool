@@ -1,23 +1,37 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-location";
+import { Link, useNavigate } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 import { ROUTES_NAME } from "constant";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { requestLogout } from "api/auth";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
+  const navigate = useNavigate();
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
-
+  const isLoggedin = useSelector((state: RootState) => state.navbar.isLoggedIn);
+  const LogoutHandler = () => {
+    requestLogout()
+      .then((res) => {
+        if (res.status === 200) {
+          window.alert("로그아웃이 완료되었습니다.");
+          navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
+        }
+      })
+      .catch((err) => {
+        console.log(err, "로그아웃 실패");
+      });
+  };
   return (
     <Header>
-      <Link to={LOGIN}>
-        <LoginBtn>로그인</LoginBtn>
-      </Link>
+      <Link to={LOGIN}>{!isLoggedin && <LoginBtn>로그인</LoginBtn>}</Link>
       <NavUser
         onMouseEnter={() => setIsDisplayMenu(true)}
         onMouseLeave={() => setIsDisplayMenu(false)}
@@ -33,7 +47,7 @@ const NavHeader = () => {
               </MenuItem>
             </Link>
             <Hr />
-            <MenuItem>
+            <MenuItem onClick={LogoutHandler}>
               <span>로그아웃</span>
             </MenuItem>
           </ProfileMenu>

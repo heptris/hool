@@ -27,10 +27,13 @@ const requestLogin = async ({ memberEmail, password }: LoginFormType) => {
 };
 
 const requestLogout = async () => {
-  sessionStorage.removeItem("accessToken");
-  sessionStorage.removeItem("refreshToken");
-  const { data } = await api.get(`logout`);
-  return data;
+  return await api
+    .get(`logout`)
+    .then((response) => {
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+      return response.data;
+    })
 };
 
 const postReissue = async (tokens: {
