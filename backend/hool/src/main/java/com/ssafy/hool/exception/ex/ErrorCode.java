@@ -11,6 +11,7 @@ public enum ErrorCode {
     // 400 BAD_REQUEST 잘못된 요청
     INVALID_PASSWORD(400, "비밀번호 값이 틀립니다"),
     INVALID_PARAMETER(400, "파라미터 값을 확인해 주세요"),
+    INVALID_GOOGLE_ID_TOKEN(400, "유효하지 않은 token입니다"),
 
     // 401
     INVALID_REFRESH_TOKEN(401, "유효하지 않은 RefreshToken 입니다."),

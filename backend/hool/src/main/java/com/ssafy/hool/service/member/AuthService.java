@@ -1,6 +1,7 @@
 package com.ssafy.hool.service.member;
 
 import com.ssafy.hool.config.jwt.TokenProvider;
+import com.ssafy.hool.config.oauth.ClientGoogle;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
@@ -28,6 +29,8 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+
+    private final ClientGoogle clientGoogle;
 
     /**
      * 회원가입
@@ -83,8 +86,29 @@ public class AuthService {
         return tokenDto;
     }
 
+    @Transactional
     public void logout(String accessToken) {
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         tokenProvider.logout(authentication.getName(), accessToken);
+    }
+
+    @Transactional
+    public TokenDto googleLogin(String googleToken) {
+        Member member = clientGoogle.getMember(googleToken);
+        String password = member.getPassword();
+        if (!memberRepository.existsByMemberEmail(member.getMemberEmail())) { // 회원 가입
+            member.setPassword(passwordEncoder.encode(member.getPassword()));
+            memberRepository.save(member);
+        }
+        // Token 반환
+        MemberLoginDto googleLoginDto = new MemberLoginDto(member.getMemberEmail(), password);
+        UsernamePasswordAuthenticationToken authenticationToken = googleLoginDto.toAuthentication();
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        member.updateMemberStatus(MemberStatus.ONLINE);
+
+        return tokenDto;
     }
 }

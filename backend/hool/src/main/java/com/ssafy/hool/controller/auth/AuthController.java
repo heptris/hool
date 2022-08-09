@@ -4,6 +4,7 @@ package com.ssafy.hool.controller.auth;
 import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.dto.auth.EmailConfirmDto;
 import com.ssafy.hool.dto.auth.EmailVerifyDto;
+import com.ssafy.hool.dto.auth.GoogleLoginDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
 import com.ssafy.hool.dto.member.MemberNickNameDuplicateDto;
@@ -146,5 +147,12 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseDto(MAIL_CODE_ERROR.getStatus(), MAIL_CODE_ERROR.getMessage(), false)
                     , HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/google/login")
+    public ResponseEntity<?> googleLogin(@RequestBody GoogleLoginDto googleLoginDto) {
+        TokenDto token = authService.googleLogin(googleLoginDto.getGoogleIdToken());
+        return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "로그인 성공",
+                token), HttpStatus.OK);
     }
 }
