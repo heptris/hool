@@ -9,8 +9,8 @@ const apiInstance = (baseURL = HOOL_API_ENDPOINT) => {
   });
   api.interceptors.request.use(
     async (config) => {
-      const token = localStorage.getItem("token");
-      config.headers!.Authorization = `Bearer ${token}`;
+      const token = sessionStorage.getItem("accessToken");
+      token && (config.headers!.Authorization = `Bearer ${token}`);
       return config;
     },
     (error) => {

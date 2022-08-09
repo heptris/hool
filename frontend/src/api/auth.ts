@@ -15,7 +15,8 @@ const requestLogin = async ({ memberEmail, password }: LoginFormType) => {
       password,
     })
     .then((response) => {
-      localStorage.setItem("token", response.data.data.accessToken);
+      sessionStorage.setItem("accessToken", response.data.data.accessToken);
+      sessionStorage.setItem("refreshToken", response.data.data.refreshToken);
       // cookies.set("myToken", response.data.data.accessToken);
       // api.defaults.headers.common[
       //   "Authorization"
@@ -26,6 +27,8 @@ const requestLogin = async ({ memberEmail, password }: LoginFormType) => {
 };
 
 const requestLogout = async () => {
+  sessionStorage.removeItem("accessToken");
+  sessionStorage.removeItem("refreshToken");
   const { data } = await api.get(`logout`);
   return data;
 };

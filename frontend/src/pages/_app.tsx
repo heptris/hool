@@ -13,12 +13,5 @@ export default function App({ children }: { children: React.ReactNode }) {
   //     return Promise.reject(error);
   //   }
   // );
-  return (
-    <Layout>
-      {children}
-      <button onClick={() => requestLogin("aa@naver.com", "1234")}>
-        로그인
-      </button>
-    </Layout>
-  );
+  return <Layout>{children}</Layout>;
 }

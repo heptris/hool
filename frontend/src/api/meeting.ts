@@ -1,6 +1,6 @@
 import { getRequest, postRequest } from "api";
 
-const getMeetingList = () => getRequest("conference");
+const getMeetingList = () => getRequest("");
 
 const createMeetingRoom = async (obj: {
   conferenceCategory: string;
