@@ -44,6 +44,10 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
 
 jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
@@ -54,3 +58,14 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA2EDEFCNPWHDJELTB
+      secretKey: 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
+    s3:
+      bucket: hool-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
