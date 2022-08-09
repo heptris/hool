@@ -18,19 +18,42 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const [toggle, setToggled] = useState(false);
+  const [code, setCode] = useState("");
 
-  const emailAuthHandler = async () => {
+  const emailSendHandler = () => {
     if (!email) {
       return alert("이메일을 입력해주세요");
     }
-    setToggled(true);
     const api = apiInstance(HOOL_AUTH_ENDPOINT);
     api
-      .post("email", {
-        memberEmail: email,
+      .post("mail", {
+        email: email,
       })
       .then((res) => {
-        window.alert(res.data.message);
+        if (res.status === 200) {
+          window.alert("메일이 발송되었습니다.");
+          setToggled(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const emailAuthHandler = () => {
+    if (!code) {
+      return alert("인증번호를 입력해주세요");
+    }
+    const api = apiInstance(HOOL_AUTH_ENDPOINT);
+    api
+      .post("verifyCode", {
+        code: code,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          window.alert("인증이 완료되었습니다.");
+          setToggled(true);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -92,15 +115,27 @@ const SignUp = () => {
             height={1.875}
             marginLeft={0.5}
             fontSize={0.75}
-            onClick={emailAuthHandler}
+            onClick={emailSendHandler}
           />
         </BtnBox>
         {toggle && (
-          <LabelInput
-            text="인증번호"
-            placeholderText="이메일로 발송된 인증번호를 입력해주세요"
-            type="text"
-          />
+          <BtnBox>
+            <LabelInput
+              text="인증번호"
+              placeholderText="이메일로 발송된 인증번호를 입력해주세요"
+              type="text"
+              onChange={(e) => setCode(e.target.value)}
+            />
+            <Button
+              CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
+              text="확인"
+              width={3}
+              height={1.875}
+              marginLeft={0.5}
+              fontSize={0.75}
+              onClick={emailAuthHandler}
+            />
+          </BtnBox>
         )}
         <FlexBox>
           <LabelInput
