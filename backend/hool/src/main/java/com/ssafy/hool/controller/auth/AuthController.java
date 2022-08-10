@@ -68,6 +68,9 @@ public class AuthController {
 
             throw new CustomValidationException("유효성 검사 실패", errorMap);
         } else {
+            if (!memberJoinDto.getPassword().equals(memberJoinDto.getPasswordComfirm())) {
+                throw new CustomException(NOT_EQUAL_PASSWORD);
+            }
             return new ResponseEntity<ResponseDto>(new ResponseDto(200, "회원가입 성공",
                     authService.signup(memberJoinDto)), HttpStatus.OK);
         }

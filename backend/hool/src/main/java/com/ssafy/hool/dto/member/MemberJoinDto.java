@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -18,11 +19,15 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class MemberJoinDto {
 
+    @Email
     @NotBlank
     private String memberEmail;
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String passwordComfirm;
 
     @NotBlank
     private String name;
