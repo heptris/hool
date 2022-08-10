@@ -5,6 +5,7 @@ interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
   isCreatingRoom: boolean;
   isCreatingGame: boolean;
+  isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
   isLoggedIn: boolean;
@@ -24,6 +25,7 @@ const initialState: NavMode = {
   navMode: "default",
   isCreatingRoom: false,
   isCreatingGame: false,
+  isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
   isLoggedIn: !!sessionStorage.getItem("token"),
@@ -54,6 +56,9 @@ const navbar = createSlice({
     },
     setIsCreatingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isCreatingGame = actions.payload;
+    },
+    setIsCreatingPreferences(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isCreatingPreferences = actions.payload;
     },
     setIsShowingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingGame = actions.payload;
@@ -121,6 +126,7 @@ export const {
   setNavMode,
   setIsCreatingRoom,
   setIsCreatingGame,
+  setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
   setIsLoggedIn,
