@@ -14,6 +14,7 @@ import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.friend.FriendRepository;
+import com.ssafy.hool.repository.friend.FriendRequestRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +38,8 @@ public class MemberService {
     private final FriendRepository friendRepository;
     private final MemberEmojiRepository memberEmojiRepository;
     private final EmojiRepository emojiRepository;
+
+    private final FriendRequestRepository friendRequestRepository;
 
     private final MemberConferenceRepository memberConferenceRepository;
 
@@ -75,9 +78,13 @@ public class MemberService {
      */
     @Transactional
     public void deleteMember(Long memberId) {
+//        List<Long> deleteFriendIds = friendRepository.findByFriendMemberId(memberId);
+//        for (Long deleteFriendId : deleteFriendIds) {
+//            System.out.println("deleteFriendId = " + deleteFriendId);
+//        }
+//
+//        friendRepository.deleteAllByIdInBatch(deleteFriendIds);
         memberRepository.deleteById(memberId);
-        List<Long> deleteFriendIds = friendRepository.findByFriendMemberId(memberId);
-        friendRepository.deleteAllByIdInBatch(deleteFriendIds);
     }
 
     public int getFriendCount(Long memberId) {

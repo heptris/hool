@@ -47,7 +47,7 @@ public class ClientGoogle {
             String nickName = jsonObj.get("sub").toString();
             String name = jsonObj.get("name").toString();
             String email = jsonObj.get("email").toString();
-            String password = UUID.randomUUID().toString();
+            String password = "hool";
 
             System.out.println(name);
             System.out.println(email);

@@ -65,7 +65,7 @@ class MemberServiceTest {
 
     @Test
     void 회원탈퇴() {
-        memberService.deleteMember(1L);
+        memberService.deleteMember(3L);
     }
 
     @Test
@@ -118,6 +118,7 @@ class MemberServiceTest {
 
         try {
             String idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZkYTEwNjY0NTNkYzlkYzNkZDkzM2E0MWVhNTdkYTNlZjI0MmIwZjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiNjQ0MDEzMDAyMzc3LXRtZ25qNGo5djk5cHY1dm5hcG45Y2VnMWJlYm4zdXQyLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiNjQ0MDEzMDAyMzc3LXRtZ25qNGo5djk5cHY1dm5hcG45Y2VnMWJlYm4zdXQyLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAwNDQ3NTE3OTIzMzU2ODc1Mzc2IiwiZW1haWwiOiJsb3Zla2llajkyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUXNxN0VOaDV2SzUtRzBmMjBxU1hGZyIsIm5hbWUiOiLsi6DsnYDsoJUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUl0YnZtbmUwajNrMzR0YjJDOGtzeGd2VF9ZdHE5WHN0ZmpJc0UtekQ1UkM9czk2LWMiLCJnaXZlbl9uYW1lIjoi7J2A7KCVIiwiZmFtaWx5X25hbWUiOiLsi6AiLCJsb2NhbGUiOiJrbyIsImlhdCI6MTY2MDAyNjQ0MCwiZXhwIjoxNjYwMDMwMDQwLCJqdGkiOiI2NWY1MmI1MDNkMDEyZmMyMTRmMjNjZTQwOWFlNjAzOTkyMDMzMTQxIn0.EUx_on2APNjxsvkQhPFV12oA-2x1pd1yCNdF60u6h-EZbJDQSaIBClvz_nynFzw5Pa61uJe7YDWxumUgyB-ZsOBuMbMXEzYHQdO7lGcbDXEcooyGX12PDvhjdTMdyMPDW5oi9q87jfEqBM3q3pIfkfLnMQldkOkEEgfSUTaiLJIxxI3_VcJC2PGYQWDrqVUELYFdGa0sRjcNgbjnHtqAXkmTWhMp_NjLNg-rV77IXa7UcoH1kWKWYyAwrZvjqlwGlgbu0kidLnFaqCAWtLW25W-zWPkbLC-1YE9sb2Z8I43kXmPgOOqs7sKQGo_1DFHqlEFngVURtSsn3dLpJmuTxQ";
+
 
             String url = "https://oauth2.googleapis.com/tokeninfo";
             url += "?id_token=" + idToken;

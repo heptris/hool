@@ -21,4 +21,5 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
             ", friend_request_status)" +
             "VALUES(:fromMember, :toMember, now(), now(), 'PROCESS')", nativeQuery = true)
     void sendFriendMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
+
 }

@@ -45,7 +45,7 @@ class FriendServiceTest {
 
     @Test
     void 친구리스트() {
-        List<FriendDto> friendList = friendService.friendList(1L);
+        List<FriendDto> friendList = friendService.friendList(2L);
         for (FriendDto friendDto : friendList) {
             System.out.println(friendDto);
         }
@@ -53,6 +53,6 @@ class FriendServiceTest {
 
     @Test
     void 친구삭제() {
-        friendService.deleteFriend(1L, 2L);
+        friendService.deleteFriend(3L, 2L);
     }
 }
