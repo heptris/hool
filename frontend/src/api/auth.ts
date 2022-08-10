@@ -5,28 +5,11 @@ import { LoginFormType } from "types/LoginFormTypes";
 
 const api = apiInstance(HOOL_AUTH_ENDPOINT);
 
-const requestLogin = async ({ memberEmail, password }: LoginFormType) => {
-  return await api
-    .post(`login`, {
-      memberEmail,
-      password,
-    })
-    .then((response) => {
-      sessionStorage.setItem("accessToken", response.data.data.accessToken);
-      sessionStorage.setItem("refreshToken", response.data.data.refreshToken);
-      return response.data;
-    });
-};
+const requestLogin = async (form: LoginFormType) =>
+  await api.post(`login`, form).then((res) => res.data);
 
-const requestLogout = async () => {
-  return await api
-    .get(`logout`)
-    .then((response) => {
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
-      return response.data;
-    })
-};
+const requestLogout = async () =>
+  await api.get(`logout`).then((res) => res.data);
 
 const postReissue = async (tokens: {
   accessToken: string;
