@@ -1,5 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Session, Publisher, Subscriber } from "openvidu-react";
+import { USER_SESSIONSTORAGE_KEY } from "constant";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
@@ -28,7 +28,7 @@ const initialState: NavMode = {
   isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!sessionStorage.getItem("token"),
+  isLoggedIn: !!sessionStorage.getItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN),
 };
 const sessionInitialState: ClientSessionType = {
   mySessionId: "SessionABC",
