@@ -9,23 +9,23 @@ import Footer from "./Footer";
 import NavHeader from "./NavHeader";
 import NavSide from "./NavSide";
 import { MeetingModal } from "components/meeting";
+import PreferencesModal from "./modal/PreferencesModal";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { isCreatingRoom, navMode } = useSelector(
+  const { isCreatingRoom, navMode, isCreatingPreferences } = useSelector(
     (state: RootState) => state.navbar
   );
-  const { audioEnabled, videoEnabled } = useSelector(
-    (state: RootState) => state.clientSession
-  );
+
   return (
     <>
-      <NavSide audioEnabled={audioEnabled} videoEnabled={videoEnabled} />
+      <NavSide />
       <Main>
         <NavHeader />
         <Container>{children}</Container>
         {navMode !== "meetingRoom" && <Footer />}
       </Main>
       {isCreatingRoom && <MeetingModal />}
+      {isCreatingPreferences && <PreferencesModal />}
     </>
   );
 };

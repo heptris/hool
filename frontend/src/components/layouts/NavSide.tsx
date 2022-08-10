@@ -13,6 +13,7 @@ import {
   setIsShowingMessage,
   setAudioEnabled,
   setVideoEnabled,
+  setIsCreatingPreferences,
 } from "store";
 import { useState } from "react";
 
@@ -22,11 +23,15 @@ const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
   const dispatch = useDispatch();
+
   const openCreatingModal = () => {
     dispatch(setIsCreatingRoom(true));
   };
   const openCreatingGameModal = () => {
     dispatch(setIsCreatingGame(true));
+  };
+  const openCreatingPreferencesModal = () => {
+    dispatch(setIsCreatingPreferences(true));
   };
 
   const { navMode } = useSelector((state: RootState) => state.navbar);
@@ -132,7 +137,7 @@ const NavSide = () => {
                 </UtilButton>
               </>
             )}
-            <UtilButton>
+            <UtilButton onClick={openCreatingPreferencesModal}>
               <Btn>
                 <Icon className="fa-solid fa-gear" />
               </Btn>
