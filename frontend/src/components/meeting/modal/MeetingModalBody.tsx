@@ -14,18 +14,20 @@ import Button from "components/commons/Button";
 import LabelTextarea from "components/commons/LabelTextarea";
 import SearchBar from "components/commons/SearchBar";
 import LabelWrapper from "components/commons/LabelWrapper";
+import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 
 const MeetingModalBody = ({
   onDisplayChange,
 }: {
   onDisplayChange: Function;
 }) => {
-  const [roomCreatingForm, setRoomCreatingForm] = useState({
-    conferenceCategory: "",
-    description: "",
-    title: "",
-    tag: "",
-  });
+  const [roomCreatingForm, setRoomCreatingForm] =
+    useState<CreatingMeetingRoomType>({
+      conferenceCategory: "SOCCER",
+      description: "",
+      title: "",
+      tag: "",
+    });
   const navigate = useNavigate();
   const createRoomMutation = useMutation(postCreateMeetingRoom);
   const dispatch = useDispatch();
@@ -35,12 +37,13 @@ const MeetingModalBody = ({
 
   const onChange = (
     key: "conferenceCategory" | "description" | "title" | "tag",
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    limit?: number
   ) => {
     const { value } = e.target;
     setRoomCreatingForm({
       ...roomCreatingForm,
-      [key]: value,
+      [key]: limit ? value.substring(0, limit) : value,
     });
   };
 
@@ -58,10 +61,10 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 응원방 제목을 적어주세요"
           text="응원방 제목"
-          info={`0 / 140`}
+          info={`${roomCreatingForm.title.length} / 140`}
           textareaValue={roomCreatingForm.title}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            onChange("title", e)
+            onChange("title", e, 140)
           }
         />
       </Wrapper>
@@ -71,10 +74,10 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 설명을 적어주세요"
           text="설명"
-          info={`0 / 140`}
+          info={`${roomCreatingForm.description.length} / 140`}
           textareaValue={roomCreatingForm.description}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            onChange("description", e)
+            onChange("description", e, 140)
           }
         />
       </Wrapper>
