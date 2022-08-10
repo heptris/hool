@@ -120,6 +120,7 @@ const ConcreteContainer = styled(Container)`
   padding: 0;
   width: 100%;
   height: 92vh;
+  overflow: hidden;
 `;
 const FlexBox = styled.div`
   width: 100%;
