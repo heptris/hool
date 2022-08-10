@@ -18,6 +18,7 @@ const SignUp = () => {
   const [checkPassword, setCheckPassword] = useState("");
   const [toggle, setToggled] = useState(false);
   const [code, setCode] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
   const emailSendHandler = () => {
     if (!email) {
@@ -51,7 +52,7 @@ const SignUp = () => {
       .then((res) => {
         if (res.status === 200) {
           window.alert("인증이 완료되었습니다.");
-          setToggled(true);
+          setDisabled(false);
         }
       })
       .catch((error) => {
@@ -169,12 +170,13 @@ const SignUp = () => {
           type="password"
           inputOnChange={passwordInputChangeHandler}
         />
-        <Button
+        <SignupBtn
           text="회원가입"
           height={3.125}
           width={20}
           marginTop={1}
           buttonOnClick={signupHandler}
+          disabled={disabled}
         />
       </SignupBox>
     </Container>
@@ -220,6 +222,14 @@ const FlexBox = styled.div`
 const BtnBox = styled.div`
   width: 20rem;
   position: relative;
+`;
+
+const SignupBtn = styled(Button)`
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background: var(--button-bg-color, ${darkTheme.contrastColor});
+  }
 `;
 
 export default SignUp;
