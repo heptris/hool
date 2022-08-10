@@ -156,6 +156,7 @@ const NickName = styled.h1`
 const MessageText = styled.div`
   display: flex;
   align-items: center;
+  width: fit-content;
 
   background-color: ${darkTheme.adaptiveGrey700};
   border-radius: 8px;

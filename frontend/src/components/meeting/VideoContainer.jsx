@@ -222,7 +222,7 @@ class VideoContainer extends Component {
         this.props.setVideoEnabled(false);
         this.props.setMsgToSend("");
         this.props.setChatEvents(new Array());
-        this.props.setEmojiEvents(new Array());
+        this.props.setEmojiEvents(new Array(9).fill(""));
       }
     );
   }
@@ -289,12 +289,26 @@ class VideoContainer extends Component {
       console.log(event.data);
       console.log(event.from);
       console.log(event.type);
+
+      const sender = event.from.connectionId;
+      const publisher = this.state.publisher.stream.connection.connectionId;
+      const subscribers = this.state.subscribers;
+
+      const idx =
+        sender !== publisher
+          ? subscribers.indexOf(event.from.connectionId) + 1
+          : 0;
+
+      const newEmojiEvents = this.props.emojiEvents.map((emo, i) =>
+        idx === i ? event.data : emo
+      );
+
+      this.props.setEmojiEvents(newEmojiEvents);
     });
   }
 
   render() {
-    const { mySessionId, myUserName, audioEnabled, videoEnabled, msgToSend } =
-      this.props;
+    const { mySessionId, myUserName } = this.props;
 
     return (
       <Container>
@@ -371,7 +385,6 @@ class VideoContainer extends Component {
                   />
                 </MainVideoContainer>
               ) : null} */}
-              {/* <div id="video-container" className="col-md-6"> */}
 
               {this.state.publisher !== undefined ? (
                 <StreamContainer
@@ -379,7 +392,10 @@ class VideoContainer extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    idx={0}
+                    streamManager={this.state.publisher}
+                  />
                 </StreamContainer>
               ) : null}
 
@@ -388,10 +404,9 @@ class VideoContainer extends Component {
                   key={i}
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent idx={i + 1} streamManager={sub} />
                 </StreamContainer>
               ))}
-              {/* </div> */}
             </SessionBody>
           </Session>
         ) : null}
