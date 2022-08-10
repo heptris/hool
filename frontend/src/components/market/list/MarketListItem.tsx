@@ -1,25 +1,59 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import defaultImg from "assets/profile-default-imgs/2.png";
 
+import { postBuyEmoji } from "api/market";
+
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 
+import { MarketItemType } from "types/MarketItemType";
+import { UserInfoType } from "types/UserInfoType";
+
+import { QUERY_KEYS } from "constant";
+
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
-const MarketItem = () => {
+const MarketItem = (props: MarketItemType) => {
+  const { emojiId, price } = props;
+  const { mutate, isLoading, isError, error, isSuccess, data } =
+    useMutation(postBuyEmoji);
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
+
   return (
     <Item bgColor={mainColor} borderColor={adaptiveGrey700}>
       <Emoji src={defaultImg} alt="" />
-      <ItemTitle>Sample</ItemTitle>
+      <ItemTitle>Sample {emojiId}</ItemTitle>
       <ItemDesc>Lorem ipsum</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
           <i className="fa-solid fa-cube"></i>
-          <span>500</span>
+          <span>
+            {Number(price)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
         </CostsWrapper>
-        <BuyButton height={2.75} width={3.75} fontSize={0.875} text={"구매"} />
+        <BuyButton
+          height={2.75}
+          width={3.75}
+          fontSize={0.875}
+          text={"구매"}
+          buttonOnClick={() =>
+            mutate({
+              buyerMemberId: userInfo.memberId,
+              dealPoint: price,
+              emojiShopId: 1,
+              sellerMemberId: 1,
+            })
+          }
+        />
       </BuyInfoWrapper>
     </Item>
   );

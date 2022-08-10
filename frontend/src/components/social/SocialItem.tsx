@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-location";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
+import { postAcceptFriend } from "api/social";
 
 import pdi1 from "assets/profile-default-imgs/1.png";
 import pdi2 from "assets/profile-default-imgs/2.png";
@@ -11,12 +14,11 @@ import pdi4 from "assets/profile-default-imgs/4.png";
 import pdi5 from "assets/profile-default-imgs/5.jpg";
 import pdi6 from "assets/profile-default-imgs/6.jpg";
 
-import { FriendInfoType } from "types/FriendInfoType";
-
 import Card from "components/commons/Card";
-import { useMutation } from "@tanstack/react-query";
-import { postAcceptFriend } from "api/social";
 
+import { QUERY_KEYS } from "constant";
+
+import { FriendInfoType } from "types/FriendInfoType";
 type PropsType = {
   isDisplayMyFriends: boolean;
 } & FriendInfoType;
@@ -33,11 +35,18 @@ function SocialItem(props: PropsType) {
   } = props;
 
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
-  const [isDisplayOption, setIsDisplayOption] = useState(false);
-  const navigate = useNavigate();
-  const { mutate, isError, isSuccess, data } = useMutation(postAcceptFriend);
-  console.log(data);
 
+  const [isDisplayOption, setIsDisplayOption] = useState(false);
+
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(postAcceptFriend, {
+    onSettled: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_MESSAGE_LIST]);
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_LIST]);
+    },
+  });
   const handlePostAcceptFriendMutate = (accept: boolean) => {
     friendRequestId && mutate({ accept, friendRequestId });
   };
@@ -61,17 +70,19 @@ function SocialItem(props: PropsType) {
         ></MenuIcon>
         {isDisplayMyFriends && isDisplayOption && (
           <Menu>
-            <button
-              onClick={() => {
-                navigate({
-                  to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
-                  replace: true,
-                });
-                setIsDisplayOption(!isDisplayOption);
-              }}
-            >
-              <p>친구 따라가기</p>
-            </button>
+            <div>
+              <p
+                onClick={() => {
+                  navigate({
+                    to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
+                    replace: true,
+                  });
+                  setIsDisplayOption(!isDisplayOption);
+                }}
+              >
+                <p>친구 따라가기</p>
+              </p>
+            </div>
           </Menu>
         )}
         {!isDisplayMyFriends && isDisplayOption && (
