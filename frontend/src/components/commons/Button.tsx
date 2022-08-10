@@ -13,6 +13,7 @@ type ButtonProps = {
   fontSize?: number;
   buttonOnClick?: Function;
   CSSProps?: CSSProp;
+  disabled?: boolean;
 };
 
 /**
