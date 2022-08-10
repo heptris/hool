@@ -22,13 +22,15 @@ const MarketList = () => {
   console.log(userInfo);
   const { data, isError, isLoading } = useQuery(
     [QUERY_KEYS.MARKET],
-    getMarketList
+    getMarketList,
+    {
+      retry: 0,
+    }
   );
-  console.log(data, isError, isLoading);
 
-  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
   if (isLoading) return <Loading />;
-  // if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
+  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
+  if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <ItemList>
