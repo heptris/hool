@@ -75,66 +75,77 @@ const NavSide = () => {
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        {navMode === "meetingRoom" ? (
-          <>
-            <UtilButton onClick={audioEnabledHandler}>
-              <AudioBtn audio={audio}>
-                {audio ? (
-                  <Icon className="fa-solid fa-microphone"></Icon>
-                ) : (
-                  <Icon className="fa-solid fa-microphone-slash"></Icon>
-                )}
-              </AudioBtn>
-            </UtilButton>
-            <UtilButton onClick={videoEnabledHandler}>
-              <VideoBtn video={video}>
-                {video ? (
-                  <Icon className="fa-solid fa-video"></Icon>
-                ) : (
-                  <Icon className="fa-solid fa-video-slash"></Icon>
-                )}
-              </VideoBtn>
-            </UtilButton>
-            <UtilButton onClick={showMessageHandler}>
+        <div>
+          <Buttons>
+            {navMode === "meetingRoom" ? (
+              <>
+                <UtilButton onClick={audioEnabledHandler}>
+                  <AudioBtn audio={audio}>
+                    {audio ? (
+                      <Icon className="fa-solid fa-microphone"></Icon>
+                    ) : (
+                      <Icon className="fa-solid fa-microphone-slash"></Icon>
+                    )}
+                  </AudioBtn>
+                </UtilButton>
+                <UtilButton onClick={videoEnabledHandler}>
+                  <VideoBtn video={video}>
+                    {video ? (
+                      <Icon className="fa-solid fa-video"></Icon>
+                    ) : (
+                      <Icon className="fa-solid fa-video-slash"></Icon>
+                    )}
+                  </VideoBtn>
+                </UtilButton>
+                <UtilButton onClick={showMessageHandler}>
+                  <Btn>
+                    <Icon className="fa-solid fa-comment"></Icon>
+                  </Btn>
+                </UtilButton>
+                <UtilButton onClick={openCreatingGameModal}>
+                  <Btn>
+                    <Icon className="fa-solid fa-gamepad"></Icon>
+                  </Btn>
+                </UtilButton>
+              </>
+            ) : (
+              <>
+                <NavLink to={MEETING}>
+                  <Btn>
+                    <Icon className="fa-solid fa-list" />
+                  </Btn>
+                </NavLink>
+                <NavLink to={SOCIAL}>
+                  <Btn>
+                    <Icon className="fa-solid fa-users" />
+                  </Btn>
+                </NavLink>
+                <NavLink to={MARKET}>
+                  <Btn>
+                    <Icon className="fa-solid fa-face-grin-wide" />
+                  </Btn>
+                </NavLink>
+                <UtilButton onClick={openCreatingModal}>
+                  <Btn>
+                    <Icon className="fa-solid fa-plus" />
+                  </Btn>
+                </UtilButton>
+              </>
+            )}
+            <UtilButton>
               <Btn>
-                <Icon className="fa-solid fa-comment"></Icon>
+                <Icon className="fa-solid fa-gear" />
               </Btn>
             </UtilButton>
-            <UtilButton onClick={openCreatingGameModal}>
-              <Btn>
-                <Icon className="fa-solid fa-gamepad"></Icon>
-              </Btn>
-            </UtilButton>
-          </>
-        ) : (
-          <>
-            <NavLink to={MEETING}>
-              <Btn>
-                <Icon className="fa-solid fa-list" />
-              </Btn>
-            </NavLink>
-            <NavLink to={SOCIAL}>
-              <Btn>
-                <Icon className="fa-solid fa-users" />
-              </Btn>
-            </NavLink>
-            <NavLink to={MARKET}>
-              <Btn>
-                <Icon className="fa-solid fa-face-grin-wide" />
-              </Btn>
-            </NavLink>
-            <UtilButton onClick={openCreatingModal}>
-              <Btn>
-                <Icon className="fa-solid fa-plus" />
-              </Btn>
-            </UtilButton>
-          </>
-        )}
-        <UtilButton>
-          <Btn>
-            <Icon className="fa-solid fa-gear" />
-          </Btn>
-        </UtilButton>
+          </Buttons>
+        </div>
+        <div>
+          <UtilButton>
+            <Btn>
+              <Icon className="fa-solid fa-arrow-right-from-bracket" />
+            </Btn>
+          </UtilButton>
+        </div>
       </ButtonGroup>
     </Side>
   );
@@ -171,10 +182,19 @@ const Logo = styled.h1`
   }
 `;
 const ButtonGroup = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin-top: 3.5rem;
+  margin-bottom: 3rem;
 `;
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
