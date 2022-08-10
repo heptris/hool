@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
 
-    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id) " +
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
             "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
             "and fr.toMember.id = :memberId")
     List<FriendRequestDto> findFriendRequest(@Param("memberId") Long memberId);
@@ -21,4 +21,5 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
             ", friend_request_status)" +
             "VALUES(:fromMember, :toMember, now(), now(), 'PROCESS')", nativeQuery = true)
     void sendFriendMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
+
 }

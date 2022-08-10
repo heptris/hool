@@ -49,8 +49,8 @@ class PointHistoryRepositoryTest {
         memberRepository.save(member2);
         memberRepository.save(member3);
 
-        Emoji emoji1 = Emoji.createEmoji(member2.getId(), "sonEmoji", "urltest", "손흥민 이모지");
-        Emoji emoji2 = Emoji.createEmoji(member3.getId(), "holEmoji", "urltest", "홀란드 이모지");
+        Emoji emoji1 = Emoji.createEmoji(member2.getId(), "sonEmoji", "손흥민 이모지");
+        Emoji emoji2 = Emoji.createEmoji(member3.getId(), "holEmoji", "홀란드 이모지");
         emojiRepository.save(emoji1);
         emojiRepository.save(emoji2);
 

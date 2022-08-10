@@ -32,7 +32,9 @@ public class EmojiShopController {
     }
 
     @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
-            notes = "현재 접속한 memberId를 줄 필요없이 알아서 얻어 login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다", response = Map.class)
+            notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
+                    "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
+            , response = Map.class)
     @GetMapping("/makelist")
     public ResponseEntity createEmojiShopList(){
         Long memberId = SecurityUtil.getCurrentMemberId();

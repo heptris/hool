@@ -39,13 +39,13 @@ class FriendServiceTest {
     void 친구요청_메세지_조회() {
         List<FriendRequestDto> friendRequestMessage = friendService.getFriendRequestMessage(3L);
         for (FriendRequestDto friendRequest : friendRequestMessage) {
-            System.out.println("fromMember :"  + friendRequest.getFriendNickName());
+            System.out.println(friendRequest);
         }
     }
 
     @Test
     void 친구리스트() {
-        List<FriendDto> friendList = friendService.friendList(1L);
+        List<FriendDto> friendList = friendService.friendList(4L);
         for (FriendDto friendDto : friendList) {
             System.out.println(friendDto);
         }
@@ -53,6 +53,6 @@ class FriendServiceTest {
 
     @Test
     void 친구삭제() {
-        friendService.deleteFriend(1L, 2L);
+        friendService.deleteFriend(3L, 2L);
     }
 }

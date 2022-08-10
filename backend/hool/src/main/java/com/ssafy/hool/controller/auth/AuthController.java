@@ -4,6 +4,7 @@ package com.ssafy.hool.controller.auth;
 import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.dto.auth.EmailConfirmDto;
 import com.ssafy.hool.dto.auth.EmailVerifyDto;
+import com.ssafy.hool.dto.auth.GoogleLoginDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
 import com.ssafy.hool.dto.member.MemberNickNameDuplicateDto;
@@ -67,6 +68,9 @@ public class AuthController {
 
             throw new CustomValidationException("유효성 검사 실패", errorMap);
         } else {
+            if (!memberJoinDto.getPassword().equals(memberJoinDto.getPasswordComfirm())) {
+                throw new CustomException(NOT_EQUAL_PASSWORD);
+            }
             return new ResponseEntity<ResponseDto>(new ResponseDto(200, "회원가입 성공",
                     authService.signup(memberJoinDto)), HttpStatus.OK);
         }
@@ -131,11 +135,13 @@ public class AuthController {
         }
     }
 
+    @ApiOperation(value = "회원가입 시 이메일 본인인증", notes = "해당 이메일에게 인증코드를 보내준다.")
     @PostMapping("/mail")
     public void emailConfirm(@RequestBody EmailConfirmDto emailConfirmDto) {
         mailService.sendSimpleMessage(emailConfirmDto.getEmail());
     }
 
+    @ApiOperation(value = "본인 인증 코드 확인")
     @PostMapping("/verifyCode")
     public ResponseEntity<?> verifyCode(@RequestBody EmailVerifyDto emailVerifyDto) {
         if (MailServiceImpl.ePW.equals(emailVerifyDto.getCode())) {
@@ -144,5 +150,12 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseDto(MAIL_CODE_ERROR.getStatus(), MAIL_CODE_ERROR.getMessage(), false)
                     , HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/google/login")
+    public ResponseEntity<?> googleLogin(@RequestBody GoogleLoginDto googleLoginDto) {
+        TokenDto token = authService.googleLogin(googleLoginDto.getGoogleIdToken());
+        return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "로그인 성공",
+                token), HttpStatus.OK);
     }
 }

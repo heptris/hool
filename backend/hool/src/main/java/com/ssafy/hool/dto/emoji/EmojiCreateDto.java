@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class EmojiCreateDto {
 
     private String name;
-    private String url;
+//    private String url;
     private String description;
 
 }

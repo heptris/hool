@@ -4,6 +4,7 @@ import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.emoji.Member_emoji;
+import com.ssafy.hool.domain.s3.AwsS3;
 import com.ssafy.hool.dto.emoji.*;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
@@ -12,10 +13,13 @@ import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,18 +35,31 @@ public class EmojiService {
     private final EmojiShopRepository emojiShopRepository;
     private final MemberRepository memberRepository;
 
+    private final AwsS3Service awsS3Service;
+
     @Transactional
-    public void makeEmoji(EmojiCreateDto emojiCreateDto, Long memberId){
+    public void makeEmoji(MultipartFile multipartFile, EmojiCreateDto emojiCreateDto, Long memberId){
 
         Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        Emoji emoji = Emoji.createEmoji(memberId, emojiCreateDto.getName(), emojiCreateDto.getUrl(), emojiCreateDto.getDescription());
+        Emoji emoji = Emoji.createEmoji(memberId, emojiCreateDto.getName(), emojiCreateDto.getDescription());
 
         Emoji savedEmoji = emojiRepository.save(emoji);
 
         Member_emoji memberEmoji = Member_emoji.createMemberEmoji(member, savedEmoji);
         memberEmojiRepository.save(memberEmoji);
+        AwsS3 awsS3 = new AwsS3();
 
+        System.out.println("========================================");
+        try {
+            awsS3 = awsS3Service.upload(multipartFile, "emoji");
+            System.out.println("들어왔습니다~~~~~~~~~~~=========================================");
+        }catch (IOException e){
+            System.out.println(e);
+        }
+
+        String url = awsS3.getPath();
+        savedEmoji.setUrl(url);
     }
 
     /**
@@ -58,7 +75,7 @@ public class EmojiService {
         // 연관관계 삭제
         member.getEmojis().remove(emoji);
 
-        memberEmojiRepository.deleteEmoji(emojiDeleteDto.getEmojiId());
+        memberEmojiRepository.deleteEmoji(emojiDeleteDto.getEmojiId(), memberId);
     }
 
     @Transactional
@@ -111,22 +128,12 @@ public class EmojiService {
         return list;
     }
 
-    public List<MemberEmojiDto> listMemberEmoji(){
-        List<Member_emoji> memberEmojis = memberEmojiRepository.findAll();
-        List<MemberEmojiDto> list = new ArrayList<>();
-        for (Member_emoji memberEmoji : memberEmojis) {
-            list.add(new MemberEmojiDto(memberEmoji.getEmoji().getId(), memberEmoji.getEmoji().getUrl()));
-        }
-        return list;
+    public List<MemberEmojiDto> listMemberEmoji(Long memberId){
+        return memberEmojiRepository.getMyEmojis(memberId);
     }
 
     public List<EmojiShopDto> listEmojiShop(){
-        List<Emoji_shop> emojiShops = emojiShopRepository.findAll();
-        List<EmojiShopDto> list = new ArrayList<>();
-        for (Emoji_shop emojiShop : emojiShops) {
-            list.add(new EmojiShopDto(emojiShop.getEmoji_price(), emojiShop.getEmoji().getId()));
-        }
-        return list;
+        return emojiShopRepository.getEmojiShop();
     }
 
     public List<EmojiDto> listCanEmojiShop(Long memberId){
