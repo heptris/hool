@@ -1,54 +1,67 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import profileDefaultImg from "assets/profile-default-imgs/1.png";
-import { ROUTES_NAME } from "constant";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
 import useAuth from "hooks/useAuth";
+
+import profileDefaultImg from "assets/profile-default-imgs/1.png";
+
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
-  const isLoggedin = useSelector((state: RootState) => state.navbar.isLoggedIn);
   const { logout } = useAuth();
 
   return (
     <Header>
-      <Link to={LOGIN}>{!isLoggedin && <LoginBtn>로그인</LoginBtn>}</Link>
-      <NavUser
-        onMouseEnter={() => setIsDisplayMenu(true)}
-        onMouseLeave={() => setIsDisplayMenu(false)}
-      >
-        {isDisplayMenu && (
-          <ProfileMenu
+      {userInfo ? (
+        <>
+          <NavUser
             onMouseEnter={() => setIsDisplayMenu(true)}
             onMouseLeave={() => setIsDisplayMenu(false)}
           >
-            <Link to={PROFILE}>
-              <MenuItem>
-                <span>프로필</span>
-              </MenuItem>
-            </Link>
-            <Hr />
-            <MenuItem onClick={logout}>
-              <span>로그아웃</span>
-            </MenuItem>
-          </ProfileMenu>
-        )}
-        <ProfileImg
-          src={profileDefaultImg}
-          alt={`${profileDefaultImg}의 프로필 이미지`}
-        />
-        <ProfileName>Andrew</ProfileName>
-        <Icon className="fa-solid fa-chevron-down" />
-      </NavUser>
-      <Icon className="fa-solid fa-bell" />
+            {isDisplayMenu && (
+              <ProfileMenu
+                onMouseEnter={() => setIsDisplayMenu(true)}
+                onMouseLeave={() => setIsDisplayMenu(false)}
+              >
+                <Link to={PROFILE}>
+                  <MenuItem>
+                    <span>프로필</span>
+                  </MenuItem>
+                </Link>
+                <Hr />
+                <MenuItem onClick={logout}>
+                  <span>로그아웃</span>
+                </MenuItem>
+              </ProfileMenu>
+            )}
+            <ProfileImg
+              src={profileDefaultImg}
+              alt={`${profileDefaultImg}의 프로필 이미지`}
+            />
+            <ProfileName>Andrew</ProfileName>
+            <Icon className="fa-solid fa-chevron-down" />
+          </NavUser>
+          <Icon className="fa-solid fa-bell" />
+        </>
+      ) : (
+        <Link to={LOGIN}>
+          <LoginBtn>로그인</LoginBtn>
+        </Link>
+      )}
     </Header>
   );
 };
@@ -57,7 +70,7 @@ const Header = styled.nav`
   margin: 0 auto;
   left: 0;
   right: 0;
-  padding: 0.7rem 4rem;
+  padding: 0.7rem 10%;
   height: 2rem;
   display: flex;
   position: fixed;
