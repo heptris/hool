@@ -4,29 +4,46 @@ import { GoogleLogin } from "react-google-login";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import { useNavigate } from "@tanstack/react-location";
 import googleLogoImg from "assets/google-logo-img.png";
+import axios from "axios";
+import useUser from "../../hooks/useUser";
+import { ROUTES_NAME, USER_SESSIONSTORAGE_KEY } from "constant";
+import { getMyProfile } from "api/profile";
 
 const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
-// { onSocial }
 const GoogleLoginBtn = () => {
-  const onSuccess = (response) => {
-    console.log("LOGIN SUCCESS!", response);
-    const {
-      googleId,
-      profileObj: { email, name },
-    } = response;
-
-    // await onSocial({
-    //   socialId: googleId,
-    //   socialType: "google",
-    //   email,
-    //   nickname: name,
-    // });
+  const { updateUser } = useUser();
+  const navigate = useNavigate();
+  const onSuccess = async (res) => {
+    console.log("LOGIN SUCCESS!", res);
+    const { tokenId } = res;
+    axios
+      .post("https://i7a408.p.ssafy.io/auth/google/login", {
+        googleIdToken: tokenId,
+      })
+      .then(async (res) => {
+        if (res.status === 200) {
+          console.log(res);
+          const { accessToken, refreshToken } = res.data;
+          sessionStorage.setItem(
+            USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN,
+            accessToken
+          );
+          sessionStorage.setItem(
+            USER_SESSIONSTORAGE_KEY.REFRESH_TOKEN,
+            refreshToken
+          );
+          updateUser(await getMyProfile(res.data.accessToken));
+          navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
+        }
+      })
+      .catch((err) => alert(err));
   };
 
-  const onFailure = (error) => {
-    console.log("LOGIN FAILED!", error);
+  const onFailure = (err) => {
+    console.log("LOGIN FAILED!", err);
   };
 
   return (
