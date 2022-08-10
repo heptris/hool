@@ -16,6 +16,9 @@ export const HOOL_AUTH_ENDPOINT = "http://i7a408.p.ssafy.io:8080/auth/";
 
 export const QUERY_KEYS = {
   USER: "user",
+  FRIEND_LIST: "friend-list",
+  FRIEND_MESSAGE_LIST: "friend-message-list",
+  MARKET: "market",
 };
 
 export const USER_SESSIONSTORAGE_KEY = {
