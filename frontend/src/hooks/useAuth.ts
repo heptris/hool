@@ -32,12 +32,13 @@ const useAuth = () => {
   };
 
   const logout = async () => {
+    const logoutResponse = await requestLogout();
     clearUser();
     sessionStorage.removeItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN);
     sessionStorage.removeItem(USER_SESSIONSTORAGE_KEY.REFRESH_TOKEN);
     window.alert("로그아웃이 완료되었습니다.");
     navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
-    return await requestLogout();
+    return logoutResponse;
   };
 
   return { login, logout };
