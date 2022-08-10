@@ -5,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import { postAcceptFriend } from "api/social";
+
 import pdi1 from "assets/profile-default-imgs/1.png";
 import pdi2 from "assets/profile-default-imgs/2.png";
 import pdi3 from "assets/profile-default-imgs/3.jpg";
@@ -12,12 +14,11 @@ import pdi4 from "assets/profile-default-imgs/4.png";
 import pdi5 from "assets/profile-default-imgs/5.jpg";
 import pdi6 from "assets/profile-default-imgs/6.jpg";
 
-import { FriendInfoType } from "types/FriendInfoType";
-
 import Card from "components/commons/Card";
-import { postAcceptFriend } from "api/social";
+
 import { QUERY_KEYS } from "constant";
 
+import { FriendInfoType } from "types/FriendInfoType";
 type PropsType = {
   isDisplayMyFriends: boolean;
 } & FriendInfoType;
@@ -69,17 +70,19 @@ function SocialItem(props: PropsType) {
         ></MenuIcon>
         {isDisplayMyFriends && isDisplayOption && (
           <Menu>
-            <button
-              onClick={() => {
-                navigate({
-                  to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
-                  replace: true,
-                });
-                setIsDisplayOption(!isDisplayOption);
-              }}
-            >
-              <p>친구 따라가기</p>
-            </button>
+            <div>
+              <p
+                onClick={() => {
+                  navigate({
+                    to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
+                    replace: true,
+                  });
+                  setIsDisplayOption(!isDisplayOption);
+                }}
+              >
+                <p>친구 따라가기</p>
+              </p>
+            </div>
           </Menu>
         )}
         {!isDisplayMyFriends && isDisplayOption && (
