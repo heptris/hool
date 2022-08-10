@@ -44,14 +44,6 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   const userInfo: UserInfoType | undefined = queryClient.getQueryData([
     QUERY_KEYS.USER,
   ]);
-  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-
-  // const { data, isLoading, isError } = useQuery(["my-point"], () =>
-  //   getMyPoint({ memberId: userInfo?.memberId })
-  // );
-
-  // if (isLoading) return <Loading />;
-  // if (isError) return <div>오류 발생</div>;
 
   return (
     <PageHeader

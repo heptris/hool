@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-location";
 
@@ -26,22 +26,24 @@ function SocialPage() {
     data: friendListData,
     isError: friendListIsError,
     isLoading: friendListIsLoading,
-  } = useQuery([QUERY_KEYS.FRIEND_LIST], getFriendList);
+  } = useQuery([QUERY_KEYS.FRIEND_LIST], getFriendList, {
+    retry: 0,
+  });
   const {
     data: friendMessageListData,
     isError: friendMessageListIsError,
     isLoading: friendMessageListIsLoading,
-  } = useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage);
+  } = useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
+    retry: 0,
+  });
 
+  const myFriends = friendListData?.data;
+  const requests = friendMessageListData?.data;
+
+  if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  if (friendListIsLoading && friendMessageListIsLoading) return <Loading />;
-
-  const [myFriends, setMyFriends] = useState(friendListData.data);
-  const [requests, setRequests] = useState(friendMessageListData.data);
-  useEffect(() => {
-    setMyFriends(friendListData.data);
-    setRequests(friendMessageListData.data);
-  }, [friendListData, friendMessageListData]);
+  if (friendListIsError || friendMessageListIsError)
+    return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <Container>
