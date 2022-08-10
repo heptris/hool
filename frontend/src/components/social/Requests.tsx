@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-import { UserType } from "pages/social";
-
 import SocialItem from "./SocialItem";
 
+import { FriendInfoType } from "types/FriendInfoType";
+
 type PropsType = {
-  requests: UserType[];
+  requests: FriendInfoType[];
   isDisplayMyFriends: boolean;
 };
 
