@@ -1,17 +1,15 @@
-import { Link, Navigate, useNavigate } from "@tanstack/react-location";
+import { Link } from "@tanstack/react-location";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { gapi } from "gapi-script";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import useAuth from "hooks/useAuth";
+
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import GoogleLoginBtn from "./GoogleLoginBtn";
-import { requestLogin } from "api/auth";
-
-import { LoginFormType } from "types/LoginFormTypes";
-import { ROUTES_NAME } from "constant";
 
 const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
@@ -21,7 +19,7 @@ const Auth = () => {
     memberEmail: "",
     password: "",
   });
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { placeholder, value } = e.target;
@@ -30,16 +28,10 @@ const Auth = () => {
       [placeholder]: value,
     });
   };
-  const onSubmit = (form: LoginFormType) => {
-    requestLogin(form)
-      .then(() => navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true }))
-      .catch((err) => {
-        console.log(err, "로그인 실패");
-      });
-  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(form);
+    login(form);
     setForm({
       memberEmail: "",
       password: "",

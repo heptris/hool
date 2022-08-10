@@ -13,3 +13,12 @@ export const ROUTES_NAME = {
 
 export const HOOL_API_ENDPOINT = "http://i7a408.p.ssafy.io:8080/api/";
 export const HOOL_AUTH_ENDPOINT = "http://i7a408.p.ssafy.io:8080/auth/";
+
+export const QUERY_KEYS = {
+  USER: "user",
+};
+
+export const USER_SESSIONSTORAGE_KEY = {
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
+};

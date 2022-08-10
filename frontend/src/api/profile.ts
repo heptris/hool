@@ -2,13 +2,24 @@ import { getRequest, postRequest, putRequest } from "api";
 
 const MEMBER = "member";
 
-const getMyProfile = () => getRequest(MEMBER);
+const getMyProfile = async (token?: string) => {
+  return await getRequest(
+    `${MEMBER}/`,
+    token
+      ? {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      : undefined
+  )
+    .then(({ data }) => data)
+    .catch((err) => console.log(err));
+};
 
 const putModifyMyProfile = (obj: {
   name: string;
   nickName: string;
   password: string;
-}) => putRequest(MEMBER, obj);
+}) => putRequest(`${MEMBER}/`, obj);
 
 const postMyEmojiDetail = (obj: { emojiId: number }) =>
   postRequest(`${MEMBER}/detail/emoji`, obj);
