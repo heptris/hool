@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-location";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -14,8 +15,8 @@ import pdi6 from "assets/profile-default-imgs/6.jpg";
 import { FriendInfoType } from "types/FriendInfoType";
 
 import Card from "components/commons/Card";
-import { useMutation } from "@tanstack/react-query";
 import { postAcceptFriend } from "api/social";
+import { QUERY_KEYS } from "constant";
 
 type PropsType = {
   isDisplayMyFriends: boolean;
@@ -33,11 +34,18 @@ function SocialItem(props: PropsType) {
   } = props;
 
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
-  const [isDisplayOption, setIsDisplayOption] = useState(false);
-  const navigate = useNavigate();
-  const { mutate, isError, isSuccess, data } = useMutation(postAcceptFriend);
-  console.log(data);
 
+  const [isDisplayOption, setIsDisplayOption] = useState(false);
+
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(postAcceptFriend, {
+    onSettled: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_MESSAGE_LIST]);
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_LIST]);
+    },
+  });
   const handlePostAcceptFriendMutate = (accept: boolean) => {
     friendRequestId && mutate({ accept, friendRequestId });
   };
