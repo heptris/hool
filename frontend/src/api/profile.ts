@@ -1,22 +1,24 @@
 import { getRequest, postRequest, putRequest } from "api";
 
-const postMyEmojiDetail = (obj: { emojiId: number }) =>
-  postRequest("detail/emoji", obj);
+const MEMBER = "member";
 
-const postMyEmojiDetailFavorite = (obj: { emojiId: number }) =>
-  postRequest("detail/emoji/favorite", obj);
-
-const getMyEmojiList = () => getRequest("my/emoji");
-
-const getMyFavoriteEmoji = () => getRequest("my/favorite/emoji");
-
-const getMyProfile = () => getRequest("myprofile");
+const getMyProfile = () => getRequest(MEMBER);
 
 const putModifyMyProfile = (obj: {
   name: string;
   nickName: string;
   password: string;
-}) => putRequest("myprofile", obj);
+}) => putRequest(MEMBER, obj);
+
+const postMyEmojiDetail = (obj: { emojiId: number }) =>
+  postRequest(`${MEMBER}/detail/emoji`, obj);
+
+const postMyEmojiDetailFavorite = (obj: { emojiId: number }) =>
+  postRequest(`${MEMBER}/detail/emoji/favorite`, obj);
+
+const getMyEmojiList = () => getRequest(`${MEMBER}/my/emoji`);
+
+const getMyFavoriteEmoji = () => getRequest(`${MEMBER}/my/favorite/emoji`);
 
 const postCheckDuplicateNickName = (obj: { nickName: string }) =>
   postRequest("nickname/check", obj);

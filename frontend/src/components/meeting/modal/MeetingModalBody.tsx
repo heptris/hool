@@ -1,3 +1,12 @@
+import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "@tanstack/react-location";
+import { ChangeEvent, useState } from "react";
+
+import { postCreateMeetingRoom } from "api/meeting";
+
+import { setMySessionId } from "store";
+
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
@@ -5,41 +14,42 @@ import Button from "components/commons/Button";
 import LabelTextarea from "components/commons/LabelTextarea";
 import SearchBar from "components/commons/SearchBar";
 import LabelWrapper from "components/commons/LabelWrapper";
-import { useMutation } from "@tanstack/react-query";
-import { postCreateMeetingRoom } from "api/meeting";
-import { ChangeEvent, useState } from "react";
-import { useNavigate } from "@tanstack/react-location";
+import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 
 const MeetingModalBody = ({
   onDisplayChange,
 }: {
   onDisplayChange: Function;
 }) => {
-  const [roomCreatingForm, setRoomCreatingForm] = useState({
-    conferenceCategory: "",
-    description: "",
-    title: "",
-    tag: "",
-  });
+  const [roomCreatingForm, setRoomCreatingForm] =
+    useState<CreatingMeetingRoomType>({
+      conferenceCategory: "SOCCER",
+      description: "",
+      title: "",
+      tag: "",
+    });
   const navigate = useNavigate();
-  const mutatedInfo = useMutation(postCreateMeetingRoom);
+  const createRoomMutation = useMutation(postCreateMeetingRoom);
+  const dispatch = useDispatch();
 
-  console.log(mutatedInfo);
-  const { mutate, isLoading, isError, error, isSuccess, data } = mutatedInfo;
+  const { mutate, isLoading, isError, error, isSuccess, data } =
+    createRoomMutation;
 
   const onChange = (
     key: "conferenceCategory" | "description" | "title" | "tag",
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    limit?: number
   ) => {
     const { value } = e.target;
     setRoomCreatingForm({
       ...roomCreatingForm,
-      [key]: value,
+      [key]: limit ? value.substring(0, limit) : value,
     });
   };
 
   if (isSuccess) {
     onDisplayChange();
+    dispatch(setMySessionId(data.data.conferenceId));
     navigate({ to: `/meeting/${data.data.conferenceId}` });
   }
 
@@ -51,10 +61,10 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 응원방 제목을 적어주세요"
           text="응원방 제목"
-          info={`0 / 140`}
+          info={`${roomCreatingForm.title.length} / 140`}
           textareaValue={roomCreatingForm.title}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            onChange("title", e)
+            onChange("title", e, 140)
           }
         />
       </Wrapper>
@@ -64,10 +74,10 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 설명을 적어주세요"
           text="설명"
-          info={`0 / 140`}
+          info={`${roomCreatingForm.description.length} / 140`}
           textareaValue={roomCreatingForm.description}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            onChange("description", e)
+            onChange("description", e, 140)
           }
         />
       </Wrapper>
@@ -131,9 +141,7 @@ const MeetingModalBody = ({
           width={4}
           text={"완료"}
           marginBottom={1.5}
-          buttonOnClick={() => {
-            mutate(roomCreatingForm);
-          }}
+          buttonOnClick={() => mutate(roomCreatingForm)}
         />
       </ButtonWrapper>
     </BodyContainer>
@@ -194,7 +202,7 @@ const ToggleButton = styled.span`
   line-height: 1;
   background-color: ${darkTheme.mainBadgeColor};
   cursor: pointer;
-  width: 49%;
+  width: 48%;
   position: absolute;
   top: 50%;
   left: 0.2rem;

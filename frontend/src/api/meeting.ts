@@ -1,12 +1,10 @@
 import { getRequest, postRequest } from "api";
+import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 
 const getMeetingList = () => getRequest("");
 
-const postCreateMeetingRoom = async (obj: {
-  conferenceCategory: string;
-  description: string;
-  title: string;
-}) => postRequest("conference/create", obj);
+const postCreateMeetingRoom = async (obj: CreatingMeetingRoomType) =>
+  postRequest("conference/create", obj);
 
 const postEnterMeetingRoom = async (obj: {
   conferenceId: number;
@@ -18,6 +16,9 @@ const postModifyMeetingRoom = async (obj: {
   description: string;
   title: string;
 }) => postRequest("conference/modify", obj);
+
+const postExitMeetingRoom = async (obj: { conferenceId: number }) =>
+  postRequest("conference/exit", obj);
 
 // game controller
 const postCreateGame = (obj: { conferenceId: number; gameName: string }) =>
@@ -42,4 +43,5 @@ export {
   postCreateGame,
   postCreateGameHistory,
   postSaveGameResult,
+  postExitMeetingRoom,
 };

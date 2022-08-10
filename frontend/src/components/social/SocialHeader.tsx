@@ -1,11 +1,50 @@
+import { ChangeEvent, useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import { postSearchFriend } from "api/social";
+
 import PageHeader from "components/commons/PageHeader";
+import SearchBar from "components/commons/SearchBar";
+import Card from "components/commons/Card";
 
 type PropsType = {
   isDisplayMyFriends: boolean;
   setIsDisplayMyFriends: Function;
+};
+
+const SocialSearchBar = () => {
+  const [searchName, setSearchName] = useState("");
+  const { mutate, isSuccess, isError, data } = useMutation(postSearchFriend);
+
+  const handleSearchName = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchName(e.target.value);
+  };
+
+  useEffect(() => {
+    mutate({ friendNickName: searchName });
+  }, [searchName]);
+
+  return (
+    <SearchBar
+      inputValue={searchName}
+      searchPlaceholder="친구 검색"
+      inputOnChange={handleSearchName}
+      SearchListComponent={(() => {
+        if (searchName && isError)
+          return <Card>존재하지 않는 사용자입니다.</Card>;
+        if (isSuccess)
+          return (
+            <Card>
+              <strong>사용자 닉네임 : {data.data.friendNickName}</strong>
+              <p>사용자 메일 : {data.data.friendMemberEmail}</p>
+            </Card>
+          );
+      })()}
+    />
+  );
 };
 
 function SocialHeader({
@@ -63,6 +102,7 @@ function SocialHeader({
           </SwitchItem>
         </Switches>
       }
+      SearchBar={<SocialSearchBar />}
     ></PageHeader>
   );
 }

@@ -29,7 +29,6 @@ const Auth = () => {
       ...form,
       [placeholder]: value,
     });
-    console.log(form);
   };
   const onSubmit = (form: LoginFormType) => {
     requestLogin(form)

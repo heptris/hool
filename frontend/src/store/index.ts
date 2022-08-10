@@ -25,7 +25,7 @@ const initialState: NavMode = {
   isCreatingGame: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!localStorage.getItem("token"),
+  isLoggedIn: !!sessionStorage.getItem("token"),
 };
 const sessionInitialState: ClientSessionType = {
   mySessionId: "SessionABC",

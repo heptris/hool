@@ -1,28 +1,31 @@
 import { getRequest, postRequest } from "api";
 
-const postFriendAccept = (obj: { accept: boolean; friendRequestId: number }) =>
-  postRequest(`friend/accept`, obj);
+const FRIEND = "friend";
 
-const getFriendMessage = () => getRequest("friend/add/message");
+const postAcceptFriend = (obj: { accept: boolean; friendRequestId: number }) =>
+  postRequest(`${FRIEND}/accept`, obj);
 
-const postSendFriendAddMessage = (obj: { friendMemberId: number }) =>
-  postRequest("friend/add/message", obj);
+const postInviteFriend = () => postRequest(`${FRIEND}/invite`, {});
 
-const getFriendList = () => getRequest("friendList");
+const postJoinFriendRoom = (obj: { conferenceId: number }) =>
+  postRequest(`${FRIEND}/join/conference`, obj);
 
-// const inviteFriend = (obj:) 백에서 미개발
-
-const postJoinFriendRoom = (obj: { conferenceId: number; memberId: number }) =>
-  postRequest("join/friend/conference", obj);
+const getFriendList = () => getRequest(`${FRIEND}/list`);
 
 const postSearchFriend = (obj: { friendNickName: string }) =>
-  postRequest("searchFriend", obj);
+  postRequest(`${FRIEND}/search`, obj);
+
+const getFriendSendMessage = () => getRequest(`${FRIEND}/send/message`);
+
+const postSendFriendSendMessage = (obj: { friendMemberId: number }) =>
+  postRequest(`${FRIEND}/send/message`, obj);
 
 export {
-  postFriendAccept,
   getFriendList,
-  getFriendMessage,
   postSearchFriend,
-  postSendFriendAddMessage,
   postJoinFriendRoom,
+  getFriendSendMessage,
+  postAcceptFriend,
+  postInviteFriend,
+  postSendFriendSendMessage,
 };
