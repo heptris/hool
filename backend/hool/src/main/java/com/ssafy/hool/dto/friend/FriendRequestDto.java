@@ -1,5 +1,6 @@
 package com.ssafy.hool.dto.friend;
 
+import com.ssafy.hool.domain.member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,11 @@ import lombok.NoArgsConstructor;
 public class FriendRequestDto {
 
     private Long friendRequestId;
+    // 친구 프로필
     private String friendNickName;
     private Long friendMemberId;
-    // 친구 프로필
+    private String friendEmail;
+    private String friendImage;
+    private MemberStatus memberStatus;
+
 }
