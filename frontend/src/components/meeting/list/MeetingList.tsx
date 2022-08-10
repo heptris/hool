@@ -11,10 +11,9 @@ import { useDispatch } from "react-redux";
 import { setMySessionId, setMyUserName } from "store";
 
 const MeetingList = () => {
-  const { status, data, isLoading, isError } = useQuery(["meetings"], () =>
+  const { data, isLoading, isError } = useQuery(["meetings"], () =>
     getMeetingList()
   );
-  console.log(data);
 
   const dispatch = useDispatch();
 
@@ -28,7 +27,7 @@ const MeetingList = () => {
           to={`meeting/${el.conferenceId}`}
           key={el.conferenceId}
           onClick={() => {
-            dispatch(setMySessionId(el.conferenceId));
+            dispatch(setMySessionId("" + el.conferenceId));
           }}
         >
           <MeetingListItem {...el} />

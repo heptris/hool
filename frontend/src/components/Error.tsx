@@ -1,3 +1,5 @@
+import { useLocation } from "@tanstack/react-location";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -61,6 +63,7 @@ const ErrorMessage = styled.h1`
 `;
 
 const Error = ({ errorMessage }: { errorMessage: string }) => {
+  const location = useLocation();
   return (
     <Container>
       <ErrorBox>
@@ -77,6 +80,7 @@ const Error = ({ errorMessage }: { errorMessage: string }) => {
           width={20}
           height={3.125}
           fontSize={1.25}
+          buttonOnClick={() => location.history.back()}
         />
       </ErrorBox>
     </Container>

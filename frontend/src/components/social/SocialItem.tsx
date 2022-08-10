@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-location";
+import { useNavigate } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -11,29 +11,45 @@ import pdi4 from "assets/profile-default-imgs/4.png";
 import pdi5 from "assets/profile-default-imgs/5.jpg";
 import pdi6 from "assets/profile-default-imgs/6.jpg";
 
-import { UserType } from "pages/social";
+import { FriendInfoType } from "types/FriendInfoType";
 
 import Card from "components/commons/Card";
+import { useMutation } from "@tanstack/react-query";
+import { postAcceptFriend } from "api/social";
 
 type PropsType = {
   isDisplayMyFriends: boolean;
-} & UserType;
+} & FriendInfoType;
 
 function SocialItem(props: PropsType) {
-  const { profileImg, nickname, email, curPos, status, isDisplayMyFriends } =
-    props;
+  const {
+    friendConferenceDto,
+    friendMemberEmail,
+    friendMemberId,
+    friendNickName,
+    memberStatus,
+    isDisplayMyFriends,
+    friendRequestId,
+  } = props;
 
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
   const [isDisplayOption, setIsDisplayOption] = useState(false);
+  const navigate = useNavigate();
+  const { mutate, isError, isSuccess, data } = useMutation(postAcceptFriend);
+  console.log(data);
+
+  const handlePostAcceptFriendMutate = (accept: boolean) => {
+    friendRequestId && mutate({ accept, friendRequestId });
+  };
 
   return (
     <SocialCard>
       <Status>
-        <ProfileImg src={profiles[profileImg]} />
+        <ProfileImg src={profiles[friendMemberId]} />
         <UserInfo>
-          <Nickname>{nickname}</Nickname>
-          <Email>{email}</Email>
-          <CurrentPos>{curPos}</CurrentPos>
+          <Nickname>{friendNickName}</Nickname>
+          <Email>{friendMemberEmail}</Email>
+          <CurrentPos>{memberStatus}</CurrentPos>
         </UserInfo>
       </Status>
       <div>
@@ -45,24 +61,34 @@ function SocialItem(props: PropsType) {
         ></MenuIcon>
         {isDisplayMyFriends && isDisplayOption && (
           <Menu>
-            <Link
-              to={curPos}
+            <button
               onClick={() => {
+                navigate({
+                  to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
+                  replace: true,
+                });
                 setIsDisplayOption(!isDisplayOption);
               }}
             >
               <p>친구 따라가기</p>
-            </Link>
+            </button>
           </Menu>
         )}
         {!isDisplayMyFriends && isDisplayOption && (
           <Menu>
             <div>
-              <p>요청 승낙</p>
+              <p onClick={() => handlePostAcceptFriendMutate(true)}>
+                요청 승낙
+              </p>
             </div>
             <Hr />
             <div>
-              <p style={{ color: `${darkTheme.adaptiveGrey200}` }}>거절</p>
+              <p
+                style={{ color: `${darkTheme.adaptiveGrey200}` }}
+                onClick={() => handlePostAcceptFriendMutate(false)}
+              >
+                거절
+              </p>
             </div>
           </Menu>
         )}

@@ -1,8 +1,10 @@
 import { deleteRequest, getRequest, postRequest, putRequest } from "api";
 
-const EMOJI_SHOP = "emojishop";
+import { BuyEmojiType } from "types/BuyEmojiType";
 
-const getMarketList = () => getRequest(`${EMOJI_SHOP}/list`);
+const EMOJI_SHOP = "emojishop/";
+
+const getMarketList = () => getRequest(`${EMOJI_SHOP}list`);
 
 const postMarketItem = (obj: { emojiId: number; price: number }) =>
   postRequest(EMOJI_SHOP, obj);
@@ -18,14 +20,9 @@ const putMarketItem = (obj: {
 const deleteMarketItem = (id: number) =>
   deleteRequest(`${EMOJI_SHOP}?emojiShopId=${id}`);
 
-const postBuyEmoji = (obj: {
-  buyerMemberId: number;
-  dealPoint: number;
-  emojiShopId: number;
-  sellerMemberId: number;
-}) => postRequest("deal", obj);
+const postBuyEmoji = (obj: BuyEmojiType) => postRequest("deal", obj);
 
-const getMarketMakeList = () => getRequest(`${EMOJI_SHOP}/makelist`);
+const getMarketMakeList = () => getRequest(`${EMOJI_SHOP}makelist`);
 
 export {
   getMarketList,

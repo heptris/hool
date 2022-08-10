@@ -1,24 +1,40 @@
+import { Navigate } from "@tanstack/react-location";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import styled from "styled-components";
+
+import { getMarketList } from "api/market";
+
+import Loading from "components/Loading";
+
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+
+import { MarketItemType } from "types/MarketItemType";
+import { UserInfoType } from "types/UserInfoType";
 
 import MarketListItem from "./MarketListItem";
 
 const MarketList = () => {
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
+  console.log(userInfo);
+  const { data, isError, isLoading } = useQuery(
+    [QUERY_KEYS.MARKET],
+    getMarketList
+  );
+  console.log(data, isError, isLoading);
+
+  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
+  if (isLoading) return <Loading />;
+  // if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
+
   return (
     <ItemList>
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
-      <MarketListItem />
+      {data.data.map((el: MarketItemType) => {
+        return <MarketListItem key={el.emojiId} {...el} />;
+      })}
     </ItemList>
   );
 };
