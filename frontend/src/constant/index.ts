@@ -20,6 +20,7 @@ export const QUERY_KEYS = {
   FRIEND_MESSAGE_LIST: "friend-message-list",
   MARKET: "market",
   MEETINGS: "meetings",
+  POINT: "point",
 };
 
 export const USER_SESSIONSTORAGE_KEY = {

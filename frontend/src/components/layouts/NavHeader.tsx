@@ -52,7 +52,7 @@ const NavHeader = () => {
               src={profileDefaultImg}
               alt={`${profileDefaultImg}의 프로필 이미지`}
             />
-            <ProfileName>Andrew</ProfileName>
+            <ProfileName>{userInfo.nickName}</ProfileName>
             <Icon className="fa-solid fa-chevron-down" />
           </NavUser>
           <Icon className="fa-solid fa-bell" />
