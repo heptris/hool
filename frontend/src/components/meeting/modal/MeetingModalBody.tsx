@@ -37,7 +37,7 @@ const MeetingModalBody = ({
 
   const onChange = (
     key: "conferenceCategory" | "description" | "title" | "tag",
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     limit?: number
   ) => {
     const { value } = e.target;
@@ -82,15 +82,20 @@ const MeetingModalBody = ({
         />
       </Wrapper>
       <Wrapper>
-        <LabelWrapper htmlFor="카테고리 검색" text="카테고리 검색" />
-        <SearchBar
-          searchPlaceholder={"카테고리 검색"}
-          widthSize={"100%"}
-          inputValue={roomCreatingForm.conferenceCategory}
-          inputOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+        <LabelWrapper htmlFor="카테고리 선택" text="카테고리 선택" />
+        <Select
+          name="choice"
+          value={roomCreatingForm.conferenceCategory}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onChange("conferenceCategory", e)
           }
-        />
+        >
+          <Option value="SOCCER">축구</Option>
+          <Option value="BASEBALL">야구</Option>
+          <Option value="BASKETBALL">농구</Option>
+          <Option value="VOLLEYBALL">배구</Option>
+          <Option value="ESPORTS">E-Sports</Option>
+        </Select>
       </Wrapper>
       <Wrapper>
         <LabelWrapper htmlFor="태그 검색" text="태그 검색" />
@@ -225,6 +230,21 @@ const RowDiv = styled.div`
 
 const ButtonWrapper = styled.div`
   float: right;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  height: 2.5rem;
+  background-color: ${darkTheme.adaptiveGrey500};
+  border-radius: 4px;
+  color: ${darkTheme.adaptiveGrey200};
+  padding: 0 1rem;
+  cursor: pointer;
+`;
+const Option = styled.option`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default MeetingModalBody;
