@@ -25,8 +25,8 @@ const GoogleLoginBtn = () => {
       })
       .then(async (res) => {
         if (res.status === 200) {
-          console.log(res);
-          const { accessToken, refreshToken } = res.data;
+          console.log(res.data.data);
+          const { accessToken, refreshToken } = res.data.data;
           sessionStorage.setItem(
             USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN,
             accessToken
