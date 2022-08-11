@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-location";
 
+import useUser from "hooks/useUser";
+
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
@@ -12,8 +14,6 @@ import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
 import SearchBar from "components/commons/SearchBar";
 import Loading from "components/Loading";
-
-import { UserInfoType } from "types/UserInfoType";
 
 // const MarketSearchBar = () => {
 //   const [searchEmojiItem, setSearchEmojiItem] = useState("");
@@ -40,10 +40,7 @@ import { UserInfoType } from "types/UserInfoType";
 //   );
 // };
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
 
   return (
     <PageHeader

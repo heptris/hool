@@ -21,11 +21,11 @@ const Auth = () => {
   });
   const { login } = useAuth();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { placeholder, value } = e.target;
-    setForm({
+  const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { placeholder, value, id } = e.target;
+    await setForm({
       ...form,
-      [placeholder]: value,
+      [id ? id : placeholder]: value,
     });
   };
 
@@ -60,9 +60,10 @@ const Auth = () => {
           inputRef={eMailRef}
           inputValue={form.memberEmail}
           text="이메일"
-          placeholderText="memberEmail"
+          placeholderText="hool@example.com"
           type="email"
           inputOnChange={onChange}
+          id={"memberEmail"}
         />
         <LabelInput
           text="비밀번호"

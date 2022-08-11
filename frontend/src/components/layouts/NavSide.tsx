@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
+
+import useUser from "hooks/useUser";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { ROUTES_NAME } from "constant";
 
 import {
   RootState,
@@ -16,20 +17,15 @@ import {
   setAudioEnabled,
   setVideoEnabled,
   setIsCreatingPreferences,
-  setLeaveSessionTrigger,
 } from "store";
-
-import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
+
   const dispatch = useDispatch();
 
   const openCreatingModal = () => {
