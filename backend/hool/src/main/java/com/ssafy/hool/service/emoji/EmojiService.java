@@ -46,6 +46,8 @@ public class EmojiService {
 
         Emoji savedEmoji = emojiRepository.save(emoji);
 
+        if(emojiCreateDto.getEmojiAnimate() != null) savedEmoji.setEmojiAnimate(emojiCreateDto.getEmojiAnimate());
+
         Member_emoji memberEmoji = Member_emoji.createMemberEmoji(member, savedEmoji);
         memberEmojiRepository.save(memberEmoji);
         AwsS3 awsS3 = new AwsS3();
@@ -145,14 +147,14 @@ public class EmojiService {
         emojiShopRepository.deleteEmojiShop(emojiShopId);
     }
 
-    public List<EmojiDto> listEmoji(){
-        List<Emoji> emojis = emojiRepository.findAll();
-        List<EmojiDto> list = new ArrayList<>();
-        for (Emoji emoji : emojis){
-            list.add(new EmojiDto(emoji.getName(), emoji.getUrl(), emoji.getDescription(), emoji.getCreatorId()));
-        }
-        return list;
-    }
+//    public List<EmojiDto> listEmoji(){
+//        List<Emoji> emojis = emojiRepository.findAll();
+//        List<EmojiDto> list = new ArrayList<>();
+//        for (Emoji emoji : emojis){
+//            list.add(new EmojiDto(emoji.getName(), emoji.getUrl(), emoji.getDescription(), emoji.getCreatorId()));
+//        }
+//        return list;
+//    }
 
     public List<MemberEmojiDto> listMemberEmoji(Long memberId){
         return memberEmojiRepository.getMyEmojis(memberId);

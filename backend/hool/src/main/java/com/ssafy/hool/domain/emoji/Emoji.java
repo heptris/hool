@@ -23,6 +23,7 @@ public class Emoji extends BaseEntity {
     private String name;
     private String url;
     private String description;
+    @Enumerated(EnumType.STRING)
     private EmojiAnimate emojiAnimate;
     private Long creatorId;
 
