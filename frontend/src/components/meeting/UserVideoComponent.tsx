@@ -78,7 +78,7 @@ function UserVideoComponent(props: PropsType) {
               <EmojiDivision>
                 <Emoji
                   src={defaultImg}
-                  className={"animate__animated animate__hinge"}
+                  className={`animate__animated animate__hinge`}
                 />
               </EmojiDivision>
             )}
