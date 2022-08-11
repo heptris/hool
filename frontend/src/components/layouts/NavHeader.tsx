@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-location";
+
+import useUser from "hooks/useUser";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -9,18 +10,13 @@ import useAuth from "hooks/useAuth";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
-import { QUERY_KEYS, ROUTES_NAME } from "constant";
-
-import { UserInfoType } from "types/UserInfoType";
+import { ROUTES_NAME } from "constant";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
   const { logout } = useAuth();
 

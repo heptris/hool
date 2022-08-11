@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+
+import useUser from "hooks/useUser";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -14,23 +16,14 @@ import Card from "../commons/Card";
 
 import { QUERY_KEYS } from "constant";
 
-import { UserInfoType } from "types/UserInfoType";
 import { PointHistoryType } from "types/PointHistoryType";
+import Loading from "components/Loading";
 
 function Profile() {
-  const queryClient = useQueryClient();
-  const {
-    emojiCount,
-    friendCount,
-    memberEmail,
-    memberEmojiDtoList,
-    memberId,
-    nickName,
-    point,
-  }: UserInfoType = queryClient.getQueryData([QUERY_KEYS.USER])!;
+  const { userInfo } = useUser();
 
-  const { data: myPointData } = useQuery([QUERY_KEYS.POINT], () =>
-    getMyPoint({ memberId })
+  const { data: myPointData, isLoading } = useQuery([QUERY_KEYS.POINT], () =>
+    getMyPoint({ memberId: userInfo?.memberId })
   );
 
   const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +36,7 @@ function Profile() {
   const switchIsDisplayModal = () => {
     setIsDisplayModal(!isDisplayModal);
   };
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -87,8 +81,8 @@ function Profile() {
 
         <ProfileImg src={profileDefaultImg} alt="profile-img" />
 
-        <Username>{nickName}</Username>
-        <Email>{memberEmail}</Email>
+        <Username>{userInfo?.nickName}</Username>
+        <Email>{userInfo?.memberEmail}</Email>
 
         <div onClick={switchIsEditing}>
           <Button width={6} height={2} text={"프로필 편집"} />
@@ -97,18 +91,22 @@ function Profile() {
         <InfoBox>
           <Clickable onClick={switchIsDisplayModal}>
             <Info>
-              <InfoNumber>{point.toLocaleString("ko-KR")}</InfoNumber>
+              <InfoNumber>{userInfo?.point.toLocaleString("ko-KR")}</InfoNumber>
               <InfoContent>큐브</InfoContent>
             </Info>
           </Clickable>
 
           <Info>
-            <InfoNumber>{emojiCount.toLocaleString("ko-KR")}</InfoNumber>
+            <InfoNumber>
+              {userInfo?.emojiCount.toLocaleString("ko-KR")}
+            </InfoNumber>
             <InfoContent>이모지</InfoContent>
           </Info>
 
           <Info>
-            <InfoNumber>{friendCount.toLocaleString("ko-KR")}</InfoNumber>
+            <InfoNumber>
+              {userInfo?.friendCount.toLocaleString("ko-KR")}
+            </InfoNumber>
             <InfoContent>친구</InfoContent>
           </Info>
         </InfoBox>

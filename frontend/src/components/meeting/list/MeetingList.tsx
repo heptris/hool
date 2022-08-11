@@ -1,7 +1,8 @@
 import { Link, Navigate } from "@tanstack/react-location";
 import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import useUser from "hooks/useUser";
 
 import styled from "styled-components";
 
@@ -15,16 +16,12 @@ import Loading from "components/Loading";
 import { QUERY_KEYS } from "constant";
 
 import { MeetingRoomType } from "types/MeetingRoomType";
-import { UserInfoType } from "types/UserInfoType";
 
 const MeetingList = () => {
   const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
     getMeetingList()
   );
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
 
   const dispatch = useDispatch();
 
@@ -40,10 +37,10 @@ const MeetingList = () => {
             key={el.conferenceId}
             onClick={() => {
               dispatch(setMySessionId("" + el.conferenceId));
-              dispatch(setMyUserName(userInfo?.nickName));
+              dispatch(setMyUserName(userInfo.nickName));
               postEnterMeetingRoom({
                 conferenceId: el.conferenceId,
-                memberId: userInfo?.memberId,
+                memberId: userInfo.memberId,
               });
             }}
           >

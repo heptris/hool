@@ -1,5 +1,7 @@
 import { Navigate } from "@tanstack/react-location";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+
+import useUser from "hooks/useUser";
 
 import styled from "styled-components";
 
@@ -10,16 +12,11 @@ import Loading from "components/Loading";
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import { MarketItemType } from "types/MarketItemType";
-import { UserInfoType } from "types/UserInfoType";
 
 import MarketListItem from "./MarketListItem";
 
 const MarketList = () => {
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
-  console.log(userInfo);
+  const { userInfo } = useUser();
   const { data, isError, isLoading } = useQuery(
     [QUERY_KEYS.MARKET],
     getMarketList,
@@ -30,7 +27,7 @@ const MarketList = () => {
 
   if (isLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
+  // if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <ItemList>
