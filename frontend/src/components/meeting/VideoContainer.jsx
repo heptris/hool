@@ -83,7 +83,6 @@ class VideoContainer extends Component {
     }
   }
 
-  // 수정완료
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -187,7 +186,6 @@ class VideoContainer extends Component {
     );
   }
 
-  // 수정완료
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -196,6 +194,15 @@ class VideoContainer extends Component {
     if (mySession) {
       mySession.disconnect();
     }
+
+    // clientSession 초기화
+    this.props.setMySessionId("SessionA");
+    this.props.setMyUserName("Participant" + Math.floor(Math.random() * 100));
+    this.props.setAudioEnabled(false);
+    this.props.setVideoEnabled(false);
+    this.props.setMsgToSend("");
+    this.props.setChatEvents(new Array());
+    this.props.setEmojiEvents(new Array(9).fill(""));
 
     // Empty all properties...
     this.OV = null;
@@ -208,15 +215,6 @@ class VideoContainer extends Component {
       },
       () => {
         this.props.handleSessionState({ ...this.state });
-        this.props.setMySessionId("SessionA");
-        this.props.setMyUserName(
-          "Participant" + Math.floor(Math.random() * 100)
-        );
-        this.props.setAudioEnabled(false);
-        this.props.setVideoEnabled(false);
-        this.props.setMsgToSend("");
-        this.props.setChatEvents(new Array());
-        this.props.setEmojiEvents(new Array(9).fill(""));
       }
     );
   }
