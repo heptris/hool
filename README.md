@@ -88,7 +88,7 @@
 
 ### :building_construction: 아키텍처
 
-![](.\README.assets\techstack-architecture.png)
+![](./README.assets/techstack-architecture.png)
 
 <br>
 
