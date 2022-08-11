@@ -5,6 +5,7 @@ import { LoginFormType } from "types/LoginFormTypes";
 
 const api = apiInstance(HOOL_AUTH_ENDPOINT);
 
+// auth-controller
 const requestLogin = async (form: LoginFormType) =>
   await api.post(`login`, form).then((res) => res.data);
 
@@ -51,7 +52,6 @@ const postVerifyCode = async (obj: { code: string }) => {
 
 export {
   requestLogin,
-  requestGoogleLogin,
   requestLogout,
   postReissue,
   postConfirmEmail,

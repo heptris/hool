@@ -2,6 +2,10 @@ import { getRequest, postRequest, putRequest } from "api";
 
 const MEMBER = "member";
 
+// point-controller
+const getMyPoint = (obj: { memberId: number }) => postRequest("point", obj);
+
+// member controller
 const getMyProfile = async (token?: string) => {
   return await getRequest(
     `${MEMBER}/`,
@@ -29,12 +33,20 @@ const postMyEmojiDetailFavorite = (obj: { emojiId: number }) =>
 
 const getMyEmojiList = () => getRequest(`${MEMBER}/my/emoji`);
 
+const getMyEmojiListPage = (emojiCursorId: number, size: number) =>
+  getRequest(
+    `${MEMBER}/my/emoji/page?emojiCursorId=${emojiCursorId}&size=${size}`
+  );
+
 const getMyFavoriteEmoji = () => getRequest(`${MEMBER}/my/favorite/emoji`);
 
-const postCheckDuplicateNickName = (obj: { nickName: string }) =>
-  postRequest("nickname/check", obj);
+const getMyFavoriteEmojiPage = (emojiFavCursorId: number, size: number) =>
+  getRequest(
+    `${MEMBER}/my/favorite/emoji/page?emojiFavCursorId=${emojiFavCursorId}&size=${size}`
+  );
 
-const getMyPoint = (obj: { memberId: number }) => postRequest("point", obj);
+// const postCheckDuplicateNickName = (obj: { nickName: string }) =>
+//   postRequest("nickname/check", obj);
 
 export {
   putModifyMyProfile,
@@ -43,6 +55,8 @@ export {
   getMyEmojiList,
   getMyFavoriteEmoji,
   getMyProfile,
-  postCheckDuplicateNickName,
+  // postCheckDuplicateNickName,
   getMyPoint,
+  getMyEmojiListPage,
+  getMyFavoriteEmojiPage,
 };

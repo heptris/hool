@@ -4,25 +4,24 @@ import { BuyEmojiType } from "types/BuyEmojiType";
 
 const EMOJI_SHOP = "emojishop/";
 
-const getMarketList = () => getRequest(`${EMOJI_SHOP}list`);
+// deal-controller
+const postBuyEmoji = (obj: BuyEmojiType) => postRequest("deal", obj);
+
+// emoji-shop-controller
+const getMarketList = (cursorId: number, size: number) =>
+  getRequest(`${EMOJI_SHOP}list?cursorId=${cursorId}&size=${size}`);
 
 const postMarketItem = (obj: { emojiId: number; price: number }) =>
   postRequest(EMOJI_SHOP, obj);
 
-const putMarketItem = (obj: {
-  emojiShopId: number;
-  memberId: number;
-  updatePrice: number;
-}) => putRequest(EMOJI_SHOP, obj);
+const putMarketItem = (obj: { emojiShopId: number; updatePrice: number }) =>
+  putRequest(EMOJI_SHOP, obj);
 
-// deleteRequest
-// api/emoji_shop?emojiShopId=1
 const deleteMarketItem = (id: number) =>
   deleteRequest(`${EMOJI_SHOP}?emojiShopId=${id}`);
 
-const postBuyEmoji = (obj: BuyEmojiType) => postRequest("deal", obj);
-
-const getMarketMakeList = () => getRequest(`${EMOJI_SHOP}makelist`);
+const getMarketMakeList = (cursorId: number, size: number) =>
+  getRequest(`${EMOJI_SHOP}makelist?cursorId=${cursorId}&size=${size}`);
 
 export {
   getMarketList,
