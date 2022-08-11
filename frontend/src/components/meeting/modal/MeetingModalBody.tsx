@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "@tanstack/react-location";
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 import { postCreateMeetingRoom } from "api/meeting";
 
@@ -15,6 +15,7 @@ import LabelTextarea from "components/commons/LabelTextarea";
 import SearchBar from "components/commons/SearchBar";
 import LabelWrapper from "components/commons/LabelWrapper";
 import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
+import LabelInput from "components/commons/LabelInput";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -27,7 +28,17 @@ const MeetingModalBody = ({
       description: "",
       title: "",
       tag: "",
+      isPublic: true,
+      conferencePassword: "",
     });
+  const {
+    conferenceCategory,
+    description,
+    isPublic,
+    title,
+    conferencePassword,
+    tag,
+  } = roomCreatingForm;
   const navigate = useNavigate();
   const createRoomMutation = useMutation(postCreateMeetingRoom);
   const dispatch = useDispatch();
@@ -36,7 +47,12 @@ const MeetingModalBody = ({
     createRoomMutation;
 
   const onChange = (
-    key: "conferenceCategory" | "description" | "title" | "tag",
+    key:
+      | "conferenceCategory"
+      | "description"
+      | "title"
+      | "tag"
+      | "conferencePassword",
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
     limit?: number
   ) => {
@@ -61,8 +77,8 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 응원방 제목을 적어주세요"
           text="응원방 제목"
-          info={`${roomCreatingForm.title.length} / 140`}
-          textareaValue={roomCreatingForm.title}
+          info={`${title.length} / 140`}
+          textareaValue={title}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             onChange("title", e, 140)
           }
@@ -74,8 +90,8 @@ const MeetingModalBody = ({
           width={"100%"}
           placeholderText="여기에 설명을 적어주세요"
           text="설명"
-          info={`${roomCreatingForm.description.length} / 140`}
-          textareaValue={roomCreatingForm.description}
+          info={`${description.length} / 140`}
+          textareaValue={description}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             onChange("description", e, 140)
           }
@@ -85,7 +101,7 @@ const MeetingModalBody = ({
         <LabelWrapper htmlFor="카테고리 선택" text="카테고리 선택" />
         <Select
           name="choice"
-          value={roomCreatingForm.conferenceCategory}
+          value={conferenceCategory}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onChange("conferenceCategory", e)
           }
@@ -97,12 +113,12 @@ const MeetingModalBody = ({
           <Option value="ESPORTS">E-Sports</Option>
         </Select>
       </Wrapper>
-      <Wrapper>
+      {/* <Wrapper>
         <LabelWrapper htmlFor="태그 검색" text="태그 검색" />
         <SearchBar
           searchPlaceholder={"태그 검색"}
           widthSize={"100%"}
-          inputValue={roomCreatingForm.tag}
+          inputValue={tag || ""}
           inputOnChange={(e: ChangeEvent<HTMLInputElement>) =>
             onChange("tag", e)
           }
@@ -111,13 +127,24 @@ const MeetingModalBody = ({
           태그는 다른 사람들이 방에 대한 정보를 통해 더 쉽게 방을 찾도록 콘텐츠
           세부 정보를 공유합니다
         </Desc>
-      </Wrapper>
+      </Wrapper> */}
       <ToggleWrapper>
         <ToggleButtonInputWrapper>
           <ToggleTitle>방 공개 여부</ToggleTitle>
           <RowDiv>
             <ToggleButtonWrapper htmlFor="toggle">
-              <input type={"checkbox"} id={"toggle"} hidden />
+              <input
+                type={"checkbox"}
+                id={"toggle"}
+                hidden
+                checked={!isPublic}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setRoomCreatingForm({
+                    ...roomCreatingForm,
+                    isPublic: !e.target.checked,
+                  });
+                }}
+              />
               <ToggleButton />
               <ButtonText>
                 <TextSpan htmlFor="toggle">공 개</TextSpan>
@@ -131,6 +158,20 @@ const MeetingModalBody = ({
           </RowDiv>
         </ToggleButtonInputWrapper>
       </ToggleWrapper>
+      {!isPublic && (
+        <Wrapper>
+          <LabelInput
+            placeholderText="방 비밀번호"
+            text="방 비밀번호"
+            inputValue={conferencePassword}
+            inputOnChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onChange("conferencePassword", e)
+            }
+            widthSize={"100%"}
+            height={"2.5rem"}
+          />
+        </Wrapper>
+      )}
       <ButtonWrapper>
         <Button
           height={2}
