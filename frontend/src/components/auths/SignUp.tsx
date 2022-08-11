@@ -259,7 +259,7 @@ const SignupBtn = styled(Button)`
   &:disabled {
     cursor: default;
     opacity: 0.5;
-    background: var(--button-bg-color, ${darkTheme.contrastColor});
+    background: var(--button-bg-color, ${darkTheme.adaptiveGrey500});
   }
 `;
 

@@ -6,7 +6,6 @@ import Button from "components/commons/Button";
 import { ChangeEvent, useState } from "react";
 import { apiInstance } from "api";
 import { HOOL_AUTH_ENDPOINT } from "constant";
-import { Link } from "@tanstack/react-location";
 
 const SendMailResetPWD = () => {
   const [toggle, setToggled] = useState(false);
@@ -192,10 +191,11 @@ const Info = styled.div`
 `;
 
 const SignupBtn = styled(Button)`
+  margin-top: 1rem;
   &:disabled {
     cursor: default;
     opacity: 0.5;
-    background: var(--button-bg-color, ${darkTheme.contrastColor});
+    background: var(--button-bg-color, ${darkTheme.adaptiveGrey500});
   }
 `;
 export default SendMailResetPWD;
