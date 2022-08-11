@@ -1,11 +1,7 @@
 package com.ssafy.hool.controller.friend;
 
-import com.ssafy.hool.dto.friend.SearchFriendReqDto;
-import com.ssafy.hool.dto.friend.SendFriendMessageReqDto;
+import com.ssafy.hool.dto.friend.*;
 import com.ssafy.hool.dto.conference.ConferenceJoinDto;
-import com.ssafy.hool.dto.friend.FriendAcceptDto;
-import com.ssafy.hool.dto.friend.FriendDto;
-import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendService;
@@ -83,7 +79,7 @@ public class FriendController {
         return new ResponseEntity<>(new ResponseDto(200, "친구 수락", null), HttpStatus.OK);
     }
 
-   
+
     @ApiOperation(value = "같이하기", notes = "친구의 응원방에 따라 들어가기")
     @PostMapping("/join/conference")
     public ResponseEntity<?> joinFriendConference(@RequestBody ConferenceJoinDto conferenceJoinDto) {
@@ -92,9 +88,5 @@ public class FriendController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "초대하기", notes = "응원방으로 친구 초대하기")
-    @PostMapping("/invite")
-    public void inviteFriend() {
-        return;
-    }
+
 }

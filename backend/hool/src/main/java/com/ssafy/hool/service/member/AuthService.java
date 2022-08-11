@@ -6,6 +6,7 @@ import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
+import com.ssafy.hool.dto.member.PasswordResetDto;
 import com.ssafy.hool.dto.token.TokenDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
@@ -110,5 +111,13 @@ public class AuthService {
         member.updateMemberStatus(MemberStatus.ONLINE);
 
         return tokenDto;
+    }
+
+    @Transactional
+    public void passwordReset(PasswordResetDto passwordResetDto) {
+        Member member = memberRepository.findByMemberEmail(passwordResetDto.getEmail()).orElseThrow(
+                () -> new CustomException(MEMBER_EMAIL_NOT_FOUND));
+        member.updatePassword(passwordEncoder.encode(passwordResetDto.getPassword()));
+
     }
 }

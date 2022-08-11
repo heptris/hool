@@ -3,6 +3,7 @@ package com.ssafy.hool.service;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.repository.friend.FriendRequestRepository;
+import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.service.member.MemberService;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,9 @@ class FriendServiceTest {
 
     @Autowired
     private FriendService friendService;
+
+    @Autowired
+    private ConferenceService conferenceService;
 
     @Test
     void 친구요청() {
@@ -55,4 +59,5 @@ class FriendServiceTest {
     void 친구삭제() {
         friendService.deleteFriend(3L, 2L);
     }
+
 }

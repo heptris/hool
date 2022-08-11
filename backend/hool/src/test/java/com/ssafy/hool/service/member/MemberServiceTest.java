@@ -1,4 +1,4 @@
-package com.ssafy.hool.service;
+package com.ssafy.hool.service.member;
 
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.exception.ex.CustomException;

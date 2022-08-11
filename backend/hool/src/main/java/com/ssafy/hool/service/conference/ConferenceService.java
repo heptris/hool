@@ -7,16 +7,22 @@ import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.conference.Member_conference;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.conference.*;
+import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.CONFERENCE_NOT_FOUND;
 import static com.ssafy.hool.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
@@ -86,5 +92,41 @@ public class ConferenceService {
 
         Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
         memberConference.updateEnterState(EnterStatus.EXIT);
+    }
+
+    //----------------------------------------------------------------
+
+    public CursorResult<ConferenceListResponseDto> get(Long cursorId, Pageable page) {
+        final List<ConferenceListResponseDto> boards = getBoards(cursorId, page);
+        final Long lastIdOfList = boards.isEmpty() ?
+                null : boards.get(boards.size() - 1).getConferenceId();
+
+        return new CursorResult<>(boards, hasNext(lastIdOfList), lastIdOfList);
+    }
+
+    public List<ConferenceListResponseDto> getBoards(Long id, Pageable page) {
+
+        if (id == null) {
+//            List<Conference> conferences = conferenceRepository.findAllByOrderByIdDesc(page);
+//            System.out.println(conferences.size());
+//            return conferences.stream()
+//                    .filter(conference -> conference.getIs_active().equals(true))
+//                    .map(conference -> conference.toConferenceListResponseDto())
+//                    .collect(Collectors.toList());
+            return conferenceRepository.findConferenceListDtoPage(page);
+        } else {
+//            List<Conference> conferences = conferenceRepository.findByIdLessThanOrderByIdDesc(id, page);
+//            return conferences.stream()
+//                    .filter(conference -> conference.getIs_active().equals(true))
+//                    .map(conference -> conference.toConferenceListResponseDto())
+//                    .collect(Collectors.toList());
+            return conferenceRepository.findConferenceListDtoLessPage(id, page);
+        }
+
+    }
+
+    public Boolean hasNext(Long id) {
+        if (id == null) return false;
+        return conferenceRepository.existsByIdLessThan(id);
     }
 }

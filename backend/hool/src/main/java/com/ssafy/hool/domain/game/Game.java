@@ -1,5 +1,6 @@
 package com.ssafy.hool.domain.game;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.conference.Conference;
 import lombok.*;

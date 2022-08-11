@@ -145,7 +145,7 @@ public class AuthController {
     @PostMapping("/verifyCode")
     public ResponseEntity<?> verifyCode(@RequestBody EmailVerifyDto emailVerifyDto) {
         if (MailServiceImpl.ePW.equals(emailVerifyDto.getCode())) {
-            return new ResponseEntity<>(new ResponseDto(200, "메일 인증 완료", true), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDto(200, "본인 인증 완료", true), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new ResponseDto(MAIL_CODE_ERROR.getStatus(), MAIL_CODE_ERROR.getMessage(), false)
                     , HttpStatus.UNAUTHORIZED);

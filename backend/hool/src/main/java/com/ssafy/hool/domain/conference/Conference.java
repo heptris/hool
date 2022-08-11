@@ -1,8 +1,10 @@
 package com.ssafy.hool.domain.conference;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.game.Game;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.conference.ConferenceModifyDto;
 import lombok.*;
 
@@ -71,5 +73,15 @@ public class Conference extends BaseEntity {
 
     public void totalUpdate(int value){
         this.total += value;
+    }
+
+    public ConferenceListResponseDto toConferenceListResponseDto() {
+        return ConferenceListResponseDto.builder()
+                .conferenceId(id)
+                .category(conference_category)
+                .description(description)
+                .title(title)
+                .total(total)
+                .build();
     }
 }

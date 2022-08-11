@@ -2,11 +2,13 @@ package com.ssafy.hool.dto.conference;
 
 import com.ssafy.hool.domain.conference.Conference_category;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class ConferenceListResponseDto {
     private Long conferenceId;
