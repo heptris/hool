@@ -1,10 +1,12 @@
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import {
   RootState,
@@ -15,13 +17,18 @@ import {
   setVideoEnabled,
   setIsCreatingPreferences,
 } from "store";
-import { useState } from "react";
+
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
   const dispatch = useDispatch();
 
   const openCreatingModal = () => {
@@ -130,11 +137,13 @@ const NavSide = () => {
                     <Icon className="fa-solid fa-face-grin-wide" />
                   </Btn>
                 </NavLink>
-                <UtilButton onClick={openCreatingModal}>
-                  <Btn>
-                    <Icon className="fa-solid fa-plus" />
-                  </Btn>
-                </UtilButton>
+                {userInfo && (
+                  <UtilButton onClick={openCreatingModal}>
+                    <Btn>
+                      <Icon className="fa-solid fa-plus" />
+                    </Btn>
+                  </UtilButton>
+                )}
               </>
             )}
             <UtilButton onClick={openCreatingPreferencesModal}>
@@ -144,13 +153,15 @@ const NavSide = () => {
             </UtilButton>
           </Buttons>
         </div>
-        <div>
-          <UtilButton>
-            <Btn>
-              <Icon className="fa-solid fa-arrow-right-from-bracket" />
-            </Btn>
-          </UtilButton>
-        </div>
+        {navMode === "meetingRoom" && (
+          <div>
+            <UtilButton>
+              <Btn>
+                <Icon className="fa-solid fa-arrow-right-from-bracket" />
+              </Btn>
+            </UtilButton>
+          </div>
+        )}
       </ButtonGroup>
     </Side>
   );
