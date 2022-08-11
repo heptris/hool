@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
+
+import useUser from "hooks/useUser";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { ROUTES_NAME } from "constant";
 
 import {
   RootState,
@@ -16,20 +17,15 @@ import {
   setAudioEnabled,
   setVideoEnabled,
   setIsCreatingPreferences,
-  setLeaveSessionTrigger,
 } from "store";
-
-import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
+
   const dispatch = useDispatch();
 
   const openCreatingModal = () => {
@@ -43,11 +39,27 @@ const NavSide = () => {
   };
 
   const { navMode } = useSelector((state: RootState) => state.navbar);
+
   const { audioEnabled, videoEnabled } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const [audio, setAudio] = useState(audioEnabled);
-  const [video, setVideo] = useState(videoEnabled);
+
+  useEffect(() => {}, [audioEnabled, videoEnabled]);
+
+  const audioEnabledHandler = () => {
+    if (audioEnabled) {
+      dispatch(setAudioEnabled(false));
+    } else {
+      dispatch(setAudioEnabled(true));
+    }
+  };
+  const videoEnabledHandler = () => {
+    if (videoEnabled) {
+      dispatch(setVideoEnabled(false));
+    } else {
+      dispatch(setVideoEnabled(true));
+    }
+  };
 
   const isShowingMessage = useSelector(
     (state: RootState) => state.navbar.isShowingMessage
@@ -58,25 +70,6 @@ const NavSide = () => {
       dispatch(setIsShowingMessage(false));
     } else {
       dispatch(setIsShowingMessage(true));
-    }
-  };
-
-  const audioEnabledHandler = () => {
-    if (audio) {
-      setAudio(false);
-      dispatch(setAudioEnabled(false));
-    } else {
-      setAudio(true);
-      dispatch(setAudioEnabled(true));
-    }
-  };
-  const videoEnabledHandler = () => {
-    if (video) {
-      setVideo(false);
-      dispatch(setVideoEnabled(false));
-    } else {
-      setVideo(true);
-      dispatch(setVideoEnabled(true));
     }
   };
 
@@ -91,8 +84,8 @@ const NavSide = () => {
             {navMode === "meetingRoom" ? (
               <>
                 <UtilButton onClick={audioEnabledHandler}>
-                  <AudioBtn audio={audio}>
-                    {audio ? (
+                  <AudioBtn audioEnabled={audioEnabled}>
+                    {audioEnabled ? (
                       <Icon className="fa-solid fa-microphone"></Icon>
                     ) : (
                       <Icon className="fa-solid fa-microphone-slash"></Icon>
@@ -100,8 +93,8 @@ const NavSide = () => {
                   </AudioBtn>
                 </UtilButton>
                 <UtilButton onClick={videoEnabledHandler}>
-                  <VideoBtn video={video}>
-                    {video ? (
+                  <VideoBtn videoEnabled={videoEnabled}>
+                    {videoEnabled ? (
                       <Icon className="fa-solid fa-video"></Icon>
                     ) : (
                       <Icon className="fa-solid fa-video-slash"></Icon>
@@ -222,12 +215,12 @@ const Btn = styled.button`
   }
 `;
 const AudioBtn = styled(Btn)`
-  background-color: ${(props: { audio: string }) =>
-    props.audio ? "#292B3B" : "#FF0090"};
+  background-color: ${(props: { audioEnabled: boolean }) =>
+    props.audioEnabled ? "#292B3B" : "#FF0090"};
 `;
 const VideoBtn = styled(Btn)`
-  background-color: ${(props: { video: string }) =>
-    props.video ? "#292B3B" : "#FF0090"};
+  background-color: ${(props: { videoEnabled: boolean }) =>
+    props.videoEnabled ? "#292B3B" : "#FF0090"};
 `;
 const Icon = styled.span`
   font-size: 1rem;

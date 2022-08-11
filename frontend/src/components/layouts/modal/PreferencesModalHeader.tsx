@@ -2,17 +2,12 @@ import CloseButton from "components/commons/CloseButton";
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
-const PreferencesModalHeader = ({
-  onDisplayChange,
-}: {
-  onDisplayChange: Function;
-}) => {
+const PreferencesModalHeader = () => {
   return (
     <Header>
       <TitleWrapper>
         <TitleCloseWrapper>
           <Title>환경 설정</Title>
-          <CloseButton onDisplayChange={onDisplayChange} />
         </TitleCloseWrapper>
       </TitleWrapper>
     </Header>

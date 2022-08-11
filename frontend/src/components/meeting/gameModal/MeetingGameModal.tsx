@@ -13,7 +13,7 @@ const MeetingGameModal = () => {
 
   return (
     <Modal
-      header={<MeetingGameModalHeader onDisplayChange={closeCreatingModal} />}
+      header={<MeetingGameModalHeader />}
       body={<MeetingGameModalBody />}
       onDisplayChange={closeCreatingModal}
     />

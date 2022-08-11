@@ -6,9 +6,8 @@ const getEmojiList = () => getRequest(`${EMOJI}/list`);
 
 const postEmoji = (obj: {
   description: string;
-  memberId: number;
   name: string;
-  url: string;
+  imgUrl: string;
 }) => postRequest(EMOJI, obj);
 
 const putEmoji = (obj: {

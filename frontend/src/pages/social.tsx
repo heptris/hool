@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-location";
+
+import useUser from "hooks/useUser";
 
 import { getFriendList, getFriendSendMessage } from "api/social";
 
@@ -12,15 +14,10 @@ import Requests from "components/social/Requests";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
-import { UserInfoType } from "types/UserInfoType";
-
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
 
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
+  const { userInfo } = useUser();
 
   const {
     data: friendListData,
@@ -37,13 +34,10 @@ function SocialPage() {
     retry: 0,
   });
 
-  const myFriends = friendListData?.data;
-  const requests = friendMessageListData?.data;
-
   if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  if (friendListIsError || friendMessageListIsError)
-    return <Navigate to={ROUTES_NAME.ERROR} />;
+  // if (friendListIsError || friendMessageListIsError)
+  //   return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <Container>
@@ -54,11 +48,14 @@ function SocialPage() {
       {isDisplayMyFriends && (
         <MyFriends
           isDisplayMyFriends={isDisplayMyFriends}
-          myFriends={myFriends}
+          myFriends={friendListData?.data}
         />
       )}
       {!isDisplayMyFriends && (
-        <Requests isDisplayMyFriends={isDisplayMyFriends} requests={requests} />
+        <Requests
+          isDisplayMyFriends={isDisplayMyFriends}
+          requests={friendMessageListData?.data}
+        />
       )}
     </Container>
   );

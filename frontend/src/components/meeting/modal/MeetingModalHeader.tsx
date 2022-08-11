@@ -1,15 +1,10 @@
 import CloseButton from "components/commons/CloseButton";
 import styled from "styled-components";
 
-const MeetingModalHeader = ({
-  onDisplayChange,
-}: {
-  onDisplayChange: Function;
-}) => {
+const MeetingModalHeader = () => {
   return (
     <Header>
       <Title>응원방 생성</Title>
-      <CloseButton onDisplayChange={onDisplayChange} />
     </Header>
   );
 };
