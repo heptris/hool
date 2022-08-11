@@ -149,8 +149,8 @@ function MeetingMessageShow(props: PropsType) {
             <Hr />
             <ModalGrid>
               {myOwnItems.map((item, i) => (
-                <div onClick={() => sendEmojiSignal(item)}>
-                  <EmojiCard key={i}>
+                <div key={i} onClick={() => sendEmojiSignal(item)}>
+                  <EmojiCard>
                     <></>
                   </EmojiCard>
                 </div>

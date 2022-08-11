@@ -203,6 +203,7 @@ class VideoContainer extends Component {
     this.props.setMsgToSend("");
     this.props.setChatEvents(new Array());
     this.props.setEmojiEvents(new Array(9).fill(""));
+    this.props.setIsDisplayEmoji(false);
 
     // Empty all properties...
     this.OV = null;
@@ -519,6 +520,7 @@ const mapDispatchToProps = (dispatch) => ({
   setMsgToSend: (payload) => dispatch(actions.setMsgToSend(payload)),
   setChatEvents: (payload) => dispatch(actions.setChatEvents(payload)),
   setEmojiEvents: (payload) => dispatch(actions.setEmojiEvents(payload)),
+  setIsDisplayEmoji: (payload) => dispatch(actions.setIsDisplayEmoji(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoContainer);
