@@ -1,10 +1,12 @@
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import {
   RootState,
@@ -14,14 +16,20 @@ import {
   setAudioEnabled,
   setVideoEnabled,
   setIsCreatingPreferences,
+  setLeaveSessionTrigger,
 } from "store";
-import { useState } from "react";
+
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
   const dispatch = useDispatch();
 
   const openCreatingModal = () => {
@@ -56,11 +64,9 @@ const NavSide = () => {
   const audioEnabledHandler = () => {
     if (audio) {
       setAudio(false);
-      console.log(audio);
       dispatch(setAudioEnabled(false));
     } else {
       setAudio(true);
-      console.log(audio);
       dispatch(setAudioEnabled(true));
     }
   };
@@ -130,11 +136,13 @@ const NavSide = () => {
                     <Icon className="fa-solid fa-face-grin-wide" />
                   </Btn>
                 </NavLink>
-                <UtilButton onClick={openCreatingModal}>
-                  <Btn>
-                    <Icon className="fa-solid fa-plus" />
-                  </Btn>
-                </UtilButton>
+                {userInfo && (
+                  <UtilButton onClick={openCreatingModal}>
+                    <Btn>
+                      <Icon className="fa-solid fa-plus" />
+                    </Btn>
+                  </UtilButton>
+                )}
               </>
             )}
             <UtilButton onClick={openCreatingPreferencesModal}>
@@ -144,13 +152,15 @@ const NavSide = () => {
             </UtilButton>
           </Buttons>
         </div>
-        <div>
-          <UtilButton>
-            <Btn>
-              <Icon className="fa-solid fa-arrow-right-from-bracket" />
-            </Btn>
-          </UtilButton>
-        </div>
+        {navMode === "meetingRoom" && (
+          <div>
+            <Link to={MEETING}>
+              <Btn>
+                <Icon className="fa-solid fa-arrow-right-from-bracket" />
+              </Btn>
+            </Link>
+          </div>
+        )}
       </ButtonGroup>
     </Side>
   );
@@ -204,7 +214,7 @@ const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 4px;
-  background-color: ${darkTheme.adaptiveGrey800};
+  background-color: ${adaptiveGrey800};
   cursor: pointer;
 
   &:hover {
@@ -212,10 +222,12 @@ const Btn = styled.button`
   }
 `;
 const AudioBtn = styled(Btn)`
-  background-color: ${(props) => (props.audio ? "#292B3B" : "#FF0090")};
+  background-color: ${(props: { audio: string }) =>
+    props.audio ? "#292B3B" : "#FF0090"};
 `;
 const VideoBtn = styled(Btn)`
-  background-color: ${(props) => (props.video ? "#292B3B" : "#FF0090")};
+  background-color: ${(props: { video: string }) =>
+    props.video ? "#292B3B" : "#FF0090"};
 `;
 const Icon = styled.span`
   font-size: 1rem;

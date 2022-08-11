@@ -54,7 +54,9 @@ const SendMailResetPWD = () => {
   return (
     <Container>
       <SendMailResetPWDBox>
-        <Logo>hool!</Logo>
+        <Link to={"/"}>
+          <Logo>hool!</Logo>
+        </Link>
         <Title>이메일로 비밀번호 초기화</Title>
         <SubTitle1>HOOL!에 가입한 이메일을 정확히 입력해 주세요.</SubTitle1>
         <SubTitle2>이메일을 통해 비밀번호 수정 링크가 전송됩니다.</SubTitle2>
@@ -192,10 +194,11 @@ const Info = styled.div`
 `;
 
 const SignupBtn = styled(Button)`
+  margin-top: 1rem;
   &:disabled {
     cursor: default;
     opacity: 0.5;
-    background: var(--button-bg-color, ${darkTheme.contrastColor});
+    background: var(--button-bg-color, ${darkTheme.adaptiveGrey500});
   }
 `;
 export default SendMailResetPWD;

@@ -38,6 +38,7 @@ const useAuth = () => {
     sessionStorage.removeItem(USER_SESSIONSTORAGE_KEY.REFRESH_TOKEN);
     window.alert("로그아웃이 완료되었습니다.");
     navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
+    window.location.reload();
     return logoutResponse;
   };
 
