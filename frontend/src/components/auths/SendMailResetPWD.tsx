@@ -6,6 +6,7 @@ import Button from "components/commons/Button";
 import { ChangeEvent, useState } from "react";
 import { apiInstance } from "api";
 import { HOOL_AUTH_ENDPOINT } from "constant";
+import { Link } from "@tanstack/react-location";
 
 const SendMailResetPWD = () => {
   const [toggle, setToggled] = useState(false);
@@ -53,7 +54,9 @@ const SendMailResetPWD = () => {
   return (
     <Container>
       <SendMailResetPWDBox>
-        <Logo>hool!</Logo>
+        <Link to={"/"}>
+          <Logo>hool!</Logo>
+        </Link>
         <Title>이메일로 비밀번호 초기화</Title>
         <SubTitle1>HOOL!에 가입한 이메일을 정확히 입력해 주세요.</SubTitle1>
         <SubTitle2>이메일을 통해 비밀번호 수정 링크가 전송됩니다.</SubTitle2>
