@@ -47,7 +47,7 @@ class EmojiServiceTest {
         memberRepository.save(member);
 
         // when
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
 
         MultipartFile multipartFile = null;
         emojiService.makeEmoji(multipartFile, emojiCreateDto1, member.getId());
@@ -69,8 +69,8 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
@@ -89,8 +89,8 @@ class EmojiServiceTest {
         //given
         Member member = getMember("1");
         memberRepository.save(member);
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
@@ -113,8 +113,8 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
@@ -136,8 +136,8 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
@@ -160,8 +160,8 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
@@ -186,8 +186,8 @@ class EmojiServiceTest {
         Member member = getMember("1");
         memberRepository.save(member);
 
-        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1","이모지 설명1");
-        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", "이모지 설명2");
+        EmojiCreateDto emojiCreateDto1 = new EmojiCreateDto("이름1", null, "이모지 설명1");
+        EmojiCreateDto emojiCreateDto2 = new EmojiCreateDto("이름2", null,  "이모지 설명2");
 
         emojiService.makeEmoji(null, emojiCreateDto1, member.getId());
         emojiService.makeEmoji(null, emojiCreateDto2, member.getId());
