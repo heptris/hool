@@ -13,6 +13,7 @@ export const ROUTES_NAME = {
 
 export const HOOL_API_ENDPOINT = "https://i7a408.p.ssafy.io/api/";
 export const HOOL_AUTH_ENDPOINT = "https://i7a408.p.ssafy.io/auth/";
+export const HOOL_IMAGE_ENDPOINT = "https://i7a408.p.ssafy.io/image/";
 
 export const QUERY_KEYS = {
   USER: "user",

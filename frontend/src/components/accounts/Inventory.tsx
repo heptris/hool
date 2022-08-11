@@ -178,24 +178,20 @@ const InventoryBox = styled.div`
   border-radius: 4px;
   margin: 0 0 0 3rem;
 `;
-
 const Info = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
 const InventoryHeader = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
   margin: 0.8rem 0 1.5rem 0.8rem;
 `;
-
 const InventorySwitches = styled.div`
   display: flex;
   margin: 0 0 0 0.8rem;
 `;
-
 const SwitchItem = styled.button`
   background-color: transparent;
   color: ${darkTheme.white};
@@ -210,7 +206,6 @@ const SwitchItem = styled.button`
     }
   }
 `;
-
 const EnrollBtn = styled(Button)`
   margin-right: 0.8rem;
   background-color: ${darkTheme.darkColor};
@@ -219,13 +214,11 @@ const EnrollBtn = styled(Button)`
     background-color: ${darkTheme.emphasisColor};
   }
 `;
-
 const Hr = styled.hr`
   background-color: ${darkTheme.adaptiveGrey700};
   border: 1px solid ${darkTheme.adaptiveGrey700};
   margin: 0;
 `;
-
 const InventoryContent = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(66px, auto));
@@ -234,7 +227,6 @@ const InventoryContent = styled.div`
   gap: 0.9rem;
   padding: 1.5rem;
 `;
-
 const DetailHeader = styled.h1`
   width: 20rem;
   margin: 1rem 0 1rem 0;
