@@ -119,7 +119,7 @@ public class ConferenceService {
         final Long lastIdOfList = searchedConferences.isEmpty() ?
                 null : searchedConferences.get(searchedConferences.size() - 1).getConferenceId();
 
-        return new CursorResult<>(searchedConferences, hasNextSearch(conferenceCategory, lastIdOfList), lastIdOfList);
+        return new CursorResult(searchedConferences, hasNextSearch(conferenceCategory, lastIdOfList), lastIdOfList);
     }
 
     //----------------------------------------------------------------
