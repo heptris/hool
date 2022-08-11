@@ -143,7 +143,7 @@ function MeetingMessageShow(props: PropsType) {
         isShowingGame={isShowingGame}
       >
         {chatEvents.map((chat, i) => renderChatMsgs(chat, i))}
-        {!isDisplayEmoji && (
+        {isDisplayEmoji && (
           <EmojiModal className={"animate__animated animate__bounceIn"}>
             <ModalText>소유중인 이모지</ModalText>
             <Hr />
