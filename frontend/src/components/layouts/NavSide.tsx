@@ -14,6 +14,7 @@ import {
   setAudioEnabled,
   setVideoEnabled,
   setIsCreatingPreferences,
+  setLeaveSessionTrigger,
 } from "store";
 import { useState } from "react";
 
@@ -145,11 +146,13 @@ const NavSide = () => {
           </Buttons>
         </div>
         <div>
-          <UtilButton>
-            <Btn>
-              <Icon className="fa-solid fa-arrow-right-from-bracket" />
-            </Btn>
-          </UtilButton>
+          <Link to={MEETING}>
+            <UtilButton>
+              <Btn>
+                <Icon className="fa-solid fa-arrow-right-from-bracket" />
+              </Btn>
+            </UtilButton>
+          </Link>
         </div>
       </ButtonGroup>
     </Side>
@@ -204,7 +207,7 @@ const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 4px;
-  background-color: ${darkTheme.adaptiveGrey800};
+  background-color: ${adaptiveGrey800};
   cursor: pointer;
 
   &:hover {
