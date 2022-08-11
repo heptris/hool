@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmojiDto {
 
+    private Long emojiId;
     private String name;
     private String url;
     private String description;

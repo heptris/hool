@@ -20,4 +20,8 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
 
     @Query(value = "select count(me.id) from emoji_shop me where me.emoji_id = :emojiId", nativeQuery = true)
     int checkEmojiShop(@Param("emojiId") Long emojiId);
+
+
+
+
 }
