@@ -12,13 +12,13 @@ import {
 
 const PreferencesModalBody = () => {
   const dispatch = useDispatch();
-  const [audioSelect, setAudioSelect] = useState("마이크 ON");
+  const [audioSelect, setAudioSelect] = useState("마이크 OFF");
   const audioSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setAudioSelect(value);
   };
 
-  const [videoSelect, setVideoSelect] = useState("비디오 ON");
+  const [videoSelect, setVideoSelect] = useState("비디오 OFF");
   const videoSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     console.log(value);
