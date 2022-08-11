@@ -3,6 +3,7 @@ package com.ssafy.hool.domain;
 import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.conference.ConferenceCreateDto;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,10 @@ class ConferenceTest {
 
         memberRepository.save(member);
         memberRepository.save(member2);
-        Conference conference = Conference.createConference("맨시티vs맨유", "아아아", member, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
 
         member2.enterConference(conference);

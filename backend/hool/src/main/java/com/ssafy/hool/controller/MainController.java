@@ -1,8 +1,10 @@
 package com.ssafy.hool.controller;
 
 import com.ssafy.hool.domain.conference.Conference;
+import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
+import com.ssafy.hool.dto.conference.ConferenceSearchDto;
 import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.conference.ConferenceService;
@@ -13,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +32,14 @@ public class MainController {
     @GetMapping("/")
     public ResponseEntity findAllConference(){
         return new ResponseEntity<ResponseDto>(new ResponseDto<List<ConferenceListResponseDto>>(200, "success", conferenceService.findAllConference()), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "응원방 카테고리 검색", notes = "검색 카테고리 - SOCCER, BASEBALL, BASKETBALL, VOLLEYBALL, ESPORTS")
+    @GetMapping("/search")
+    public ResponseEntity searchConference(String category, Long cursorId, Integer size){
+        CursorResult<ConferenceListResponseDto> conferenceSearchCursorResult =
+                conferenceService.getSearch(cursorId, PageRequest.of(0, size), category);
+        return new ResponseEntity(new ResponseDto(200, "success", conferenceSearchCursorResult), HttpStatus.OK);
     }
 
     @GetMapping("/admin")

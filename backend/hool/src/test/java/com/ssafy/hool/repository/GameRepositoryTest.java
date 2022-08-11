@@ -7,6 +7,7 @@ import com.ssafy.hool.domain.game.Game_history;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.point.PointType;
 import com.ssafy.hool.domain.point.Point_history;
+import com.ssafy.hool.dto.conference.ConferenceCreateDto;
 import com.ssafy.hool.dto.game.GameHistoryCreateDto;
 import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.exception.ex.CustomException;
@@ -54,7 +55,10 @@ class GameRepositoryTest {
         Member member = getMember("Lee5");
         memberService.join(member);
 
-        Conference conference = Conference.createConference("123", "123", member, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
         conferenceRepository.save(conference);
 
         Game game = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
@@ -67,7 +71,10 @@ class GameRepositoryTest {
     public void saveGameHistoryTest(){
         Member m = getMember("Lee11");
         memberRepository.save(m);
-        Conference conference = Conference.createConference("123", "123", m, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, m, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
@@ -90,7 +97,10 @@ class GameRepositoryTest {
     public void saveGameResultTest(){
         Member m = getMember("Lee3");
         memberRepository.save(m);
-        Conference conference = Conference.createConference("123", "123", m, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, m, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", null, conference);
         gameRepository.save(g);
@@ -113,7 +123,10 @@ class GameRepositoryTest {
         memberRepository.save(m2);
         memberRepository.save(m3);
         memberRepository.save(m4);
-        Conference conference = Conference.createConference("123", "123", m1, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, m1, Conference_category.SOCCER);
         conferenceRepository.save(conference);
         Game g = Game.createGame("손흥민이 2골이상 넣을까요?", true, conference);
         gameRepository.save(g);

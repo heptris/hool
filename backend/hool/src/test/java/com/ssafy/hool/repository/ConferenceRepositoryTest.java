@@ -14,6 +14,7 @@ import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.member.MemberService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,9 +50,9 @@ class ConferenceRepositoryTest {
         memberService.join(member2);
         memberService.join(member3);
 
-        ConferenceCreateDto conferenceCreateDto1 = new ConferenceCreateDto("Title1", "Description1", "SOCCER");
-        ConferenceCreateDto conferenceCreateDto2 = new ConferenceCreateDto("Title2", "Description2", "BASEBALL");
-        ConferenceCreateDto conferenceCreateDto3 = new ConferenceCreateDto("Title3", "Description3", "BASKETBALL");
+        ConferenceCreateDto conferenceCreateDto1 = new ConferenceCreateDto("Title1", "Description1", "SOCCER" , true, null);
+        ConferenceCreateDto conferenceCreateDto2 = new ConferenceCreateDto("Title2", "Description2", "BASEBALL", true, null);
+        ConferenceCreateDto conferenceCreateDto3 = new ConferenceCreateDto("Title3", "Description3", "BASKETBALL", true, null);
 
         conferenceService.createConference(conferenceCreateDto1, Conference_category.SOCCER, member1.getId());
         conferenceService.createConference(conferenceCreateDto2, Conference_category.BASEBALL, member2.getId());
@@ -67,7 +68,7 @@ class ConferenceRepositoryTest {
     public void createConferenceTest(){
         Member member = getMember("Lee");
         memberService.join(member);
-        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기하고있어요", "SOCCER");
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기하고있어요", "SOCCER", true, null);
 
         Conference_category category = Enum.valueOf(Conference_category.class, conferenceCreateDto.getConferenceCategory());
 
@@ -84,7 +85,9 @@ class ConferenceRepositoryTest {
     public void enterConferenceTest(){
         Member member = getMember("Park11");
         memberRepository.save(member);
-        Conference conference = Conference.createConference("한국 vs 일본", "축구경기", member, Conference_category.SOCCER);
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", true, null);
+
+        Conference conference = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
 
         conferenceRepository.save(conference);
 
@@ -122,10 +125,57 @@ class ConferenceRepositoryTest {
     }
 
     @Test
+    public void enterCheckConferenceTest(){
+        Member member = getMember("Park11");
+        memberRepository.save(member);
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", false, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
+
+        conferenceRepository.save(conference);
+
+        Member member1 = getMember("Park22");
+        Member member2 = getMember("Park33");
+        Member member3 = getMember("Park44");
+        Member member4 = getMember("Park55");
+
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        memberRepository.save(member4);
+
+        ConferenceJoinCheckDto conferenceJoinDto1 = new ConferenceJoinCheckDto(conference.getId(), "1234");
+        ConferenceJoinCheckDto conferenceJoinDto2 = new ConferenceJoinCheckDto(conference.getId(), "1234");
+        ConferenceJoinCheckDto conferenceJoinDto3 = new ConferenceJoinCheckDto(conference.getId(), "1234");
+        ConferenceJoinCheckDto conferenceJoinDto4 = new ConferenceJoinCheckDto(conference.getId(), "abcd");
+
+        conferenceService.enterCheckConference(conferenceJoinDto1, member1.getId());
+        conferenceService.enterCheckConference(conferenceJoinDto2, member2.getId());
+        conferenceService.enterCheckConference(conferenceJoinDto3, member3.getId());
+
+        Member_conference memberConference1 = memberConferenceRepository.findByConferenceAndMember(conference, member1);
+        Member_conference memberConference2 = memberConferenceRepository.findByConferenceAndMember(conference, member2);
+        Member_conference memberConference3 = memberConferenceRepository.findByConferenceAndMember(conference, member3);
+
+        assertThat(memberConference1.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+        assertThat(memberConference2.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+        assertThat(memberConference3.getEnterStatus()).isEqualTo(EnterStatus.ENTER);
+
+        assertThat(conference.getTotal()).isEqualTo(3);
+
+        org.junit.jupiter.api.Assertions.assertThrows(CustomException.class,() -> {
+            conferenceService.enterCheckConference(conferenceJoinDto4, member4.getId());
+        });
+    }
+
+    @Test
     public void modifyConferenceTest(){
         Member member = getMember("con1");
         memberRepository.save(member);
-        Conference conference1 = Conference.createConference("한국 vs 일본", "123123", member, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", true, "1234");
+
+        Conference conference1 = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
         conferenceRepository.save(conference1);
 
         Conference conference = conferenceRepository.findById(conference1.getId()).get();
@@ -140,7 +190,11 @@ class ConferenceRepositoryTest {
     public void exitConference(){
         Member member = getMember("exitTest");
         memberRepository.save(member);
-        Conference conference = Conference.createConference("한국 vs 일본", "exitTest!!", member, Conference_category.SOCCER);
+
+        ConferenceCreateDto conferenceCreateDto = new ConferenceCreateDto("한국 vs 일본", "축구경기", "SOCCER", true, "1234");
+
+        Conference conference = Conference.createConference(conferenceCreateDto, member, Conference_category.SOCCER);
+
         conferenceRepository.save(conference);
 
         ConferenceExitDto conferenceExitDto = new ConferenceExitDto(conference.getId());

@@ -16,5 +16,6 @@ public class ConferenceListResponseDto {
     private String description;
     private String nickName;
     private Conference_category category;
+    private Boolean isPublic;
     private int total;
 }

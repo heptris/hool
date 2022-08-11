@@ -36,6 +36,14 @@ public class ConferenceController {
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success","Enter Room"), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "응원방 입장 - 방 비밀번호 확인", notes = "응원방 비밀번호 체크(conferenceId, password)")
+    @PostMapping("/enter/check")
+    public ResponseEntity enterCheckConference(@RequestBody ConferenceJoinCheckDto conferenceJoinCheckDto){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        conferenceService.enterCheckConference(conferenceJoinCheckDto, memberId);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success","Enter Room"), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "응원방 수정", notes = "응원방 수정 (conference_id, 제목, 설명)")
     @PostMapping("/modify")
     public ResponseEntity modifyConference(@RequestBody ConferenceModifyDto conferenceModifyDto){
@@ -49,4 +57,5 @@ public class ConferenceController {
         conferenceService.exitConference(conferenceExitDto, memberId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "Exit Room"), HttpStatus.OK);
     }
+
 }

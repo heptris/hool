@@ -70,7 +70,10 @@ class DealHistoryRepositoryTest {
         Assertions.assertThat(sellerPointHistory.getDeal_point()).isEqualTo(-buyerPointHistory.getDeal_point());
         Assertions.assertThat(buyerPointHistory.getCurrent_point()).isEqualTo(-100);
         Assertions.assertThat(sellerPointHistory.getCurrent_point()).isEqualTo(100);
-        Assertions.assertThat(pointHistoryRepository.findAll().size()).isEqualTo(2);
+        Assertions.assertThat(buyer.getPoint()).isEqualTo(-100);
+        Assertions.assertThat(seller.getPoint()).isEqualTo(100);
+
+        //        Assertions.assertThat(pointHistoryRepository.findAll().size()).isEqualTo(2);
 
     }
     private Member getMember(String nickName) {

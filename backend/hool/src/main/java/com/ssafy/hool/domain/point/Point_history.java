@@ -63,6 +63,7 @@ public class Point_history extends BaseEntity {
     public void addMember(Member member){
         this.member = member;
         member.getPointHistoryList().add(this);
+        member.setPoint(member.getPoint() + this.deal_point);
     }
 
     public void addDealHistory(Deal_history dealHistory){

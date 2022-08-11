@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConferenceResponseDto {
+public class ConferenceJoinCheckDto {
     private Long conferenceId;
-    private String title;
-    private String description;
-    private String category;
-    private Boolean isPublic;
-    private int total;
+    private String password;
 }

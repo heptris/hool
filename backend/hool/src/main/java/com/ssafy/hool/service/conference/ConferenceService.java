@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ssafy.hool.exception.ex.ErrorCode.CONFERENCE_NOT_FOUND;
-import static com.ssafy.hool.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
+import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
 @Service
 @Transactional
@@ -49,14 +48,14 @@ public class ConferenceService {
      */
     public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        Conference conference = Conference.createConference(conferenceCreateDto.getTitle(), conferenceCreateDto.getDescription(), member, conference_category);
+        Conference conference = Conference.createConference(conferenceCreateDto, member, conference_category);
         conference.totalUpdate(1);
         conferenceRepository.save(conference);
 
         Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
         memberConference.updateEnterState(EnterStatus.ENTER);
 
-        return new ConferenceResponseDto(conference.getId(), conference.getTitle(), conference.getDescription(), conference.getConference_category().name(), conference.getTotal());
+        return new ConferenceResponseDto(conference.getId(), conference.getTitle(), conference.getDescription(), conference.getConference_category().name(), conference.getIsPublic(), conference.getTotal());
     }
 
     /**
@@ -69,6 +68,23 @@ public class ConferenceService {
         conference.totalUpdate(1);
         Member_conference memberConference = Member_conference.createMemberConference(member, conference);
         memberConferenceRepository.save(memberConference);
+    }
+
+    /**
+     * 응원방 입장 - 방 비밀번호 확인
+     * @param conferenceJoinCheckDto
+     */
+    public void enterCheckConference(ConferenceJoinCheckDto conferenceJoinCheckDto, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Conference conference = conferenceRepository.findById(conferenceJoinCheckDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
+
+        if(conference.getConferencePassword().equals(conferenceJoinCheckDto.getPassword())){
+            conference.totalUpdate(1);
+            Member_conference memberConference = Member_conference.createMemberConference(member, conference);
+            memberConferenceRepository.save(memberConference);
+        } else {
+            throw new CustomException(INVALID_PASSWORD);
+        }
     }
 
     /**
@@ -89,9 +105,21 @@ public class ConferenceService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         conference.totalUpdate(-1);
+        if(conference.getTotal() == 0){
+            conference.roomTerminated();
+        }
 
         Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
         memberConference.updateEnterState(EnterStatus.EXIT);
+    }
+
+    public CursorResult<ConferenceListResponseDto> getSearch(Long cursorId, Pageable page, String category){
+        Conference_category conferenceCategory = Enum.valueOf(Conference_category.class, category);
+        final List<ConferenceListResponseDto> searchedConferences = getSearchConferences(conferenceCategory, cursorId, page);
+        final Long lastIdOfList = searchedConferences.isEmpty() ?
+                null : searchedConferences.get(searchedConferences.size() - 1).getConferenceId();
+
+        return new CursorResult<>(searchedConferences, hasNextSearch(conferenceCategory, lastIdOfList), lastIdOfList);
     }
 
     //----------------------------------------------------------------
@@ -107,20 +135,19 @@ public class ConferenceService {
     public List<ConferenceListResponseDto> getBoards(Long id, Pageable page) {
 
         if (id == null) {
-//            List<Conference> conferences = conferenceRepository.findAllByOrderByIdDesc(page);
-//            System.out.println(conferences.size());
-//            return conferences.stream()
-//                    .filter(conference -> conference.getIs_active().equals(true))
-//                    .map(conference -> conference.toConferenceListResponseDto())
-//                    .collect(Collectors.toList());
             return conferenceRepository.findConferenceListDtoPage(page);
         } else {
-//            List<Conference> conferences = conferenceRepository.findByIdLessThanOrderByIdDesc(id, page);
-//            return conferences.stream()
-//                    .filter(conference -> conference.getIs_active().equals(true))
-//                    .map(conference -> conference.toConferenceListResponseDto())
-//                    .collect(Collectors.toList());
             return conferenceRepository.findConferenceListDtoLessPage(id, page);
+        }
+
+    }
+
+    public List<ConferenceListResponseDto> getSearchConferences(Conference_category category, Long id, Pageable page) {
+
+        if (id == null) {
+            return conferenceRepository.findConferenceSearchListDtoPage(category, page);
+        } else {
+            return conferenceRepository.findConferenceSearchListDtoLessPage(category, id, page);
         }
 
     }
@@ -128,5 +155,10 @@ public class ConferenceService {
     public Boolean hasNext(Long id) {
         if (id == null) return false;
         return conferenceRepository.existsByIdLessThan(id);
+    }
+
+    public Boolean hasNextSearch(Conference_category category, Long id) {
+        if (id == null) return false;
+        return conferenceRepository.existsBySearchIdLessThan(category, id);
     }
 }
