@@ -12,7 +12,7 @@ const PreferencesModal = () => {
   };
   return (
     <Modal
-      header={<PreferencesModalHeader onDisplayChange={closeCreatingModal} />}
+      header={<PreferencesModalHeader />}
       body={<PreferencesModalBody />}
       onDisplayChange={closeCreatingModal}
     />
