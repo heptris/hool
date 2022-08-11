@@ -35,10 +35,10 @@ public class GlobalExceptionHandler {
                 , HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handlerServerException(Exception e) {
-        return new ResponseEntity(new ResponseDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage(), null)
-                , HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity handlerServerException(Exception e) {
+//        return new ResponseEntity(new ResponseDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage(), null)
+//                , HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 }
