@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMsgToSend } from "store";
+import { setMsgToSend, setIsDisplayEmoji } from "store";
 
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
@@ -16,8 +16,7 @@ type PropsType = {
 
 const MeetingMessageInput = (props: PropsType) => {
   const dispatch = useDispatch();
-  const [isDisplayEmoji, setIsDisplayEmoji] = useState(false);
-  const { myUserName, msgToSend, chatEvents } = useSelector(
+  const { myUserName, msgToSend, chatEvents, isDisplayEmoji } = useSelector(
     (state: RootState) => state.clientSession
   );
   const { session } = props.sessionState;
@@ -46,14 +45,13 @@ const MeetingMessageInput = (props: PropsType) => {
 
   return (
     <>
-      {!isDisplayEmoji && <></>}
       <MessageBox>
         <IconBox>
           <Left>
             <Icon
               className="fa-solid fa-face-meh"
               onClick={() => {
-                setIsDisplayEmoji(!isDisplayEmoji);
+                dispatch(setIsDisplayEmoji(!isDisplayEmoji));
               }}
             />
             <Icon className="fa-solid fa-microphone" />
@@ -101,10 +99,9 @@ const Input = styled.input`
   ${InputStyle}
 `;
 export const MessageBox = styled.div`
-  width: 25rem;
+  width: 24.5rem;
   height: 6.125rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  margin: 1rem 0.5rem 0 1rem;
   box-sizing: border-box;
   border-radius: 4px;
   padding: 1rem;

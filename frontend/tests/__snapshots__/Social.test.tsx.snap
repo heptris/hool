@@ -16,6 +16,20 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         >
           친구찾기
         </h1>
+        <div
+          class="sc-gKXOVf czoAbi"
+        >
+          <label
+            class="sc-iBkjds gpYKZZ fa-solid fa-magnifying-glass"
+            for="친구 검색"
+          />
+          <input
+            class="sc-ftvSup hjbCsN"
+            id="친구 검색"
+            placeholder="친구 검색"
+            value=""
+          />
+        </div>
       </div>
       <span
         class="sc-hKMtZM fCQPYB"
@@ -26,10 +40,10 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         class="sc-eCYdqJ cAgjmv"
       >
         <div
-          class="sc-gKXOVf"
+          class="sc-kDDrLX"
         >
           <button
-            class="sc-iBkjds kSKSbT"
+            class="sc-iqcoie KrTxi"
           >
             <span
               style="color: rgb(0, 198, 193);"
@@ -38,7 +52,7 @@ exports[`<SocialPage /> matches snapshot 1`] = `
             </span>
           </button>
           <button
-            class="sc-iBkjds kSKSbT"
+            class="sc-iqcoie KrTxi"
           >
             <span>
               친구요청
@@ -51,33 +65,33 @@ exports[`<SocialPage /> matches snapshot 1`] = `
       />
     </div>
     <div
-      class="sc-fEOsli iLpJxV"
+      class="sc-hHLeRK bINdnn"
     >
       <div
-        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
+        class="sc-jqUVSM bSnVqQ sc-crXcEl iwxKnT"
       >
         <div
-          class="sc-jqUVSM gLtmvn"
+          class="sc-evZas egnUSC"
         >
           <img
-            class="sc-kDDrLX ckljJQ"
+            class="sc-breuTD kiUoil"
             src="default"
           />
           <div
-            class="sc-iqcoie cbRpQG"
+            class="sc-ksZaOG cMeIGR"
           >
             <h1
-              class="sc-crXcEl gtxtSW"
+              class="sc-hAZoDl cNDJfZ"
             >
               Thomas
             </h1>
             <h2
-              class="sc-evZas kvSCWJ"
+              class="sc-fnykZs cHvlzN"
             >
               tho@gmail.com
             </h2>
             <span
-              class="sc-breuTD hMqIoS"
+              class="sc-fEOsli hMJufQ"
             >
               일본 vs 대한민국 같이봐요
             </span>
@@ -85,35 +99,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
+            class="sc-bjUoiL fnhxzo fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
+        class="sc-jqUVSM bSnVqQ sc-crXcEl iwxKnT"
       >
         <div
-          class="sc-jqUVSM gLtmvn"
+          class="sc-evZas egnUSC"
         >
           <img
-            class="sc-kDDrLX ckljJQ"
+            class="sc-breuTD kiUoil"
             src="default"
           />
           <div
-            class="sc-iqcoie cbRpQG"
+            class="sc-ksZaOG cMeIGR"
           >
             <h1
-              class="sc-crXcEl gtxtSW"
+              class="sc-hAZoDl cNDJfZ"
             >
               Bell
             </h1>
             <h2
-              class="sc-evZas kvSCWJ"
+              class="sc-fnykZs cHvlzN"
             >
               bell@gmail.com
             </h2>
             <span
-              class="sc-breuTD hMqIoS"
+              class="sc-fEOsli hMJufQ"
             >
               접속중
             </span>
@@ -121,35 +135,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
+            class="sc-bjUoiL fnhxzo fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
+        class="sc-jqUVSM bSnVqQ sc-crXcEl iwxKnT"
       >
         <div
-          class="sc-jqUVSM gLtmvn"
+          class="sc-evZas egnUSC"
         >
           <img
-            class="sc-kDDrLX ckljJQ"
+            class="sc-breuTD kiUoil"
             src="default"
           />
           <div
-            class="sc-iqcoie cbRpQG"
+            class="sc-ksZaOG cMeIGR"
           >
             <h1
-              class="sc-crXcEl gtxtSW"
+              class="sc-hAZoDl cNDJfZ"
             >
               Dijkstra
             </h1>
             <h2
-              class="sc-evZas kvSCWJ"
+              class="sc-fnykZs cHvlzN"
             >
               graph@gmail.com
             </h2>
             <span
-              class="sc-breuTD hMqIoS"
+              class="sc-fEOsli hMJufQ"
             >
               12 minutes ago
             </span>
@@ -157,35 +171,35 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
+            class="sc-bjUoiL fnhxzo fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
       <div
-        class="sc-ftvSup ikFYvQ sc-papXJ fYSOyb"
+        class="sc-jqUVSM bSnVqQ sc-crXcEl iwxKnT"
       >
         <div
-          class="sc-jqUVSM gLtmvn"
+          class="sc-evZas egnUSC"
         >
           <img
-            class="sc-kDDrLX ckljJQ"
+            class="sc-breuTD kiUoil"
             src="default"
           />
           <div
-            class="sc-iqcoie cbRpQG"
+            class="sc-ksZaOG cMeIGR"
           >
             <h1
-              class="sc-crXcEl gtxtSW"
+              class="sc-hAZoDl cNDJfZ"
             >
               Perry
             </h1>
             <h2
-              class="sc-evZas kvSCWJ"
+              class="sc-fnykZs cHvlzN"
             >
               graph@gmail.com
             </h2>
             <span
-              class="sc-breuTD hMqIoS"
+              class="sc-fEOsli hMJufQ"
             >
               12 minutes ago
             </span>
@@ -193,7 +207,7 @@ exports[`<SocialPage /> matches snapshot 1`] = `
         </div>
         <div>
           <i
-            class="sc-ksZaOG hbHzFs fa-solid fa-ellipsis-vertical"
+            class="sc-bjUoiL fnhxzo fa-solid fa-ellipsis-vertical"
           />
         </div>
       </div>
