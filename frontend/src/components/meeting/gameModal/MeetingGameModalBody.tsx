@@ -121,14 +121,14 @@ const MeetingGameModalBody = () => {
           marginBottom={2}
           color={darkTheme.adaptiveGrey500}
           marginRight={1}
-          onClick={clearHandler}
+          buttonOnClick={clearHandler}
         />
         <Button
           height={2}
           width={4}
           text={"완료"}
           marginBottom={2}
-          onClick={submitHandler}
+          buttonOnClick={submitHandler}
         />
       </ButtonWrapper>
     </BodyContainer>

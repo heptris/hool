@@ -2,19 +2,13 @@ import CloseButton from "components/commons/CloseButton";
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
-const MeetingGameModalHeader = ({
-  onDisplayChange,
-}: {
-  onDisplayChange: Function;
-}) => {
+const MeetingGameModalHeader = () => {
   return (
     <Header>
       <TitleWrapper>
         <TitleCloseWrapper>
           <Title>예측 제안</Title>
-          <CloseButton onDisplayChange={onDisplayChange} />
         </TitleCloseWrapper>
-
         <SubTitle>
           방장이 게임을 제안하고 예측 결과에 따라 결과를 맞힌 참가자에게
           포인트를 드립니다.
