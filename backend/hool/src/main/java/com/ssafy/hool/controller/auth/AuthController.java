@@ -8,6 +8,7 @@ import com.ssafy.hool.dto.auth.GoogleLoginDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberLoginDto;
 import com.ssafy.hool.dto.member.MemberNickNameDuplicateDto;
+import com.ssafy.hool.dto.member.PasswordResetDto;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.dto.token.TokenDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
@@ -157,5 +158,13 @@ public class AuthController {
         TokenDto token = authService.googleLogin(googleLoginDto.getGoogleIdToken());
         return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "로그인 성공",
                 token), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "비밀번호 재설정", notes = "메일 본인 인증에 성공하면 비밀번호 재설정 가능")
+    @PostMapping("/password/reset")
+    public ResponseEntity<?> passwordReset(@RequestBody PasswordResetDto passwordResetDto) {
+        authService.passwordReset(passwordResetDto);
+        return new ResponseEntity<>(new ResponseDto(200, "비밀번호 재설정", null)
+                , HttpStatus.OK);
     }
 }
