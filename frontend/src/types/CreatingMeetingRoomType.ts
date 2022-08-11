@@ -7,5 +7,7 @@ export interface CreatingMeetingRoomType {
     | "ESPORTS";
   description: string;
   title: string;
-  tag: string;
+  tag?: string;
+  isPublic: boolean;
+  conferencePassword?: string;
 }
