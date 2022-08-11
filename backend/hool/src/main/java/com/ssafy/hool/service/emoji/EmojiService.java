@@ -62,6 +62,32 @@ public class EmojiService {
         savedEmoji.setUrl(url);
     }
 
+    // @ModelAttribute용 service
+//    @Transactional
+//    public void makeEmoji(EmojiS3Dto emojiS3Dto, Long memberId){
+//
+//        Member member = memberRepository.findById(memberId).
+//                orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+//        Emoji emoji = Emoji.createEmoji(memberId, emojiS3Dto.getName(), emojiS3Dto.getDescription());
+//
+//        Emoji savedEmoji = emojiRepository.save(emoji);
+//
+//        Member_emoji memberEmoji = Member_emoji.createMemberEmoji(member, savedEmoji);
+//        memberEmojiRepository.save(memberEmoji);
+//        AwsS3 awsS3 = new AwsS3();
+//
+//        System.out.println("========================================");
+//        try {
+//            awsS3 = awsS3Service.upload(emojiS3Dto.getMultipartFile(), "emoji");
+//            System.out.println("들어왔습니다~~~~~~~~~~~=========================================");
+//        }catch (IOException e){
+//            System.out.println(e);
+//        }
+//
+//        String url = awsS3.getPath();
+//        savedEmoji.setUrl(url);
+//    }
+
     /**
      * 멤버 이모지만 삭제되는 경우
      */

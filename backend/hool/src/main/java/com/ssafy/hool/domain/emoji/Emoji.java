@@ -23,6 +23,7 @@ public class Emoji extends BaseEntity {
     private String name;
     private String url;
     private String description;
+    private EmojiAnimate emojiAnimate;
     private Long creatorId;
 
     @Builder.Default
