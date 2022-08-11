@@ -9,6 +9,7 @@ import Button from "components/commons/Button";
 
 import { apiInstance } from "api";
 import { HOOL_AUTH_ENDPOINT } from "constant";
+import { postCheckNickName } from "api/auth";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +19,9 @@ const SignUp = () => {
   const [checkPassword, setCheckPassword] = useState("");
   const [toggle, setToggled] = useState(false);
   const [code, setCode] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [nicknameOverlap, setnickNameOverlap] = useState("");
+  const [passwordOverlap, setPasswordOverlap] = useState("");
 
   const emailSendHandler = () => {
     if (!email) {
@@ -51,7 +55,7 @@ const SignUp = () => {
       .then((res) => {
         if (res.status === 200) {
           window.alert("인증이 완료되었습니다.");
-          setToggled(true);
+          setDisabled(false);
         }
       })
       .catch((error) => {
@@ -59,22 +63,30 @@ const SignUp = () => {
       });
   };
 
-  const emailInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+  const checkNicknameHandler = async () => {
+    return await postCheckNickName({ nickName: nickname })
+      .then((res) => {
+        if (res.status === 200) {
+          setnickNameOverlap("사용가능한 닉네임입니다.");
+        } else if (res.status === 409) {
+          alert("중복");
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          setnickNameOverlap(err.response.data.message);
+        }
+        console.log(err);
+      });
   };
-  const nameInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-  const nicknameInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
-  };
-  const passwordInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-  const checkPasswordInputChangeHandler = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+
+  const checkPassworChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setCheckPassword(event.target.value);
+    if (password !== event.target.value) {
+      setPasswordOverlap("비밀번호가 일치하지 않습니다.");
+    } else {
+      setPasswordOverlap("");
+    }
   };
 
   const signupHandler = () => {
@@ -85,6 +97,7 @@ const SignUp = () => {
         name: name,
         nickName: nickname,
         password: password,
+        passwordConfirm: checkPassword,
       })
       .then((res) => {
         window.alert(res.data.message);
@@ -107,11 +120,13 @@ const SignUp = () => {
             placeholderText="Email"
             type="email"
             info="*필수 정보입니다"
-            inputOnChange={emailInputChangeHandler}
+            inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setEmail(event.target.value)
+            }
           />
           <Button
             CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
-            text="본인인증"
+            text="본인 인증"
             width={3.75}
             height={1.875}
             marginLeft={0.5}
@@ -140,41 +155,58 @@ const SignUp = () => {
             />
           </BtnBox>
         )}
-        <FlexBox>
-          <LabelInput
-            text="이름"
-            placeholderText="Name"
-            widthSize="9.5rem"
-            type="text"
-            inputOnChange={nameInputChangeHandler}
-          />
+
+        <LabelInput
+          text="이름"
+          placeholderText="Name"
+          type="text"
+          inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setName(event.target.value)
+          }
+        />
+        <BtnBox>
           <LabelInput
             text="별명"
             placeholderText="Nickname"
-            widthSize="9.5rem"
+            info={nicknameOverlap}
             type="text"
-            info="*사용 중인 별명입니다"
-            inputOnChange={nicknameInputChangeHandler}
+            inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setNickname(event.target.value)
+            }
           />
-        </FlexBox>
+          <Button
+            CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
+            text="중복 확인"
+            width={3.75}
+            height={1.875}
+            marginLeft={0.5}
+            fontSize={0.75}
+            buttonOnClick={checkNicknameHandler}
+          />
+        </BtnBox>
+
         <LabelInput
           text="비밀번호"
           placeholderText="Password"
           type="password"
-          inputOnChange={passwordInputChangeHandler}
+          inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setPassword(event.target.value)
+          }
         />
         <LabelInput
           text="비밀번호 확인"
           placeholderText="Password Confirm"
+          info={passwordOverlap}
           type="password"
-          inputOnChange={passwordInputChangeHandler}
+          inputOnChange={checkPassworChangedHandler}
         />
-        <Button
+        <SignupBtn
           text="회원가입"
           height={3.125}
           width={20}
           marginTop={1}
           buttonOnClick={signupHandler}
+          disabled={disabled}
         />
       </SignupBox>
     </Container>
@@ -211,15 +243,24 @@ const Title = styled.div`
   margin-bottom: 1.25rem;
 `;
 
-const FlexBox = styled.div`
-  width: 20rem;
-  display: flex;
-  justify-content: space-between;
+const Info = styled.div`
+  font-size: 0.687rem;
+  align-self: start;
+  margin-bottom: 0.25rem;
+  color: ${darkTheme.infoColor};
 `;
 
 const BtnBox = styled.div`
   width: 20rem;
   position: relative;
+`;
+
+const SignupBtn = styled(Button)`
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background: var(--button-bg-color, ${darkTheme.contrastColor});
+  }
 `;
 
 export default SignUp;

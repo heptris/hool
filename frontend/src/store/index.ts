@@ -1,10 +1,11 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Session, Publisher, Subscriber } from "openvidu-react";
+import { USER_SESSIONSTORAGE_KEY } from "constant";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
   isCreatingRoom: boolean;
   isCreatingGame: boolean;
+  isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
   isLoggedIn: boolean;
@@ -24,9 +25,10 @@ const initialState: NavMode = {
   navMode: "default",
   isCreatingRoom: false,
   isCreatingGame: false,
+  isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!sessionStorage.getItem("token"),
+  isLoggedIn: !!sessionStorage.getItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN),
 };
 const sessionInitialState: ClientSessionType = {
   mySessionId: "SessionABC",
@@ -54,6 +56,9 @@ const navbar = createSlice({
     },
     setIsCreatingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isCreatingGame = actions.payload;
+    },
+    setIsCreatingPreferences(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isCreatingPreferences = actions.payload;
     },
     setIsShowingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingGame = actions.payload;
@@ -121,6 +126,7 @@ export const {
   setNavMode,
   setIsCreatingRoom,
   setIsCreatingGame,
+  setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
   setIsLoggedIn,

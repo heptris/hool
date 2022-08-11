@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-location";
+import { useNavigate } from "@tanstack/react-location";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
+
+import { postAcceptFriend } from "api/social";
 
 import pdi1 from "assets/profile-default-imgs/1.png";
 import pdi2 from "assets/profile-default-imgs/2.png";
@@ -11,29 +14,51 @@ import pdi4 from "assets/profile-default-imgs/4.png";
 import pdi5 from "assets/profile-default-imgs/5.jpg";
 import pdi6 from "assets/profile-default-imgs/6.jpg";
 
-import { UserType } from "pages/social";
-
 import Card from "components/commons/Card";
 
+import { QUERY_KEYS } from "constant";
+
+import { FriendInfoType } from "types/FriendInfoType";
 type PropsType = {
   isDisplayMyFriends: boolean;
-} & UserType;
+} & FriendInfoType;
 
 function SocialItem(props: PropsType) {
-  const { profileImg, nickname, email, curPos, status, isDisplayMyFriends } =
-    props;
+  const {
+    friendConferenceDto,
+    friendMemberEmail,
+    friendMemberId,
+    friendNickName,
+    memberStatus,
+    isDisplayMyFriends,
+    friendRequestId,
+  } = props;
 
   const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
+
   const [isDisplayOption, setIsDisplayOption] = useState(false);
+
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(postAcceptFriend, {
+    onSettled: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_MESSAGE_LIST]);
+      queryClient.invalidateQueries([QUERY_KEYS.FRIEND_LIST]);
+    },
+  });
+  const handlePostAcceptFriendMutate = (accept: boolean) => {
+    friendRequestId && mutate({ accept, friendRequestId });
+  };
 
   return (
     <SocialCard>
       <Status>
-        <ProfileImg src={profiles[profileImg]} />
+        <ProfileImg src={profiles[friendMemberId]} />
         <UserInfo>
-          <Nickname>{nickname}</Nickname>
-          <Email>{email}</Email>
-          <CurrentPos>{curPos}</CurrentPos>
+          <Nickname>{friendNickName}</Nickname>
+          <Email>{friendMemberEmail}</Email>
+          <CurrentPos>{memberStatus}</CurrentPos>
         </UserInfo>
       </Status>
       <div>
@@ -45,24 +70,36 @@ function SocialItem(props: PropsType) {
         ></MenuIcon>
         {isDisplayMyFriends && isDisplayOption && (
           <Menu>
-            <Link
-              to={curPos}
-              onClick={() => {
-                setIsDisplayOption(!isDisplayOption);
-              }}
-            >
-              <p>친구 따라가기</p>
-            </Link>
+            <div>
+              <p
+                onClick={() => {
+                  navigate({
+                    to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
+                    replace: true,
+                  });
+                  setIsDisplayOption(!isDisplayOption);
+                }}
+              >
+                <p>친구 따라가기</p>
+              </p>
+            </div>
           </Menu>
         )}
         {!isDisplayMyFriends && isDisplayOption && (
           <Menu>
             <div>
-              <p>요청 승낙</p>
+              <p onClick={() => handlePostAcceptFriendMutate(true)}>
+                요청 승낙
+              </p>
             </div>
             <Hr />
             <div>
-              <p style={{ color: `${darkTheme.adaptiveGrey200}` }}>거절</p>
+              <p
+                style={{ color: `${darkTheme.adaptiveGrey200}` }}
+                onClick={() => handlePostAcceptFriendMutate(false)}
+              >
+                거절
+              </p>
             </div>
           </Menu>
         )}
