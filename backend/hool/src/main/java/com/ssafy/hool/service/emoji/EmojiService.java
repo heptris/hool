@@ -42,15 +42,15 @@ public class EmojiService {
     private final AwsS3Service awsS3Service;
 
     @Transactional
-    public void makeEmoji(EmojiS3Dto emojiS3Dto, Long memberId){
+    public void makeEmoji(MultipartFile multipartFile, EmojiCreateDto emojiCreateDto, Long memberId){
 
         Member member = memberRepository.findById(memberId).
                 orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        Emoji emoji = Emoji.createEmoji(memberId, emojiS3Dto.getName(), emojiS3Dto.getDescription());
+        Emoji emoji = Emoji.createEmoji(memberId, emojiCreateDto.getName(), emojiCreateDto.getDescription());
 
         Emoji savedEmoji = emojiRepository.save(emoji);
 
-        if(emojiS3Dto.getEmojiAnimate() != null) savedEmoji.setEmojiAnimate(emojiS3Dto.getEmojiAnimate());
+        if(emojiCreateDto.getEmojiAnimate() != null) savedEmoji.setEmojiAnimate(emojiCreateDto.getEmojiAnimate());
 
         Member_emoji memberEmoji = Member_emoji.createMemberEmoji(member, savedEmoji);
         memberEmojiRepository.save(memberEmoji);
@@ -58,7 +58,7 @@ public class EmojiService {
 
         System.out.println("========================================");
         try {
-            awsS3 = awsS3Service.upload(emojiS3Dto.getMultipartFile(), "emoji");
+            awsS3 = awsS3Service.upload(multipartFile, "emoji");
             System.out.println("들어왔습니다~~~~~~~~~~~=========================================");
         }catch (IOException e){
             System.out.println(e);

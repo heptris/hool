@@ -21,27 +21,25 @@ public class EmojiController {
 
     private final EmojiService emojiService;
 
-//    @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
-//    @PostMapping(path = "/")
-//    public ResponseEntity createEmoji(@RequestPart EmojiCreateDto emojiCreateDto, @RequestPart("file") MultipartFile multipartFile){
-////        Long memberId = 1l;
-////        emojiCreateDto = new EmojiCreateDto("s3Test", "s3Test");
-//        Long memberId = SecurityUtil.getCurrentMemberId();
-//        emojiService.makeEmoji(multipartFile, emojiCreateDto, memberId);
-//        return new ResponseEntity<ResponseDto>(
-//                new ResponseDto(200, "success", "이모지 만들기 완료"),
-//                HttpStatus.ACCEPTED);
-//    }
-
     @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
-    @PostMapping(path = "/", consumes = {"multipart/form-data"})
-    public ResponseEntity createEmoji(@ModelAttribute EmojiS3Dto emojiS3Dto){
+    @PostMapping(path = "/")
+    public ResponseEntity createEmoji(@RequestPart EmojiCreateDto emojiCreateDto, @RequestPart("file") MultipartFile multipartFile){
         Long memberId = SecurityUtil.getCurrentMemberId();
-        emojiService.makeEmoji(emojiS3Dto, memberId);
+        emojiService.makeEmoji(multipartFile, emojiCreateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 만들기 완료"),
                 HttpStatus.ACCEPTED);
     }
+
+//    @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
+//    @PostMapping(path = "/", consumes = {"multipart/form-data"})
+//    public ResponseEntity createEmoji(@ModelAttribute EmojiS3Dto emojiS3Dto){
+//        Long memberId = SecurityUtil.getCurrentMemberId();
+//        emojiService.makeEmoji(emojiS3Dto, memberId);
+//        return new ResponseEntity<ResponseDto>(
+//                new ResponseDto(200, "success", "이모지 만들기 완료"),
+//                HttpStatus.ACCEPTED);
+//    }
 
     @ApiOperation(value = "이모지 수정",
             notes = "memberId와 emojiId, 수정된 이모지 이름, 설명 받아서 이모지 수정하고 이모지 기본 요소를 반환 " +
