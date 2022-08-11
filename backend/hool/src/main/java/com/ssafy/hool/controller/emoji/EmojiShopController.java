@@ -1,13 +1,16 @@
 package com.ssafy.hool.controller.emoji;
 
+import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.emoji.EmojiDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
+import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.emoji.EmojiService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/api/emojishop")
 public class EmojiShopController {
 
+    private static final int Default_SIZE = 12;
     private final EmojiService emojiService;
 
     @ApiOperation(value = "상점이모지 만들기", notes = "이모지 객체와 가격을 받아 이모지상점에 저장", response = Map.class)
@@ -38,12 +42,8 @@ public class EmojiShopController {
     @GetMapping("/makelist")
     public ResponseEntity createEmojiShopList(){
         Long memberId = SecurityUtil.getCurrentMemberId();
-        List<EmojiDto> dtos = emojiService.listCanEmojiShop(memberId);
-        for (EmojiDto dto : dtos) {
-            System.out.println("dto.getName() = " + dto.getName());
-        }
         return new ResponseEntity<ResponseDto>(
-                new ResponseDto<List<EmojiDto>>(200,"success", dtos)
+                new ResponseDto<List<EmojiDto>>(200,"success", emojiService.listCanEmojiShop(memberId))
                 , HttpStatus.ACCEPTED);
     }
 
@@ -73,5 +73,13 @@ public class EmojiShopController {
                 new ResponseDto<List<EmojiShopDto>>(200,"success",emojiService.listEmojiShop())
                 , HttpStatus.ACCEPTED);
     }
+
+//    @GetMapping("/page")
+//    public ResponseEntity findEmojiShopByPage(Long cursorId, Integer size) {
+//        if(size == null) size = Default_SIZE;
+//        emojiService.get(cursorId, PageRequest.of(0, size));
+//        return new ResponseEntity(new ResponseDto(200, "success", conferenceCursorResult)
+//                , HttpStatus.OK);
+//    }
 
 }

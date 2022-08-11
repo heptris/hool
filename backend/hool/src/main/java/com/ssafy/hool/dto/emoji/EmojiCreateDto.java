@@ -1,5 +1,6 @@
 package com.ssafy.hool.dto.emoji;
 
+import com.ssafy.hool.domain.emoji.EmojiAnimate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class EmojiCreateDto {
 
     private String name;
 //    private String url;
+    private EmojiAnimate emojiAnimate;
     private String description;
 
 }

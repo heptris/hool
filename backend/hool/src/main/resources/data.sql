@@ -29,17 +29,17 @@ values (now(), now(), "손흥민 2골 가능?", null, "PROGRESS", 1),
        (now(), now(), "맨유 승리?", null, "OVER", 3),
        (now(), now(), "전반전 끝나기 전에 우리나라 한골", null, "OVER", 4);
 
-insert into emoji (created_date, last_modified_date, creator_id, description, name, url)
-values (now(), now(), 1, "아스날은 불타야쥐~~", "불타는 아스날", "https://picsum.photos/200/300"),
-       (now(), now(), 1, "맨유는 9위가 맞지 ㅎㅎ", "맹구", "https://picsum.photos/200/300"),
-       (now(), now(), 2, "토트넘 우승 가즈아~~", "토황", "https://picsum.photos/200/300"),
-       (now(), now(), 2, "쏘니 화이팅 !!", "쏘황", "https://picsum.photos/200/300"),
-       (now(), now(), 2, "쏘니 아까비 !!", "쏘아", "https://picsum.photos/200/300"),
-       (now(), now(), 2, "쏘니 할 수 있다 !!", "쏘할", "https://picsum.photos/200/300"),
-       (now(), now(), 3, "루카쿠 떠나라~~ 우우우", "쓰레기 루카쿠", "https://picsum.photos/200/300"),
-       (now(), now(), 4, "뉴캐슬 돈싸대기 !!", "뉴캐슬 돈", "https://picsum.photos/200/300"),
-       (now(), now(), 5, "윙백은 리버풀이지 ㅎㅎ", "리버풀", "https://picsum.photos/200/300"),
-       (now(), now(), 5, "쏘니의 골골골~~~", "쏘골", "https://picsum.photos/200/300");
+insert into emoji (created_date, last_modified_date, creator_id, description, emoji_animate, name, url)
+values (now(), now(), 1, "아스날은 불타야쥐~~", "animate__zoomIn", "불타는 아스날", "https://picsum.photos/200/300"),
+       (now(), now(), 1, "맨유는 9위가 맞지 ㅎㅎ", "animate__wobble", "맹구", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "토트넘 우승 가즈아~~", "animate__zoomInDown", "토황", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 화이팅 !!", "animate__slideOutUp", "쏘황", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 아까비 !!", "animate__rubberBand", "쏘아", "https://picsum.photos/200/300"),
+       (now(), now(), 2, "쏘니 할 수 있다 !!", "animate__hinge", "쏘할", "https://picsum.photos/200/300"),
+       (now(), now(), 3, "루카쿠 떠나라~~ 우우우", "animate__backInUp", "쓰레기 루카쿠", "https://picsum.photos/200/300"),
+       (now(), now(), 4, "뉴캐슬 돈싸대기 !!", "animate__lightSpeedInLeft", "뉴캐슬 돈", "https://picsum.photos/200/300"),
+       (now(), now(), 5, "윙백은 리버풀이지 ㅎㅎ", "animate__heartBeat", "리버풀", "https://picsum.photos/200/300"),
+       (now(), now(), 5, "쏘니의 골골골~~~", "animate__flip", "쏘골", "https://picsum.photos/200/300");
 
 insert into member_emoji (created_date, last_modified_date, emoji_type, is_favorite, emoji_id, member_id)
 values (now(), now(), "DEFAULT", 0, 1, 1),
