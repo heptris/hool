@@ -101,7 +101,7 @@ public class ConferenceService {
         final Long lastIdOfList = boards.isEmpty() ?
                 null : boards.get(boards.size() - 1).getConferenceId();
 
-        return new CursorResult<>(boards, hasNext(lastIdOfList), lastIdOfList);
+        return new CursorResult(boards, hasNext(lastIdOfList), lastIdOfList);
     }
 
     public List<ConferenceListResponseDto> getBoards(Long id, Pageable page) {

@@ -2,6 +2,7 @@ package com.ssafy.hool.repository.friend;
 
 import com.ssafy.hool.domain.friend.FriendRequest;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,24 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
     @Query("select count(fr.id) > 0 from FriendRequest fr where fr.fromMember.id = :fromMember and fr.toMember.id = :toMember" +
             " and fr.friendRequestStatus = 'PROCESS'")
     boolean isAlreadySendFriendAddMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
+
+
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
+            "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
+            "and fr.toMember.id = :memberId order by fr.id desc ")
+    List<FriendRequestDto> findFriendRequestDtoPage(@Param("memberId") Long memberId, Pageable page);
+
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
+            "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
+            "and fr.toMember.id = :memberId and fr.id < :friendRequestCursorId order by fr.id desc ")
+    List<FriendRequestDto> findFriendRequestDtoLessPage(@Param("memberId") Long memberId,
+                                                        @Param("friendRequestCursorId") Long friendRequestCursorId,
+                                                        Pageable page);
+
+
+
+    @Query("select count(fr.id) > 0 from FriendRequest fr where fr.toMember.id = :memberId and " +
+            "fr.friendRequestStatus = 'PROCESS' and fr.id < :friendRequestCursorId")
+    Boolean existsByFriendRequestIdLessThan(@Param("memberId") Long memberId,
+                                            @Param("friendRequestCursorId") Long friendRequestCursorId);
 }

@@ -5,12 +5,14 @@ import com.ssafy.hool.dto.emoji.EmojiDetailRequestDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiFavoriteReqDto;
 import com.ssafy.hool.dto.member.*;
+import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.service.member.MemberService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import static com.ssafy.hool.exception.ex.ErrorCode.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private static final int DEFAULT_SIZE = 2;
 
     @ApiOperation(value = "회원 프로필 수정")
     @ApiResponses({
@@ -48,7 +52,7 @@ public class MemberController {
         Member member = memberService.findByMemberId(memberId);
         int friendCount = memberService.getFriendCount(memberId);
         int emojiCount = memberService.getEmojiCount(memberId);
-        List<MemberEmojiDto> memberEmojis = memberService.getEmojis(memberId);
+        CursorResult memberEmojiList = memberService.getEmojiList(memberId, null, PageRequest.of(0, DEFAULT_SIZE));
         MemberResponseDto memberProfile = MemberResponseDto.builder()
                 .memberId(member.getId())
                 .nickName(member.getNickName())
@@ -57,7 +61,7 @@ public class MemberController {
                 .point(member.getPoint())
                 .friendCount(friendCount)
                 .emojiCount(emojiCount)
-                .memberEmojiDtoList(memberEmojis)
+                .memberEmojiList(memberEmojiList)
                 .build();
 
         return new ResponseEntity<ResponseDto>(new ResponseDto<MemberResponseDto>(200, "success",
@@ -72,11 +76,30 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
+    @GetMapping("/my/emoji/page")
+    public ResponseEntity<?> getMyEmojisPage(Long emojiCursorId, Integer size) {
+        if (size == null) size = DEFAULT_SIZE;
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        CursorResult memberEmojiList = memberService.getEmojiList(memberId, emojiCursorId, PageRequest.of(0, size));
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberEmojiList)
+                , HttpStatus.OK);
+    }
+
+
     @ApiOperation(value = "즐겨찾기 이모지", notes = "즐겨찾기 된 이모지 url과 Id 반환")
     @GetMapping("/my/favorite/emoji")
     public ResponseEntity<?> getMyFavoriteEmojis() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "즐겨찾기 이모지", memberService.getFavoriteEmojis(memberId))
+                , HttpStatus.OK);
+    }
+
+    @GetMapping("/my/favorite/emoji/page")
+    public ResponseEntity<?> getMyFavEmojisPage(Long emojiFavCursorId, Integer size) {
+        if (size == null) size = DEFAULT_SIZE;
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        CursorResult memberFavEmojiList = memberService.getFavEmojiList(memberId, emojiFavCursorId, PageRequest.of(0, size));
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberFavEmojiList)
                 , HttpStatus.OK);
     }
 

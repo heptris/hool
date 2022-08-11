@@ -8,7 +8,9 @@ import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.emoji.DetailMemberEmojiDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
+import com.ssafy.hool.dto.friend.FriendRequestDto;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
+import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
@@ -19,6 +21,8 @@ import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +39,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final FriendRepository friendRepository;
     private final MemberEmojiRepository memberEmojiRepository;
     private final EmojiRepository emojiRepository;
-
-    private final FriendRequestRepository friendRequestRepository;
-
     private final MemberConferenceRepository memberConferenceRepository;
 
 
@@ -139,5 +139,51 @@ public class MemberService {
             memberConference.updateEnterState(EnterStatus.EXIT);
         }
         member.updateMemberStatus(MemberStatus.OFFLINE);
+    }
+
+    public CursorResult getEmojiList(Long memberId, Long emojiCursorId, Pageable page) {
+        List<MemberEmojiDto> memberEmojiDtoList = getEmojiListDto(memberId, emojiCursorId, page);
+        final Long lastIdOfList = memberEmojiDtoList.isEmpty() ?
+                null : memberEmojiDtoList.get(memberEmojiDtoList.size() - 1).getMemberEmojiId();
+
+        return new CursorResult(memberEmojiDtoList, hasMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);
+    }
+
+    public List<MemberEmojiDto> getEmojiListDto(Long memberId, Long emojiCursorId, Pageable page) {
+
+        if (emojiCursorId == null) {
+            return memberEmojiRepository.findMemberEmojiDtoPage(memberId, page);
+        } else {
+            return memberEmojiRepository.findMemberEmojiDtoLessPage(memberId, emojiCursorId, page);
+        }
+
+    }
+
+    public Boolean hasMemberEmojiNext(Long memberId, Long emojiCursorId) {
+        if (emojiCursorId == null) return false;
+        return memberEmojiRepository.existsByEmojiCursorIdLessThan(memberId, emojiCursorId);
+    }
+
+    public CursorResult getFavEmojiList(Long memberId, Long emojiFavCursorId, Pageable page) {
+        List<MemberEmojiDto> memberFavEmojiDtoList = getFavEmojiListDto(memberId, emojiFavCursorId, page);
+        final Long lastIdOfList = memberFavEmojiDtoList.isEmpty() ?
+                null : memberFavEmojiDtoList.get(memberFavEmojiDtoList.size() - 1).getMemberEmojiId();
+
+        return new CursorResult(memberFavEmojiDtoList, hasFavMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);
+    }
+
+    public List<MemberEmojiDto> getFavEmojiListDto(Long memberId, Long emojiFavCursorId, Pageable page) {
+
+        if (emojiFavCursorId == null) {
+            return memberEmojiRepository.findFavMemberEmojiDtoPage(memberId, page);
+        } else {
+            return memberEmojiRepository.findFavMemberEmojiDtoLessPage(memberId, emojiFavCursorId, page);
+        }
+
+    }
+
+    public Boolean hasFavMemberEmojiNext(Long memberId, Long emojiFavCursorId) {
+        if (emojiFavCursorId == null) return false;
+        return memberEmojiRepository.existsByFavEmojiCursorIdLessThan(memberId, emojiFavCursorId);
     }
 }

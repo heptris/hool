@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class CursorResult<T> {
 
-    private List<T> values;
+    private T values;
     private Boolean hasNext;
     private Long cursorId;
 }

@@ -49,6 +49,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<FriendDto> findListPageLessThan(@Param("memberId") Long memberId,
                                          @Param("friendListCursor") LocalDateTime friendListCursor, Pageable page);
 
-    @Query(value = "select count(m.id) > 0 from Friend f join f.member m where m.lastModifiedDate < :friendListCursor")
-    Boolean existsByIdLessThan(@Param("friendListCursor") LocalDateTime friendListCursor);
+    @Query(value = "select count(m.id) > 0 from Friend f join f.member m where m.lastModifiedDate < :friendListCursor and " +
+            "f.friend.id = :memberId")
+    Boolean existsByTimeLessThan(@Param("memberId") Long memberId, @Param("friendListCursor") LocalDateTime friendListCursor);
 }

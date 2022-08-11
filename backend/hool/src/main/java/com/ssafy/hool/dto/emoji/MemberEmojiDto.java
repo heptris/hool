@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class MemberEmojiDto {
 
     private Long emojiId;
+    private Long memberEmojiId;
     private EmojiAnimate emojiAnimate;
     private String emojiUrl;
 }
