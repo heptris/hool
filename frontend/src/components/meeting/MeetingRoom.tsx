@@ -1,24 +1,13 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getMyProfile } from "api/profile";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setNavMode,
-  //   setMySessionId,
-  //   setMyUserName,
-  //   setAudioEnabled,
-  //   setVideoEnabled,
-  //   setMsgToSend,
-  //   setChatEvents,
-  //   setEmojiEvents,
-} from "store";
-
 import { Session, Publisher, Subscriber } from "openvidu-react";
+
+import { setIsShowingGame, setNavMode } from "store";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import type { RootState, ClientSessionType } from "store";
+import type { RootState } from "store";
 
 import Container from "components/commons/Container";
 import VideoContainer from "./VideoContainer";
@@ -35,21 +24,33 @@ export type SessionStateType = {
 };
 
 function MeetingRoom() {
-  // const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
     (state: RootState) => state.navbar
   );
+  const { audioEnabled, videoEnabled } = useSelector(
+    (state: RootState) => state.clientSession
+  );
+  const [sessionState, setSessionState] = useState<SessionStateType>({
+    session: undefined,
+    mainStreamManager: undefined,
+    publisher: undefined,
+    subscribers: new Array(),
+  });
+  const [gameInfo, setGameInfo] = useState({
+    gameId: 0,
+    gameName: "",
+    agreeName: "",
+    disagreeName: "",
+    timeLimit: 0,
+  });
+
   useEffect(() => {
     dispatch(setNavMode("meetingRoom"));
     return () => {
       dispatch(setNavMode("default"));
     };
   }, []);
-
-  const { audioEnabled, videoEnabled } = useSelector(
-    (state: RootState) => state.clientSession
-  );
   useEffect(() => {
     if (sessionState.publisher === undefined) {
       return;
@@ -62,24 +63,10 @@ function MeetingRoom() {
     }
     switchVideoEnabled(videoEnabled);
   }, [videoEnabled]);
+  useEffect(() => {
+    gameInfo.timeLimit && dispatch(setIsShowingGame(true));
+  }, [gameInfo]);
 
-  // const myProfile = useQuery(["myProfile"], getMyProfile, {
-  //   refetchOnWindowFocus: false,
-  //   retry: 0,
-  //   onSuccess: (data) => {
-  //     console.log(data);
-  //   },
-  //   onError: (e: any) => {
-  //     console.error(e.message);
-  //   },
-  // });
-
-  const [sessionState, setSessionState] = useState<SessionStateType>({
-    session: undefined,
-    mainStreamManager: undefined,
-    publisher: undefined,
-    subscribers: new Array(),
-  });
   const handleSessionState = (state: SessionStateType) => {
     setSessionState(state);
   };
@@ -101,7 +88,7 @@ function MeetingRoom() {
             />
           </MeetingBox>
           <GameMessageBox>
-            {isShowingGame && <MeetingGame />}
+            {isShowingGame && <MeetingGame gameInfo={gameInfo} />}
             {isShowingMessage && (
               <MeetingMessageShow sessionState={sessionState} />
             )}
@@ -111,7 +98,7 @@ function MeetingRoom() {
           </GameMessageBox>
         </FlexBox>
       </ConcreteContainer>
-      {isCreatingGame && <MeetingGameModal />}
+      {isCreatingGame && <MeetingGameModal setGameInfo={setGameInfo} />}
     </>
   );
 }

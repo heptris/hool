@@ -1,10 +1,12 @@
-import Modal from "components/commons/Modal";
 import { useDispatch } from "react-redux";
+
 import { setIsCreatingGame } from "store";
+
+import Modal from "components/commons/Modal";
 import MeetingGameModalBody from "./MeetingGameModalBody";
 import MeetingGameModalHeader from "./MeetingGameModalHeader";
 
-const MeetingGameModal = () => {
+const MeetingGameModal = ({ setGameInfo }: { setGameInfo: Function }) => {
   const dispatch = useDispatch();
 
   const closeCreatingModal = () => {
@@ -14,7 +16,12 @@ const MeetingGameModal = () => {
   return (
     <Modal
       header={<MeetingGameModalHeader />}
-      body={<MeetingGameModalBody />}
+      body={
+        <MeetingGameModalBody
+          onDisplayChange={closeCreatingModal}
+          setGameInfo={setGameInfo}
+        />
+      }
       onDisplayChange={closeCreatingModal}
     />
   );
