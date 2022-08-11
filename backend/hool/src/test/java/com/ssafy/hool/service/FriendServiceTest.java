@@ -2,10 +2,12 @@ package com.ssafy.hool.service;
 
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
+import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.friend.FriendRequestRepository;
 import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.service.member.MemberService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @Rollback(value = false)
@@ -27,9 +31,8 @@ class FriendServiceTest {
 
     @Test
     void 친구요청() {
+
         friendService.sendFriendMessage(1L, 2L);
-        friendService.sendFriendMessage(1L, 3L);
-        friendService.sendFriendMessage(2L, 3L);
 
     }
 

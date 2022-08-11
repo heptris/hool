@@ -20,6 +20,7 @@ public class MemberResponseDto {
     private String nickName;
     private String memberEmail;
     private int point;
+    private String memberProfile;
     // 보유한 이모지 개수
     private int emojiCount;
     // 친구 수

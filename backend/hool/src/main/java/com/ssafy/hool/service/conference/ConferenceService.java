@@ -107,19 +107,8 @@ public class ConferenceService {
     public List<ConferenceListResponseDto> getBoards(Long id, Pageable page) {
 
         if (id == null) {
-//            List<Conference> conferences = conferenceRepository.findAllByOrderByIdDesc(page);
-//            System.out.println(conferences.size());
-//            return conferences.stream()
-//                    .filter(conference -> conference.getIs_active().equals(true))
-//                    .map(conference -> conference.toConferenceListResponseDto())
-//                    .collect(Collectors.toList());
             return conferenceRepository.findConferenceListDtoPage(page);
         } else {
-//            List<Conference> conferences = conferenceRepository.findByIdLessThanOrderByIdDesc(id, page);
-//            return conferences.stream()
-//                    .filter(conference -> conference.getIs_active().equals(true))
-//                    .map(conference -> conference.toConferenceListResponseDto())
-//                    .collect(Collectors.toList());
             return conferenceRepository.findConferenceListDtoLessPage(id, page);
         }
 

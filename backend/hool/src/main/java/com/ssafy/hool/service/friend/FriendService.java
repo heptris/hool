@@ -4,17 +4,24 @@ import com.ssafy.hool.domain.friend.FriendRequest;
 import com.ssafy.hool.domain.friend.FriendRequestStatus;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
+import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.friend.FriendConferenceDto;
 import com.ssafy.hool.dto.friend.FriendDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
+import com.ssafy.hool.dto.response.CursorFriendListResult;
+import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.friend.FriendRepository;
 import com.ssafy.hool.repository.friend.FriendRequestRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
@@ -48,6 +55,9 @@ public class FriendService {
     public void sendFriendMessage(Long fromMember, Long toMember) {
         if (friendRepository.isAlreadyFriend(fromMember, toMember)) {
             throw new CustomException(ALREADY_SAVED_FRIEND);
+        }
+        if (friendRequestRepository.isAlreadySendFriendAddMessage(fromMember, toMember)) {
+            throw new CustomException(ALREADY_SEND_FRIEND_ADD_MESSAGE);
         }
         friendRequestRepository.sendFriendMessage(fromMember, toMember);
     }
@@ -98,6 +108,48 @@ public class FriendService {
     }
 
     /**
+     * 친구 리스트 조회(페이징)
+     */
+    public CursorFriendListResult<FriendDto> friendListResult(Long memberId, String friendListCursor, Pageable page) {
+        final List<FriendDto> friendList = getFriendList(memberId, friendListCursor, page);
+        final LocalDateTime lastIdOfList = friendList.isEmpty() ?
+                null : friendList.get(friendList.size() - 1).getLast();
+
+        return new CursorFriendListResult(friendList, hasFriendListNext(lastIdOfList), lastIdOfList);
+    }
+
+    public List<FriendDto> getFriendList(Long memberId, String friendListCursor, Pageable page) {
+        if (friendListCursor == null || !StringUtils.hasText(friendListCursor)) {
+            List<FriendDto> friendList =  friendRepository.friendListPage(memberId, page);
+            for (FriendDto friendDto : friendList) {
+                if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                    friendDto.setFriendConferenceDto(friendConference);
+                }
+            }
+            return friendList;
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(friendListCursor, formatter);
+            List<FriendDto> friendList = friendRepository.findListPageLessThan(memberId, dateTime, page);
+            for (FriendDto friendDto : friendList) {
+                if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                    friendDto.setFriendConferenceDto(friendConference);
+                }
+            }
+            return friendList;
+        }
+
+    }
+
+    public Boolean hasFriendListNext(LocalDateTime friendListCursor) {
+        if (friendListCursor == null) return false;
+        return friendRepository.existsByIdLessThan(friendListCursor);
+    }
+
+
+    /**
      * 친구
      * 삭제
      */
@@ -105,6 +157,5 @@ public class FriendService {
         friendRepository.deleteFriend(memberId, friendMemberId);
         friendRepository.deleteFriend(friendMemberId, memberId);
     }
-
 
 }

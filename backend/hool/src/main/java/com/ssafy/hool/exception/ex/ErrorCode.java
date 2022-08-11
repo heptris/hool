@@ -37,6 +37,8 @@ public enum ErrorCode {
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
     ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
     ALREADY_SAVED_FRIEND(409, "이미 친구 상태입니다."),
+
+    ALREADY_SEND_FRIEND_ADD_MESSAGE(409, "이미 친구 추가 메세지를 보냈습니다"),
     LACK_OF_POINT(409, "보유 포인트가 부족합니다."),
 
     MAIL_ERROR(421, "메일 오류"),

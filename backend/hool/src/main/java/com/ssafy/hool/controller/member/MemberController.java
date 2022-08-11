@@ -53,6 +53,7 @@ public class MemberController {
                 .memberId(member.getId())
                 .nickName(member.getNickName())
                 .memberEmail(member.getMemberEmail())
+                .memberProfile(member.getProfileImage())
                 .point(member.getPoint())
                 .friendCount(friendCount)
                 .emojiCount(emojiCount)

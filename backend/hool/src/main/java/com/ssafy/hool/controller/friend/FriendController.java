@@ -2,16 +2,20 @@ package com.ssafy.hool.controller.friend;
 
 import com.ssafy.hool.dto.friend.*;
 import com.ssafy.hool.dto.conference.ConferenceJoinDto;
+import com.ssafy.hool.dto.response.CursorFriendListResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ import java.util.List;
 @RestController
 public class FriendController {
 
+    private static final int DEFAULT_SIZE = 1;
     private final FriendService friendService;
     private final ConferenceService conferenceService;
 
@@ -32,6 +37,16 @@ public class FriendController {
         List<FriendDto> friendList = friendService.friendList(memberId);
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "친구 리스트 조회", friendList), HttpStatus.OK);
     }
+
+    @GetMapping("/list/page")
+    public ResponseEntity<?> myFriendListPage(String friendListCursor, Integer size) {
+        if(size == null) size = DEFAULT_SIZE;
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        CursorFriendListResult<FriendDto> friendDtoCursorFriendListResult = friendService.friendListResult(memberId, friendListCursor, PageRequest.of(0, size));
+        return new ResponseEntity<>(new ResponseDto(200, "success", friendDtoCursorFriendListResult)
+                , HttpStatus.OK);
+    }
+
 
     /**
      * 닉네임으로 친구 추가할 친구 검색

@@ -22,4 +22,7 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
             "VALUES(:fromMember, :toMember, now(), now(), 'PROCESS')", nativeQuery = true)
     void sendFriendMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
 
+    @Query("select count(fr.id) > 0 from FriendRequest fr where fr.fromMember.id = :fromMember and fr.toMember.id = :toMember" +
+            " and fr.friendRequestStatus = 'PROCESS'")
+    boolean isAlreadySendFriendAddMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
 }
