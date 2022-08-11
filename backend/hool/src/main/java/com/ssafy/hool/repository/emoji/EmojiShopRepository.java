@@ -1,7 +1,10 @@
 package com.ssafy.hool.repository.emoji;
 
 import com.ssafy.hool.domain.emoji.Emoji_shop;
+import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopListDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +25,15 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
     int checkEmojiShop(@Param("emojiId") Long emojiId);
 
 
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+            "from Emoji_shop es join es.emoji e order by es.id desc")
+    List<EmojiShopListDto> findEmojiShopListDtoPage(Pageable page);
 
+
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+            "from Emoji_shop es join es.emoji e where es.id < :id order by es.id desc")
+    List<EmojiShopListDto> findEmojiShopListDtoLessPage(@Param("id") Long id, Pageable page);
+
+    Boolean existsByIdLessThan(Long id);
 
 }

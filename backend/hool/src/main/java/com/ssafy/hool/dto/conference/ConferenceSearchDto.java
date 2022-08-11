@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConferenceCreateDto {
-    private String title;
-    private String description;
+public class ConferenceSearchDto {
     private String conferenceCategory;
-    private Boolean isPublic;
-    private String conferencePassword;
+    private Long cursorId;
+    private Integer size;
 }

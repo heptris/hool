@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.hool.domain.BaseEntity;
 import com.ssafy.hool.domain.game.Game;
 import com.ssafy.hool.domain.member.Member;
+import com.ssafy.hool.dto.conference.ConferenceCreateDto;
 import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.conference.ConferenceModifyDto;
 import lombok.*;
@@ -27,10 +28,12 @@ public class Conference extends BaseEntity {
     private Long id;
 
     private Long owner_id;
-    private Boolean is_active;
+    private Boolean isActive;
     private String title;
     private String description;
     private int total;
+    private Boolean isPublic;
+    private String conferencePassword;
 
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
@@ -43,12 +46,14 @@ public class Conference extends BaseEntity {
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Game> games = new ArrayList<>();
 
-    public static Conference createConference(String title, String description, Member owner, Conference_category conference_category) {
+    public static Conference createConference(ConferenceCreateDto conferenceCreateDto, Member owner, Conference_category conference_category) {
         Conference conference = Conference.builder()
-                .title(title)
-                .description(description)
+                .title(conferenceCreateDto.getTitle())
+                .description(conferenceCreateDto.getDescription())
                 .owner_id(owner.getId())
-                .is_active(true)
+                .isActive(true)
+                .isPublic(conferenceCreateDto.getIsPublic())
+                .conferencePassword(conferenceCreateDto.getConferencePassword())
                 .conference_category(conference_category)
                 .build();
 
@@ -75,13 +80,7 @@ public class Conference extends BaseEntity {
         this.total += value;
     }
 
-    public ConferenceListResponseDto toConferenceListResponseDto() {
-        return ConferenceListResponseDto.builder()
-                .conferenceId(id)
-                .category(conference_category)
-                .description(description)
-                .title(title)
-                .total(total)
-                .build();
+    public void roomTerminated(){
+        this.isActive = false;
     }
 }
