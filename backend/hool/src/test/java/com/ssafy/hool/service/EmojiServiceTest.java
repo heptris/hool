@@ -234,6 +234,7 @@ class EmojiServiceTest {
         for (EmojiDto emojiDto : emojiDtos) {
             System.out.println("emojiDto.getDescription() = " + emojiDto.getDescription());
             System.out.println("emojiDto.getName() = " + emojiDto.getName());
+            System.out.println("emojiDto.getEmojiId() = " + emojiDto.getEmojiId());
         }
 
 //        assertEquals("쏘황", emojiDtos.get(2).getName());
