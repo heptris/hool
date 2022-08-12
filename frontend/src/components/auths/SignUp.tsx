@@ -195,7 +195,7 @@ const SignUp = () => {
         />
         <LabelInput
           text="비밀번호 확인"
-          placeholderText="Password Confirm"
+          placeholderText="Confirm Password"
           info={passwordOverlap}
           type="password"
           inputOnChange={checkPassworChangedHandler}
