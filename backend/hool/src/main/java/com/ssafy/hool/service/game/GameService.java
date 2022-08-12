@@ -42,9 +42,13 @@ public class GameService {
      */
     public GameResponseDto createGame(GameCreateDto gameCreateDto){
         Conference conference = conferenceRepository.findById(gameCreateDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
-        Game game = Game.createGame(gameCreateDto.getGameName(), null, conference);
-        gameRepository.save(game);
-        return new GameResponseDto(game.getId(), game.getName());
+        if(SecurityUtil.getCurrentMemberId() == conference.getOwner_id()){
+            Game game = Game.createGame(gameCreateDto.getGameName(), null, conference);
+            gameRepository.save(game);
+            return new GameResponseDto(game.getId(), game.getName());
+        } else {
+            throw new CustomException(OWNER_CREATE_GAME);
+        }
     }
 
     /**
@@ -72,7 +76,11 @@ public class GameService {
      */
     public void saveGameResult(Long gameId, boolean result){
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new CustomException(GAME_NOT_FOUND));
-        game.resultUpdate(result);
+        if(SecurityUtil.getCurrentMemberId() == game.getConference().getOwner_id()){
+            game.resultUpdate(result);
+        } else {
+            throw new CustomException(OWNER_FINISH_GAME);
+        }
     }
 
     /**
@@ -111,7 +119,7 @@ public class GameService {
             }
 
             PointHistoryCreateDto pointHistoryCreateDto = null;
-            if(getPoint < 0){
+            if(getPoint >= 0){
                 pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 승리", (int) getPoint, currentPoint, PointType.GAME);
             } else {
                 pointHistoryCreateDto = new PointHistoryCreateDto(game.getName() + " - 게임 패배", (int) getPoint, currentPoint, PointType.GAME);

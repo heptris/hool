@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,11 @@ public class MemberController {
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
     })
     @PutMapping("/")
-    public ResponseEntity memberUpdate(@RequestBody MemberUpdateDto memberUpdateDto) {
+    public ResponseEntity memberUpdate(@RequestPart MemberUpdateDto memberUpdateDto,
+                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
+
         Long memberId = SecurityUtil.getCurrentMemberId();
-        memberService.updateMember(memberId, memberUpdateDto.getPassword(), memberUpdateDto.getName(), memberUpdateDto.getNickName());
+        memberService.updateMember(multipartFile, memberId, memberUpdateDto);
 
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "회원 수정 완료")
                 ,HttpStatus.OK);
@@ -103,12 +106,12 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "이모지 상세정보")
-    @PostMapping("/detail/emoji")
-    public ResponseEntity<?> detailEmoji(@RequestBody EmojiDetailRequestDto emojiDetailRequestDto) {
-        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "상세 이모지",
-                memberService.getDetailEmoji(emojiDetailRequestDto.getEmojiId())), HttpStatus.OK);
-    }
+//    @ApiOperation(value = "이모지 상세정보")
+//    @PostMapping("/detail/emoji")
+//    public ResponseEntity<?> detailEmoji(@RequestBody EmojiDetailRequestDto emojiDetailRequestDto) {
+//        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "상세 이모지",
+//                memberService.getDetailEmoji(emojiDetailRequestDto.getEmojiId())), HttpStatus.OK);
+//    }
 
     @ApiOperation(value = "이모지 즐겨찾기 등록 / 해제")
     @PostMapping("/detail/emoji/favorite")

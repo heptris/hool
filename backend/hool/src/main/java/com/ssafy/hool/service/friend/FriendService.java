@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
@@ -49,7 +50,6 @@ public class FriendService {
     }
 
 
-
     /**
      * 친구 리스트 조회
      */
@@ -57,7 +57,7 @@ public class FriendService {
         List<FriendDto> friendList = friendRepository.findFriendList(memberId);
         for (FriendDto friendDto : friendList) {
             if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
                 friendDto.setFriendConferenceDto(friendConference);
             }
         }
@@ -77,21 +77,21 @@ public class FriendService {
 
     public List<FriendDto> getFriendList(Long memberId, String friendCursorTime, Pageable page) {
         if (friendCursorTime == null || !StringUtils.hasText(friendCursorTime)) {
-            List<FriendDto> friendList =  friendRepository.friendListPage(memberId, page);
+            List<FriendDto> friendList = friendRepository.friendListPage(memberId, page);
             for (FriendDto friendDto : friendList) {
                 if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
                     friendDto.setFriendConferenceDto(friendConference);
                 }
             }
             return friendList;
         } else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
             LocalDateTime dateTime = LocalDateTime.parse(friendCursorTime, formatter);
             List<FriendDto> friendList = friendRepository.findListPageLessThan(memberId, dateTime, page);
             for (FriendDto friendDto : friendList) {
                 if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
                     friendDto.setFriendConferenceDto(friendConference);
                 }
             }

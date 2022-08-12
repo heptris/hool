@@ -34,32 +34,32 @@ public class EmojiShopController {
         emojiService.makeEmojiShop(emojiShopDto);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "상점이모지 만들기 완료"),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
     }
-
-//    @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
-//            notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
-//                    "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
-//            , response = Map.class)
-//    @GetMapping("/makelist")
-//    public ResponseEntity createEmojiShopList(){
-//        Long memberId = SecurityUtil.getCurrentMemberId();
-//        return new ResponseEntity<ResponseDto>(
-//                new ResponseDto<List<EmojiDto>>(200,"success", emojiService.listCanEmojiShop(memberId))
-//                , HttpStatus.ACCEPTED);
-//    }
 
     @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
             notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
                     "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
             , response = Map.class)
     @GetMapping("/makelist")
+    public ResponseEntity createEmojiShopList(){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        return new ResponseEntity<ResponseDto>(
+                new ResponseDto<List<EmojiDto>>(200,"success", emojiService.listCanEmojiShop(memberId))
+                , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
+            notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
+                    "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
+            , response = Map.class)
+    @GetMapping("/makelist/page")
     public ResponseEntity canEmojiShopList(Long cursorId, Integer size){
         Long memberId = SecurityUtil.getCurrentMemberId();
         if(size == null) size = Default_SIZE;
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200,"success",
-                        emojiService.getCanEmojiShopList(memberId, cursorId, PageRequest.of(0, size))), HttpStatus.ACCEPTED);
+                        emojiService.getCanEmojiShopList(memberId, cursorId, PageRequest.of(0, size))), HttpStatus.OK);
     }
 
     @ApiOperation(value = "상점이모지 수정",
@@ -69,7 +69,7 @@ public class EmojiShopController {
         Long memberId = SecurityUtil.getCurrentMemberId();
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto<EmojiShopDto>(200,"success", emojiService.updateEmojiShop(emojiShopUpdateDto, memberId))
-                , HttpStatus.ACCEPTED);
+                , HttpStatus.OK);
     }
 
     @ApiOperation(value = "상점이모지 삭제", notes = "이모지 상점 아이디를 받아 해당되는 이모지를 상점에서 삭제", response = Map.class)
@@ -78,23 +78,30 @@ public class EmojiShopController {
         emojiService.deleteEmojiShop(emojiShopId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "상점이모지 삭제 완료"),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
     }
-
-//    @ApiOperation(value = "상점이모지 리스트", notes = "이모지 상점에 저장된 이모지 리스트 반환", response = Map.class)
-//    @GetMapping("/list")
-//    public ResponseEntity listEmojiShop(){
-//        return new ResponseEntity<ResponseDto>(
-//                new ResponseDto<List<EmojiShopDto>>(200,"success",emojiService.listEmojiShop())
-//                , HttpStatus.ACCEPTED);
-//    }
 
     @ApiOperation(value = "상점이모지 리스트", notes = "이모지 상점에 저장된 이모지 리스트 반환", response = Map.class)
     @GetMapping("/list")
+    public ResponseEntity listEmojiShop(){
+        return new ResponseEntity<ResponseDto>(
+                new ResponseDto<List<EmojiShopDto>>(200,"success",emojiService.listEmojiShop())
+                , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "상점이모지 리스트", notes = "이모지 상점에 저장된 이모지 리스트 반환", response = Map.class)
+    @GetMapping("/list/page")
     public ResponseEntity findEmojiShopByPage(Long cursorId, Integer size) {
         if(size == null) size = Default_SIZE;
         CursorResult<EmojiShopListDto> emojiShopListDtoCursorResult = emojiService.get(cursorId, PageRequest.of(0, size));
         return new ResponseEntity(new ResponseDto(200, "success", emojiShopListDtoCursorResult)
+                , HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchEmojiShop(@RequestParam String keyword){
+        return new ResponseEntity<ResponseDto>(
+                new ResponseDto<List<EmojiShopListDto>>(200,"success",emojiService.searchEmojiShopList(keyword))
                 , HttpStatus.OK);
     }
 

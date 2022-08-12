@@ -18,7 +18,7 @@ public class DealController {
 
     private final DealHistoryService dealHistoryService;
 
-    @ApiOperation(value = "이모지 구매", notes = "이모지 거래 (거래 포인트, 구매자아이디(PK), 판매자아이디(PK), 이모지상점아이디(PK))")
+    @ApiOperation(value = "이모지 구매", notes = "이모지 거래 (거래 포인트, 구매자아이디(PK), 판매자아이디(PK), 이모지상점아이디(PK)) / 중복 구매 : 409 ERROR - 이미 가지고 있는 이모지입니다.")
     @PostMapping
     public ResponseEntity createConference(@RequestBody DealHistoryCreateDto dealHistoryCreateDto){
         Long memberId = SecurityUtil.getCurrentMemberId();

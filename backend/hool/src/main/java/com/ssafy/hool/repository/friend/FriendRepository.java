@@ -3,6 +3,7 @@ package com.ssafy.hool.repository.friend;
 import com.ssafy.hool.domain.friend.Friend;
 import com.ssafy.hool.dto.friend.FriendConferenceDto;
 import com.ssafy.hool.dto.friend.FriendDto;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 

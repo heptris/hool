@@ -38,6 +38,7 @@ public class Emoji extends BaseEntity {
         Emoji emoji = Emoji.builder()
                 .name(name)
                 .description(description)
+                .emojiAnimate(EmojiAnimate.animate__none)
                 .creatorId(creatorId)
                 .build();
 

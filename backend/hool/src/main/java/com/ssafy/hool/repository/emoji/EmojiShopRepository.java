@@ -36,4 +36,8 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
 
     Boolean existsByIdLessThan(Long id);
 
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+            "from Emoji_shop es join es.emoji e where e.name like %:keyword%")
+    List<EmojiShopListDto> searchEmojiShop(@Param("keyword") String keyword);
+
 }
