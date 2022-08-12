@@ -28,7 +28,7 @@ public class EmojiController {
         emojiService.makeEmoji(multipartFile, emojiCreateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 만들기 완료"),
-                HttpStatus.ACCEPTED);
+                HttpStatus.OK);
     }
 
 //    @ApiOperation(value = "이모지 만들기", notes = "memberId와 이모지 기본 요소를 받아서 이모지, 멤버이모지 생성", response = Map.class)
@@ -50,7 +50,7 @@ public class EmojiController {
         emojiService.updateEmoji(emojiUpdateDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 수정 완료")
-                , HttpStatus.ACCEPTED);
+                , HttpStatus.OK);
     }
 
     @ApiOperation(value = "이모지 삭제", notes = "memberId와 emojiId를 받아서 확인하고 삭제", response = Map.class)
@@ -60,7 +60,7 @@ public class EmojiController {
         emojiService.deleteEmoji(emojiDeleteDto, memberId);
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto(200, "success", "이모지 삭제 완료")
-                , HttpStatus.ACCEPTED);
+                , HttpStatus.OK);
     }
 
     @ApiOperation(value = "이모지 리스트", notes = "현재 저장되어있는 이모지들을 반환", response = Map.class)
@@ -69,7 +69,7 @@ public class EmojiController {
         Long memberId = SecurityUtil.getCurrentMemberId();
         return  new ResponseEntity<ResponseDto>(
                 new ResponseDto<List<MemberEmojiDto>>(200,"success", emojiService.listMemberEmoji(memberId))
-                , HttpStatus.ACCEPTED);
+                , HttpStatus.OK);
     }
 
 }
