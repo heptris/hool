@@ -144,10 +144,13 @@ public class MemberService {
 //        return detailEmoji;
 //    }
 
-    @ApiOperation(value = "이모지 즐겨찾기", notes = "토글 방식 예상")
+    /**
+     * 이모지 즐겨찾기 등록 / 해제
+     */
+    @Transactional
     public void memberEmojiFavoriteToggle(Long memberId, Long emojiId) {
         Member_emoji member_emoji = memberEmojiRepository.findByMemberIdAndEmojiId(memberId, emojiId);
-        member_emoji.setIs_favorite(!member_emoji.getIs_favorite());
+        member_emoji.updateFavorite(!member_emoji.getIs_favorite());
     }
 
 
@@ -161,6 +164,9 @@ public class MemberService {
         member.updateMemberStatus(MemberStatus.OFFLINE);
     }
 
+    /**
+     * 멤버 이모지 조회(페이징)
+     */
     public CursorResult getEmojiList(Long memberId, Long emojiCursorId, Pageable page) {
         List<DetailMemberEmojiDto> memberEmojiDtoList = getEmojiListDto(memberId, emojiCursorId, page);
         final Long lastIdOfList = memberEmojiDtoList.isEmpty() ?
@@ -184,6 +190,9 @@ public class MemberService {
         return memberEmojiRepository.existsByEmojiCursorIdLessThan(memberId, emojiCursorId);
     }
 
+    /**
+     * 멤버 즐겨찾기 이모지 페이징
+     */
     public CursorResult getFavEmojiList(Long memberId, Long emojiFavCursorId, Pageable page) {
         List<DetailMemberEmojiDto> memberFavEmojiDtoList = getFavEmojiListDto(memberId, emojiFavCursorId, page);
         final Long lastIdOfList = memberFavEmojiDtoList.isEmpty() ?

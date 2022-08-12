@@ -71,8 +71,9 @@ public class FriendRequestService {
         return friendRequestDtos;
     }
 
-    //-----------------------------------------------------------------------------
-
+    /**
+     * 나한테 온 친구 요청 메세지 조회 (페이징)
+     */
     public CursorResult<FriendRequestDto> get(Long memberId, Long friendRequestCursorId, Pageable page) {
         final List<FriendRequestDto> friendRequests = getFriendRequests(memberId, friendRequestCursorId, page);
         final Long lastIdOfList = friendRequests.isEmpty() ?
