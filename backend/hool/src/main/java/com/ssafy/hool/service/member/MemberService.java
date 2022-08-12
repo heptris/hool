@@ -75,7 +75,6 @@ public class MemberService {
     @Transactional
     public void updateMember(MultipartFile multipartFile, Long memberId, MemberUpdateDto memberUpdateDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setName(memberUpdateDto.getName());
         member.setNickName(memberUpdateDto.getNickName());
 
         if (multipartFile != null) {

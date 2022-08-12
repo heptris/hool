@@ -71,6 +71,19 @@ public class MemberController {
                 memberProfile), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "회원 프로필 편집 시 기본 data")
+    @GetMapping("/update")
+    public ResponseEntity<?> memberProfileEdit() {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberService.findByMemberId(memberId);
+        MemberUpdateProfileDto memberUpdateProfileDto = MemberUpdateProfileDto.builder()
+                .memberProfile(member.getProfileImage())
+                .nickName(member.getNickName())
+                .build();
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberUpdateProfileDto)
+                , HttpStatus.OK);
+    }
+
     @ApiOperation(value = "보유중인 이모지", notes = "보유중인 이모지 정보들 반환")
     @GetMapping("/my/emoji")
     public ResponseEntity<?> getMyEmojis() {
