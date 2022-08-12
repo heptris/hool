@@ -99,6 +99,7 @@ const NavUser = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  text-align: center;
 
   & i {
     transition: transform ease 0.3s;
