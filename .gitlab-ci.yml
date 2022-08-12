@@ -16,17 +16,17 @@ cache:
   paths:
     - node_modules/
 
-run react tests:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    npm install --force
-    npm run test
-  only:
-    - master
-    - develop
-    - feature/frontend
+# run react tests:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     npm install --force
+#     npm run test
+#   only:
+#     - master
+#     - develop
+#     - feature/frontend
 
 # run spring tests:
 #   image: openjdk:8
