@@ -13,9 +13,11 @@ import { QUERY_KEYS } from "constant";
 
 function DetailModalBody({
   emojiId,
-  memberEmojiId,
-  emojiAnimate,
   emojiUrl,
+  name,
+  description,
+  emojiAnimate,
+  memberEmojiId,
   isFavorite,
   ARCode,
 }: EmojiDetailType) {
@@ -27,20 +29,22 @@ function DetailModalBody({
         <NonClickableEmojiCard width={6.25} height={6.25} imgUrl={emojiUrl} />
         {ARCode && <ARImg src={ARCode}></ARImg>}
       </Imgs>
-      <EmojiTitle>{emojiId}</EmojiTitle>
-      <Description>{memberEmojiId}</Description>
+      <EmojiTitle>{name}</EmojiTitle>
+      <Description>{description}</Description>
       {!isFavorite && (
         <FavBtn
           width={7}
           height={3}
           text={"즐겨찾기 등록"}
           buttonOnClick={() => {
-            postMyEmojiDetailFavorite({ emojiId }).then(() =>
-              queryClient.invalidateQueries([
-                QUERY_KEYS.MY_OWN_EMOJI_LIST,
-                QUERY_KEYS.MY_FAV_EMOJI_LIST,
-              ])
-            );
+            postMyEmojiDetailFavorite({ emojiId: emojiId })
+              .then(() =>
+                queryClient.invalidateQueries([
+                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
+                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
+                ])
+              )
+              .catch((err) => console.error(err));
           }}
         />
       )}
@@ -50,12 +54,14 @@ function DetailModalBody({
           height={3}
           text={"즐겨찾기 해제"}
           buttonOnClick={() => {
-            postMyEmojiDetailFavorite({ emojiId }).then(() =>
-              queryClient.invalidateQueries([
-                QUERY_KEYS.MY_OWN_EMOJI_LIST,
-                QUERY_KEYS.MY_FAV_EMOJI_LIST,
-              ])
-            );
+            postMyEmojiDetailFavorite({ emojiId })
+              .then(() =>
+                queryClient.invalidateQueries([
+                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
+                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
+                ])
+              )
+              .catch((err) => console.error(err));
           }}
         />
       )}

@@ -16,9 +16,11 @@ import { QUERY_KEYS } from "constant";
 
 export type EmojiDetailType = {
   emojiId: number;
-  memberEmojiId: number;
-  emojiAnimate: string;
   emojiUrl: string;
+  name: string;
+  description: string;
+  emojiAnimate: string;
+  memberEmojiId: number;
   isFavorite: boolean;
   ARCode?: string;
 };
@@ -28,9 +30,11 @@ function Inventory() {
   const [isDisplayDetail, setIsDisplayDetail] = useState(false);
   const [detailInfo, setDetailInfo] = useState<EmojiDetailType>({
     emojiId: 0,
-    memberEmojiId: 0,
-    emojiAnimate: "",
     emojiUrl: "",
+    name: "",
+    description: "",
+    emojiAnimate: "",
+    memberEmojiId: 0,
     isFavorite: false,
     ARCode: "",
   });

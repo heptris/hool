@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
 import { apiInstance } from "api";
 import { HOOL_API_ENDPOINT } from "constant";
@@ -9,6 +10,8 @@ import { darkTheme } from "styles/Theme";
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import LabelTextarea from "components/commons/LabelTextarea";
+
+import { QUERY_KEYS } from "constant";
 
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
 const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
@@ -28,6 +31,7 @@ const ANIMATE_TYPES = [
 ];
 
 function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
+  const queryClient = useQueryClient();
   const [files, setFiles] = useState<FileList>();
   const [emojiName, setEmojiName] = useState("");
   const [emojiAnimate, setEmojiAnimate] = useState("");
@@ -57,6 +61,7 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
 
     setFiles(tmpFiles);
   };
+
   useEffect(() => {
     renderPreview();
   }, [files]);
@@ -77,6 +82,7 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
       );
     reader.readAsDataURL(files[0]);
   };
+
   const onSubmit = (e: React.FormEvent) => {
     if (!files) return;
     e.preventDefault();
@@ -102,6 +108,7 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
       })
       .then((res) => {
         console.log(res.data);
+        queryClient.invalidateQueries([QUERY_KEYS.MY_OWN_EMOJI_LIST]);
         onDisplayChange();
       })
       .catch((err) => console.error(err));
