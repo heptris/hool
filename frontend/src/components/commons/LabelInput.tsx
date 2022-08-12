@@ -15,6 +15,7 @@ type LabelInputPropsType = {
   inputOnChange?: Function;
   inputValue?: string;
   id?: string;
+  isRequired?: boolean;
 };
 
 const LabelInput = (props: LabelInputPropsType) => {
@@ -29,6 +30,7 @@ const LabelInput = (props: LabelInputPropsType) => {
     inputOnChange,
     inputValue,
     id,
+    isRequired,
   } = props;
   return (
     <LabelInputDiv {...props}>
@@ -46,6 +48,7 @@ const LabelInput = (props: LabelInputPropsType) => {
         ref={inputRef}
         value={inputValue}
         onChange={inputOnChange}
+        require={isRequired || false}
       />
     </LabelInputDiv>
   );

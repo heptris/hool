@@ -22,6 +22,8 @@ export const QUERY_KEYS = {
   MARKET: "market",
   MEETINGS: "meetings",
   POINT: "point",
+  MY_OWN_EMOJI_LIST: "my-own-emoji-list",
+  MY_FAV_EMOJI_LIST: "my-fav-emoji-list",
 };
 
 export const USER_SESSIONSTORAGE_KEY = {
