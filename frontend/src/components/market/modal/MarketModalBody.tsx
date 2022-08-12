@@ -50,7 +50,7 @@ const MarketModalBody = () => {
         <LeftContainer>
           <ItemList>
             {canUploadData.data.map((el: UploadItemType) => {
-              return <EmojiCard key={el.emojiId} imgUrl={el.url} />;
+              return <EmojiCard key={el.emojiId} emojiUrl={el.url} />;
             })}
           </ItemList>
           <Button height={3} width={15} text={"등록하기"} marginTop={1.5} />
