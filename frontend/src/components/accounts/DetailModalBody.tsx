@@ -11,6 +11,10 @@ import type { EmojiDetailType } from "components/accounts/Inventory";
 
 import { QUERY_KEYS } from "constant";
 
+type PropsType = {
+  onChangeDetailInfo: Function;
+};
+
 function DetailModalBody({
   emojiId,
   emojiUrl,
@@ -20,7 +24,8 @@ function DetailModalBody({
   memberEmojiId,
   isFavorite,
   ARCode,
-}: EmojiDetailType) {
+  onChangeDetailInfo,
+}: EmojiDetailType & PropsType) {
   const queryClient = useQueryClient();
 
   return (
@@ -38,12 +43,19 @@ function DetailModalBody({
           text={"즐겨찾기 등록"}
           buttonOnClick={() => {
             postMyEmojiDetailFavorite({ emojiId })
-              .then(() =>
-                queryClient.invalidateQueries([
-                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
-                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
-                ])
-              )
+              .then(() => {
+                queryClient.invalidateQueries([QUERY_KEYS.MY_OWN_EMOJI_LIST]);
+                queryClient.invalidateQueries([QUERY_KEYS.MY_FAV_EMOJI_LIST]);
+                onChangeDetailInfo({
+                  emojiId,
+                  emojiUrl,
+                  name,
+                  description,
+                  emojiAnimate,
+                  memberEmojiId,
+                  isFavorite: !isFavorite,
+                });
+              })
               .catch((err) => console.error(err));
           }}
         />
@@ -55,12 +67,19 @@ function DetailModalBody({
           text={"즐겨찾기 해제"}
           buttonOnClick={() => {
             postMyEmojiDetailFavorite({ emojiId })
-              .then(() =>
-                queryClient.invalidateQueries([
-                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
-                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
-                ])
-              )
+              .then(() => {
+                queryClient.invalidateQueries([QUERY_KEYS.MY_OWN_EMOJI_LIST]);
+                queryClient.invalidateQueries([QUERY_KEYS.MY_FAV_EMOJI_LIST]);
+                onChangeDetailInfo({
+                  emojiId,
+                  emojiUrl,
+                  name,
+                  description,
+                  emojiAnimate,
+                  memberEmojiId,
+                  isFavorite: !isFavorite,
+                });
+              })
               .catch((err) => console.error(err));
           }}
         />

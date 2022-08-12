@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyEmojiList, getMyFavoriteEmoji } from "api/profile";
 import { QUERY_KEYS } from "constant";
@@ -77,7 +77,12 @@ function Inventory() {
               <span>상세정보</span>
             </DetailHeader>
           }
-          body={<DetailModalBody {...detailInfo} />}
+          body={
+            <DetailModalBody
+              {...detailInfo}
+              onChangeDetailInfo={setDetailInfo}
+            />
+          }
           onDisplayChange={switchIsDisplayDetail}
         />
       )}
