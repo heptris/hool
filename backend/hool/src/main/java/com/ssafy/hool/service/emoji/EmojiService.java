@@ -222,4 +222,8 @@ public class EmojiService {
 
     // -------------------------------Can Emoji Shop Paging End--------------------------------------------
 
+    public List<EmojiShopListDto> searchEmojiShopList(String keyword){
+        return emojiShopRepository.searchEmojiShop(keyword);
+    }
+
 }
