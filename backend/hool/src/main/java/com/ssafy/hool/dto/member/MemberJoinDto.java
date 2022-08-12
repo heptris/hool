@@ -27,7 +27,7 @@ public class MemberJoinDto {
     private String password;
 
     @NotBlank
-    private String passwordComfirm;
+    private String passwordConfirm;
 
     @NotBlank
     private String name;

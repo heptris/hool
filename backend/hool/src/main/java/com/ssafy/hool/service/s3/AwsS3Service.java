@@ -1,6 +1,7 @@
 package com.ssafy.hool.service.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -22,6 +23,8 @@ import java.util.UUID;
 public class AwsS3Service {
 
     private final AmazonS3 amazonS3;
+
+    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -79,5 +82,9 @@ public class AwsS3Service {
             throw new AmazonS3Exception("Object " +awsS3.getKey()+ " does not exist!");
         }
         amazonS3.deleteObject(bucket, awsS3.getKey());
+    }
+
+    public String getThumbnailPath(String path) {
+        return amazonS3Client.getUrl(bucket, path).toString();
     }
 }
