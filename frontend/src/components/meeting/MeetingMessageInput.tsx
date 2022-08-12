@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMyEmojiList } from "api/profile";
+import { QUERY_KEYS } from "constant";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setMsgToSend, setIsDisplayEmoji } from "store";
 
@@ -7,8 +11,10 @@ import { darkTheme, IconStyle, InputStyle } from "styles";
 
 import type { SessionStateType } from "./MeetingRoom";
 import type { RootState } from "store";
+import type { EmojiDetailType } from "components/accounts/Inventory";
 
 import Button from "components/commons/Button";
+import EmojiCard from "components/commons/EmojiCard";
 
 type PropsType = {
   sessionState: SessionStateType;
@@ -21,13 +27,20 @@ const MeetingMessageInput = (props: PropsType) => {
   );
   const { session } = props.sessionState;
 
+  // React Query 상태
+  const {
+    data: myOwnEmojiList,
+    isError: myOwnEmojiListIsError,
+    isLoading: myOwnEmojiListIsLoading,
+  } = useQuery([QUERY_KEYS.MY_OWN_EMOJI_LIST], getMyEmojiList, {
+    retry: 0,
+  });
+
   const onChangeMsgToSend = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setMsgToSend(e.target.value));
   };
   const sendTextMessage = () => {
-    if (msgToSend.trim() === "") {
-      return;
-    }
+    if (msgToSend.trim() === "") return;
 
     const mySession = session;
 
@@ -42,9 +55,38 @@ const MeetingMessageInput = (props: PropsType) => {
       })
       .catch((err: any) => console.error(err));
   };
+  const sendEmojiSignal = (item: EmojiDetailType) => {
+    const mySession = session;
+
+    mySession
+      .signal({
+        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
+        to: [],
+        type: "emoji",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
 
   return (
-    <>
+    <Container>
+      {isDisplayEmoji && (
+        <EmojiModal className={"animate__animated animate__bounceIn"}>
+          <ModalText>소유중인 이모지</ModalText>
+          <Hr />
+          <ModalGrid>
+            {myOwnEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+              <div key={i} onClick={() => sendEmojiSignal(item)}>
+                <EmojiCard emojiUrl={item.emojiUrl} />
+              </div>
+            ))}
+          </ModalGrid>
+        </EmojiModal>
+      )}
       <MessageBox>
         <IconBox>
           <Left>
@@ -91,10 +133,14 @@ const MeetingMessageInput = (props: PropsType) => {
           </div>
         </MsgForm>
       </MessageBox>
-    </>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  position: relative;
+  overflow: visible;
+`;
 const Input = styled.input`
   ${InputStyle}
 `;
@@ -129,6 +175,31 @@ const Icon = styled.i`
 const MsgForm = styled.form`
   width: 100%;
   position: relative;
+`;
+const EmojiModal = styled.div`
+  background-color: ${darkTheme.bgColor};
+  width: 24rem;
+  height: 10rem;
+  border: 1px solid ${darkTheme.adaptiveGrey800};
+  border-radius: 4px;
+  position: absolute;
+  overflow: auto;
+  bottom: 2rem;
+  left: calc(3rem - 100%);
+  padding: 0.5rem 0.5rem;
+  box-sizing: border-box;
+  z-index: 5001;
+`;
+const ModalGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem 0.2rem;
+`;
+const ModalText = styled.h1``;
+const Hr = styled.hr`
+  border: 1px solid ${darkTheme.adaptiveGrey700};
+  background-color: ${darkTheme.adaptiveGrey700};
+  width: 99%;
 `;
 
 export default MeetingMessageInput;

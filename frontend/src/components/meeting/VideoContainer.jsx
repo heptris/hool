@@ -268,12 +268,14 @@ class VideoContainer extends Component {
 
       const sender = event.from.connectionId;
       const publisher = this.state.publisher.stream.connection.connectionId;
-      const subscribers = this.state.subscribers;
+      const subscribers = this.state.subscribers.map(
+        (sub) => sub.stream.connection.connectionId
+      );
 
-      const idx =
-        sender !== publisher
-          ? subscribers.indexOf(event.from.connectionId) + 1
-          : 0;
+      // connection.data "{\"clientData\":\"myUserName#105957535666388128155\"}"
+      // connection.role "PUBLISHER"
+
+      const idx = sender !== publisher ? subscribers.indexOf(sender) + 1 : 0;
 
       const newEmojiEvents = this.props.emojiEvents.map((emo, i) =>
         idx === i ? event.data : emo

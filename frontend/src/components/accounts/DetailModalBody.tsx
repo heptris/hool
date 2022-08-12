@@ -26,7 +26,7 @@ function DetailModalBody({
   return (
     <FlexBox>
       <Imgs>
-        <NonClickableEmojiCard width={6.25} height={6.25} imgUrl={emojiUrl} />
+        <NonClickableEmojiCard width={6.25} height={6.25} emojiUrl={emojiUrl} />
         {ARCode && <ARImg src={ARCode}></ARImg>}
       </Imgs>
       <EmojiTitle>{name}</EmojiTitle>
@@ -37,7 +37,7 @@ function DetailModalBody({
           height={3}
           text={"즐겨찾기 등록"}
           buttonOnClick={() => {
-            postMyEmojiDetailFavorite({ emojiId: emojiId })
+            postMyEmojiDetailFavorite({ emojiId })
               .then(() =>
                 queryClient.invalidateQueries([
                   QUERY_KEYS.MY_OWN_EMOJI_LIST,

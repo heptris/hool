@@ -52,15 +52,13 @@ function MeetingRoom() {
     };
   }, []);
   useEffect(() => {
-    if (sessionState.publisher === undefined) {
-      return;
-    }
+    if (sessionState.publisher === undefined) return;
+
     switchAudioEnabled(audioEnabled);
   }, [audioEnabled]);
   useEffect(() => {
-    if (sessionState.publisher === undefined) {
-      return;
-    }
+    if (sessionState.publisher === undefined) return;
+
     switchVideoEnabled(videoEnabled);
   }, [videoEnabled]);
   useEffect(() => {
