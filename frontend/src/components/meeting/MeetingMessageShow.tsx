@@ -10,6 +10,7 @@ import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
 import type { SessionStateType } from "./MeetingRoom";
 
+import EmojiCard from "components/commons/EmojiCard";
 import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 
@@ -26,9 +27,27 @@ function MeetingMessageShow(props: PropsType) {
   const isShowingGame = useSelector(
     (state: RootState) => state.navbar.isShowingGame
   );
-  const { myUserName, chatEvents } = useSelector(
+  const { myUserName, chatEvents, isDisplayEmoji } = useSelector(
     (state: RootState) => state.clientSession
   );
+  const myOwnItems = [
+    {
+      emojiTitle: "불타는 아스날",
+      ARCode: "",
+      author: "Andrew",
+      description: "아스날은 불타야 제맛이지",
+      isFav: false,
+      imgUrl: "",
+    },
+    {
+      emojiTitle: "우리흥",
+      ARCode: "",
+      author: "Dijkstra",
+      description: "으앙마",
+      isFav: false,
+      imgUrl: "",
+    },
+  ];
 
   // 상위 컴포넌트 세션상태
   const { session, subscribers } = props.sessionState;
@@ -39,7 +58,6 @@ function MeetingMessageShow(props: PropsType) {
   }, [session]);
 
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
-  const scrollToBottom: React.RefObject<HTMLDivElement> = React.useRef(null);
 
   const recvSignal = () => {
     const mySession = session;
@@ -52,9 +70,9 @@ function MeetingMessageShow(props: PropsType) {
       dispatch(addChatEvents(event.data));
     });
   };
-
   const renderChatMsgs = (chatEvent: string, idx: number) => {
     const [sender, msg] = chatEvent.split("::");
+    scrollToBottom();
 
     if (sender === myUserName) {
       return createOppositeBubble({ sender, msg, idx });
@@ -62,7 +80,6 @@ function MeetingMessageShow(props: PropsType) {
       return createOppositeBubble({ sender, msg, idx });
     }
   };
-
   const createMyBubble = ({
     sender,
     msg,
@@ -72,7 +89,6 @@ function MeetingMessageShow(props: PropsType) {
     msg: string;
     idx: number;
   }) => {};
-
   const createOppositeBubble = ({
     sender,
     msg,
@@ -92,6 +108,28 @@ function MeetingMessageShow(props: PropsType) {
       </MessageContent>
     </SpeechBubble>
   );
+  const scrollToBottom = () => {
+    const msgBody: HTMLDivElement | null = msgBodyRef.current;
+    if (msgBody instanceof HTMLDivElement) {
+      msgBody.scrollTop = msgBody.scrollHeight;
+    }
+  };
+  const sendEmojiSignal = (item: typeof myOwnItems[0]) => {
+    const mySession = session;
+
+    mySession
+      .signal({
+        data: myUserName + "::" + item.imgUrl,
+        to: [],
+        type: "emoji",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
 
   return (
     <>
@@ -99,8 +137,27 @@ function MeetingMessageShow(props: PropsType) {
         <Icon className="fa-solid fa-comment" />
         <h1>Chat</h1>
       </MessageShowHeader>
-      <MessageShowBody ref={msgBodyRef} isShowingGame={isShowingGame}>
+      <MessageShowBody
+        id={"showBody"}
+        ref={msgBodyRef}
+        isShowingGame={isShowingGame}
+      >
         {chatEvents.map((chat, i) => renderChatMsgs(chat, i))}
+        {isDisplayEmoji && (
+          <EmojiModal className={"animate__animated animate__bounceIn"}>
+            <ModalText>소유중인 이모지</ModalText>
+            <Hr />
+            <ModalGrid>
+              {myOwnItems.map((item, i) => (
+                <div key={i} onClick={() => sendEmojiSignal(item)}>
+                  <EmojiCard>
+                    <></>
+                  </EmojiCard>
+                </div>
+              ))}
+            </ModalGrid>
+          </EmojiModal>
+        )}
       </MessageShowBody>
     </>
   );
@@ -125,7 +182,9 @@ const MessageShowBody = styled(MessageBox)`
   border-top-right-radius: 0px;
   background-color: ${darkTheme.adaptiveGrey800};
   transition: height 0.3s ease;
-  overflow-y: auto;
+  overflow: hidden auto;
+  word-break: break-all;
+  position: relative;
 `;
 const Icon = styled.i`
   ${IconStyle}
@@ -156,6 +215,7 @@ const NickName = styled.h1`
 const MessageText = styled.div`
   display: flex;
   align-items: center;
+  width: fit-content;
 
   background-color: ${darkTheme.adaptiveGrey700};
   border-radius: 8px;
@@ -164,6 +224,30 @@ const MessageText = styled.div`
     font-size: 0.9rem;
     padding: 0.5rem;
   }
+`;
+const EmojiModal = styled.div`
+  background-color: ${darkTheme.bgColor};
+  width: 95%;
+  height: 10rem;
+  border: 1px solid ${darkTheme.adaptiveGrey800};
+  border-radius: 4px;
+  position: absolute;
+  overflow: auto;
+  bottom: 0px;
+  left: 0px;
+  padding: 0.5rem 0.5rem;
+  box-sizing: border-box;
+`;
+const ModalGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem 0.2rem;
+`;
+const ModalText = styled.h1``;
+const Hr = styled.hr`
+  border: 1px solid ${darkTheme.adaptiveGrey700};
+  background-color: ${darkTheme.adaptiveGrey700};
+  width: 99%;
 `;
 
 export default MeetingMessageShow;

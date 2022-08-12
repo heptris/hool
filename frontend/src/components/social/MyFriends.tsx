@@ -1,19 +1,23 @@
 import styled from "styled-components";
 
-import { UserType } from "pages/social";
+import { FriendInfoType } from "types/FriendInfoType";
 
 import SocialItem from "./SocialItem";
 
 type PropsType = {
-  myFriends: UserType[];
+  myFriends: FriendInfoType[];
   isDisplayMyFriends: boolean;
 };
 
 function MyFriends({ myFriends, isDisplayMyFriends }: PropsType) {
   return (
     <MyFriendsBox>
-      {myFriends.map((user, i) => (
-        <SocialItem key={i} isDisplayMyFriends={isDisplayMyFriends} {...user} />
+      {myFriends.map((user) => (
+        <SocialItem
+          key={user.friendMemberId}
+          isDisplayMyFriends={isDisplayMyFriends}
+          {...user}
+        />
       ))}
     </MyFriendsBox>
   );

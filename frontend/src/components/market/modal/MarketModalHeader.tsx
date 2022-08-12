@@ -2,11 +2,7 @@ import CloseButton from "components/commons/CloseButton";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-const MarketModalHeader = ({
-  onDisplayChange,
-}: {
-  onDisplayChange: Function;
-}) => {
+const MarketModalHeader = () => {
   return (
     <Header>
       <TitleWrapper>
@@ -15,7 +11,6 @@ const MarketModalHeader = ({
           직접 제작한 이모지를 판매해 포인트를 얻을 수 있어요!
         </SubTitle>
       </TitleWrapper>
-      <CloseButton onDisplayChange={onDisplayChange} />
     </Header>
   );
 };

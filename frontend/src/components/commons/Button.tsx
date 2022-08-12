@@ -13,6 +13,7 @@ type ButtonProps = {
   fontSize?: number;
   buttonOnClick?: Function;
   CSSProps?: CSSProp;
+  disabled?: boolean;
 };
 
 /**
@@ -22,9 +23,9 @@ type ButtonProps = {
  */
 
 const Button = (props: ButtonProps) => {
-  const { text = "버튼" } = props;
+  const { text = "버튼", buttonOnClick } = props;
   return (
-    <Btn {...props}>
+    <Btn onClick={buttonOnClick} {...props}>
       <span>{text}</span>
     </Btn>
   );
@@ -32,7 +33,9 @@ const Button = (props: ButtonProps) => {
 
 export default Button;
 
-const Btn = styled.button`
+const Btn = styled.button.attrs((props) => {
+  onClick: Function;
+})`
   font-size: ${({ fontSize }: ButtonProps) => fontSize}rem;
   margin-top: ${({ marginTop }: ButtonProps) =>
     marginTop ? marginTop : "0"}rem;

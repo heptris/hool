@@ -44,7 +44,9 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
-const TextArea = styled.textarea`
+const TextArea = styled.textarea.attrs((props) => {
+  onChange: Function;
+})`
   ${InputStyle}
   padding: 1rem;
   margin: 0;

@@ -9,6 +9,7 @@ import styled from "styled-components";
 
 import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
+import { darkTheme } from "styles";
 
 const OPENVIDU_SERVER_URL =
   "https://" +
@@ -34,21 +35,14 @@ class VideoContainer extends Component {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-    this.onbeforeunload = this.onbeforeunload.bind(this);
-    this.sendEmojiSignal = this.sendEmojiSignal.bind(this);
     this.recvSignal = this.recvSignal.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", this.onbeforeunload);
     this.joinSession();
   }
 
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onbeforeunload);
-  }
-
-  onbeforeunload(event) {
     this.leaveSession();
   }
 
@@ -89,7 +83,6 @@ class VideoContainer extends Component {
     }
   }
 
-  // 수정완료
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -155,7 +148,7 @@ class VideoContainer extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: this.props.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: this.props.videoEnabled, // Whether you want to start publishing with your video enabled or not
-                resolution: "640x480", // The resolution of your video
+                resolution: "1280x720", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                 mirror: true, // Whether to mirror your local video or not
@@ -193,7 +186,6 @@ class VideoContainer extends Component {
     );
   }
 
-  // 수정완료
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
@@ -202,6 +194,16 @@ class VideoContainer extends Component {
     if (mySession) {
       mySession.disconnect();
     }
+
+    // clientSession 초기화
+    this.props.setMySessionId("SessionA");
+    this.props.setMyUserName("Participant" + Math.floor(Math.random() * 100));
+    this.props.setAudioEnabled(false);
+    this.props.setVideoEnabled(false);
+    this.props.setMsgToSend("");
+    this.props.setChatEvents(new Array());
+    this.props.setEmojiEvents(new Array(9).fill(""));
+    this.props.setIsDisplayEmoji(false);
 
     // Empty all properties...
     this.OV = null;
@@ -214,15 +216,6 @@ class VideoContainer extends Component {
       },
       () => {
         this.props.handleSessionState({ ...this.state });
-        this.props.setMySessionId("SessionA");
-        this.props.setMyUserName(
-          "Participant" + Math.floor(Math.random() * 100)
-        );
-        this.props.setAudioEnabled(false);
-        this.props.setVideoEnabled(false);
-        this.props.setMsgToSend("");
-        this.props.setChatEvents(new Array());
-        this.props.setEmojiEvents(new Array());
       }
     );
   }
@@ -265,23 +258,6 @@ class VideoContainer extends Component {
     }
   }
 
-  sendEmojiSignal() {
-    const mySession = this.state.session;
-
-    mySession
-      .signal({
-        data: "My custom emoji",
-        to: [],
-        type: "emoji",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
-
   recvSignal() {
     const mySession = this.state.session;
 
@@ -289,12 +265,26 @@ class VideoContainer extends Component {
       console.log(event.data);
       console.log(event.from);
       console.log(event.type);
+
+      const sender = event.from.connectionId;
+      const publisher = this.state.publisher.stream.connection.connectionId;
+      const subscribers = this.state.subscribers;
+
+      const idx =
+        sender !== publisher
+          ? subscribers.indexOf(event.from.connectionId) + 1
+          : 0;
+
+      const newEmojiEvents = this.props.emojiEvents.map((emo, i) =>
+        idx === i ? event.data : emo
+      );
+
+      this.props.setEmojiEvents(newEmojiEvents);
     });
   }
 
   render() {
-    const { mySessionId, myUserName, audioEnabled, videoEnabled, msgToSend } =
-      this.props;
+    const { mySessionId, myUserName } = this.props;
 
     return (
       <Container>
@@ -342,18 +332,6 @@ class VideoContainer extends Component {
           <Session>
             <SessionHeader>
               <SessionTitle>{mySessionId}</SessionTitle>
-              <input
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-              <Button
-                width={3}
-                height={3}
-                text={"이모지"}
-                onClick={this.sendEmojiSignal}
-              />
             </SessionHeader>
 
             <SessionBody>
@@ -371,7 +349,6 @@ class VideoContainer extends Component {
                   />
                 </MainVideoContainer>
               ) : null} */}
-              {/* <div id="video-container" className="col-md-6"> */}
 
               {this.state.publisher !== undefined ? (
                 <StreamContainer
@@ -379,7 +356,10 @@ class VideoContainer extends Component {
                     this.handleMainVideoStream(this.state.publisher)
                   }
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    idx={0}
+                    streamManager={this.state.publisher}
+                  />
                 </StreamContainer>
               ) : null}
 
@@ -388,10 +368,9 @@ class VideoContainer extends Component {
                   key={i}
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent idx={i + 1} streamManager={sub} />
                 </StreamContainer>
               ))}
-              {/* </div> */}
             </SessionBody>
           </Session>
         ) : null}
@@ -495,25 +474,32 @@ class VideoContainer extends Component {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 const Session = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
-const SessionHeader = styled.div``;
-const SessionTitle = styled.h1``;
+const SessionHeader = styled.div`
+  padding: 0.5rem 2rem;
+  background-color: ${darkTheme.adaptiveGrey800};
+  border-radius: 6px 6px 0 0;
+`;
+const SessionTitle = styled.h1`
+  font-size: 2rem;
+`;
 const SessionBody = styled.div`
   width: 100%;
-  height: auto;
+  height: 100%;
   display: grid;
   justify-content: center;
+  align-content: center;
   align-items: center;
-  /* ratio 4:3 */
+  /* ratio 16:9 */
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.5rem;
 `;
 const MainVideoContainer = styled.div`
@@ -534,6 +520,7 @@ const mapDispatchToProps = (dispatch) => ({
   setMsgToSend: (payload) => dispatch(actions.setMsgToSend(payload)),
   setChatEvents: (payload) => dispatch(actions.setChatEvents(payload)),
   setEmojiEvents: (payload) => dispatch(actions.setEmojiEvents(payload)),
+  setIsDisplayEmoji: (payload) => dispatch(actions.setIsDisplayEmoji(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoContainer);

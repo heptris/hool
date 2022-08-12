@@ -1,27 +1,52 @@
 import { getRequest, postRequest, putRequest } from "api";
 
-const postMyEmojiDetail = (obj: { emojiId: number }) =>
-  postRequest("detail/emoji", obj);
+const MEMBER = "member";
 
-const postMyEmojiDetailFavorite = (obj: { emojiId: number }) =>
-  postRequest("detail/emoji/favorite", obj);
+// point-controller
+const getMyPoint = (obj: { memberId: number }) => postRequest("point", obj);
 
-const getMyEmojiList = () => getRequest("my/emoji");
-
-const getMyFavoriteEmoji = () => getRequest("my/favorite/emoji");
-
-const getMyProfile = () => getRequest("myprofile");
+// member controller
+const getMyProfile = async (token?: string) => {
+  return await getRequest(
+    `${MEMBER}/`,
+    token
+      ? {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      : undefined
+  )
+    .then(({ data }) => data)
+    .catch((err) => console.log(err));
+};
 
 const putModifyMyProfile = (obj: {
   name: string;
   nickName: string;
   password: string;
-}) => putRequest("myprofile", obj);
+}) => putRequest(`${MEMBER}/`, obj);
 
-const postCheckDuplicateNickName = (obj: { nickName: string }) =>
-  postRequest("nickname/check", obj);
+const postMyEmojiDetail = (obj: { emojiId: number }) =>
+  postRequest(`${MEMBER}/detail/emoji`, obj);
 
-const getMyPoint = (obj: { memberId: number }) => postRequest("point", obj);
+const postMyEmojiDetailFavorite = (obj: { emojiId: number }) =>
+  postRequest(`${MEMBER}/detail/emoji/favorite`, obj);
+
+const getMyEmojiList = () => getRequest(`${MEMBER}/my/emoji`);
+
+const getMyEmojiListPage = (emojiCursorId: number, size: number) =>
+  getRequest(
+    `${MEMBER}/my/emoji/page?emojiCursorId=${emojiCursorId}&size=${size}`
+  );
+
+const getMyFavoriteEmoji = () => getRequest(`${MEMBER}/my/favorite/emoji`);
+
+const getMyFavoriteEmojiPage = (emojiFavCursorId: number, size: number) =>
+  getRequest(
+    `${MEMBER}/my/favorite/emoji/page?emojiFavCursorId=${emojiFavCursorId}&size=${size}`
+  );
+
+// const postCheckDuplicateNickName = (obj: { nickName: string }) =>
+//   postRequest("nickname/check", obj);
 
 export {
   putModifyMyProfile,
@@ -30,6 +55,8 @@ export {
   getMyEmojiList,
   getMyFavoriteEmoji,
   getMyProfile,
-  postCheckDuplicateNickName,
+  // postCheckDuplicateNickName,
   getMyPoint,
+  getMyEmojiListPage,
+  getMyFavoriteEmojiPage,
 };

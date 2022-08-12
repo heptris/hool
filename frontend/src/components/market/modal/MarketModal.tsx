@@ -5,7 +5,7 @@ import MarketModalBody from "./MarketModalBody";
 const MarketModal = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
     <Modal
-      header={<MarketModalHeader onDisplayChange={onDisplayChange} />}
+      header={<MarketModalHeader />}
       body={<MarketModalBody />}
       onDisplayChange={onDisplayChange}
     />

@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
+
+import useUser from "hooks/useUser";
 
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -13,28 +16,50 @@ import {
   setIsShowingMessage,
   setAudioEnabled,
   setVideoEnabled,
+  setIsCreatingPreferences,
 } from "store";
-import { useState } from "react";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
+  const { userInfo } = useUser();
+
   const dispatch = useDispatch();
+
   const openCreatingModal = () => {
     dispatch(setIsCreatingRoom(true));
   };
   const openCreatingGameModal = () => {
     dispatch(setIsCreatingGame(true));
   };
+  const openCreatingPreferencesModal = () => {
+    dispatch(setIsCreatingPreferences(true));
+  };
 
   const { navMode } = useSelector((state: RootState) => state.navbar);
+
   const { audioEnabled, videoEnabled } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const [audio, setAudio] = useState(audioEnabled);
-  const [video, setVideo] = useState(videoEnabled);
+
+  useEffect(() => {}, [audioEnabled, videoEnabled]);
+
+  const audioEnabledHandler = () => {
+    if (audioEnabled) {
+      dispatch(setAudioEnabled(false));
+    } else {
+      dispatch(setAudioEnabled(true));
+    }
+  };
+  const videoEnabledHandler = () => {
+    if (videoEnabled) {
+      dispatch(setVideoEnabled(false));
+    } else {
+      dispatch(setVideoEnabled(true));
+    }
+  };
 
   const isShowingMessage = useSelector(
     (state: RootState) => state.navbar.isShowingMessage
@@ -48,93 +73,87 @@ const NavSide = () => {
     }
   };
 
-  const audioEnabledHandler = () => {
-    if (audio) {
-      setAudio(false);
-      console.log(audio);
-      dispatch(setAudioEnabled(false));
-    } else {
-      setAudio(true);
-      console.log(audio);
-      dispatch(setAudioEnabled(true));
-    }
-  };
-  const videoEnabledHandler = () => {
-    if (video) {
-      setVideo(false);
-      dispatch(setVideoEnabled(false));
-    } else {
-      setVideo(true);
-      dispatch(setVideoEnabled(true));
-    }
-  };
-
   return (
     <Side>
       <NavLink to={MAIN}>
         <Logo>hool!</Logo>
       </NavLink>
       <ButtonGroup>
-        {navMode === "meetingRoom" ? (
-          <>
-            <UtilButton onClick={audioEnabledHandler}>
-              <AudioBtn audio={audio}>
-                {audio ? (
-                  <Icon className="fa-solid fa-microphone"></Icon>
-                ) : (
-                  <Icon className="fa-solid fa-microphone-slash"></Icon>
+        <div>
+          <Buttons>
+            {navMode === "meetingRoom" ? (
+              <>
+                <UtilButton onClick={audioEnabledHandler}>
+                  <AudioBtn audioEnabled={audioEnabled}>
+                    {audioEnabled ? (
+                      <Icon className="fa-solid fa-microphone"></Icon>
+                    ) : (
+                      <Icon className="fa-solid fa-microphone-slash"></Icon>
+                    )}
+                  </AudioBtn>
+                </UtilButton>
+                <UtilButton onClick={videoEnabledHandler}>
+                  <VideoBtn videoEnabled={videoEnabled}>
+                    {videoEnabled ? (
+                      <Icon className="fa-solid fa-video"></Icon>
+                    ) : (
+                      <Icon className="fa-solid fa-video-slash"></Icon>
+                    )}
+                  </VideoBtn>
+                </UtilButton>
+                <UtilButton onClick={showMessageHandler}>
+                  <Btn>
+                    <Icon className="fa-solid fa-comment"></Icon>
+                  </Btn>
+                </UtilButton>
+                <UtilButton onClick={openCreatingGameModal}>
+                  <Btn>
+                    <Icon className="fa-solid fa-gamepad"></Icon>
+                  </Btn>
+                </UtilButton>
+              </>
+            ) : (
+              <>
+                <NavLink to={MEETING}>
+                  <Btn>
+                    <Icon className="fa-solid fa-list" />
+                  </Btn>
+                </NavLink>
+                <NavLink to={SOCIAL}>
+                  <Btn>
+                    <Icon className="fa-solid fa-users" />
+                  </Btn>
+                </NavLink>
+                <NavLink to={MARKET}>
+                  <Btn>
+                    <Icon className="fa-solid fa-face-grin-wide" />
+                  </Btn>
+                </NavLink>
+                {userInfo && (
+                  <UtilButton onClick={openCreatingModal}>
+                    <Btn>
+                      <Icon className="fa-solid fa-plus" />
+                    </Btn>
+                  </UtilButton>
                 )}
-              </AudioBtn>
-            </UtilButton>
-            <UtilButton onClick={videoEnabledHandler}>
-              <VideoBtn video={video}>
-                {video ? (
-                  <Icon className="fa-solid fa-video"></Icon>
-                ) : (
-                  <Icon className="fa-solid fa-video-slash"></Icon>
-                )}
-              </VideoBtn>
-            </UtilButton>
-            <UtilButton onClick={showMessageHandler}>
+              </>
+            )}
+            <UtilButton onClick={openCreatingPreferencesModal}>
               <Btn>
-                <Icon className="fa-solid fa-comment"></Icon>
+                <Icon className="fa-solid fa-gear" />
               </Btn>
             </UtilButton>
-            <UtilButton onClick={openCreatingGameModal}>
+          </Buttons>
+        </div>
+        {navMode === "meetingRoom" && (
+          <div>
+            <Link to={MEETING}>
               <Btn>
-                <Icon className="fa-solid fa-gamepad"></Icon>
+                <Icon className="fa-solid fa-arrow-right-from-bracket" />
               </Btn>
-            </UtilButton>
-          </>
-        ) : (
-          <>
-            <NavLink to={MEETING}>
-              <Btn>
-                <Icon className="fa-solid fa-list" />
-              </Btn>
-            </NavLink>
-            <NavLink to={SOCIAL}>
-              <Btn>
-                <Icon className="fa-solid fa-users" />
-              </Btn>
-            </NavLink>
-            <NavLink to={MARKET}>
-              <Btn>
-                <Icon className="fa-solid fa-face-grin-wide" />
-              </Btn>
-            </NavLink>
-            <UtilButton onClick={openCreatingModal}>
-              <Btn>
-                <Icon className="fa-solid fa-plus" />
-              </Btn>
-            </UtilButton>
-          </>
+            </Link>
+          </div>
         )}
-        <UtilButton>
-          <Btn>
-            <Icon className="fa-solid fa-gear" />
-          </Btn>
-        </UtilButton>
       </ButtonGroup>
     </Side>
   );
@@ -171,15 +190,24 @@ const Logo = styled.h1`
   }
 `;
 const ButtonGroup = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin-top: 3.5rem;
+  margin-bottom: 3rem;
 `;
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const Btn = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 4px;
-  background-color: ${darkTheme.adaptiveGrey800};
+  background-color: ${adaptiveGrey800};
   cursor: pointer;
 
   &:hover {
@@ -187,10 +215,12 @@ const Btn = styled.button`
   }
 `;
 const AudioBtn = styled(Btn)`
-  background-color: ${(props) => (props.audio ? "#292B3B" : "#FF0090")};
+  background-color: ${(props: { audioEnabled: boolean }) =>
+    props.audioEnabled ? "#292B3B" : "#FF0090"};
 `;
 const VideoBtn = styled(Btn)`
-  background-color: ${(props) => (props.video ? "#292B3B" : "#FF0090")};
+  background-color: ${(props: { videoEnabled: boolean }) =>
+    props.videoEnabled ? "#292B3B" : "#FF0090"};
 `;
 const Icon = styled.span`
   font-size: 1rem;

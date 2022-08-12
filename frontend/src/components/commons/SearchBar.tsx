@@ -5,9 +5,16 @@ const SearchBar = (props: {
   searchPlaceholder?: string;
   widthSize?: string;
   inputOnChange?: Function;
-  inputValue?: string;
+  inputValue: string;
+  SearchListComponent?: JSX.Element;
 }) => {
-  const { searchPlaceholder, widthSize, inputValue, inputOnChange } = props;
+  const {
+    searchPlaceholder,
+    widthSize,
+    inputValue,
+    inputOnChange,
+    SearchListComponent,
+  } = props;
   return (
     <Wrapper {...props}>
       <MagIcon
@@ -21,6 +28,7 @@ const SearchBar = (props: {
         value={inputValue}
         onChange={inputOnChange}
       />
+      {SearchListComponent && <SearchList>{SearchListComponent}</SearchList>}
     </Wrapper>
   );
 };
@@ -35,10 +43,16 @@ const MagIcon = styled.label`
   color: ${darkTheme.adaptiveGrey200};
 `;
 
-const ConcreteInput = styled.input`
+const ConcreteInput = styled.input.attrs((props) => {
+  onChange: Function;
+})`
   ${InputStyle}
   margin: 0;
   padding-left: 3rem;
+`;
+const SearchList = styled.div`
+  position: absolute;
+  width: 100%;
 `;
 
 export default SearchBar;

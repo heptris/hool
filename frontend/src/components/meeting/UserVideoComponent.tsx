@@ -1,28 +1,89 @@
-import { Publisher, Subscriber } from "openvidu-browser";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setEmojiEvents } from "store";
 import _ from "lodash";
+import "animate.css";
+import { Publisher, Subscriber } from "openvidu-browser";
 
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
+import defaultImg from "src/assets/profile-default-imgs/2.png";
+
+import type { RootState } from "store";
+
 import OpenViduVideoComponent from "./OvVideo";
 
 type PropsType = {
+  idx: number;
   streamManager: Publisher | Subscriber;
   mainVideoStream?: Function;
 };
 
 function UserVideoComponent(props: PropsType) {
+  const { idx, streamManager, mainVideoStream } = props;
+
+  const [isDisplayingEmoji, setIsDisplayingEmoji] = useState(false);
+
+  const dispatch = useDispatch();
+  const { emojiEvents } = useSelector(
+    (state: RootState) => state.clientSession
+  );
+  const emojiData = emojiEvents[idx];
+  const [sender, emojiPath] = emojiData.split("::");
+  useEffect(() => {
+    if (emojiData === "") {
+      return;
+    }
+    setIsDisplayingEmoji(true);
+
+    setTimeout(() => {
+      setIsDisplayingEmoji(false);
+
+      const newEmojiEvents = emojiEvents.map((emo, i) =>
+        idx === i ? "" : emo
+      );
+      dispatch(setEmojiEvents(newEmojiEvents));
+    }, 4000);
+  }, [emojiData]);
+
   const getNickNameTag = () => {
-    return JSON.parse(props.streamManager.stream.connection.data).clientData;
+    return JSON.parse(streamManager.stream.connection.data).clientData;
+  };
+
+  // LazyFunction
+  const pickRandomColor = () => {
+    return _.sample([
+      darkTheme.emphasisColor,
+      darkTheme.darkBadgeColor,
+      darkTheme.contrastColor,
+      "#9bb7d4",
+      "#c74375",
+      "#bf1932",
+      "#e2583e",
+      "#9b1b30",
+      "#5a5b9f",
+      "#009473",
+      "#5f4b8b",
+      "#0f4c81",
+    ]);
   };
 
   return (
     <div>
-      {props.streamManager !== undefined ? (
+      {streamManager !== undefined ? (
         <StreamComponent>
           <VideoBox>
-            <OpenViduVideoComponent streamManager={props.streamManager} />
-            <NameBox>
+            {isDisplayingEmoji && (
+              <EmojiDivision>
+                <Emoji
+                  src={defaultImg}
+                  className={`animate__animated animate__hinge`}
+                />
+              </EmojiDivision>
+            )}
+            <OpenViduVideoComponent streamManager={streamManager} />
+            <NameBox pickRandomColor={pickRandomColor}>
               <p>{getNickNameTag()}</p>
             </NameBox>
           </VideoBox>
@@ -51,14 +112,35 @@ const NameBox = styled.div`
   left: 8px;
 
   p {
-    background-color: ${_.sample([
-      darkTheme.emphasisColor,
-      darkTheme.darkBadgeColor,
-      darkTheme.contrastColor,
-    ])};
+    background-color: ${(props: { pickRandomColor: Function }) =>
+      props.pickRandomColor()};
     border-radius: 4px;
     padding: 0.3rem 0.3rem;
   }
+`;
+const EmojiDivision = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  z-index: 5000;
+`;
+const Emoji = styled.img`
+  /* @keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 100%;
+    }
+
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  } */
 `;
 
 export default UserVideoComponent;

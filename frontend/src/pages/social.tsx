@@ -1,73 +1,43 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Navigate } from "@tanstack/react-location";
 
-import styled from "styled-components";
+import useUser from "hooks/useUser";
+
+import { getFriendList, getFriendSendMessage } from "api/social";
 
 import Container from "components/commons/Container";
 import SocialHeader from "components/social/SocialHeader";
 import MyFriends from "components/social/MyFriends";
+import Loading from "components/Loading";
 import Requests from "components/social/Requests";
 
-export type UserType = {
-  profileImg: number;
-  nickname: string;
-  email: string;
-  curPos: string;
-  status: string;
-};
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
 
-  const myFriends = [
-    {
-      profileImg: 0,
-      nickname: "Thomas",
-      email: "tho@gmail.com",
-      curPos: "일본 vs 대한민국 같이봐요",
-      status: "live",
-    },
-    {
-      profileImg: 1,
-      nickname: "Bell",
-      email: "bell@gmail.com",
-      curPos: "접속중",
-      status: "loggedIn",
-    },
-    {
-      profileImg: 2,
-      nickname: "Dijkstra",
-      email: "graph@gmail.com",
-      curPos: "12 minutes ago",
-      status: "loggedOut",
-    },
-    {
-      profileImg: 3,
-      nickname: "Perry",
-      email: "graph@gmail.com",
-      curPos: "12 minutes ago",
-      status: "loggedOut",
-    },
-  ];
+  const { userInfo } = useUser();
 
-  const requests = [
-    {
-      profileImg: 0,
-      nickname: "Thomas",
-      email: "tho@gmail.com",
-      curPos: "일본 vs 대한민국 같이봐요",
-      status: "live",
-    },
-  ];
+  const {
+    data: friendListData,
+    isError: friendListIsError,
+    isLoading: friendListIsLoading,
+  } = useQuery([QUERY_KEYS.FRIEND_LIST], getFriendList, {
+    retry: 0,
+  });
+  const {
+    data: friendMessageListData,
+    isError: friendMessageListIsError,
+    isLoading: friendMessageListIsLoading,
+  } = useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
+    retry: 0,
+  });
 
-  const searchRes = [
-    {
-      profileImg: 0,
-      nickname: "Thomas",
-      email: "tho@gmail.com",
-      curPos: "일본 vs 대한민국 같이봐요",
-      status: "live",
-    },
-  ];
+  if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
+  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
+  // if (friendListIsError || friendMessageListIsError)
+  //   return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <Container>
@@ -78,11 +48,14 @@ function SocialPage() {
       {isDisplayMyFriends && (
         <MyFriends
           isDisplayMyFriends={isDisplayMyFriends}
-          myFriends={myFriends}
+          myFriends={friendListData?.data}
         />
       )}
       {!isDisplayMyFriends && (
-        <Requests isDisplayMyFriends={isDisplayMyFriends} requests={requests} />
+        <Requests
+          isDisplayMyFriends={isDisplayMyFriends}
+          requests={friendMessageListData?.data}
+        />
       )}
     </Container>
   );

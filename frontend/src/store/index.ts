@@ -1,10 +1,11 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Session, Publisher, Subscriber } from "openvidu-react";
+import { USER_SESSIONSTORAGE_KEY } from "constant";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
   isCreatingRoom: boolean;
   isCreatingGame: boolean;
+  isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
   isLoggedIn: boolean;
@@ -17,15 +18,17 @@ export type ClientSessionType = {
   msgToSend: string;
   emojiEvents: Array<string>;
   chatEvents: Array<string>;
+  isDisplayEmoji: boolean;
   currentVideoDevice?: Object | undefined;
 };
 const initialState: NavMode = {
   navMode: "default",
   isCreatingRoom: false,
   isCreatingGame: false,
+  isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!localStorage.getItem("token"),
+  isLoggedIn: !!sessionStorage.getItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN),
 };
 const sessionInitialState: ClientSessionType = {
   mySessionId: "SessionABC",
@@ -33,8 +36,9 @@ const sessionInitialState: ClientSessionType = {
   audioEnabled: false,
   videoEnabled: false,
   msgToSend: "",
-  emojiEvents: new Array(),
+  emojiEvents: new Array(9).fill(""),
   chatEvents: new Array(),
+  isDisplayEmoji: false,
   currentVideoDevice: undefined,
 };
 const navbar = createSlice({
@@ -52,6 +56,9 @@ const navbar = createSlice({
     },
     setIsCreatingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isCreatingGame = actions.payload;
+    },
+    setIsCreatingPreferences(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isCreatingPreferences = actions.payload;
     },
     setIsShowingGame(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingGame = actions.payload;
@@ -101,6 +108,12 @@ const clientSession = createSlice({
     addEmojiEvents(state: ClientSessionType, actions: PayloadAction<string>) {
       state.emojiEvents = [...state.emojiEvents, actions.payload];
     },
+    setIsDisplayEmoji(
+      state: ClientSessionType,
+      actions: PayloadAction<boolean>
+    ) {
+      state.isDisplayEmoji = actions.payload;
+    },
   },
 });
 export const store = configureStore({
@@ -113,6 +126,7 @@ export const {
   setNavMode,
   setIsCreatingRoom,
   setIsCreatingGame,
+  setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
   setIsLoggedIn,
@@ -127,6 +141,7 @@ export const {
   setEmojiEvents,
   addChatEvents,
   addEmojiEvents,
+  setIsDisplayEmoji,
 } = clientSession.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

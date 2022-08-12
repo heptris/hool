@@ -1,15 +1,31 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import useUser from "hooks/useUser";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
+import { getMyPoint } from "api/profile";
+
 import Button from "../commons/Button";
 import Modal from "../commons/Modal";
 import Card from "../commons/Card";
 
+import { QUERY_KEYS } from "constant";
+
+import { PointHistoryType } from "types/PointHistoryType";
+import Loading from "components/Loading";
+
 function Profile() {
+  const { userInfo } = useUser();
+
+  const { data: myPointData, isLoading } = useQuery([QUERY_KEYS.POINT], () =>
+    getMyPoint({ memberId: userInfo?.memberId })
+  );
+
   const [isEditing, setIsEditing] = useState(false);
   const [isDisplayModal, setIsDisplayModal] = useState(false);
 
@@ -20,20 +36,7 @@ function Profile() {
   const switchIsDisplayModal = () => {
     setIsDisplayModal(!isDisplayModal);
   };
-
-  const [username, setUsername] = useState<string | null>("Andrew");
-  const [email, setEmail] = useState<string | null>("Andy@gmail.com");
-
-  const [point, emojiCnt, followingCnt]: number[] = [1237, 2, 47];
-  const [userPoint, setUserPoint] = useState<string | null>(
-    point?.toLocaleString("ko-KR")
-  );
-  const [userEmojiCnt, setUserEmojiCnt] = useState<string | null>(
-    emojiCnt?.toLocaleString("ko-KR")
-  );
-  const [userFollwingCnt, setUserFollowingCnt] = useState<string | null>(
-    followingCnt?.toLocaleString("ko-KR")
-  );
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -46,15 +49,27 @@ function Profile() {
           }
           body={
             <PointLogBody>
-              <Card marginTop={1}>
-                <CardContent>
-                  <div>
-                    <Activity>로그인 보너스</Activity>
-                    <Date>2022.07.25</Date>
-                  </div>
-                  <Diff>+500</Diff>
-                </CardContent>
-              </Card>
+              {myPointData.data.map(
+                ({
+                  createdDate,
+                  dealtPoint,
+                  description,
+                }: PointHistoryType) => {
+                  return (
+                    <Card marginTop={1}>
+                      <CardContent>
+                        <div>
+                          <Activity>{description}</Activity>
+                          <Date>{createdDate}</Date>
+                        </div>
+                        <Diff>
+                          {dealtPoint > 0 ? `+${dealtPoint}` : dealtPoint}
+                        </Diff>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+              )}
             </PointLogBody>
           }
           onDisplayChange={switchIsDisplayModal}
@@ -66,8 +81,8 @@ function Profile() {
 
         <ProfileImg src={profileDefaultImg} alt="profile-img" />
 
-        <Username>{username}</Username>
-        <Email>{email}</Email>
+        <Username>{userInfo?.nickName}</Username>
+        <Email>{userInfo?.memberEmail}</Email>
 
         <div onClick={switchIsEditing}>
           <Button width={6} height={2} text={"프로필 편집"} />
@@ -76,18 +91,22 @@ function Profile() {
         <InfoBox>
           <Clickable onClick={switchIsDisplayModal}>
             <Info>
-              <InfoNumber>{userPoint}</InfoNumber>
+              <InfoNumber>{userInfo?.point.toLocaleString("ko-KR")}</InfoNumber>
               <InfoContent>큐브</InfoContent>
             </Info>
           </Clickable>
 
           <Info>
-            <InfoNumber>{userEmojiCnt}</InfoNumber>
+            <InfoNumber>
+              {userInfo?.emojiCount.toLocaleString("ko-KR")}
+            </InfoNumber>
             <InfoContent>이모지</InfoContent>
           </Info>
 
           <Info>
-            <InfoNumber>{userFollwingCnt}</InfoNumber>
+            <InfoNumber>
+              {userInfo?.friendCount.toLocaleString("ko-KR")}
+            </InfoNumber>
             <InfoContent>친구</InfoContent>
           </Info>
         </InfoBox>

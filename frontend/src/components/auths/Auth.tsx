@@ -1,17 +1,15 @@
-import { Link, Navigate, useNavigate } from "@tanstack/react-location";
+import { Link } from "@tanstack/react-location";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { gapi } from "gapi-script";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import useAuth from "hooks/useAuth";
+
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import GoogleLoginBtn from "./GoogleLoginBtn";
-import { requestLogin } from "api/auth";
-
-import { LoginFormType } from "types/LoginFormTypes";
-import { ROUTES_NAME } from "constant";
 
 const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
@@ -21,26 +19,19 @@ const Auth = () => {
     memberEmail: "",
     password: "",
   });
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { placeholder, value } = e.target;
-    setForm({
+  const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { placeholder, value, id } = e.target;
+    await setForm({
       ...form,
-      [placeholder]: value,
+      [id ? id : placeholder]: value,
     });
-    console.log(form);
   };
-  const onSubmit = (form: LoginFormType) => {
-    requestLogin(form)
-      .then(() => navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true }))
-      .catch((err) => {
-        console.log(err, "로그인 실패");
-      });
-  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(form);
+    login(form);
     setForm({
       memberEmail: "",
       password: "",
@@ -69,9 +60,10 @@ const Auth = () => {
           inputRef={eMailRef}
           inputValue={form.memberEmail}
           text="이메일"
-          placeholderText="memberEmail"
+          placeholderText="hool@example.com"
           type="email"
           inputOnChange={onChange}
+          id={"memberEmail"}
         />
         <LabelInput
           text="비밀번호"
@@ -80,13 +72,11 @@ const Auth = () => {
           inputValue={form.password}
           inputOnChange={onChange}
         />
-        <Link to={"/auth/find"}>
-          <Text>비밀번호를 잊어버리셨나요? 비밀번호 초기화</Text>
-        </Link>
+        <LinkText to={"/auth/find"}>
+          비밀번호를 잊어버리셨나요? 비밀번호 초기화
+        </LinkText>
         <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
-        <Link to={"/auth/signup"}>
-          <Text>계정이 없으신가요? 회원가입</Text>
-        </Link>
+        <LinkText to={"/auth/signup"}>계정이 없으신가요? 회원가입</LinkText>
         <GoogleLoginBtn />
       </FormBox>
     </Container>
@@ -123,7 +113,8 @@ const Title = styled.div`
   margin-bottom: 1.25rem;
 `;
 
-const Text = styled.div`
+const LinkText = styled(Link)`
+  display: flex;
   text-decoration: none;
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
@@ -134,37 +125,6 @@ const Text = styled.div`
     cursor: pointer;
     text-decoration: underline;
   }
-`;
-
-const GoogleDIV = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 11rem;
-  height: 2rem;
-  justify-content: space-evenly;
-  flex-direction: row;
-  border-radius: 4px;
-  padding: 0.2rem;
-  background-color: ${darkTheme.white};
-  margin-top: 3rem;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const GoogleLogoImg = styled.img`
-  width: 2rem;
-  height: 2rem;
-`;
-
-const GoogleText = styled.span`
-  font-size: 1rem;
-  font-weight: bold;
-  vertical-align: middle;
-  line-height: 20px;
-  padding: 0.3rem;
-  color: ${darkTheme.mainColor};
 `;
 
 export default Auth;

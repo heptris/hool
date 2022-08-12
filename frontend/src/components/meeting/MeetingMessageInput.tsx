@@ -1,5 +1,6 @@
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setMsgToSend } from "store";
+import { setMsgToSend, setIsDisplayEmoji } from "store";
 
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
@@ -8,7 +9,6 @@ import type { SessionStateType } from "./MeetingRoom";
 import type { RootState } from "store";
 
 import Button from "components/commons/Button";
-import React from "react";
 
 type PropsType = {
   sessionState: SessionStateType;
@@ -16,7 +16,7 @@ type PropsType = {
 
 const MeetingMessageInput = (props: PropsType) => {
   const dispatch = useDispatch();
-  const { myUserName, msgToSend, chatEvents } = useSelector(
+  const { myUserName, msgToSend, chatEvents, isDisplayEmoji } = useSelector(
     (state: RootState) => state.clientSession
   );
   const { session } = props.sessionState;
@@ -44,42 +44,54 @@ const MeetingMessageInput = (props: PropsType) => {
   };
 
   return (
-    <MessageBox>
-      <IconBox>
-        <div>
-          <Icon className="fa-solid fa-face-meh" />
-          <Icon className="fa-solid fa-microphone" />
-          <Icon className="fa-solid fa-bell" />
-        </div>
-        <div>
-          <Icon className="fa-solid fa-circle-info"></Icon>
-        </div>
-      </IconBox>
-      <MsgForm onSubmit={sendTextMessage}>
-        <Input
-          type="text"
-          placeholder={"Type to write a message"}
-          height="2.25rem"
-          widthSize="100%"
-          value={msgToSend}
-          onChange={onChangeMsgToSend}
-        />
-        <div
-          onClick={(e: React.FormEvent) => {
+    <>
+      <MessageBox>
+        <IconBox>
+          <Left>
+            <Icon
+              className="fa-solid fa-face-meh"
+              onClick={() => {
+                dispatch(setIsDisplayEmoji(!isDisplayEmoji));
+              }}
+            />
+            <Icon className="fa-solid fa-microphone" />
+            <Icon className="fa-solid fa-bell" />
+          </Left>
+          <div>
+            <Icon className="fa-solid fa-circle-info"></Icon>
+          </div>
+        </IconBox>
+        <MsgForm
+          onSubmit={(e: React.FormEvent) => {
             e.preventDefault();
             sendTextMessage();
           }}
         >
-          <Button
-            CSSProps={"position:absolute; top: 0.2rem; right:0.2rem"}
-            text="Send"
-            width={3.75}
-            height={1.875}
-            fontSize={0.875}
+          <Input
+            type="text"
+            placeholder={"Type to write a message"}
+            height="2.25rem"
+            widthSize="100%"
+            value={msgToSend}
+            onChange={onChangeMsgToSend}
           />
-        </div>
-      </MsgForm>
-    </MessageBox>
+          <div
+            onClick={(e: React.MouseEvent) => {
+              e.preventDefault();
+              sendTextMessage();
+            }}
+          >
+            <Button
+              CSSProps={"position:absolute; top: 0.2rem; right:0.2rem"}
+              text="Send"
+              width={3.75}
+              height={1.875}
+              fontSize={0.875}
+            />
+          </div>
+        </MsgForm>
+      </MessageBox>
+    </>
   );
 };
 
@@ -87,10 +99,9 @@ const Input = styled.input`
   ${InputStyle}
 `;
 export const MessageBox = styled.div`
-  width: 25rem;
+  width: 24.5rem;
   height: 6.125rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  margin: 1rem 0.5rem 0 1rem;
   box-sizing: border-box;
   border-radius: 4px;
   padding: 1rem;
@@ -101,10 +112,19 @@ const IconBox = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+const Left = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+`;
 const Icon = styled.i`
   ${IconStyle}
   margin-bottom: 0.75rem;
-  margin-right: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    color: ${darkTheme.adaptiveGrey500};
+  }
 `;
 const MsgForm = styled.form`
   width: 100%;

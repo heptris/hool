@@ -1,20 +1,27 @@
-import styled from "styled-components";
-import { useQuery } from "@tanstack/react-query";
-
-import { getMeetingList } from "api/meeting";
-
-import MeetingListItem from "./MeetingListItem";
-import { MeetingRoomType } from "types/MeetingRoomType";
-import Loading from "components/Loading";
 import { Link, Navigate } from "@tanstack/react-location";
 import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+
+import useUser from "hooks/useUser";
+
+import styled from "styled-components";
+
+import { getMeetingList, postEnterMeetingRoom } from "api/meeting";
+
 import { setMySessionId, setMyUserName } from "store";
 
+import MeetingListItem from "./MeetingListItem";
+import Loading from "components/Loading";
+
+import { QUERY_KEYS } from "constant";
+
+import { MeetingRoomType } from "types/MeetingRoomType";
+
 const MeetingList = () => {
-  const { status, data, isLoading, isError } = useQuery(["meetings"], () =>
+  const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
     getMeetingList()
   );
-  console.log(data);
+  const { userInfo } = useUser();
 
   const dispatch = useDispatch();
 
@@ -23,17 +30,28 @@ const MeetingList = () => {
 
   return (
     <ItemList>
-      {data.data.map((el: MeetingRoomType) => (
-        <Link
-          to={`meeting/${el.conferenceId}`}
-          key={el.conferenceId}
-          onClick={() => {
-            dispatch(setMySessionId(el.conferenceId));
-          }}
-        >
-          <MeetingListItem {...el} />
-        </Link>
-      ))}
+      {data.data.map((el: MeetingRoomType) => {
+        return userInfo ? (
+          <Link
+            to={`meeting/${el.conferenceId}`}
+            key={el.conferenceId}
+            onClick={() => {
+              dispatch(setMySessionId("" + el.conferenceId));
+              dispatch(setMyUserName(userInfo.nickName));
+              postEnterMeetingRoom({
+                conferenceId: el.conferenceId,
+                memberId: userInfo.memberId,
+              });
+            }}
+          >
+            <MeetingListItem {...el} />
+          </Link>
+        ) : (
+          <div onClick={() => alert("로그인이 필요한 서비스입니다.")}>
+            <MeetingListItem {...el} />
+          </div>
+        );
+      })}
     </ItemList>
   );
 };

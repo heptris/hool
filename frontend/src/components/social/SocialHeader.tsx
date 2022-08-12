@@ -1,12 +1,101 @@
+import { ChangeEvent, useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import PageHeader from "components/commons/PageHeader";
+import { postSearchFriend, postSendFriendSendMessage } from "api/social";
 
+import PageHeader from "components/commons/PageHeader";
+import SearchBar from "components/commons/SearchBar";
+import Card from "components/commons/Card";
+import Button from "components/commons/Button";
+
+import { QUERY_KEYS } from "constant";
+
+import { UserInfoType } from "types/UserInfoType";
+import { FriendInfoType } from "types/FriendInfoType";
 type PropsType = {
   isDisplayMyFriends: boolean;
   setIsDisplayMyFriends: Function;
 };
+
+const SocialSearchBar = () => {
+  const queryClient = useQueryClient();
+  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
+    QUERY_KEYS.USER,
+  ]);
+  const myFriends: { data: FriendInfoType[] } | undefined =
+    queryClient.getQueryData([QUERY_KEYS.FRIEND_LIST]);
+  const [searchName, setSearchName] = useState("");
+  const {
+    mutate: mutateSearchFriend,
+    isSuccess: isSearchFriendSuccess,
+    isError: isSearchFriendError,
+    data: searchFriendData,
+  } = useMutation(postSearchFriend);
+  const { mutate: mutateFriendSend } = useMutation(postSendFriendSendMessage, {
+    onSuccess: () => {
+      setSearchName("");
+    },
+  });
+
+  const handleSearchName = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchName(e.target.value);
+  };
+
+  useEffect(() => {
+    mutateSearchFriend({ friendNickName: searchName });
+  }, [searchName]);
+  console.log(searchFriendData, myFriends);
+
+  return (
+    <SearchBar
+      inputValue={searchName}
+      searchPlaceholder="친구 검색"
+      inputOnChange={handleSearchName}
+      SearchListComponent={(() => {
+        if (searchName === userInfo?.nickName)
+          return <CustomFriendCard>본인입니다</CustomFriendCard>;
+        if (searchName && isSearchFriendError)
+          return (
+            <CustomFriendCard>존재하지 않는 사용자입니다.</CustomFriendCard>
+          );
+        if (isSearchFriendSuccess)
+          return (
+            <CustomFriendCard>
+              <div>
+                <strong>
+                  사용자 닉네임 : {searchFriendData.data.friendNickName}
+                </strong>
+                <p>사용자 메일 : {searchFriendData.data.friendMemberEmail}</p>
+              </div>
+              {myFriends &&
+                !myFriends.data
+                  .map((el: FriendInfoType) => el?.friendMemberId)
+                  .includes(searchFriendData.data.friendMemberId) && (
+                  <Button
+                    height={2}
+                    width={2}
+                    text={"친구 요청"}
+                    fontSize={0.8}
+                    buttonOnClick={() => {
+                      mutateFriendSend(searchFriendData.data.friendMemberId);
+                    }}
+                  />
+                )}
+            </CustomFriendCard>
+          );
+      })()}
+    />
+  );
+};
+const CustomFriendCard = styled(Card)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+`;
 
 function SocialHeader({
   isDisplayMyFriends,
@@ -63,6 +152,7 @@ function SocialHeader({
           </SwitchItem>
         </Switches>
       }
+      SearchBar={<SocialSearchBar />}
     ></PageHeader>
   );
 }

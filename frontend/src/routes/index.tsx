@@ -1,4 +1,5 @@
 import {
+  createBrowserHistory,
   Outlet,
   ReactLocation,
   Router,
@@ -16,7 +17,8 @@ import SocialPage from "pages/social";
 import MeetingPage from "pages/meeting";
 import RoomPage from "pages/meeting/[id]";
 
-const location = new ReactLocation();
+const history = createBrowserHistory();
+const location = new ReactLocation({ history });
 const routes = [
   { path: "error", element: <ErrorPage errorMessage="" /> },
   {

@@ -1,57 +1,67 @@
-import { useDispatch } from "react-redux";
+import { ChangeEvent, useState } from "react";
+import { useMatch } from "@tanstack/react-location";
+import { useMutation } from "@tanstack/react-query";
+
+import useGame from "hooks/useGame";
 
 import styled from "styled-components";
 import { darkTheme, InputStyle } from "styles";
 
 import Button from "components/commons/Button";
-import { useState } from "react";
 
-import { setIsShowingGame } from "store";
-
-const MeetingGameModalBody = () => {
-  const dispatch = useDispatch();
-
+const MeetingGameModalBody = ({
+  onDisplayChange,
+  setGameInfo,
+}: {
+  onDisplayChange: Function;
+  setGameInfo: Function;
+}) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAgree, setEnteredAgree] = useState("");
   const [enteredDisagree, setEnteredDisagree] = useState("");
-  const [enteredTime, setEnteredTime] = useState(1);
-  const [enteredTitleLength, setEnteredTitleLength] = useState(0);
+  const [enteredTime, setEnteredTime] = useState("1");
 
-  const titleInputChangeHandler = (event) => {
+  const { createGame } = useGame();
+  const {
+    params: { id },
+  } = useMatch();
+  const { mutate } = useMutation(createGame, {
+    onSuccess(data) {
+      const dt = new Date();
+      setGameInfo({
+        gameId: data.data.gameId,
+        gameName: enteredTitle,
+        agreeName: enteredAgree,
+        disagreeName: enteredDisagree,
+        timeLimit: dt.setMinutes(dt.getMinutes() + +enteredTime),
+      });
+    },
+  });
+
+  const titleInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     let TitleMessage = event.target.value;
     let TitleLength = TitleMessage.length;
-    if (TitleLength >= 45) {
-      TitleMessage = TitleMessage.slice(0, 44);
-      setEnteredTitle(TitleMessage);
-    }
+    TitleLength >= 45 && (TitleMessage = TitleMessage.slice(0, 45));
     setEnteredTitle(TitleMessage);
-    setEnteredTitleLength(TitleLength);
   };
-
-  const agreeInputChangeHandler = (event) => {
+  const agreeInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEnteredAgree(event.target.value);
   };
-
-  const disagreeInputChangeHandler = (event) => {
+  const disagreeInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEnteredDisagree(event.target.value);
   };
-
-  const TimeInputChangeHandler = (event) => {
+  const TimeInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEnteredTime(event.target.value);
   };
   const clearHandler = () => {
     setEnteredTitle("");
     setEnteredAgree("");
     setEnteredDisagree("");
-    setEnteredTime(1);
+    setEnteredTime("1");
+    onDisplayChange();
   };
-
-  const showingGame = () => {
-    dispatch(setIsShowingGame(true));
-  };
-  const submitHandler = () => {
-    console.log(enteredTime, enteredTitle, enteredAgree, enteredDisagree);
-    showingGame();
+  const submitHandler = async () => {
+    mutate({ conferenceId: +id, gameName: enteredTitle });
     clearHandler();
   };
 
@@ -66,7 +76,7 @@ const MeetingGameModalBody = () => {
           onChange={titleInputChangeHandler}
           value={enteredTitle}
         />
-        <TextLength>( {enteredTitleLength} / 45 )</TextLength>
+        <TextLength>( {enteredTitle.length} / 45 )</TextLength>
       </Wrapper>
       <Wrapper>
         <GameFlexWrapper>
@@ -100,7 +110,9 @@ const MeetingGameModalBody = () => {
             </GameSubTitle>
           </GameTimeWrapper>
           <TimeInputWrapper>
-            <TimeInputLabel htmlFor="게임시간">단위 : 분</TimeInputLabel>
+            <TimeInputLabel htmlFor="게임시간">
+              단위 : 분, 최대 5분
+            </TimeInputLabel>
             <TimeInput
               id="게임시간"
               type="number"
@@ -121,19 +133,20 @@ const MeetingGameModalBody = () => {
           marginBottom={2}
           color={darkTheme.adaptiveGrey500}
           marginRight={1}
-          onClick={clearHandler}
+          buttonOnClick={clearHandler}
         />
         <Button
           height={2}
           width={4}
           text={"완료"}
           marginBottom={2}
-          onClick={submitHandler}
+          buttonOnClick={submitHandler}
         />
       </ButtonWrapper>
     </BodyContainer>
   );
 };
+
 const BodyContainer = styled.div`
   width: 40vw;
   max-width: 30rem;
@@ -149,12 +162,12 @@ const GameFlexWrapper = styled.div`
   justify-content: space-between;
 `;
 const GameTitle = styled.h1`
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: ${darkTheme.adaptiveGrey200};
   margin-bottom: 0.5rem;
 `;
 const GameSubTitle = styled.h1`
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const TextLength = styled.h1`
@@ -181,12 +194,13 @@ const TimeInputWrapper = styled.div`
 const TimeInputLabel = styled.label`
   display: flex;
   align-self: flex-end;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   margin-bottom: 0.3rem;
 `;
 const TimeInput = styled.input`
-  width: 3rem;
-  height: 1.5rem;
+  ${InputStyle}
+  width: 5rem;
+  height: 2rem;
   font-size: 1rem;
   border-radius: 5px;
   border: 1px solid #ccc;

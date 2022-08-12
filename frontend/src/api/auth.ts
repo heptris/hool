@@ -1,40 +1,21 @@
-// import { useQuery } from "@tanstack/react-query";
 import { apiInstance } from "api";
-// import axios from "axios";
 import { HOOL_AUTH_ENDPOINT } from "constant";
-// import { Cookies } from "react-cookie";
+
 import { LoginFormType } from "types/LoginFormTypes";
 
 const api = apiInstance(HOOL_AUTH_ENDPOINT);
-// const cookies = new Cookies();
 
-const requestLogin = async ({ memberEmail, password }: LoginFormType) => {
-  return await api
-    .post(`login`, {
-      memberEmail,
-      password,
-    })
-    .then((response) => {
-      sessionStorage.setItem("accessToken", response.data.data.accessToken);
-      sessionStorage.setItem("refreshToken", response.data.data.refreshToken);
-      // cookies.set("myToken", response.data.data.accessToken);
-      // api.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Bearer ${response.data.data.accessToken}`;
+// auth-controller
+const requestLogin = async (form: LoginFormType) =>
+  await api.post(`login`, form).then((res) => res.data);
 
-      return response.data;
-    });
-};
+//구글 로그인시 아래함수 이용하면 axios 요청이 안되서 사용안함.
+// const requestGoogleLogin = async (obj: { googleIdToken: string }) => {
+//   await api.post(`google/login`, obj).then((res) => res.data);
+// }
 
-const requestLogout = async () => {
-  return await api
-    .get(`logout`)
-    .then((response) => {
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
-      return response.data;
-    })
-};
+const requestLogout = async () =>
+  await api.get(`logout`).then((res) => res.data);
 
 const postReissue = async (tokens: {
   accessToken: string;
@@ -44,9 +25,37 @@ const postReissue = async (tokens: {
   return data;
 };
 
-// SignUp용 axios 객체는 SignUp 컴포넌트 내에 존재
-// const postSignUp =async (params:) => {
+const postConfirmEmail = async (obj: { email: string }) => {
+  const { data } = await api.post(`mail`, obj);
+  return data;
+};
 
-// };
+const postCheckNickName = async (obj: { nickName: string }) => {
+  const { data } = await api.post(`nickname/check`, obj);
+  return data;
+};
 
-export { requestLogin, requestLogout, postReissue };
+const postSignUp = async (obj: {
+  memberEmail: string;
+  name: string;
+  nickName: string;
+  password: string;
+}) => {
+  const { data } = await api.post(`signup`, obj);
+  return data;
+};
+
+const postVerifyCode = async (obj: { code: string }) => {
+  const { data } = await api.post(`verifyCode`, obj);
+  return data;
+};
+
+export {
+  requestLogin,
+  requestLogout,
+  postReissue,
+  postConfirmEmail,
+  postCheckNickName,
+  postSignUp,
+  postVerifyCode,
+};
