@@ -24,10 +24,11 @@ const MarketList = () => {
       retry: 0,
     }
   );
+  console.log(data);
 
   if (isLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  // if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
+  if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <ItemList>

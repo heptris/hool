@@ -33,6 +33,7 @@ function SocialPage() {
   } = useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
     retry: 0,
   });
+  console.log(friendListData, friendMessageListData);
 
   if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;

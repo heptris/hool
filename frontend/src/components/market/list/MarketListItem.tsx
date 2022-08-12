@@ -14,17 +14,15 @@ import { MarketItemType } from "types/MarketItemType";
 import { UserInfoType } from "types/UserInfoType";
 
 import { QUERY_KEYS } from "constant";
+import useUser from "hooks/useUser";
 
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
 const MarketItem = (props: MarketItemType) => {
+  const { userInfo } = useUser();
   const { emojiId, price } = props;
   const { mutate, isLoading, isError, error, isSuccess, data } =
     useMutation(postBuyEmoji);
-  const queryClient = useQueryClient();
-  const userInfo: UserInfoType | undefined = queryClient.getQueryData([
-    QUERY_KEYS.USER,
-  ]);
 
   return (
     <Item bgColor={mainColor} borderColor={adaptiveGrey700}>

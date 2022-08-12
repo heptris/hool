@@ -22,10 +22,10 @@ const Auth = () => {
   const { login } = useAuth();
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { placeholder, value, id } = e.target;
+    const { value, id } = e.target;
     await setForm({
       ...form,
-      [id ? id : placeholder]: value,
+      [id]: value,
     });
   };
 
@@ -71,6 +71,7 @@ const Auth = () => {
           type="password"
           inputValue={form.password}
           inputOnChange={onChange}
+          id={"password"}
         />
         <LinkText to={"/auth/find"}>
           비밀번호를 잊어버리셨나요? 비밀번호 초기화

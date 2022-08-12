@@ -1,4 +1,4 @@
-import { Key } from "react";
+import { Key, useState } from "react";
 import { Navigate } from "@tanstack/react-location";
 import { useQuery } from "@tanstack/react-query";
 
@@ -7,7 +7,7 @@ import { darkTheme } from "styles/Theme";
 
 import { getMarketMakeList } from "api/market";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
@@ -17,45 +17,41 @@ import Loading from "components/Loading";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
+interface UploadItemType {
+  creatorId: number;
+  description: string;
+  name: string;
+  url: string;
+  emojiId: number;
+}
+
 const MarketModalBody = () => {
+  const [uploadItemInfo, setUploadItemInfo] = useState({
+    name: "",
+    price: "",
+    description: "",
+  });
   const {
     data: canUploadData,
     isError: canUploadIsError,
     isLoading: canUploadIsLoading,
-  } = useQuery(["market-can-upload"], getMarketMakeList);
+  } = useQuery([QUERY_KEYS.MARKET_UPLOAD_ITEM], getMarketMakeList);
 
   if (canUploadIsLoading) return <Loading />;
   if (canUploadIsError) return <Navigate to={ROUTES_NAME.ERROR} />;
+
+  console.log(canUploadData);
+
+  const handleUploadItem = (el: UploadItemType) => {};
 
   return (
     <>
       <LRContainer>
         <LeftContainer>
           <ItemList>
-            {canUploadData.data.map(
-              (
-                el: {
-                  creatorId: number;
-                  description: string;
-                  name: string;
-                  url: string;
-                },
-                i: Key | null | undefined
-              ) => {
-                return (
-                  <EmojiCard
-                    key={i}
-                    children={
-                      <div style={{ overflow: "hidden" }}>
-                        <div>{el.name}</div>
-                        <div>{el.description}</div>
-                        <div>{el.url}</div>
-                      </div>
-                    }
-                  />
-                );
-              }
-            )}
+            {canUploadData.data.map((el: UploadItemType) => {
+              return <EmojiCard key={el.emojiId} imgUrl={el.url} />;
+            })}
           </ItemList>
           <Button height={3} width={15} text={"등록하기"} marginTop={1.5} />
         </LeftContainer>
@@ -120,6 +116,14 @@ const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+const EmojiItem = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`;
+const EmojiImg = styled.img`
+  height: 100%;
 `;
 
 export default MarketModalBody;
