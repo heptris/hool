@@ -88,7 +88,6 @@ function MeetingRoom() {
             />
           </MeetingBox>
           <GameMessageBox>
-            {isShowingGame && <MeetingGame gameInfo={gameInfo} />}
             {isShowingMessage && (
               <MeetingMessageShow sessionState={sessionState} />
             )}
@@ -99,6 +98,14 @@ function MeetingRoom() {
         </FlexBox>
       </ConcreteContainer>
       {isCreatingGame && <MeetingGameModal setGameInfo={setGameInfo} />}
+      {isShowingGame && (
+        <MeetingGame
+          gameInfo={gameInfo}
+          handleDisplayClose={() => {
+            dispatch(setIsShowingGame(false));
+          }}
+        />
+      )}
     </>
   );
 }
