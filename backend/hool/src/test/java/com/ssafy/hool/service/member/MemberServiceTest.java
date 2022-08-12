@@ -70,7 +70,7 @@ class MemberServiceTest {
 
     @Test
     void 회원수정() {
-        memberService.updateMember(1L, "1235", "회원", "음바페1");
+
     }
 
     @Test

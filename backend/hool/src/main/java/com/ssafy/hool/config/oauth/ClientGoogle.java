@@ -44,8 +44,8 @@ public class ClientGoogle {
 
             JSONObject jsonObj = (JSONObject)jsonParser.parse(in);
 
-            String nickName = jsonObj.get("sub").toString();
             String name = jsonObj.get("name").toString();
+            String nickName = name + "#" + jsonObj.get("sub").toString();
             String email = jsonObj.get("email").toString();
             String password = "hool";
 

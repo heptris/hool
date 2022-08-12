@@ -1,9 +1,9 @@
 insert into member (created_date, last_modified_date, authority, member_email, member_status, name, nick_name, password, point)
-values (now(), now(), 'ROLE_USER', 'aa@naver.com', 'OFFLINE', 'aa', 'aa', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bb', 'bb', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_USER', 'cc@naver.com', 'ONLINE', 'cc', 'cc', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_USER', 'dd@naver.com', 'ONLINE', 'dd', 'dd', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       (now(), now(), 'ROLE_ADMIN', 'ee@naver.com', 'OFFLINE', 'ee', 'ee', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000);
+values ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'aa@naver.com', 'OFFLINE', 'aa', 'aa', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bb', 'bb', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'cc@naver.com', 'ONLINE', 'cc', 'cc', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'dd@naver.com', 'ONLINE', 'dd', 'dd', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_ADMIN', 'ee@naver.com', 'OFFLINE', 'ee', 'ee', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000);
 
 insert into friend_request (created_date, last_modified_date, friend_request_status, from_member_id, to_member_id)
 values (now(), now(), 'PROCESS', 1, 2),
