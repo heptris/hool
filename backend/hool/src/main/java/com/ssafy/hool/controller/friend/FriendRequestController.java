@@ -56,10 +56,10 @@ public class FriendRequestController {
 
     @ApiOperation(value = "나한테 온 친구 요청 메세지", notes = "페이징 처리")
     @GetMapping("/send/message/page")
-    public ResponseEntity<?> myFriendListPage(Long friendRequestCursorId, Integer size) {
+    public ResponseEntity<?> myFriendListPage(Long cursorId, Integer size) {
         if (size == null) size = DEFAULT_SIZE;
         Long memberId = SecurityUtil.getCurrentMemberId();
-        CursorResult<FriendRequestDto> friendRequestDtoCursorResult = friendRequestService.get(memberId, friendRequestCursorId, PageRequest.of(0, size));
+        CursorResult<FriendRequestDto> friendRequestDtoCursorResult = friendRequestService.get(memberId, cursorId, PageRequest.of(0, size));
         return new ResponseEntity<>(new ResponseDto<>(200, "success", friendRequestDtoCursorResult)
                 , HttpStatus.OK);
 
