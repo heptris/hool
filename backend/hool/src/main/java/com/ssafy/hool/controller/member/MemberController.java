@@ -38,7 +38,8 @@ public class MemberController {
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
     })
     @PutMapping("/")
-    public ResponseEntity memberUpdate(@RequestPart MemberUpdateDto memberUpdateDto, @RequestPart("file") MultipartFile multipartFile) {
+    public ResponseEntity memberUpdate(@RequestPart MemberUpdateDto memberUpdateDto,
+                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
 
         Long memberId = SecurityUtil.getCurrentMemberId();
         memberService.updateMember(multipartFile, memberId, memberUpdateDto);

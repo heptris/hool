@@ -78,17 +78,19 @@ public class MemberService {
         member.setName(memberUpdateDto.getName());
         member.setNickName(memberUpdateDto.getNickName());
 
-        AwsS3 awsS3 = new AwsS3();
+        if (multipartFile != null) {
+            AwsS3 awsS3 = new AwsS3();
 
-        System.out.println("========================================");
-        try {
-            awsS3 = awsS3Service.upload(multipartFile, "member");
-        }catch (IOException e){
-            throw new CustomException(FILE_UPLOAD_ERROR);
+            System.out.println("========================================");
+            try {
+                awsS3 = awsS3Service.upload(multipartFile, "member");
+            } catch (IOException e) {
+                throw new CustomException(FILE_UPLOAD_ERROR);
+            }
+
+            String url = awsS3.getPath();
+            member.setProfileImage(url);
         }
-
-        String url = awsS3.getPath();
-        member.setProfileImage(url);
     }
 
     /**
