@@ -13,6 +13,8 @@ import { getMyPoint } from "api/profile";
 import Button from "../commons/Button";
 import Modal from "../commons/Modal";
 import Card from "../commons/Card";
+import ProfileEditModalHeader from "./ProfileEditModalHeader";
+import ProfileEditModalBody from "./ProfileEditModalBody";
 
 import { QUERY_KEYS } from "constant";
 
@@ -36,10 +38,18 @@ function Profile() {
   const switchIsDisplayModal = () => {
     setIsDisplayModal(!isDisplayModal);
   };
+
   if (isLoading) return <Loading />;
 
   return (
     <>
+      {isEditing && (
+        <Modal
+          header={<ProfileEditModalHeader />}
+          body={<ProfileEditModalBody switchIsEditing={switchIsEditing} />}
+          onDisplayChange={switchIsEditing}
+        />
+      )}
       {isDisplayModal && (
         <Modal
           header={
