@@ -12,7 +12,7 @@ type PropsType = {
 function MyFriends({ myFriends, isDisplayMyFriends }: PropsType) {
   return (
     <MyFriendsBox>
-      {myFriends.map((user) => (
+      {myFriends?.map((user) => (
         <SocialItem
           key={user.friendMemberId}
           isDisplayMyFriends={isDisplayMyFriends}
