@@ -117,11 +117,12 @@ const PreferencesModalBody = () => {
             type="radio"
             id="r6"
             name="displayMode"
-            value="화이트 모드"
-            checked={displayModeSelect === "화이트 모드"}
+            value="라이트 모드"
+            checked={displayModeSelect === "라이트 모드"}
             onChange={displayModeSelectChange}
+            disabled
           />
-          <Label htmlFor="r6">화이트 모드</Label>
+          <Label htmlFor="r6">라이트 모드</Label>
         </InputWrapper>
       </Wrapper>
 
