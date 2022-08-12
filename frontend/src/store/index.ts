@@ -20,6 +20,7 @@ export type ClientSessionType = {
   chatEvents: Array<string>;
   isDisplayEmoji: boolean;
   currentVideoDevice?: Object | undefined;
+  isPublic: boolean;
 };
 const initialState: NavMode = {
   navMode: "default",
@@ -40,6 +41,7 @@ const sessionInitialState: ClientSessionType = {
   chatEvents: new Array(),
   isDisplayEmoji: false,
   currentVideoDevice: undefined,
+  isPublic: true,
 };
 const navbar = createSlice({
   name: "navbar",
@@ -114,6 +116,9 @@ const clientSession = createSlice({
     ) {
       state.isDisplayEmoji = actions.payload;
     },
+    setIsPublic(state: ClientSessionType, actions: PayloadAction<boolean>) {
+      state.isPublic = actions.payload;
+    },
   },
 });
 export const store = configureStore({
@@ -142,6 +147,7 @@ export const {
   addChatEvents,
   addEmojiEvents,
   setIsDisplayEmoji,
+  setIsPublic,
 } = clientSession.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

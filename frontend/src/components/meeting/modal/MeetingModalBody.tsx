@@ -3,19 +3,20 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "@tanstack/react-location";
 import React, { ChangeEvent, useState } from "react";
 
-import { postCreateMeetingRoom } from "api/meeting";
+import useUser from "hooks/useUser";
 
-import { setMySessionId } from "store";
+import { postCreateMeetingRoom } from "api/meeting";
 
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
 import Button from "components/commons/Button";
 import LabelTextarea from "components/commons/LabelTextarea";
-import SearchBar from "components/commons/SearchBar";
 import LabelWrapper from "components/commons/LabelWrapper";
 import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 import LabelInput from "components/commons/LabelInput";
+
+import { handleEnterRoom } from "utils/handleEnterRoom";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -27,7 +28,6 @@ const MeetingModalBody = ({
       conferenceCategory: "SOCCER",
       description: "",
       title: "",
-      tag: "",
       isPublic: true,
       conferencePassword: "",
     });
@@ -37,14 +37,21 @@ const MeetingModalBody = ({
     isPublic,
     title,
     conferencePassword,
-    tag,
   } = roomCreatingForm;
+  const {
+    userInfo: { nickName },
+  } = useUser();
   const navigate = useNavigate();
-  const createRoomMutation = useMutation(postCreateMeetingRoom);
   const dispatch = useDispatch();
-
-  const { mutate, isLoading, isError, error, isSuccess, data } =
-    createRoomMutation;
+  const { mutate } = useMutation(postCreateMeetingRoom, {
+    onSuccess: (data, variable) => {
+      onDisplayChange();
+      handleEnterRoom(data.data.conferenceId, nickName, navigate, dispatch);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const onChange = (
     key:
@@ -62,12 +69,6 @@ const MeetingModalBody = ({
       [key]: limit ? value.substring(0, limit) : value,
     });
   };
-
-  if (isSuccess) {
-    onDisplayChange();
-    dispatch(setMySessionId(data.data.conferenceId));
-    navigate({ to: `/meeting/${data.data.conferenceId}` });
-  }
 
   return (
     <BodyContainer>
@@ -113,21 +114,6 @@ const MeetingModalBody = ({
           <Option value="ESPORTS">E-Sports</Option>
         </Select>
       </Wrapper>
-      {/* <Wrapper>
-        <LabelWrapper htmlFor="태그 검색" text="태그 검색" />
-        <SearchBar
-          searchPlaceholder={"태그 검색"}
-          widthSize={"100%"}
-          inputValue={tag || ""}
-          inputOnChange={(e: ChangeEvent<HTMLInputElement>) =>
-            onChange("tag", e)
-          }
-        />
-        <Desc>
-          태그는 다른 사람들이 방에 대한 정보를 통해 더 쉽게 방을 찾도록 콘텐츠
-          세부 정보를 공유합니다
-        </Desc>
-      </Wrapper> */}
       <ToggleWrapper>
         <ToggleButtonInputWrapper>
           <ToggleTitle>방 공개 여부</ToggleTitle>

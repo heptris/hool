@@ -3,24 +3,24 @@ import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 import { GameHistoryType } from "types/GameHistoryType";
 
 // conference-controller
-const postCreateMeetingRoom = async (obj: CreatingMeetingRoomType) =>
+const postCreateMeetingRoom = (obj: CreatingMeetingRoomType) =>
   postRequest("conference/create", obj);
 
-const postEnterMeetingRoom = async (obj: { conferenceId: number }) =>
+const postEnterMeetingRoom = (obj: { conferenceId: number }) =>
   postRequest("conference/enter", obj);
 
-const postCheckPasswordBeforeEnterMeetingRoom = async (obj: {
+const postCheckPasswordBeforeEnterMeetingRoom = (obj: {
   conferenceId: number;
   password: string;
 }) => postRequest("conference/enter/check", obj);
 
-const postModifyMeetingRoom = async (obj: {
+const postModifyMeetingRoom = (obj: {
   conferenceId: number;
   description: string;
   title: string;
 }) => postRequest("conference/modify", obj);
 
-const postExitMeetingRoom = async (obj: { conferenceId: number }) =>
+const postExitMeetingRoom = (obj: { conferenceId: number }) =>
   postRequest("conference/exit", obj);
 
 // game-controller

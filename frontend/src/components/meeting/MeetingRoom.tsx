@@ -9,6 +9,8 @@ import { darkTheme } from "styles/Theme";
 
 import type { RootState } from "store";
 
+import { postExitMeetingRoom } from "api/meeting";
+
 import Container from "components/commons/Container";
 import VideoContainer from "./VideoContainer";
 import MeetingMessageShow from "./MeetingMessageShow";
@@ -23,7 +25,7 @@ export type SessionStateType = {
   subscribers: Array<typeof Subscriber>;
 };
 
-function MeetingRoom() {
+function MeetingRoom({ conferenceId }: { conferenceId: number }) {
   const dispatch = useDispatch();
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
     (state: RootState) => state.navbar
@@ -48,6 +50,7 @@ function MeetingRoom() {
   useEffect(() => {
     dispatch(setNavMode("meetingRoom"));
     return () => {
+      postExitMeetingRoom({ conferenceId });
       dispatch(setNavMode("default"));
     };
   }, []);
