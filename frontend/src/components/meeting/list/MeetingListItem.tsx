@@ -5,20 +5,25 @@ import img from "assets/thumbnail_soccer_1920.jpg";
 import Card from "components/commons/Card";
 import { MeetingRoomType } from "types/MeetingRoomType";
 
+const { infoColor } = darkTheme;
+
 const ConferenceListItem = (props: MeetingRoomType) => {
-  const { category, conferenceId, description, nickName, title, total } = props;
+  const { category, description, title, total, isPublic } = props;
   return (
     <ListItem bgColor={darkTheme.mainColor}>
       <Thumbnail src={img} alt="" />
       <ItemTitle>{title}</ItemTitle>
-      <div>
-        <ItemDesc>{description}</ItemDesc>
-        <InfoWrapper>
-          <Icon className="fa-solid fa-users" />
-          <Population>{total} 명</Population>
-          <Time>{category}</Time>
-        </InfoWrapper>
-      </div>
+      <ItemDescWrapper>
+        <div>
+          <ItemDesc>{description}</ItemDesc>
+          <InfoWrapper>
+            <Icon className="fa-solid fa-users" />
+            <Population>{total} 명</Population>
+            <Time>{category}</Time>
+          </InfoWrapper>
+        </div>
+        <Public isPublic={isPublic}>{isPublic ? "공개" : "비공개"}</Public>
+      </ItemDescWrapper>
     </ListItem>
   );
 };
@@ -52,4 +57,12 @@ const Population = styled.span`
   margin-right: 0.5rem;
 `;
 const Time = styled.span``;
+const Public = styled.span`
+  color: ${({ isPublic }: { isPublic: boolean }) => isPublic && infoColor};
+`;
+const ItemDescWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
 export default ConferenceListItem;
