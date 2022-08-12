@@ -10,9 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class MemberUpdateDto {
 
-    private String password;
     private String name;
     private String nickName;
 
-//    private MultipartFile multipartFile;
 }

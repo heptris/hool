@@ -6,18 +6,23 @@ import com.ssafy.hool.domain.emoji.Emoji;
 import com.ssafy.hool.domain.emoji.Member_emoji;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
+import com.ssafy.hool.domain.s3.AwsS3;
 import com.ssafy.hool.dto.emoji.DetailMemberEmojiDto;
 import com.ssafy.hool.dto.emoji.MemberEmojiDto;
 import com.ssafy.hool.dto.friend.FriendRequestDto;
+import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
+import com.ssafy.hool.dto.member.MemberUpdateDto;
 import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.ErrorCode;
 import com.ssafy.hool.repository.conference.MemberConferenceRepository;
 import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.friend.FriendRepository;
 import com.ssafy.hool.repository.friend.FriendRequestRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.s3.AwsS3Service;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +31,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,11 +45,11 @@ import static com.ssafy.hool.exception.ex.ErrorCode.*;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final MemberEmojiRepository memberEmojiRepository;
     private final EmojiRepository emojiRepository;
     private final MemberConferenceRepository memberConferenceRepository;
 
+    private final AwsS3Service awsS3Service;
 
     // 회원 가입
     @Transactional
@@ -66,11 +73,22 @@ public class MemberService {
 
     // 회원 수정
     @Transactional
-    public void updateMember(Long memberId, String password, String name, String nickName) {
+    public void updateMember(MultipartFile multipartFile, Long memberId, MemberUpdateDto memberUpdateDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        member.setPassword(passwordEncoder.encode(password));
-        member.setName(name);
-        member.setNickName(nickName);
+        member.setName(memberUpdateDto.getName());
+        member.setNickName(memberUpdateDto.getNickName());
+
+        AwsS3 awsS3 = new AwsS3();
+
+        System.out.println("========================================");
+        try {
+            awsS3 = awsS3Service.upload(multipartFile, "member");
+        }catch (IOException e){
+            throw new CustomException(FILE_UPLOAD_ERROR);
+        }
+
+        String url = awsS3.getPath();
+        member.setProfileImage(url);
     }
 
     /**
@@ -95,11 +113,11 @@ public class MemberService {
         return memberRepository.getEmojiCount(memberId);
     }
 
-    public List<MemberEmojiDto> getEmojis(Long memberId) {
-        return memberEmojiRepository.getMyEmojis(memberId);
+    public List<DetailMemberEmojiDto> getEmojis(Long memberId) {
+        return memberEmojiRepository.getMyDetailEmojis(memberId);
     }
 
-    public List<MemberEmojiDto> getFavoriteEmojis(Long memberId) {
+    public List<DetailMemberEmojiDto> getFavoriteEmojis(Long memberId) {
         return memberEmojiRepository.getFavoriteEmojis(memberId);
     }
 
@@ -111,18 +129,18 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
-    public DetailMemberEmojiDto getDetailEmoji(Long emojiId) {
-        Emoji emoji = emojiRepository.findById(emojiId).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
-        Member emojiCreator = memberRepository.findById(emoji.getCreatorId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-        DetailMemberEmojiDto detailEmoji = DetailMemberEmojiDto.builder()
-                .emojiId(emojiId)
-                .name(emoji.getName())
-                .description(emoji.getDescription())
-                .url(emoji.getUrl())
-                .creatorName(emojiCreator.getName())
-                .build();
-        return detailEmoji;
-    }
+//    public DetailMemberEmojiDto getDetailEmoji(Long emojiId) {
+//        Emoji emoji = emojiRepository.findById(emojiId).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
+//        Member emojiCreator = memberRepository.findById(emoji.getCreatorId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+//        DetailMemberEmojiDto detailEmoji = DetailMemberEmojiDto.builder()
+//                .emojiId(emojiId)
+//                .name(emoji.getName())
+//                .description(emoji.getDescription())
+//                .url(emoji.getUrl())
+//                .creatorName(emojiCreator.getName())
+//                .build();
+//        return detailEmoji;
+//    }
 
     @ApiOperation(value = "이모지 즐겨찾기", notes = "토글 방식 예상")
     public void memberEmojiFavoriteToggle(Long memberId, Long emojiId) {
@@ -142,14 +160,14 @@ public class MemberService {
     }
 
     public CursorResult getEmojiList(Long memberId, Long emojiCursorId, Pageable page) {
-        List<MemberEmojiDto> memberEmojiDtoList = getEmojiListDto(memberId, emojiCursorId, page);
+        List<DetailMemberEmojiDto> memberEmojiDtoList = getEmojiListDto(memberId, emojiCursorId, page);
         final Long lastIdOfList = memberEmojiDtoList.isEmpty() ?
                 null : memberEmojiDtoList.get(memberEmojiDtoList.size() - 1).getMemberEmojiId();
 
         return new CursorResult(memberEmojiDtoList, hasMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);
     }
 
-    public List<MemberEmojiDto> getEmojiListDto(Long memberId, Long emojiCursorId, Pageable page) {
+    public List<DetailMemberEmojiDto> getEmojiListDto(Long memberId, Long emojiCursorId, Pageable page) {
 
         if (emojiCursorId == null) {
             return memberEmojiRepository.findMemberEmojiDtoPage(memberId, page);
@@ -165,14 +183,14 @@ public class MemberService {
     }
 
     public CursorResult getFavEmojiList(Long memberId, Long emojiFavCursorId, Pageable page) {
-        List<MemberEmojiDto> memberFavEmojiDtoList = getFavEmojiListDto(memberId, emojiFavCursorId, page);
+        List<DetailMemberEmojiDto> memberFavEmojiDtoList = getFavEmojiListDto(memberId, emojiFavCursorId, page);
         final Long lastIdOfList = memberFavEmojiDtoList.isEmpty() ?
                 null : memberFavEmojiDtoList.get(memberFavEmojiDtoList.size() - 1).getMemberEmojiId();
 
         return new CursorResult(memberFavEmojiDtoList, hasFavMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);
     }
 
-    public List<MemberEmojiDto> getFavEmojiListDto(Long memberId, Long emojiFavCursorId, Pageable page) {
+    public List<DetailMemberEmojiDto> getFavEmojiListDto(Long memberId, Long emojiFavCursorId, Pageable page) {
 
         if (emojiFavCursorId == null) {
             return memberEmojiRepository.findFavMemberEmojiDtoPage(memberId, page);
