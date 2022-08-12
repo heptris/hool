@@ -6,10 +6,7 @@ import com.ssafy.hool.domain.game.Game_history;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.point.PointType;
 import com.ssafy.hool.domain.point.Point_history;
-import com.ssafy.hool.dto.game.GameCreateDto;
-import com.ssafy.hool.dto.game.GameHistoryCreateDto;
-import com.ssafy.hool.dto.game.GameHistoryResponseDto;
-import com.ssafy.hool.dto.game.GameResponseDto;
+import com.ssafy.hool.dto.game.*;
 import com.ssafy.hool.dto.point_history.PointHistoryCreateDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.conference.ConferenceRepository;
@@ -81,6 +78,40 @@ public class GameService {
         } else {
             throw new CustomException(OWNER_FINISH_GAME);
         }
+    }
+
+    /**
+     * 베팅 통계 계산
+     * @param gameBettStatisticsRequestDto
+     */
+    public GameBettStatisticsResponseDto bettStatistics(GameBettStatisticsRequestDto gameBettStatisticsRequestDto){
+        Game game = gameRepository.findById(gameBettStatisticsRequestDto.getGameId()).orElseThrow(() -> new CustomException(GAME_NOT_FOUND));
+        List<Game_history> gameHistoryList = game.getGameHistoryList();
+
+        int truePoint = 0, falsePoint = 0, totalPoint = 0;
+        int trueUser = 0, falseUser = 0, totalUser = 0;
+
+        // O, X에 베팅한 각각의 총 Point, 유저 수 합산
+        for(Game_history gameHistory : gameHistoryList){
+            if(gameHistory.getBettChoice()){
+                truePoint += gameHistory.getBettPoint();
+                trueUser += 1;
+            } else {
+                falsePoint += gameHistory.getBettPoint();
+                falseUser += 1;
+            }
+        }
+
+        totalPoint = truePoint + falsePoint;
+        totalUser = trueUser + falseUser;
+        // O, X 베팅 포인트 비율 계산
+        int trueRatio = (int) (Math.round((truePoint * 100)/(double)totalPoint)/100.0)*100;
+        int falseRatio = (int) (Math.round((falsePoint * 100)/(double)totalPoint)/100.0)*100;
+
+        double trueDividendRate = (Math.round((falseUser * 100)/(double)trueUser)/100.0);
+        double falseDividendRate = (Math.round((trueUser * 100)/(double)falseUser)/100.0);
+
+        return new GameBettStatisticsResponseDto(trueRatio, falseRatio, trueDividendRate, falseDividendRate, truePoint, falsePoint, trueUser, falseUser);
     }
 
     /**

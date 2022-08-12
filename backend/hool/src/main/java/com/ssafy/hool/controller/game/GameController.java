@@ -26,7 +26,13 @@ public class GameController {
     @ApiOperation(value = "게임 기록 생성", notes = "게임 참여 인원 각각의 기록 생성. 포인트 베팅 제한시간이 지나면 한번에 요청. (베팅 포인트, 베팅 현황(True, False), 게임 진행상황(PROGRESS, OVER), 닉네임, game_id)")
     @PostMapping("/create/history")
     public ResponseEntity saveGameHistory(@RequestBody GameHistoryCreateDto gameHistoryCreateDto){
-        return new ResponseEntity<ResponseDto>(new ResponseDto<GameHistoryResponseDto>(200, "success", gameService.createGameHistory(gameHistoryCreateDto)), HttpStatus.OK);
+        return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "success", gameService.createGameHistory(gameHistoryCreateDto)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "베팅 통계 계산", notes = "게임 참여 인원의 베팅 현황 계산 (O, X 베팅 포인트 합산 비율(Ratio), 배당 비율(DividendRate), 베팅 포인트 합산(Point), 베팅 인원 합산(User))")
+    @PostMapping("/statistics")
+    public ResponseEntity saveGameHistory(@RequestBody GameBettStatisticsRequestDto gameBettStatisticsRequestDto){
+        return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "success", gameService.bettStatistics(gameBettStatisticsRequestDto)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "게임 결과 저장", notes = "방장이 게임 결과 확정 시 요청됨. (game_id, 게임 결과(True, False)) / 방장 게임 생성 : OWNER_FINISH_GAME - 403 ERROR 방장만 게임을 종료할 수 있습니다.")
