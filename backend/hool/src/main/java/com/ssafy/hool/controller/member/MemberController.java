@@ -71,7 +71,7 @@ public class MemberController {
                 memberProfile), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "보유중인 이모지", notes = "이모지 url과 이모지 Id 반환")
+    @ApiOperation(value = "보유중인 이모지", notes = "보유중인 이모지 정보들 반환")
     @GetMapping("/my/emoji")
     public ResponseEntity<?> getMyEmojis() {
         Long memberId = SecurityUtil.getCurrentMemberId();
@@ -79,17 +79,18 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value = "보유중인 이모지 리스트(페이징)", notes = "보유중인 이모지 정보들 반환")
     @GetMapping("/my/emoji/page")
-    public ResponseEntity<?> getMyEmojisPage(Long emojiCursorId, Integer size) {
+    public ResponseEntity<?> getMyEmojisPage(Long cursorId, Integer size) {
         if (size == null) size = DEFAULT_SIZE;
         Long memberId = SecurityUtil.getCurrentMemberId();
-        CursorResult memberEmojiList = memberService.getEmojiList(memberId, emojiCursorId, PageRequest.of(0, size));
+        CursorResult memberEmojiList = memberService.getEmojiList(memberId, cursorId, PageRequest.of(0, size));
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberEmojiList)
                 , HttpStatus.OK);
     }
 
 
-    @ApiOperation(value = "즐겨찾기 이모지", notes = "즐겨찾기 된 이모지 url과 Id 반환")
+    @ApiOperation(value = "즐겨찾기 이모지", notes = "즐겨찾기 된 이모지 정보들 반환")
     @GetMapping("/my/favorite/emoji")
     public ResponseEntity<?> getMyFavoriteEmojis() {
         Long memberId = SecurityUtil.getCurrentMemberId();
@@ -97,11 +98,12 @@ public class MemberController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value = "즐겨찾기 이모지 리스트(페이징)", notes = "즐겨찾기 된 이모지 정보들 반환")
     @GetMapping("/my/favorite/emoji/page")
-    public ResponseEntity<?> getMyFavEmojisPage(Long emojiFavCursorId, Integer size) {
+    public ResponseEntity<?> getMyFavEmojisPage(Long cursorId, Integer size) {
         if (size == null) size = DEFAULT_SIZE;
         Long memberId = SecurityUtil.getCurrentMemberId();
-        CursorResult memberFavEmojiList = memberService.getFavEmojiList(memberId, emojiFavCursorId, PageRequest.of(0, size));
+        CursorResult memberFavEmojiList = memberService.getFavEmojiList(memberId, cursorId, PageRequest.of(0, size));
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberFavEmojiList)
                 , HttpStatus.OK);
     }

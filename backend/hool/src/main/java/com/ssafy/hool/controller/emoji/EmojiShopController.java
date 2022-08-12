@@ -39,7 +39,7 @@ public class EmojiShopController {
 
     @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
             notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
-                    "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
+                    "login한 회원의 멤버이모지 중 직접 만들었고 이모지 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
             , response = Map.class)
     @GetMapping("/makelist")
     public ResponseEntity createEmojiShopList(){
@@ -49,9 +49,9 @@ public class EmojiShopController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "상점에 이모지 등록시 나오는 리스트",
+    @ApiOperation(value = "페이징 된 상점에 이모지 등록시 나오는 리스트",
             notes = "login한 사용자의 상점에 등록 가능한 이모지 리스트를 보여준다. " +
-                    "login한 회원의 멤버이모지 중 직접 이모지 중 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
+                    "login한 회원의 멤버이모지 중 직접 만들었고 이모지 상점에 등록하지 않은 이모지들을 리스트로 보여준다."
             , response = Map.class)
     @GetMapping("/makelist/page")
     public ResponseEntity canEmojiShopList(Long cursorId, Integer size){
@@ -89,7 +89,7 @@ public class EmojiShopController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "상점이모지 리스트", notes = "이모지 상점에 저장된 이모지 리스트 반환", response = Map.class)
+    @ApiOperation(value = "상점이모지 페이징 리스트", notes = "이모지 상점에 저장된 이모지 리스트를 페이징하여 반환", response = Map.class)
     @GetMapping("/list/page")
     public ResponseEntity findEmojiShopByPage(Long cursorId, Integer size) {
         if(size == null) size = Default_SIZE;
@@ -98,10 +98,11 @@ public class EmojiShopController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value = "상점이모지 검색", notes = "이모지 상점에 이모지 이름으로 검색하면 검색한 단어가 포함된 이모지 리스트 반환", response = Map.class)
     @GetMapping("/search")
     public ResponseEntity searchEmojiShop(@RequestParam String keyword){
         return new ResponseEntity<ResponseDto>(
-                new ResponseDto<List<EmojiShopListDto>>(200,"success",emojiService.searchEmojiShopList(keyword))
+                new ResponseDto<List<EmojiShopListDto>>(200,"success",emojiService.searchEmojiShopList(keyword.trim()))
                 , HttpStatus.OK);
     }
 

@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
 
-    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id," +
+            " m.memberEmail, m.profileImage, m.memberStatus) " +
             "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
             "and fr.toMember.id = :memberId")
     List<FriendRequestDto> findFriendRequest(@Param("memberId") Long memberId);
@@ -28,12 +29,14 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
     boolean isAlreadySendFriendAddMessage(@Param("fromMember") Long fromMember, @Param("toMember") Long toMember);
 
 
-    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id," +
+            " m.memberEmail, m.profileImage, m.memberStatus) " +
             "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
             "and fr.toMember.id = :memberId order by fr.id desc ")
     List<FriendRequestDto> findFriendRequestDtoPage(@Param("memberId") Long memberId, Pageable page);
 
-    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id, m.memberEmail, m.profileImage, m.memberStatus) " +
+    @Query("select new com.ssafy.hool.dto.friend.FriendRequestDto(fr.id, m.nickName, m.id," +
+            " m.memberEmail, m.profileImage, m.memberStatus) " +
             "from FriendRequest fr join fr.fromMember m where fr.friendRequestStatus = 'PROCESS'" +
             "and fr.toMember.id = :memberId and fr.id < :friendRequestCursorId order by fr.id desc ")
     List<FriendRequestDto> findFriendRequestDtoLessPage(@Param("memberId") Long memberId,

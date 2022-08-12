@@ -8,6 +8,7 @@ import com.ssafy.hool.service.conference.ConferenceService;
 import com.ssafy.hool.service.friend.FriendRequestService;
 import com.ssafy.hool.service.friend.FriendService;
 import com.ssafy.hool.util.SecurityUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,7 @@ public class FriendController {
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "친구 리스트 조회", friendList), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "친구 목록 조회(페이징)", notes = "가장 최근에 로그인 한 친구부터 반환")
     @GetMapping("/list/page")
     public ResponseEntity<?> myFriendListPage(String friendCursorTime, Integer size) {
         if(size == null) size = DEFAULT_SIZE;

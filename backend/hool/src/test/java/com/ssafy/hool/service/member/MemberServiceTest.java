@@ -63,15 +63,6 @@ class MemberServiceTest {
     }
 
 
-    @Test
-    void 회원탈퇴() {
-        memberService.deleteMember(3L);
-    }
-
-    @Test
-    void 회원수정() {
-
-    }
 
     @Test
     void 친구얼마나있는지() {
@@ -103,7 +94,7 @@ class MemberServiceTest {
 
     @Test
     void 이모지즐겨찾기() {
-        memberService.memberEmojiFavoriteToggle(4L, 2L);
+        memberService.memberEmojiFavoriteToggle(1L, 1L);
     }
 
 

@@ -52,4 +52,8 @@ public class Member_emoji extends BaseEntity {
         this.member = member;
         member.getEmojis().add(this);
     }
+
+    public void updateFavorite(boolean fav) {
+        this.is_favorite = fav;
+    }
 }
