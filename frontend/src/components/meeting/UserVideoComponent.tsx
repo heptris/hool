@@ -8,8 +8,6 @@ import { Publisher, Subscriber } from "openvidu-browser";
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
-import defaultImg from "src/assets/profile-default-imgs/2.png";
-
 import type { RootState } from "store";
 
 import OpenViduVideoComponent from "./OvVideo";
@@ -30,7 +28,7 @@ function UserVideoComponent(props: PropsType) {
     (state: RootState) => state.clientSession
   );
   const emojiData = emojiEvents[idx];
-  const [sender, emojiPath] = emojiData.split("::");
+  const [sender, emojiUrl, emojiAnimate] = emojiData.split("::");
   useEffect(() => {
     if (emojiData === "") return;
 
@@ -76,8 +74,8 @@ function UserVideoComponent(props: PropsType) {
             {isDisplayingEmoji && (
               <EmojiDivision>
                 <Emoji
-                  src={defaultImg}
-                  className={`animate__animated animate__hinge`}
+                  src={emojiUrl}
+                  className={`animate__animated ${emojiAnimate}`}
                 />
               </EmojiDivision>
             )}
@@ -129,17 +127,9 @@ const EmojiDivision = styled.div`
   z-index: 5000;
 `;
 const Emoji = styled.img`
-  /* @keyframes slidein {
-    from {
-      margin-left: 100%;
-      width: 100%;
-    }
-
-    to {
-      margin-left: 0%;
-      width: 100%;
-    }
-  } */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 export default UserVideoComponent;

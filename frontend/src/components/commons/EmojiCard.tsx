@@ -4,7 +4,7 @@ import { darkTheme } from "styles/Theme";
 import Card from "./Card";
 
 type PropsType = {
-  imgUrl: string;
+  emojiUrl: string;
   width?: number;
   height?: number;
 };
@@ -12,7 +12,7 @@ type PropsType = {
 function EmojiCard(props: PropsType) {
   return (
     <ConcreteEmojiCard {...props}>
-      <EmojiImg src={props.imgUrl} />
+      <EmojiImg src={props.emojiUrl} />
     </ConcreteEmojiCard>
   );
 }

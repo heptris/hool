@@ -10,7 +10,6 @@ import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
 import type { SessionStateType } from "./MeetingRoom";
 
-import EmojiCard from "components/commons/EmojiCard";
 import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 
@@ -27,30 +26,12 @@ function MeetingMessageShow(props: PropsType) {
   const isShowingGame = useSelector(
     (state: RootState) => state.navbar.isShowingGame
   );
-  const { myUserName, chatEvents, isDisplayEmoji } = useSelector(
+  const { myUserName, chatEvents } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const myOwnItems = [
-    {
-      emojiTitle: "불타는 아스날",
-      ARCode: "",
-      author: "Andrew",
-      description: "아스날은 불타야 제맛이지",
-      isFav: false,
-      imgUrl: "",
-    },
-    {
-      emojiTitle: "우리흥",
-      ARCode: "",
-      author: "Dijkstra",
-      description: "으앙마",
-      isFav: false,
-      imgUrl: "",
-    },
-  ];
 
   // 상위 컴포넌트 세션상태
-  const { session, subscribers } = props.sessionState;
+  const { session } = props.sessionState;
   useEffect(() => {
     if (session !== undefined) {
       recvSignal();
@@ -114,22 +95,6 @@ function MeetingMessageShow(props: PropsType) {
       msgBody.scrollTop = msgBody.scrollHeight;
     }
   };
-  const sendEmojiSignal = (item: typeof myOwnItems[0]) => {
-    const mySession = session;
-
-    mySession
-      .signal({
-        data: myUserName + "::" + item.imgUrl,
-        to: [],
-        type: "emoji",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
 
   return (
     <>
@@ -143,21 +108,6 @@ function MeetingMessageShow(props: PropsType) {
         isShowingGame={isShowingGame}
       >
         {chatEvents.map((chat, i) => renderChatMsgs(chat, i))}
-        {isDisplayEmoji && (
-          <EmojiModal className={"animate__animated animate__bounceIn"}>
-            <ModalText>소유중인 이모지</ModalText>
-            <Hr />
-            <ModalGrid>
-              {myOwnItems.map((item, i) => (
-                <div key={i} onClick={() => sendEmojiSignal(item)}>
-                  <EmojiCard>
-                    <></>
-                  </EmojiCard>
-                </div>
-              ))}
-            </ModalGrid>
-          </EmojiModal>
-        )}
       </MessageShowBody>
     </>
   );
@@ -224,30 +174,6 @@ const MessageText = styled.div`
     font-size: 0.9rem;
     padding: 0.5rem;
   }
-`;
-const EmojiModal = styled.div`
-  background-color: ${darkTheme.bgColor};
-  width: 95%;
-  height: 10rem;
-  border: 1px solid ${darkTheme.adaptiveGrey800};
-  border-radius: 4px;
-  position: absolute;
-  overflow: auto;
-  bottom: 0px;
-  left: 0px;
-  padding: 0.5rem 0.5rem;
-  box-sizing: border-box;
-`;
-const ModalGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 0.2rem;
-`;
-const ModalText = styled.h1``;
-const Hr = styled.hr`
-  border: 1px solid ${darkTheme.adaptiveGrey700};
-  background-color: ${darkTheme.adaptiveGrey700};
-  width: 99%;
 `;
 
 export default MeetingMessageShow;

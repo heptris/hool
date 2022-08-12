@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { getMyEmojiList, getMyFavoriteEmoji } from "api/profile";
+import { QUERY_KEYS } from "constant";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -10,9 +12,6 @@ import EmojiCard from "components/commons/EmojiCard";
 import EnrollModalHeader from "./EnrollModalHeader";
 import EnrollModalBody from "./EnrollModalBody";
 import DetailModalBody from "./DetailModalBody";
-
-import { getMyEmojiList, getMyFavoriteEmoji } from "api/profile";
-import { QUERY_KEYS } from "constant";
 
 export type EmojiDetailType = {
   emojiId: number;
@@ -140,7 +139,7 @@ function Inventory() {
                   switchIsDisplayDetail();
                 }}
               >
-                <EmojiCard imgUrl={item.emojiUrl} />
+                <EmojiCard emojiUrl={item.emojiUrl} />
               </div>
             ))
           : myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
@@ -151,7 +150,7 @@ function Inventory() {
                   switchIsDisplayDetail();
                 }}
               >
-                <EmojiCard imgUrl={item.emojiUrl} />
+                <EmojiCard emojiUrl={item.emojiUrl} />
               </div>
             ))}
       </InventoryContent>
