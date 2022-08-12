@@ -66,7 +66,7 @@ const Header = styled.nav`
   margin: 0 auto;
   left: 0;
   right: 0;
-  padding: 0.7rem 10%;
+  padding: 0.7rem 5%;
   height: 2rem;
   display: flex;
   position: fixed;
@@ -87,8 +87,11 @@ const ProfileImg = styled.img`
   border-radius: 4px;
 `;
 const ProfileName = styled.p`
+  width: 5rem;
   color: ${adaptiveGrey200};
   font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const NavUser = styled.div`
   margin-right: 2rem;

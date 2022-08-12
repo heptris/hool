@@ -1,30 +1,70 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import { postMyEmojiDetailFavorite } from "api/profile";
+
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
-import { DetailType } from "components/accounts/Inventory";
+import type { EmojiDetailType } from "components/accounts/Inventory";
+
+import { QUERY_KEYS } from "constant";
 
 function DetailModalBody({
-  emojiTitle,
-  ARCode,
-  author,
+  emojiId,
+  emojiUrl,
+  name,
   description,
-  isFav,
-}: DetailType) {
+  emojiAnimate,
+  memberEmojiId,
+  isFavorite,
+  ARCode,
+}: EmojiDetailType) {
+  const queryClient = useQueryClient();
+
   return (
     <FlexBox>
       <Imgs>
-        <NonClickableEmojiCard width={6.25} height={6.25}>
-          <></>
-        </NonClickableEmojiCard>
+        <NonClickableEmojiCard width={6.25} height={6.25} imgUrl={emojiUrl} />
         {ARCode && <ARImg src={ARCode}></ARImg>}
       </Imgs>
-      <EmojiTitle>{emojiTitle}</EmojiTitle>
-      <Author>{author}</Author>
+      <EmojiTitle>{name}</EmojiTitle>
       <Description>{description}</Description>
-      {!isFav && <FavBtn width={7} height={3} text={"즐겨찾기 등록"} />}
-      {isFav && <FavBtn width={7} height={3} text={"즐겨찾기 해제"} />}
+      {!isFavorite && (
+        <FavBtn
+          width={7}
+          height={3}
+          text={"즐겨찾기 등록"}
+          buttonOnClick={() => {
+            postMyEmojiDetailFavorite({ emojiId: emojiId })
+              .then(() =>
+                queryClient.invalidateQueries([
+                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
+                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
+                ])
+              )
+              .catch((err) => console.error(err));
+          }}
+        />
+      )}
+      {isFavorite && (
+        <FavBtn
+          width={7}
+          height={3}
+          text={"즐겨찾기 해제"}
+          buttonOnClick={() => {
+            postMyEmojiDetailFavorite({ emojiId })
+              .then(() =>
+                queryClient.invalidateQueries([
+                  QUERY_KEYS.MY_OWN_EMOJI_LIST,
+                  QUERY_KEYS.MY_FAV_EMOJI_LIST,
+                ])
+              )
+              .catch((err) => console.error(err));
+          }}
+        />
+      )}
     </FlexBox>
   );
 }

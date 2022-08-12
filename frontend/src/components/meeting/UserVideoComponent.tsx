@@ -32,9 +32,8 @@ function UserVideoComponent(props: PropsType) {
   const emojiData = emojiEvents[idx];
   const [sender, emojiPath] = emojiData.split("::");
   useEffect(() => {
-    if (emojiData === "") {
-      return;
-    }
+    if (emojiData === "") return;
+
     setIsDisplayingEmoji(true);
 
     setTimeout(() => {

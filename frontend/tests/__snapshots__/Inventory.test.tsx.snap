@@ -3,22 +3,22 @@
 exports[`<Inventory /> matches snapshot 1`] = `
 <div>
   <div
-    class="sc-fLlhyt dUqoVu"
+    class="sc-ivTmOn kWQnOu"
   >
     <div
-      class="sc-bBrHrO tVDMm"
+      class="sc-cxabCf hZGnEg"
     >
       <div>
         <div
-          class="sc-ivTmOn boxub"
+          class="sc-llJcti enCLjU"
         >
           인벤토리
         </div>
         <div
-          class="sc-cxabCf gAKZuZ"
+          class="sc-iIPllB hIxOji"
         >
           <button
-            class="sc-llJcti lgmbYe"
+            class="sc-gicCDI hdDOil"
           >
             <span
               style="color: rgb(0, 198, 193);"
@@ -27,7 +27,7 @@ exports[`<Inventory /> matches snapshot 1`] = `
             </span>
           </button>
           <button
-            class="sc-llJcti lgmbYe"
+            class="sc-gicCDI hdDOil"
           >
             <span>
               즐겨찾기
@@ -37,7 +37,7 @@ exports[`<Inventory /> matches snapshot 1`] = `
       </div>
       <div>
         <button
-          class="sc-bczRLJ fkvSHE sc-iIPllB cvNWfz"
+          class="sc-bczRLJ fkvSHE sc-ezWOiH iiApPf"
           height="3"
           width="6"
         >
@@ -48,10 +48,10 @@ exports[`<Inventory /> matches snapshot 1`] = `
       </div>
     </div>
     <hr
-      class="sc-gicCDI jItubX"
+      class="sc-bZkfAO cVZoJb"
     />
     <div
-      class="sc-ezWOiH iqXxKp"
+      class="sc-kLLXSd fREPIv"
     >
       <div>
         <div

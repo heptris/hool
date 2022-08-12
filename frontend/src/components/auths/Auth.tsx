@@ -60,14 +60,14 @@ const Auth = () => {
           inputRef={eMailRef}
           inputValue={form.memberEmail}
           text="이메일"
-          placeholderText="hool@example.com"
+          placeholderText="Email"
           type="email"
           inputOnChange={onChange}
           id={"memberEmail"}
         />
         <LabelInput
           text="비밀번호"
-          placeholderText="password"
+          placeholderText="Password"
           type="password"
           inputValue={form.password}
           inputOnChange={onChange}
