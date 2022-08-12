@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
@@ -168,7 +169,10 @@ public class EmojiService {
 
     public List<EmojiDto> listCanEmojiShop(Long memberId){
         List<Long> sellingEmojiList = emojiRepository.sellingEmojis(memberId);
-        return emojiRepository.madeByMeEmojis(sellingEmojiList, memberId);
+        if(sellingEmojiList.isEmpty()) {
+            return emojiRepository.madeByMeEmojisNull(memberId);
+        }
+        return emojiRepository.madeByMeEmojisNotNull(sellingEmojiList, memberId);
     }
 
     // -------------------------------Emoji Shop Paging Start--------------------------------------------
@@ -198,15 +202,21 @@ public class EmojiService {
 
     public CursorResult getCanEmojiShopList(Long memberId, Long cursorId, Pageable page) {
         List<Long> sellingEmojiList = emojiRepository.sellingEmojis(memberId);
-        List<CanEmojiDto> canEmojiShopListDto = getCanEmojiShopListDto(sellingEmojiList, memberId, cursorId, page);
+        List<CanEmojiDto> canEmojiShopListDto = new ArrayList<>();
+        if(sellingEmojiList.isEmpty()){
+            canEmojiShopListDto = getCanEmojiShopListDtoNull(memberId, cursorId, page);
+        }else {
+            canEmojiShopListDto = getCanEmojiShopListDtoNotNull(sellingEmojiList, memberId, cursorId, page);
+        }
 
         final Long lastIdOfList = canEmojiShopListDto.isEmpty() ?
                 null : canEmojiShopListDto.get(canEmojiShopListDto.size() - 1).getMemberEmojiId();
 
+        if(sellingEmojiList.isEmpty()) return new CursorResult<>(canEmojiShopListDto, hasCanEmojiShopNextNull(memberId, lastIdOfList), lastIdOfList);
         return new CursorResult<>(canEmojiShopListDto, hasCanEmojiShopNext(sellingEmojiList, memberId, lastIdOfList), lastIdOfList);
     }
 
-    public List<CanEmojiDto> getCanEmojiShopListDto(List<Long> sellingEmojiList, Long memberId, Long cursorId, Pageable page) {
+    public List<CanEmojiDto> getCanEmojiShopListDtoNotNull(List<Long> sellingEmojiList, Long memberId, Long cursorId, Pageable page) {
 
         if (cursorId == null) {
             return emojiRepository.madeByMeEmojisDescPage(sellingEmojiList, memberId, page);
@@ -215,9 +225,23 @@ public class EmojiService {
         }
     }
 
+    public List<CanEmojiDto> getCanEmojiShopListDtoNull(Long memberId, Long cursorId, Pageable page) {
+
+        if (cursorId == null) {
+            return emojiRepository.madeByMeEmojisDescPageNull(memberId, page);
+        } else {
+            return emojiRepository.madeByMeEmojisDescLessPageNull(memberId, cursorId, page);
+        }
+    }
+
     public Boolean hasCanEmojiShopNext(List<Long> sellingEmojiList, Long memberId, Long cursorId) {
         if (cursorId == null) return false;
         return emojiRepository.existsMadeByMeEmojis(sellingEmojiList, memberId, cursorId);
+    }
+
+    public Boolean hasCanEmojiShopNextNull(Long memberId, Long cursorId) {
+        if (cursorId == null) return false;
+        return emojiRepository.existsMadeByMeEmojisNull(memberId, cursorId);
     }
 
     // -------------------------------Can Emoji Shop Paging End--------------------------------------------

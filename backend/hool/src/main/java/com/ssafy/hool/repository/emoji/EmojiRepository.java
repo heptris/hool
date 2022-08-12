@@ -28,8 +28,13 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
     @Query(value = "select new com.ssafy.hool.dto.emoji.EmojiDto(e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId) " +
             "from Member_emoji me join me.emoji e where me.emoji.id not in (:sellingEmojiList) "
             + "and me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE")
-    List<EmojiDto> madeByMeEmojis(@Param("sellingEmojiList") List<Long> sellingEmojiList, @Param("memberId") Long memberId);
+    List<EmojiDto> madeByMeEmojisNotNull(@Param("sellingEmojiList") List<Long> sellingEmojiList, @Param("memberId") Long memberId);
 
+    @Query(value = "select new com.ssafy.hool.dto.emoji.EmojiDto(e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId) " +
+            "from Member_emoji me join me.emoji e where me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE")
+    List<EmojiDto> madeByMeEmojisNull(@Param("memberId") Long memberId);
+
+    // -------------------------------------Not null 인 경우-------------------------------------------
     @Query(value = "select new com.ssafy.hool.dto.emoji.CanEmojiDto(me.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId) " +
             "from Member_emoji me join me.emoji e where me.emoji.id not in (:sellingEmojiList) "
             + "and me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE order by e.id desc")
@@ -49,6 +54,23 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
             " and me.id < :id")
     Boolean existsMadeByMeEmojis(@Param("sellingEmojiList") List<Long> sellingEmojiList, @Param("memberId") Long memberId,
                                  @Param("id") Long id);
+
+    // -------------------------------------Null 인 경우-------------------------------------------
+
+    @Query(value = "select new com.ssafy.hool.dto.emoji.CanEmojiDto(me.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId) " +
+            "from Member_emoji me join me.emoji e where me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE" +
+            " order by e.id desc")
+    List<CanEmojiDto> madeByMeEmojisDescPageNull(@Param("memberId") Long memberId, Pageable page);
+
+    @Query(value = "select new com.ssafy.hool.dto.emoji.CanEmojiDto(me.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId) " +
+            "from Member_emoji me join me.emoji e where me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE " +
+            "and me.id < :id order by e.id desc")
+    List<CanEmojiDto> madeByMeEmojisDescLessPageNull(@Param("memberId") Long memberId, @Param("id") Long id, Pageable page);
+
+    @Query(value = "select count(me.id) > 0 " +
+            "from Member_emoji me join me.emoji e where me.member.id = :memberId and me.emojitype = com.ssafy.hool.domain.emoji.EmojiType.MADE" +
+            " and me.id < :id")
+    Boolean existsMadeByMeEmojisNull(@Param("memberId") Long memberId, @Param("id") Long id);
 
 //    @Query(value = "select ~~ from Emoji_shop es join es.dealHistoryList dh group by es.id order by es.id desc")
 
