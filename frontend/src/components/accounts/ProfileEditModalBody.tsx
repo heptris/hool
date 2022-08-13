@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { apiInstance } from "api";
 import { HOOL_API_ENDPOINT } from "constant";
 
+import useUser from "hooks/useUser";
+
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -11,21 +13,41 @@ import LabelInput from "components/commons/LabelInput";
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
 const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
 
-const ProfileEditModalBody = (props) => {
-  const [files, setFiles] = useState<FileList>();
+export const convertURLtoFile = async (url: string) => {
+  const response = await fetch(url);
+  const data = await response.blob();
+  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+  const metadata = { type: `image/${ext}` };
+  return new File([data], filename!, metadata);
+};
+
+const ProfileEditModalBody = ({
+  onDisplayChange,
+}: {
+  onDisplayChange: Function;
+}) => {
+  const { userInfo } = useUser();
+  const profileUrl = userInfo?.memberProfile;
+  const profileFileObject = convertURLtoFile(profileUrl); //서버 실행시 성공하는지 확인
+  console.log(profileFileObject);
+  const nickname = userInfo?.nickName;
+
+  const [files, setFiles] = useState<FileList>(); //profileFileObject
   const imgInputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const previewRef: React.RefObject<HTMLDivElement> = useRef(null);
+  const [nickName, setNickname] = useState(nickname);
 
   const onLoadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const tmpFiles = e.target.files;
     if (tmpFiles === null) return;
-
-    console.log(tmpFiles);
     setFiles(tmpFiles);
   };
+
   useEffect(() => {
     renderPreview();
   }, [files]);
+
   const renderPreview = () => {
     if (!files) return;
 
@@ -36,10 +58,14 @@ const ProfileEditModalBody = (props) => {
       previewEl?.setAttribute(
         "style",
         `background-image: url(${reader.result});
-        background-size: cover;`
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        `
       );
     reader.readAsDataURL(files[0]);
   };
+
   const onSubmit = (e: React.FormEvent) => {
     if (!files) return;
     e.preventDefault();
@@ -47,21 +73,22 @@ const ProfileEditModalBody = (props) => {
     const formData = new FormData();
     formData.append("file", files[0]);
     const data = {
-      name: "test22",
-      description: "test22",
-      emojiAnimate: "animate__hinge",
+      nickName,
     };
     formData.append(
-      "emojiCreateDto",
+      "memberUpdateDto",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
     const api = apiInstance();
     api
-      .post(HOOL_API_ENDPOINT + "emoji/", formData, {
+      .put(HOOL_API_ENDPOINT + "member/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        alert("프로필 편집이 성공했습니다.");
+      })
       .catch((err) => console.error(err));
   };
 
@@ -70,7 +97,9 @@ const ProfileEditModalBody = (props) => {
       <Wrapper>
         <Title>프로필 사진</Title>
         <ImgBox>
-          <ImgLabel htmlFor="image-upload" />
+          <ImgLabel htmlFor="image-upload">
+            {!files && <PrifileImg src={profileUrl} />}
+          </ImgLabel>
           <ImgInput
             id="image-upload"
             type="file"
@@ -85,27 +114,31 @@ const ProfileEditModalBody = (props) => {
           </InfoBox>
         </ImgBox>
       </Wrapper>
-      <Wrapper>
-        <Title>이름</Title>
-        <LabelInput widthSize="17rem" />
-      </Wrapper>
+
       <Wrapper>
         <Title>닉네임</Title>
-        <LabelInput widthSize="17rem" />
+        <LabelInput
+          type="text"
+          widthSize="17rem"
+          inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setNickname(e.target.value)
+          }
+          inputValue={nickName}
+        />
       </Wrapper>
       <ButtonWrapper>
         <Button
-          height={3}
-          width={7}
+          height={2.5}
+          width={5}
           text={"취소"}
           marginTop={0.5}
           marginBottom={2}
           color={darkTheme.adaptiveGrey500}
           marginRight={1}
-          buttonOnClick={props.switchIsEditing}
+          buttonOnClick={onDisplayChange}
         />
 
-        <SubmitBtn width={7} height={3} text={"제출"} />
+        <SubmitBtn width={5} height={2.5} text={"제출"} />
       </ButtonWrapper>
     </ProfileForm>
   );
@@ -151,6 +184,12 @@ const ImgLabel = styled.label`
     cursor: pointer;
     background-color: ${darkTheme.adaptiveGrey700};
   }
+`;
+const PrifileImg = styled.img`
+  position: absolute;
+  width: 13rem;
+  height: 13rem;
+  border-radius: 13rem;
 `;
 const ImgInput = styled.input`
   display: none;

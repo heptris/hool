@@ -11,8 +11,8 @@ const getMyProfile = async (token?: string) => {
     `${MEMBER}/`,
     token
       ? {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        headers: { Authorization: `Bearer ${token}` },
+      }
       : undefined
   )
     .then(({ data }) => data)
@@ -22,7 +22,6 @@ const getMyProfile = async (token?: string) => {
 const putModifyMyProfile = (obj: {
   name: string;
   nickName: string;
-  password: string;
 }) => putRequest(`${MEMBER}/`, obj);
 
 const postMyEmojiDetail = (obj: { emojiId: number }) =>

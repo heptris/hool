@@ -17,6 +17,9 @@ const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
   const { userInfo } = useUser();
+
+  const profileUrl = userInfo?.memberProfile;
+  console.log(profileUrl);
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
   const { logout } = useAuth();
 
@@ -45,7 +48,7 @@ const NavHeader = () => {
               </ProfileMenu>
             )}
             <ProfileImg
-              src={profileDefaultImg}
+              src={profileUrl}
               alt={`${profileDefaultImg}의 프로필 이미지`}
             />
             <ProfileName>{userInfo.nickName}</ProfileName>

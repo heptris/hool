@@ -9,7 +9,7 @@ import { darkTheme } from "styles/Theme";
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
 import { getMyPoint } from "api/profile";
-
+import { getMyProfile } from "api/profile";
 import Button from "../commons/Button";
 import Modal from "../commons/Modal";
 import Card from "../commons/Card";
@@ -23,6 +23,8 @@ import Loading from "components/Loading";
 
 function Profile() {
   const { userInfo } = useUser();
+
+  const profileUrl = userInfo?.memberProfile;
 
   const { data: myPointData, isLoading } = useQuery([QUERY_KEYS.POINT], () =>
     getMyPoint({ memberId: userInfo?.memberId })
@@ -46,7 +48,7 @@ function Profile() {
       {isEditing && (
         <Modal
           header={<ProfileEditModalHeader />}
-          body={<ProfileEditModalBody switchIsEditing={switchIsEditing} />}
+          body={<ProfileEditModalBody onDisplayChange={switchIsEditing} />}
           onDisplayChange={switchIsEditing}
         />
       )}
@@ -89,7 +91,7 @@ function Profile() {
       <ProfileBox>
         <ProfileHeader>나의 프로필</ProfileHeader>
 
-        <ProfileImg src={profileDefaultImg} alt="profile-img" />
+        <ProfileImg src={profileUrl} alt="profile-img" />
 
         <Username>{userInfo?.nickName}</Username>
         <Email>{userInfo?.memberEmail}</Email>
