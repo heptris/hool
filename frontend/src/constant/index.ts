@@ -28,7 +28,7 @@ export const QUERY_KEYS = {
   ROOM_ACCESS: "room-access",
 };
 
-export const USER_SESSIONSTORAGE_KEY = {
+export const USER_AUTH_KEY = {
   ACCESS_TOKEN: "accessToken",
   REFRESH_TOKEN: "refreshToken",
 };
