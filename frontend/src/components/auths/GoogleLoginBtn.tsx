@@ -1,48 +1,48 @@
-import React from "react";
-import { GoogleLogin } from "react-google-login";
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
+import { useNavigate } from "@tanstack/react-location";
+
+import useAuth from "hooks/useAuth";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { useNavigate } from "@tanstack/react-location";
+import { requestGoogleLogin } from "api/auth";
+
 import googleLogoImg from "assets/google-logo-img.png";
-import axios from "axios";
-import useUser from "../../hooks/useUser";
-import { ROUTES_NAME, USER_SESSIONSTORAGE_KEY } from "constant";
-import { getMyProfile } from "api/profile";
+
+import { ROUTES_NAME } from "constant";
 
 const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
 const GoogleLoginBtn = () => {
-  const { updateUser } = useUser();
+  const { onLoginSuccess } = useAuth();
   const navigate = useNavigate();
-  const onSuccess = async (res) => {
-    console.log("LOGIN SUCCESS!", res);
-    const { tokenId } = res;
-    axios
-      .post("https://i7a408.p.ssafy.io/auth/google/login", {
+  const onSuccess = async (
+    res: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    if ("tokenId" in res) {
+      console.log("LOGIN SUCCESS!", res);
+      const { tokenId } = res;
+      requestGoogleLogin({
         googleIdToken: tokenId,
       })
-      .then(async (res) => {
-        if (res.status === 200) {
-          console.log(res.data.data);
-          const { accessToken, refreshToken } = res.data.data;
-          sessionStorage.setItem(
-            USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN,
-            accessToken
-          );
-          sessionStorage.setItem(
-            USER_SESSIONSTORAGE_KEY.REFRESH_TOKEN,
-            refreshToken
-          );
-          updateUser(await getMyProfile(res.data.accessToken));
-          navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
-        }
-      })
-      .catch((err) => alert(err));
+        .then(async (res) => {
+          if (res.status === 200) {
+            console.log(res);
+
+            onLoginSuccess(res.data);
+            navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
+          }
+        })
+        .catch((err) => alert(err));
+    }
   };
 
-  const onFailure = (err) => {
+  const onFailure = (err: any) => {
     console.log("LOGIN FAILED!", err);
   };
 
