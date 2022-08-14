@@ -1,8 +1,8 @@
-import { Navigate, useNavigate } from "@tanstack/react-location";
+import { Navigate } from "@tanstack/react-location";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
 
 import useUser from "hooks/useUser";
+import useRoomEnter from "hooks/useRoomEnter";
 
 import styled from "styled-components";
 
@@ -17,25 +17,35 @@ import Loading from "components/Loading";
 
 import { QUERY_KEYS } from "constant";
 
-import { handleEnterRoom } from "utils/handleEnterRoom";
-
 import { MeetingRoomType } from "types/MeetingRoomType";
 
 const MeetingList = () => {
   const { userInfo } = useUser();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { handleEnterRoom } = useRoomEnter();
   const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
     getMeetingList()
   );
-  const { mutate } = useMutation(postCheckPasswordBeforeEnterMeetingRoom, {
+  const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
     onSuccess: (data, { conferenceId }) => {
-      handleEnterRoom(conferenceId, userInfo.nickName, navigate, dispatch);
+      handleEnterRoom(conferenceId, userInfo.nickName, data);
     },
-    onError: (err) => {
-      err.response.data.message ? alert(err.response.data.message) : alert(err);
+    onError: (error) => {
+      // err.response.data.message ? alert(err.response.data.message) :
+      alert(error);
     },
   });
+  const { mutate: mutatePrivate } = useMutation(
+    postCheckPasswordBeforeEnterMeetingRoom,
+    {
+      onSuccess: (data, { conferenceId }) => {
+        handleEnterRoom(conferenceId, userInfo.nickName, data);
+      },
+      onError: (error) => {
+        // err.response.data.message ? alert(err.response.data.message) :
+        alert(error);
+      },
+    }
+  );
 
   if (isLoading) return <Loading />;
   if (isError) return <Navigate to={"/error"} />;
@@ -50,20 +60,14 @@ const MeetingList = () => {
             onClick={() => {
               isPublic
                 ? (() => {
-                    postEnterMeetingRoom({
+                    mutatePublic({
                       conferenceId: conferenceId,
                     });
-                    handleEnterRoom(
-                      conferenceId,
-                      userInfo.nickName,
-                      navigate,
-                      dispatch
-                    );
                   })()
                 : (() => {
                     const password =
                       prompt("비공개 방 비밀번호를 입력해주세요");
-                    mutate({
+                    mutatePrivate({
                       conferenceId,
                       password: password ? password : "",
                     });

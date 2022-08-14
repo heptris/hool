@@ -1,6 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "@tanstack/react-location";
 import React, { ChangeEvent, useState } from "react";
 
 import useUser from "hooks/useUser";
@@ -15,8 +13,7 @@ import LabelTextarea from "components/commons/LabelTextarea";
 import LabelWrapper from "components/commons/LabelWrapper";
 import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 import LabelInput from "components/commons/LabelInput";
-
-import { handleEnterRoom } from "utils/handleEnterRoom";
+import useRoomEnter from "hooks/useRoomEnter";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -41,12 +38,11 @@ const MeetingModalBody = ({
   const {
     userInfo: { nickName },
   } = useUser();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { handleEnterRoom } = useRoomEnter();
   const { mutate } = useMutation(postCreateMeetingRoom, {
-    onSuccess: (data, variable) => {
+    onSuccess: (data) => {
       onDisplayChange();
-      handleEnterRoom(data.data.conferenceId, nickName, navigate, dispatch);
+      handleEnterRoom(data.data.conferenceId, nickName, data);
     },
     onError: (err) => {
       console.log(err);
