@@ -1,7 +1,6 @@
 import { Navigate } from "@tanstack/react-location";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import useUser from "hooks/useUser";
 import useRoomEnter from "hooks/useRoomEnter";
 
 import styled from "styled-components";
@@ -18,16 +17,20 @@ import Loading from "components/Loading";
 import { QUERY_KEYS } from "constant";
 
 import { MeetingRoomType } from "types/MeetingRoomType";
+import { UserInfoType } from "types/UserInfoType";
 
 const MeetingList = () => {
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
+
   const { handleEnterRoom } = useRoomEnter();
   const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
     getMeetingList()
   );
   const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
     onSuccess: (data, { conferenceId }) => {
-      handleEnterRoom(conferenceId, userInfo.nickName, data);
+      userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
     },
     onError: (error) => {
       // err.response.data.message ? alert(err.response.data.message) :
@@ -38,7 +41,7 @@ const MeetingList = () => {
     postCheckPasswordBeforeEnterMeetingRoom,
     {
       onSuccess: (data, { conferenceId }) => {
-        handleEnterRoom(conferenceId, userInfo.nickName, data);
+        userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
       },
       onError: (error) => {
         // err.response.data.message ? alert(err.response.data.message) :

@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-location";
-
-import useUser from "hooks/useUser";
 
 import { getFriendList, getFriendSendMessage } from "api/social";
 
@@ -14,26 +12,21 @@ import Requests from "components/social/Requests";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
+import { UserInfoType } from "types/UserInfoType";
+
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
 
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
 
-  const {
-    data: friendListData,
-    isError: friendListIsError,
-    isLoading: friendListIsLoading,
-  } = useQuery([QUERY_KEYS.FRIEND_LIST], getFriendList, {
-    retry: 0,
-  });
-  const {
-    data: friendMessageListData,
-    isError: friendMessageListIsError,
-    isLoading: friendMessageListIsLoading,
-  } = useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
-    retry: 0,
-  });
-  console.log(friendListData, friendMessageListData);
+  const { data: friendListData, isLoading: friendListIsLoading } = useQuery(
+    [QUERY_KEYS.FRIEND_LIST],
+    getFriendList
+  );
+  const { data: friendMessageListData, isLoading: friendMessageListIsLoading } =
+    useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage);
 
   if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;

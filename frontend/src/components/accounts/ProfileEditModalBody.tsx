@@ -1,8 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
-import { apiInstance } from "api";
-import { HOOL_API_ENDPOINT } from "constant";
 
-import useUser from "hooks/useUser";
+import { apiInstance } from "api";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -10,8 +9,12 @@ import { darkTheme } from "styles/Theme";
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 
+import { HOOL_API_ENDPOINT, QUERY_KEYS } from "constant";
+
+import { UserInfoType } from "types/UserInfoType";
+
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
-const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
+// const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
 
 export const convertURLtoFile = async (url: string) => {
   const response = await fetch(url);
@@ -27,8 +30,10 @@ const ProfileEditModalBody = ({
 }: {
   onDisplayChange: Function;
 }) => {
-  const { userInfo } = useUser();
-  const profileUrl = userInfo?.memberProfile;
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
+  const profileUrl = userInfo!.memberProfile;
   const profileFileObject = convertURLtoFile(profileUrl); //서버 실행시 성공하는지 확인
   console.log(profileFileObject);
   const nickname = userInfo?.nickName;
@@ -124,6 +129,7 @@ const ProfileEditModalBody = ({
             setNickname(e.target.value)
           }
           inputValue={nickName}
+          placeholderText={""}
         />
       </Wrapper>
       <ButtonWrapper>

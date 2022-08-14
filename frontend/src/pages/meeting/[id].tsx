@@ -4,15 +4,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import MeetingRoom from "components/meeting/MeetingRoom";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
-import useUser from "hooks/useUser";
+import { UserInfoType } from "types/UserInfoType";
 
 const RoomPage = () => {
   const match = useMatch();
   const {
     params: { id },
   } = match;
-  const { userInfo } = useUser();
+
   const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
 
   const conferenceId = +id;
   if (queryClient.getQueryData([QUERY_KEYS.ROOM_ACCESS]) !== 200)
