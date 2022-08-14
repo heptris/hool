@@ -1,5 +1,4 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { USER_SESSIONSTORAGE_KEY } from "constant";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
@@ -29,11 +28,11 @@ const initialState: NavMode = {
   isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!sessionStorage.getItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN),
+  isLoggedIn: false,
 };
 const sessionInitialState: ClientSessionType = {
-  mySessionId: "SessionABC",
-  myUserName: "Yan",
+  mySessionId: "",
+  myUserName: "",
   audioEnabled: false,
   videoEnabled: false,
   msgToSend: "",
