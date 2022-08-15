@@ -30,16 +30,17 @@ type PropsType = {
   isSport: string;
 };
 
-const MeetingList = ({ isState, isSport }: PropsType: { isState: boolean }) => {
+const MeetingList = ({ isState, isSport }: PropsType) => {
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
+  const newList: Array<any> = [];
   const userInfo = useQueryClient().getQueryData<UserInfoType>([
     QUERY_KEYS.USER,
   ]);
   const {
-    data,
-    isLoading,
-    isError,
+    data: allMeetingList,
+    isLoading: allMeetingListIsLoading,
+    isError: allMeetingListIsError,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -52,22 +53,21 @@ const MeetingList = ({ isState, isSport }: PropsType: { isState: boolean }) => {
     }
   );
   const { handleEnterRoom } = useRoomEnter();
-  const {
-    data: allMeetingList,
-    isLoading: allMeetingListIsLoading,
-    isError: allMeetingListIsError,
-  } = useQuery([QUERY_KEYS.MEETINGS], () => getMeetingList());
-  const allList = allMeetingList?.data;
-  isSport === ""
-    ? allList.map((el: MeetingRoomType) => {
-        //filter 적용안되서 map으로 작성, filter 적용안되는 이유를 모르겠음
-        newList.push(el);
-      })
-    : allList.map((el: MeetingRoomType) => {
-        if (el.category === isSport) {
+  isSport === "" || isSport === "선택하세요"
+    ? allMeetingList?.pages.map((page) => {
+        page.values.map((el: MeetingRoomType) => {
           newList.push(el);
-        }
+        });
+      })
+    : allMeetingList?.pages.map((page) => {
+        page.values.map((el: MeetingRoomType) => {
+          if (el.category === isSport) {
+            newList.push(el);
+          }
+        });
       });
+
+  console.log(newList);
 
   const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
     onSuccess: (data, { conferenceId }) => {
@@ -97,52 +97,49 @@ const MeetingList = ({ isState, isSport }: PropsType: { isState: boolean }) => {
     }
   }, [inView]);
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Navigate to={"/error"} />;
+  if (allMeetingListIsLoading) return <Loading />;
+  if (allMeetingListIsError) return <Navigate to={"/error"} />;
 
   return (
     <>
       {/* <div onScroll={onScroll} ref={viewRef} /> */}
       {isState ? (
         <ItemList>
-          {data.pages.map((page) => (
-            <React.Fragment key={page.nextId}>
-              {page.values.map((el: MeetingRoomType) => {
-                const { conferenceId, isPublic } = el;
-                return userInfo ? (
-                  <ItemLink
-                    key={conferenceId}
-                    onClick={() => {
-                      isPublic
-                        ? (() => {
-                            mutatePublic({
-                              conferenceId: conferenceId,
-                            });
-                          })()
-                        : (() => {
-                            const password =
-                              prompt("비공개 방 비밀번호를 입력해주세요");
-                            mutatePrivate({
-                              conferenceId,
-                              password: password ? password : "",
-                            });
-                          })();
-                    }}
-                  >
-                    <MeetingListItem {...el} />
-                  </ItemLink>
-                ) : (
-                  <div
-                    onClick={() => {
-                      alert("로그인이 필요한 서비스입니다.");
-                    }}
-                  >
-                    <MeetingListItem {...el} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
-          ))}
+          {newList.map((el: MeetingRoomType) => {
+            const { conferenceId, isPublic } = el;
+            return userInfo ? (
+              <ItemLink
+                key={conferenceId}
+                onClick={() => {
+                  isPublic
+                    ? (() => {
+                        mutatePublic({
+                          conferenceId: conferenceId,
+                        });
+                      })()
+                    : (() => {
+                        const password =
+                          prompt("비공개 방 비밀번호를 입력해주세요");
+                        mutatePrivate({
+                          conferenceId,
+                          password: password ? password : "",
+                        });
+                      })();
+                }}
+              >
+                <MeetingListItem {...el} />
+              </ItemLink>
+            ) : (
+              <div
+                onClick={() => {
+                  alert("로그인이 필요한 서비스입니다.");
+                }}
+              >
+                <MeetingListItem {...el} />
+              </div>
+            );
+          })}
+
           <div ref={ref} />
         </ItemList>
       ) : (
