@@ -69,8 +69,8 @@ const Time = styled.div`
   color: ${darkTheme.emphasisColor};
 `;
 const Public = styled.div`
-  border: 3px solid;
-  padding: 0.3rem;
+  border: 1px outset ${darkTheme.adaptiveGrey700};
+  padding: 0.4rem;
   border-radius: 4px;
   color: ${({ isPublic }: { isPublic: boolean }) =>
     isPublic ? darkTheme.infoColor : darkTheme.contrastColor};
