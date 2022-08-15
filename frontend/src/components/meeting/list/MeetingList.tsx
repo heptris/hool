@@ -53,7 +53,7 @@ const MeetingList = ({ isState, isSport }: PropsType) => {
     }
   );
   const { handleEnterRoom } = useRoomEnter();
-  isSport === "" || isSport === "선택하세요"
+  isSport === "" || isSport === "카테고리를 선택하세요"
     ? allMeetingList?.pages.map((page) => {
         page.values.map((el: MeetingRoomType) => {
           newList.push(el);
