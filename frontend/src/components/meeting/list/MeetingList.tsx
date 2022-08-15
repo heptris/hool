@@ -19,15 +19,17 @@ import { QUERY_KEYS } from "constant";
 import { MeetingRoomType } from "types/MeetingRoomType";
 import { UserInfoType } from "types/UserInfoType";
 
-const MeetingList = () => {
+const MeetingList = ({ isState }) => {
   const userInfo = useQueryClient().getQueryData<UserInfoType>([
     QUERY_KEYS.USER,
   ]);
 
   const { handleEnterRoom } = useRoomEnter();
-  const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
-    getMeetingList()
-  );
+  const {
+    data: allMeetingList,
+    isLoading: allMeetingListIsLoading,
+    isError: allMeetingListIsError,
+  } = useQuery([QUERY_KEYS.MEETINGS], () => getMeetingList());
   const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
     onSuccess: (data, { conferenceId }) => {
       userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
@@ -50,44 +52,51 @@ const MeetingList = () => {
     }
   );
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Navigate to={"/error"} />;
+  if (allMeetingListIsLoading) return <Loading />;
+  if (allMeetingListIsError) return <Navigate to={"/error"} />;
 
   return (
-    <ItemList>
-      {data.data.map((el: MeetingRoomType) => {
-        const { conferenceId, isPublic } = el;
-        return userInfo ? (
-          <ItemLink
-            key={conferenceId}
-            onClick={() => {
-              isPublic
-                ? (() => {
-                    mutatePublic({
-                      conferenceId: conferenceId,
-                    });
-                  })()
-                : (() => {
-                    const password =
-                      prompt("비공개 방 비밀번호를 입력해주세요");
-                    mutatePrivate({
-                      conferenceId,
-                      password: password ? password : "",
-                    });
-                  })();
-            }}
-          >
-            <MeetingListItem {...el} />
-          </ItemLink>
-        ) : (
-          <div onClick={() => alert("로그인이 필요한 서비스입니다.")}>
-            <MeetingListItem {...el} />
-          </div>
-        );
-      })}
-    </ItemList>
+    <InventoryContent>
+      {isState ? (
+        <ItemList>
+          {allMeetingList.data.map((el: MeetingRoomType) => {
+            const { conferenceId, isPublic } = el;
+            return userInfo ? (
+              <ItemLink
+                key={conferenceId}
+                onClick={() => {
+                  isPublic
+                    ? (() => {
+                        mutatePublic({
+                          conferenceId: conferenceId,
+                        });
+                      })()
+                    : (() => {
+                        const password =
+                          prompt("비공개 방 비밀번호를 입력해주세요");
+                        mutatePrivate({
+                          conferenceId,
+                          password: password ? password : "",
+                        });
+                      })();
+                }}
+              >
+                <MeetingListItem {...el} />
+              </ItemLink>
+            ) : (
+              <div onClick={() => alert("로그인이 필요한 서비스입니다.")}>
+                <MeetingListItem {...el} />
+              </div>
+            );
+          })}
+        </ItemList>
+      ) : (
+        <ItemList></ItemList>
+      )}
+    </InventoryContent>
   );
 };
+const InventoryContent = styled.div``;
 
 const ItemList = styled.ul`
   width: 100%;

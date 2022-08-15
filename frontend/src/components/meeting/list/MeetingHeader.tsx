@@ -4,11 +4,19 @@ import PageHeader from "components/commons/PageHeader";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 import SelectCategory from "../common/SelectCategory";
+import { darkTheme } from "styles";
+import styled from "styled-components";
 
-const MeetingHeader = () => {
+const MeetingHeader = ({ changeState, isState }) => {
   const [conferenceCategory, setConferenceCategory] =
     useState<ConferenceCategoryType>("DEFAULT");
-
+  const switchStateHandler = (state: boolean) => {
+    if (state) {
+      changeState(true);
+    } else {
+      changeState(false);
+    }
+  };
   const onChange = (
     key: "conferenceCategory",
     e: ChangeEvent<HTMLSelectElement>
@@ -38,8 +46,73 @@ const MeetingHeader = () => {
           />
         </div>
       }
-    />
+    >
+      {
+        <InventorySwitches>
+          <SwitchItem
+            style={
+              isState
+                ? {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+                : {}
+            }
+            onClick={() => {
+              switchStateHandler(true);
+            }}
+          >
+            <span style={isState ? { color: darkTheme.mainBadgeColor } : {}}>
+              전 체
+            </span>
+          </SwitchItem>
+          <SwitchItem
+            style={
+              isState
+                ? {}
+                : {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+            }
+            onClick={() => {
+              switchStateHandler(false);
+            }}
+          >
+            <span style={isState ? {} : { color: darkTheme.mainBadgeColor }}>
+              최신순
+            </span>
+          </SwitchItem>
+        </InventorySwitches>
+      }
+    </PageHeader>
   );
 };
 
+const Info = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const InventoryHeader = styled.div`
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0.8rem 0 1.5rem 0.8rem;
+`;
+const InventorySwitches = styled.div`
+  display: flex;
+  margin: 0 0 0 0.8rem;
+`;
+const SwitchItem = styled.button`
+  background-color: transparent;
+  color: ${darkTheme.white};
+  margin: 0 2rem 0 0;
+  padding: 0 0 0.25rem 0;
+
+  &:hover {
+    cursor: pointer;
+
+    span {
+      color: ${darkTheme.adaptiveGrey200};
+    }
+  }
+`;
 export default MeetingHeader;
