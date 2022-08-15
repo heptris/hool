@@ -1,26 +1,38 @@
 package com.ssafy.hool.service.emoji;
 
-import com.ssafy.hool.dto.emoji_shop.EmojiRankingDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto;
+import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
-
+@Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EmojiShopRankingService {
 
-    private final RedisTemplate redisTemplate;
+    private final EmojiShopRepository emojiShopRepository;
 
-//    public List<EmojiRankingDto> getRankingList(){
-//        String key = "ranking";
-//        ZSetOperations<String, String> stringStringZSetOperations = redisTemplate.opsForZSet();
-//
-//
+
+    @Cacheable(value = "ranking", cacheManager = "rankCacheManager")
+    public List<EmojiShopRankingDto> getRanking(){
+        return emojiShopRepository.rankEmojiShop();
+    }
+
+//    @CachePut(value = "ranking", cacheManager = "rankCacheManager")
+//    public List<EmojiShopRankingDto> updateRanking(){
+//        return emojiShopRepository.rankEmojiShop();
 //    }
+
+    @CacheEvict(allEntries = true, value = "ranking", cacheManager = "rankCacheManager")
+    public void cacheEvict(){
+        System.out.println("all cache removed");
+    }
+
 }
