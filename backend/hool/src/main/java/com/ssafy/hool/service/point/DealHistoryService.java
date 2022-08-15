@@ -18,6 +18,7 @@ import com.ssafy.hool.repository.emoji.MemberEmojiRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.repository.point.DealHistoryRepository;
 import com.ssafy.hool.repository.point.PointHistoryRepository;
+import com.ssafy.hool.service.emoji.EmojiShopRankingService;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class DealHistoryService {
     private final MemberEmojiRepository memberEmojiRepository;
     private final EmojiShopRepository emojiShopRepository;
     private final EmojiRepository emojiRepository;
+    private final EmojiShopRankingService emojiShopRankingService;
 
     /**
      * 이모지상점에서 이모지 구매
@@ -78,6 +80,9 @@ public class DealHistoryService {
             Member_emoji memberEmoji = Member_emoji.createMemberEmoji(buyer, emoji);
             memberEmoji.setEmojitype(EmojiType.BUY);
             memberEmojiRepository.save(memberEmoji);
+
+            // ranking cache update 용도
+//            emojiShopRankingService.updateRanking();
 
             return new DealHistoryResponseDto(emoji.getName(), emoji.getDescription(), dealHistory.getDealPoint());
         } else {

@@ -4,6 +4,7 @@ import com.ssafy.hool.domain.emoji.Emoji_shop;
 import com.ssafy.hool.dto.conference.ConferenceListResponseDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopListDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -40,4 +41,7 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
             "from Emoji_shop es join es.emoji e where e.name like %:keyword%")
     List<EmojiShopListDto> searchEmojiShop(@Param("keyword") String keyword);
 
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto(count (es.id), es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+            "from Emoji e join e.emoji_shop es join es.dealHistoryList dh group by es.id order by (count (es.id)) desc ")
+    List<EmojiShopRankingDto> rankEmojiShop();
 }
