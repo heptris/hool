@@ -29,11 +29,11 @@ values (2, 3, 3),
        (4, 4, 2);
 
 insert into conference (created_date, last_modified_date, conference_password, conference_category, description, is_active, is_public, owner_id, title, total)
-values (now(), now(), "1234", "SOCCER", "토트넘 아스날 축구경기", true, true, 1, "토트넘 vs 아스날", 4),
-       (now(), now(), "1234", "SOCCER", "맨유 맨시티 축구경기입니다", true, true, 2, "맨시티 vs 맨유", 3),
+values (now(), now(), null, "SOCCER", "토트넘 아스날 축구경기", true, true, 1, "토트넘 vs 아스날", 4),
+       (now(), now(), null, "SOCCER", "맨유 맨시티 축구경기입니다", true, true, 2, "맨시티 vs 맨유", 3),
        (now(), now(), "1234", "BASEBALL", "야구 경기~~~", true, false, 5, "야구 응원방", 6),
        (now(), now(), "abcd", "BASKETBALL", "농구 경기~~~", false, false, 1, "농구 응원방", 0);
---
+
 insert into game (created_date, last_modified_date, game_name, game_result, game_status, conference_id)
 values (now(), now(), "손흥민 2골 가능?", null, "PROGRESS", 1),
        (now(), now(), "토트넘 4골 가능?", null, "PROGRESS", 2),
