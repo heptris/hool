@@ -75,9 +75,9 @@ const MeetingModalBody = ({
         <LabelTextarea
           height={"5rem"}
           width={"100%"}
-          placeholderText="여기에 응원방 제목을 적어주세요"
+          placeholderText="응원방 제목을 적어주세요"
           text="응원방 제목"
-          info={`${title.length} / 140`}
+          info={`(${title.length}/140)`}
           textareaValue={title}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             onChange("title", e, 140)
@@ -88,9 +88,9 @@ const MeetingModalBody = ({
         <LabelTextarea
           height={"5rem"}
           width={"100%"}
-          placeholderText="여기에 설명을 적어주세요"
+          placeholderText="설명을 적어주세요"
           text="설명"
-          info={`${description.length} / 140`}
+          info={`(${description.length}/140)`}
           textareaValue={description}
           textareaOnChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             onChange("description", e, 140)
@@ -132,7 +132,7 @@ const MeetingModalBody = ({
               />
               <ToggleButton />
               <ButtonText>
-                <TextSpan htmlFor="toggle">공 개</TextSpan>
+                <TextSpan htmlFor="toggle">공개</TextSpan>
                 <TextSpan htmlFor="toggle">비공개</TextSpan>
               </ButtonText>
             </ToggleButtonWrapper>
@@ -190,7 +190,7 @@ const Wrapper = styled.div`
 `;
 const ToggleTitle = styled.span`
   width: 20%;
-  font-size: 1rem;
+  font-size: 0.825rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const ToggleWrapper = styled.div`
@@ -225,6 +225,7 @@ const ButtonText = styled.div`
 `;
 const TextSpan = styled.label`
   z-index: 1;
+  font-size: 0.825rem;
   cursor: pointer;
 `;
 const ToggleButton = styled.span`
@@ -266,6 +267,11 @@ const Select = styled.select`
   color: ${darkTheme.adaptiveGrey200};
   padding: 0 1rem;
   cursor: pointer;
+  font-family: "Noto Sans KR", sans-serif;
+
+  &:focus {
+    outline: none;
+  }
 `;
 const Option = styled.option`
   &:hover {

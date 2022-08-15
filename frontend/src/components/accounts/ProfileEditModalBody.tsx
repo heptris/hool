@@ -100,9 +100,9 @@ const ProfileEditModalBody = ({
   return (
     <ProfileForm onSubmit={onSubmit} encType="multipart/form-data">
       <Wrapper>
-        <Title>프로필 사진</Title>
         <ImgBox>
           <ImgLabel htmlFor="image-upload">
+            {!files && <Icon className="fa-solid fa-plus"></Icon>}
             {!files && <PrifileImg src={profileUrl} />}
           </ImgLabel>
           <ImgInput
@@ -121,7 +121,6 @@ const ProfileEditModalBody = ({
       </Wrapper>
 
       <Wrapper>
-        <Title>닉네임</Title>
         <LabelInput
           type="text"
           widthSize="17rem"
@@ -130,10 +129,11 @@ const ProfileEditModalBody = ({
           }
           inputValue={nickName}
           placeholderText={""}
+          text={"닉네임"}
         />
       </Wrapper>
       <ButtonWrapper>
-        <Button
+        {/* <Button
           height={2.5}
           width={5}
           text={"취소"}
@@ -142,9 +142,9 @@ const ProfileEditModalBody = ({
           color={darkTheme.adaptiveGrey500}
           marginRight={1}
           buttonOnClick={onDisplayChange}
-        />
+        /> */}
 
-        <SubmitBtn width={5} height={2.5} text={"제출"} />
+        <SubmitBtn width={6} height={3} text={"수정하기"} />
       </ButtonWrapper>
     </ProfileForm>
   );
@@ -155,21 +155,14 @@ const ProfileForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0rem;
+  padding: 2rem 4rem;
 `;
 const Wrapper = styled.div`
-  width: 30rem;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   margin-bottom: 1rem;
 `;
-const Title = styled.div`
-  width: 5rem;
-  font-size: 1rem;
-  margin-top: 1rem;
-`;
-
 const ImgBox = styled.div`
   width: 17rem;
   display: flex;
@@ -185,6 +178,7 @@ const ImgLabel = styled.label`
   border-radius: 13rem;
   z-index: 100;
   opacity: 20%;
+  position: relative;
 
   &:hover {
     cursor: pointer;
@@ -212,20 +206,28 @@ const InfoBox = styled.div`
   margin-bottom: 1rem;
 `;
 const InfoText = styled.span`
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   align-self: start;
   color: ${darkTheme.adaptiveGrey200};
   margin-top: 0.3rem;
 `;
 const SubmitBtn = styled(Button)`
-  margin-top: 2rem;
+  margin: 2rem 0 2rem 0;
   background-color: ${darkTheme.mainBadgeColor};
 
   &:hover {
-    background-color: ${darkTheme.emphasisColor};
+    background-color: ${darkTheme.darkBadgeColor};
   }
 `;
-
+const Icon = styled.i`
+  position: absolute;
+  color: ${darkTheme.white};
+  font-size: 2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5000;
+`;
 const ButtonWrapper = styled.div`
   float: right;
 `;

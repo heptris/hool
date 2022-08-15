@@ -58,7 +58,9 @@ function SocialItem(props: PropsType) {
         <UserInfo>
           <Nickname>{friendNickName}</Nickname>
           <Email>{friendMemberEmail}</Email>
-          <CurrentPos>{memberStatus}</CurrentPos>
+          <CurrentPos>
+            {memberStatus === "ONLINE" ? "접속중" : "오프라인"}
+          </CurrentPos>
         </UserInfo>
       </Status>
       <div>
@@ -129,6 +131,9 @@ const UserInfo = styled.div`
 const Nickname = styled.h1`
   font-size: 1.2rem;
   margin-bottom: 0.6rem;
+  width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const Email = styled.h2`
   font-size: 1rem;
@@ -179,7 +184,7 @@ const Menu = styled.div`
 
       &:hover {
         cursor: pointer;
-        background-color: ${darkTheme.adaptiveGrey500};
+        background-color: ${darkTheme.adaptiveGrey800};
       }
     }
   }

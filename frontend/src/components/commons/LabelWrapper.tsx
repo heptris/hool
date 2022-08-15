@@ -26,7 +26,7 @@ const Label = styled.label`
   display: block;
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
-  font-weight: bold;
+  font-weight: normal;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const FlexBox = styled.div`

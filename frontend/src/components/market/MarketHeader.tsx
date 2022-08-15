@@ -40,7 +40,7 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
   return (
     <PageHeader
       pageTitle="이모지 구매"
-      subtext="친구가 만든 이모지를 구경하러 가볼까요?"
+      subtext="이모지를 통해 당신의 기분을 친구와 공유해요!"
       isDisplaySearchBar={true}
       isDisplayBtn={true}
       // SearchBar={<MarketSearchBar />}

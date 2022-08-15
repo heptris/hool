@@ -74,7 +74,7 @@ function Inventory() {
         <Modal
           header={
             <DetailHeader>
-              <Span>상세정보</Span>
+              <span>상세정보</span>
             </DetailHeader>
           }
           body={
@@ -224,10 +224,7 @@ const InventoryContent = styled.div`
 `;
 const DetailHeader = styled.h1`
   width: 20rem;
-  margin: 1.5rem 0 1rem 0.5rem;
-`;
-const Span = styled.span`
-  font-size: 1.2rem;
+  margin: 1.5rem 1rem 1rem 0.5rem;
 `;
 
 export default Inventory;

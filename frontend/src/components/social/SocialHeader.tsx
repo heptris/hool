@@ -104,7 +104,7 @@ function SocialHeader({
   return (
     <PageHeader
       pageTitle="친구 찾기"
-      subtext="친구와 함께 응원하면 즐거움이 두배!"
+      subtext="친구와 함께하면 즐거움이 두배에요."
       isDisplaySearchBar={true}
       isDisplayBtn={false}
       isDisplayInfo={true}

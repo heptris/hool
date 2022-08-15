@@ -30,14 +30,14 @@ const Error = ({ errorMessage }: { errorMessage: string }) => {
           buttonOnClick={() => navigate({ to: "/", replace: true })}
           marginBottom={1}
         />
-        <Button
+        {/* <Button
           text="이전 페이지로 돌아가기"
           width={20}
           height={3.125}
           fontSize={1.25}
           buttonOnClick={() => location.history.back()}
           color={darkTheme.adaptiveGrey500}
-        />
+        /> */}
       </ErrorBox>
     </Container>
   );

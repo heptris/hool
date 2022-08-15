@@ -17,16 +17,15 @@ const TitleWrapper = styled.div`
   flex-direction: column;
 `;
 const Title = styled.h3`
-  font-size: 1.6rem;
-  margin-top: 1rem;
+  font-size: 1.25rem;
 `;
 const SubTitle = styled.p`
-  margin-top: 1rem;
-  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  font-size: 0.825rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const Header = styled.div`
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem 1rem 1rem;
   width: 100%;
   display: flex;
   align-items: center;
