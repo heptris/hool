@@ -11,9 +11,9 @@ const ConferenceListItem = (props: MeetingRoomType) => {
     <ListItem bgColor={darkTheme.mainColor}>
       <Thumbnail src={img} alt="" />
       <ItemTitle>{title}</ItemTitle>
+      <ItemDesc>{description}</ItemDesc>
       <ItemDescWrapper>
         <div>
-          <ItemDesc>{description}</ItemDesc>
           <Time>{category}</Time>
           <InfoWrapper>
             <Icon className="fa-solid fa-users" />
@@ -35,6 +35,9 @@ const ListItem = styled(Card)`
   }
 `;
 const ItemTitle = styled.h4`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   margin-top: 1rem;
   font-size: 1.7rem;
   color: ${darkTheme.mainBadgeColor};
@@ -43,6 +46,9 @@ const Thumbnail = styled.img`
   width: 100%;
 `;
 const ItemDesc = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   margin: 1rem 0;
   font-size: 1.2rem;
 `;
@@ -69,7 +75,9 @@ const Time = styled.div`
   color: ${darkTheme.emphasisColor};
 `;
 const Public = styled.div`
-  border: 1px outset ${darkTheme.adaptiveGrey700};
+  width: 2.7rem;
+  text-align: center;
+  border: 3px outset ${darkTheme.adaptiveGrey700};
   padding: 0.4rem;
   border-radius: 4px;
   color: ${({ isPublic }: { isPublic: boolean }) =>

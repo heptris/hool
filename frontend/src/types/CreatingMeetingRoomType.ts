@@ -1,10 +1,7 @@
+import { ConferenceCategoryType } from "./ConferenceCategoryType";
+
 export interface CreatingMeetingRoomType {
-  conferenceCategory:
-    | "SOCCER"
-    | "BASEBALL"
-    | "BASKETBALL"
-    | "VOLLEYBALL"
-    | "ESPORTS";
+  conferenceCategory: ConferenceCategoryType;
   description: string;
   title: string;
   tag?: string;
