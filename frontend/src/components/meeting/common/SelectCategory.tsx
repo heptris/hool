@@ -17,7 +17,7 @@ const SelectCategory = (props: {
         onChange("conferenceCategory", e)
       }
     >
-      <Option defaultValue={"DEFAULT"}>선택하세요</Option>
+      <Option defaultValue={"DEFAULT"}>카테고리를 선택하세요</Option>
       <Option value="SOCCER">축구</Option>
       <Option value="BASEBALL">야구</Option>
       <Option value="BASKETBALL">농구</Option>
