@@ -128,7 +128,17 @@ public class AuthController {
             @ApiResponse(code = 409, message = "닉네임 중복")
     })
     @PostMapping("/nickname/check")
-    public ResponseDto checkNickNameDuplication(@RequestBody MemberNickNameDuplicateDto memberNickNameDuplicateDto) {
+    public ResponseDto checkNickNameDuplication(@RequestBody @Valid MemberNickNameDuplicateDto memberNickNameDuplicateDto
+    , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+
+            throw new CustomValidationException("유효성 검사 실패", errorMap);
+        }
         if (memberService.existsByNickName(memberNickNameDuplicateDto.getNickName()) == true) {
             throw new CustomException(ALREADY_USED_NICKNAME);
         } else {
@@ -162,7 +172,16 @@ public class AuthController {
 
     @ApiOperation(value = "비밀번호 재설정", notes = "메일 본인 인증에 성공하면 비밀번호 재설정 가능")
     @PostMapping("/password/reset")
-    public ResponseEntity<?> passwordReset(@RequestBody PasswordResetDto passwordResetDto) {
+    public ResponseEntity<?> passwordReset(@RequestBody @Valid PasswordResetDto passwordResetDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+
+            throw new CustomValidationException("유효성 검사 실패", errorMap);
+        }
         if (!passwordResetDto.getPassword().equals(passwordResetDto.getPasswordConfirm())) {
             throw new CustomException(NOT_EQUAL_PASSWORD);
         }

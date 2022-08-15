@@ -17,7 +17,7 @@ public class FriendRequestDto {
     private String friendNickName;
     private Long friendMemberId;
     private String friendEmail;
-    private String friendImage;
+    private String friendProfile;
     private MemberStatus memberStatus;
 
 }

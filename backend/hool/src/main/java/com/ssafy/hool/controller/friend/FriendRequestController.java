@@ -54,7 +54,7 @@ public class FriendRequestController {
                 , HttpStatus.OK);
     }
 
-    @ApiOperation(value = "나한테 온 친구 요청 메세지", notes = "페이징 처리")
+    @ApiOperation(value = "나한테 온 친구 요청 메세지 (페이징)", notes = "페이징 처리")
     @GetMapping("/send/message/page")
     public ResponseEntity<?> myFriendListPage(Long cursorId, Integer size) {
         if (size == null) size = DEFAULT_SIZE;

@@ -93,7 +93,6 @@ class MemberServiceTest {
         System.out.println(thumbnailPath);
 
     }
-
     @Test
     void 숫자() {
         for (int i = 0; i < 10; i++) {

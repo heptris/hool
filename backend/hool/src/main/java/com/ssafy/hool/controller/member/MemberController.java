@@ -8,6 +8,7 @@ import com.ssafy.hool.dto.member.*;
 import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.exception.ex.CustomValidationException;
 import com.ssafy.hool.service.member.MemberService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.*;
@@ -15,9 +16,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +43,9 @@ public class MemberController {
             @ApiResponse(code = 200, message = "회원 프로필 수정 완료")
     })
     @PutMapping("/")
-    public ResponseEntity memberUpdate(@RequestPart MemberUpdateDto memberUpdateDto,
-                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile) {
-
+    public ResponseEntity memberUpdate(@Valid @RequestPart MemberUpdateDto memberUpdateDto,
+                                       @RequestPart(value = "file", required = false) MultipartFile multipartFile
+                                       ) {
         Long memberId = SecurityUtil.getCurrentMemberId();
         memberService.updateMember(multipartFile, memberId, memberUpdateDto);
 
@@ -120,13 +125,6 @@ public class MemberController {
         return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", memberFavEmojiList)
                 , HttpStatus.OK);
     }
-
-//    @ApiOperation(value = "이모지 상세정보")
-//    @PostMapping("/detail/emoji")
-//    public ResponseEntity<?> detailEmoji(@RequestBody EmojiDetailRequestDto emojiDetailRequestDto) {
-//        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "상세 이모지",
-//                memberService.getDetailEmoji(emojiDetailRequestDto.getEmojiId())), HttpStatus.OK);
-//    }
 
     @ApiOperation(value = "이모지 즐겨찾기 등록 / 해제")
     @PostMapping("/detail/emoji/favorite")

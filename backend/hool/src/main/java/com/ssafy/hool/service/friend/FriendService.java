@@ -57,7 +57,7 @@ public class FriendService {
         List<FriendDto> friendList = friendRepository.findFriendList(memberId);
         for (FriendDto friendDto : friendList) {
             if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
+                FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
                 friendDto.setFriendConferenceDto(friendConference);
             }
         }
@@ -68,8 +68,8 @@ public class FriendService {
      * 친구 리스트 조회(페이징)
      */
     public CursorFriendListResult get(Long memberId, String friendCursorTime, Pageable page) {
-        final List<FriendDto> friendList = getFriendList(memberId, friendCursorTime, page);
-        final LocalDateTime lastIdOfList = friendList.isEmpty() ?
+        List<FriendDto> friendList = getFriendList(memberId, friendCursorTime, page);
+        LocalDateTime lastIdOfList = friendList.isEmpty() ?
                 null : friendList.get(friendList.size() - 1).getLast();
 
         return new CursorFriendListResult(friendList, hasFriendListNext(memberId, lastIdOfList), lastIdOfList);
@@ -80,7 +80,7 @@ public class FriendService {
             List<FriendDto> friendList = friendRepository.friendListPage(memberId, page);
             for (FriendDto friendDto : friendList) {
                 if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                    FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
                     friendDto.setFriendConferenceDto(friendConference);
                 }
             }
@@ -91,7 +91,7 @@ public class FriendService {
             List<FriendDto> friendList = friendRepository.findListPageLessThan(memberId, dateTime, page);
             for (FriendDto friendDto : friendList) {
                 if (friendDto.getMemberStatus() == MemberStatus.ONLINE) {
-                    FriendConferenceDto friendConference = friendRepository.findFriendConference(memberId);
+                    FriendConferenceDto friendConference = friendRepository.findFriendConference(friendDto.getFriendMemberId());
                     friendDto.setFriendConferenceDto(friendConference);
                 }
             }

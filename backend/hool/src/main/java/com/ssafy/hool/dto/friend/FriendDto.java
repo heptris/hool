@@ -19,15 +19,19 @@ public class FriendDto {
 
     private LocalDateTime last;
     // 친구 프로필 이미지
+
+    private String friendProfile;
     // 친구의 현재 응원방
     private MemberStatus memberStatus;
     private FriendConferenceDto friendConferenceDto;
 
-    public FriendDto(Long friendMemberId, String friendMemberEmail, String friendNickName, LocalDateTime last, MemberStatus memberStatus) {
+    public FriendDto(Long friendMemberId, String friendMemberEmail, String friendNickName, String friendProfile,
+                     LocalDateTime last, MemberStatus memberStatus) {
         this.friendMemberId = friendMemberId;
         this.friendMemberEmail = friendMemberEmail;
         this.friendNickName = friendNickName;
         this.last = last;
+        this.friendProfile = friendProfile;
         this.memberStatus = memberStatus;
     }
 }

@@ -16,8 +16,8 @@ import java.util.Optional;
 
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
-    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.lastModifiedDate, " +
-            "m.memberStatus)" +
+    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.profileImage, " +
+            "m.lastModifiedDate, m.memberStatus)" +
             "from Friend f join f.member m where f.friend.id = :memberId")
     List<FriendDto> findFriendList(@Param("memberId") Long memberId);
 
@@ -41,12 +41,13 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     FriendConferenceDto findFriendConference(@Param("friendMemberId") Long friendMemberId);
 
 
-    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.lastModifiedDate, " +
-            "m.memberStatus) from Friend f join f.member m where f.friend.id = :memberId order by m.lastModifiedDate desc")
+    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.profileImage, " +
+            "m.lastModifiedDate, m.memberStatus) from Friend f join f.member m where f.friend.id = :memberId " +
+            "order by m.lastModifiedDate desc")
     List<FriendDto> friendListPage(@Param("memberId") Long memberId,  Pageable page);
 
-    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.lastModifiedDate, " +
-            "m.memberStatus) from Friend f join f.member m where f.friend.id = :memberId " +
+    @Query(value = "select new com.ssafy.hool.dto.friend.FriendDto(m.id, m.memberEmail, m.nickName, m.profileImage, " +
+            "m.lastModifiedDate, m.memberStatus) from Friend f join f.member m where f.friend.id = :memberId " +
             "and m.lastModifiedDate < :friendListCursor order by m.lastModifiedDate desc")
     List<FriendDto> findListPageLessThan(@Param("memberId") Long memberId,
                                          @Param("friendListCursor") LocalDateTime friendListCursor, Pageable page);
