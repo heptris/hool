@@ -1,4 +1,5 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { ChangeEvent } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles";
@@ -7,35 +8,60 @@ import { QUERY_KEYS } from "constant";
 
 import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
+import SearchBar from "components/commons/SearchBar";
+
+import { getMarketSearch } from "api/market";
+
 import { UserInfoType } from "types/UserInfoType";
 
-// const MarketSearchBar = () => {
-//   const [searchEmojiItem, setSearchEmojiItem] = useState("");
-//   // const postSearchMutation = useMutation(postSearchFriend);
-//   // const { mutate, isSuccess, isError, data } = postSearchMutation;
+const { MARKET_SEARCHED_LIST, USER } = QUERY_KEYS;
 
-//   const handleSearchEmojiItem = (e: ChangeEvent<HTMLInputElement>) => {
-//     setSearchEmojiItem(e.target.value);
-//   };
-//   // useEffect(() => {
-//   //   mutate({ friendNickEmojiItem: searchEmojiItem });
-//   // }, [searchEmojiItem]);
-//   // console.log(postSearchMutation);
-
-//   return (
-//     <>
-//       <SearchBar
-//         inputValue={searchEmojiItem}
-//         searchPlaceholder="이모지 검색"
-//         inputOnChange={handleSearchEmojiItem}
-//         // mutationProps={}
-//       />
-//     </>
-//   );
-// };
-const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
+const MarketSearchBar = ({
+  searchKeyword,
+  setSearchKeyword,
+}: {
+  setSearchKeyword: Function;
+  searchKeyword: string;
+}) => {
   const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
+  const postSearchMutation = useMutation(getMarketSearch, {
+    mutationKey: [MARKET_SEARCHED_LIST],
+    onSuccess: (data) => {
+      console.log(data.data);
+      queryClient.setQueryData([MARKET_SEARCHED_LIST], data.data);
+    },
+  });
+  const { mutate } = postSearchMutation;
+
+  const handleSearchEmojiItem = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
+  };
+  const onKeyPress = async (e: { key: string }) => {
+    if (e.key === "Enter") mutate(searchKeyword);
+  };
+
+  return (
+    <>
+      <SearchBar
+        inputValue={searchKeyword}
+        searchPlaceholder="이모지 검색"
+        inputOnChange={handleSearchEmojiItem}
+        onKeyPress={onKeyPress}
+      />
+    </>
+  );
+};
+const MarketHeader = ({
+  onDisplayChange,
+  searchKeyword,
+  setSearchKeyword,
+}: {
+  onDisplayChange: Function;
+  setSearchKeyword: Function;
+  searchKeyword: string;
+}) => {
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
 
   return (
     <PageHeader
@@ -43,7 +69,12 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
       subtext="이모지를 통해 당신의 기분을 친구와 공유해요!"
       isDisplaySearchBar={true}
       isDisplayBtn={true}
-      // SearchBar={<MarketSearchBar />}
+      SearchBar={
+        <MarketSearchBar
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+        />
+      }
       concreteBtn={
         <MarketButton
           height={2.8}
