@@ -5,8 +5,6 @@ import img from "assets/thumbnail_soccer_1920.jpg";
 import Card from "components/commons/Card";
 import { MeetingRoomType } from "types/MeetingRoomType";
 
-const { infoColor } = darkTheme;
-
 const ConferenceListItem = (props: MeetingRoomType) => {
   const { category, description, title, total, isPublic } = props;
   return (
@@ -16,10 +14,10 @@ const ConferenceListItem = (props: MeetingRoomType) => {
       <ItemDescWrapper>
         <div>
           <ItemDesc>{description}</ItemDesc>
+          <Time>{category}</Time>
           <InfoWrapper>
             <Icon className="fa-solid fa-users" />
             <Population>{total} 명</Population>
-            <Time>{category}</Time>
           </InfoWrapper>
         </div>
         <Public isPublic={isPublic}>{isPublic ? "공개" : "비공개"}</Public>
@@ -38,27 +36,44 @@ const ListItem = styled(Card)`
 `;
 const ItemTitle = styled.h4`
   margin-top: 1rem;
-  font-size: 2rem;
+  font-size: 1.7rem;
+  color: ${darkTheme.mainBadgeColor};
 `;
 const Thumbnail = styled.img`
   width: 100%;
 `;
 const ItemDesc = styled.p`
-  margin-top: 1rem;
+  margin: 1rem 0;
+  font-size: 1.2rem;
 `;
 const InfoWrapper = styled.div`
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   display: flex;
 `;
 const Icon = styled.i`
   margin-right: 0.5rem;
+  color: ${darkTheme.adaptiveGrey200};
 `;
 const Population = styled.span`
   margin-right: 0.5rem;
+  color: ${darkTheme.adaptiveGrey200};
+  font-size: 0.9rem;
 `;
-const Time = styled.span``;
-const Public = styled.span`
-  color: ${({ isPublic }: { isPublic: boolean }) => isPublic && infoColor};
+const Time = styled.div`
+  width: 6rem;
+  border: 1px solid;
+  border-radius: 5rem;
+  padding: 0.2rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: ${darkTheme.emphasisColor};
+`;
+const Public = styled.div`
+  border: 1px groove;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: ${({ isPublic }: { isPublic: boolean }) =>
+    isPublic ? darkTheme.infoColor : darkTheme.contrastColor};
 `;
 const ItemDescWrapper = styled.div`
   display: flex;
