@@ -32,7 +32,12 @@ const useAuth = () => {
         dispatch(setIsLoggedIn(true));
       })
       .catch((err) => {
-        alert("로그인 실패");
+        if (err.response.status === 400) {
+          alert("비밀번호가 틀렸습니다");
+        }
+        else if (err.response.status === 404) {
+          alert("가입되지 않은 이메일입니다.")
+        }
       });
   };
 
