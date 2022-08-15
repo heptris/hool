@@ -7,22 +7,27 @@ import SelectCategory from "../common/SelectCategory";
 import { darkTheme } from "styles";
 import styled from "styled-components";
 
-const MeetingHeader = ({ changeState, isState }) => {
+const MeetingHeader = ({ changeState, isState, changeSport }) => {
   const [conferenceCategory, setConferenceCategory] =
     useState<ConferenceCategoryType>("DEFAULT");
   const switchStateHandler = (state: boolean) => {
     if (state) {
-      changeState(true);
+      changeState(true); //전체
     } else {
-      changeState(false);
+      changeState(false); //최신순
     }
   };
+  const switchSportHandler = (sport: string) => {
+    changeSport(sport);
+  };
+
   const onChange = (
     key: "conferenceCategory",
     e: ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = e.target;
     setConferenceCategory(value);
+    switchSportHandler(value);
   };
   useEffect(() => {
     conferenceCategory !== "DEFAULT" &&
@@ -48,7 +53,7 @@ const MeetingHeader = ({ changeState, isState }) => {
       }
     >
       {
-        <InventorySwitches>
+        <MeetingSwitches>
           <SwitchItem
             style={
               isState
@@ -81,23 +86,13 @@ const MeetingHeader = ({ changeState, isState }) => {
               최신순
             </span>
           </SwitchItem>
-        </InventorySwitches>
+        </MeetingSwitches>
       }
     </PageHeader>
   );
 };
 
-const Info = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const InventoryHeader = styled.div`
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin: 0.8rem 0 1.5rem 0.8rem;
-`;
-const InventorySwitches = styled.div`
+const MeetingSwitches = styled.div`
   display: flex;
   margin: 0 0 0 0.8rem;
 `;
