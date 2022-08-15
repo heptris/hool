@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,9 +66,14 @@ public class ConferenceService {
     public void enterConference(ConferenceJoinDto conferenceJoinDto, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
+        Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
+        if(memberConference == null){
+            memberConference = Member_conference.createMemberConference(member, conference);
+            memberConferenceRepository.save(memberConference);
+        } else {
+            memberConference.setEnterStatus(EnterStatus.ENTER);
+        }
         conference.totalUpdate(1);
-        Member_conference memberConference = Member_conference.createMemberConference(member, conference);
-        memberConferenceRepository.save(memberConference);
     }
 
     /**
@@ -80,8 +86,13 @@ public class ConferenceService {
 
         if(conference.getConferencePassword().equals(conferenceJoinCheckDto.getPassword())){
             conference.totalUpdate(1);
-            Member_conference memberConference = Member_conference.createMemberConference(member, conference);
-            memberConferenceRepository.save(memberConference);
+            Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
+            if(memberConference == null){
+                memberConference = Member_conference.createMemberConference(member, conference);
+                memberConferenceRepository.save(memberConference);
+            } else {
+                memberConference.setEnterStatus(EnterStatus.ENTER);
+            }
         } else {
             throw new CustomException(INVALID_PASSWORD);
         }
@@ -104,13 +115,19 @@ public class ConferenceService {
     public void exitConference(ConferenceExitDto conferenceExitDto, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
+        Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
+        memberConference.updateEnterState(EnterStatus.EXIT);
+
         conference.totalUpdate(-1);
         if(conference.getTotal() == 0){
             conference.roomTerminated();
-        }
+        } else {
+            if(memberId == conference.getOwner_id()){
+                List<Member_conference> memberConferenceList = memberConferenceRepository.findAllByOrderByLastModifiedDate();
 
-        Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
-        memberConference.updateEnterState(EnterStatus.EXIT);
+                conference.changeOwner(memberConferenceList.get(0).getId());
+            }
+        }
     }
 
     public CursorResult<ConferenceListResponseDto> getSearch(Long cursorId, Pageable page, String category){

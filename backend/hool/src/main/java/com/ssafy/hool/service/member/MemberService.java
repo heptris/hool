@@ -79,8 +79,6 @@ public class MemberService {
 
         if (multipartFile != null) {
             AwsS3 awsS3 = new AwsS3();
-
-            System.out.println("========================================");
             try {
                 awsS3 = awsS3Service.upload(multipartFile, "member");
             } catch (IOException e) {
@@ -130,19 +128,6 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
-//    public DetailMemberEmojiDto getDetailEmoji(Long emojiId) {
-//        Emoji emoji = emojiRepository.findById(emojiId).orElseThrow(() -> new CustomException(EMOJI_NOT_FOUND));
-//        Member emojiCreator = memberRepository.findById(emoji.getCreatorId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-//        DetailMemberEmojiDto detailEmoji = DetailMemberEmojiDto.builder()
-//                .emojiId(emojiId)
-//                .name(emoji.getName())
-//                .description(emoji.getDescription())
-//                .url(emoji.getUrl())
-//                .creatorName(emojiCreator.getName())
-//                .build();
-//        return detailEmoji;
-//    }
-
     /**
      * 이모지 즐겨찾기 등록 / 해제
      */
@@ -168,7 +153,7 @@ public class MemberService {
      */
     public CursorResult getEmojiList(Long memberId, Long emojiCursorId, Pageable page) {
         List<DetailMemberEmojiDto> memberEmojiDtoList = getEmojiListDto(memberId, emojiCursorId, page);
-        final Long lastIdOfList = memberEmojiDtoList.isEmpty() ?
+        Long lastIdOfList = memberEmojiDtoList.isEmpty() ?
                 null : memberEmojiDtoList.get(memberEmojiDtoList.size() - 1).getMemberEmojiId();
 
         return new CursorResult(memberEmojiDtoList, hasMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);
@@ -194,7 +179,7 @@ public class MemberService {
      */
     public CursorResult getFavEmojiList(Long memberId, Long emojiFavCursorId, Pageable page) {
         List<DetailMemberEmojiDto> memberFavEmojiDtoList = getFavEmojiListDto(memberId, emojiFavCursorId, page);
-        final Long lastIdOfList = memberFavEmojiDtoList.isEmpty() ?
+        Long lastIdOfList = memberFavEmojiDtoList.isEmpty() ?
                 null : memberFavEmojiDtoList.get(memberFavEmojiDtoList.size() - 1).getMemberEmojiId();
 
         return new CursorResult(memberFavEmojiDtoList, hasFavMemberEmojiNext(memberId, lastIdOfList), lastIdOfList);

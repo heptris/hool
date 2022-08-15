@@ -12,6 +12,7 @@ import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.s3.AwsS3Service;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,8 @@ public class AuthService {
 
     private final ClientGoogle clientGoogle;
 
+    private final AwsS3Service awsS3Service;
+
     /**
      * 회원가입
      */
@@ -43,8 +46,13 @@ public class AuthService {
         }
 
         Member member = memberJoinDto.toMember(passwordEncoder);
+        member.setProfileImage(getRandomImage());
+        member.setPoint(10000);
+
         return MemberJoinResponseDto.of(memberRepository.save(member));
     }
+
+
 
     @Transactional
     public TokenDto login(MemberLoginDto memberLoginDto) throws RuntimeException{
@@ -98,7 +106,9 @@ public class AuthService {
         Member member = clientGoogle.getMember(googleToken);
         String password = member.getPassword();
         if (!memberRepository.existsByMemberEmail(member.getMemberEmail())) { // 회원 가입
+            member.setProfileImage(getRandomImage());
             member.setPassword(passwordEncoder.encode(member.getPassword()));
+            member.setPoint(10000);
             memberRepository.save(member);
         }
         // Token 반환
@@ -119,5 +129,12 @@ public class AuthService {
                 () -> new CustomException(MEMBER_EMAIL_NOT_FOUND));
         member.updatePassword(passwordEncoder.encode(passwordResetDto.getPassword()));
 
+    }
+
+    private String getRandomImage() {
+        int random = (int) (Math.random() * 6) + 1;
+        String path = "member/default/" + random + ".jpg";
+        String thumbnailPath = awsS3Service.getThumbnailPath(path);
+        return thumbnailPath;
     }
 }

@@ -83,4 +83,8 @@ public class Conference extends BaseEntity {
     public void roomTerminated(){
         this.isActive = false;
     }
+
+    public void changeOwner(Long memberId){
+        this.owner_id = memberId;
+    }
 }

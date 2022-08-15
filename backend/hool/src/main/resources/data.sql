@@ -1,9 +1,20 @@
-insert into member (created_date, last_modified_date, authority, member_email, member_status, name, nick_name, password, point)
-values ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'aa@naver.com', 'OFFLINE', 'aa', 'aa', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bb', 'bb', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'cc@naver.com', 'ONLINE', 'cc', 'cc', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'dd@naver.com', 'ONLINE', 'dd', 'dd', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000),
-       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_ADMIN', 'ee@naver.com', 'OFFLINE', 'ee', 'ee', '$2a$10$CeM8t1vXAQODtBKmfI7MA.CnhtBM06F3ejq2DBbDMnGUCJ/RC/KCS', 10000);
+insert into member (created_date, last_modified_date, authority, member_email,
+                    member_status, name, nick_name, password, point, profile_image)
+values ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'aa@naver.com', 'OFFLINE', 'aaa',
+        'aaa', '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
+        10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/1.jpg"),
+       ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bbb',
+        'bbb', '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
+        10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/2.jpg"),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'cc@naver.com', 'ONLINE', 'ccc', 'ccc',
+        '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
+        10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/3.jpg"),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_USER', 'dd@naver.com', 'ONLINE', 'ddd', 'ddd',
+        '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
+        10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/4.jpg"),
+       ('2022-08-12 13:51:39.468000000','2022-08-12 13:51:39.468000000', 'ROLE_ADMIN', 'ee@naver.com', 'OFFLINE', 'eee', 'eee',
+        '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
+        10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/5.jpg");
 
 insert into friend_request (created_date, last_modified_date, friend_request_status, from_member_id, to_member_id)
 values (now(), now(), 'PROCESS', 1, 2),
@@ -17,12 +28,12 @@ values (2, 3, 3),
        (2, 4, 4),
        (4, 4, 2);
 
-insert into conference (created_date, last_modified_date, conference_category, description, is_active, owner_id, title, total)
-values (now(), now(), "SOCCER", "토트넘 아스날 축구경기", true, 1, "토트넘 vs 아스날", 4),
-       (now(), now(), "SOCCER", "맨유 맨시티 축구경기입니다", true, 2, "맨시티 vs 맨유", 3),
-       (now(), now(), "BASEBALL", "야구 경기~~~", true, 5, "야구 응원방", 6),
-       (now(), now(), "BASKETBALL", "농구 경기~~~", false, 1, "농구 응원방", 0);
---
+insert into conference (created_date, last_modified_date, conference_password, conference_category, description, is_active, is_public, owner_id, title, total)
+values (now(), now(), null, "SOCCER", "토트넘 아스날 축구경기", true, true, 1, "토트넘 vs 아스날", 4),
+       (now(), now(), null, "SOCCER", "맨유 맨시티 축구경기입니다", true, true, 2, "맨시티 vs 맨유", 3),
+       (now(), now(), "1234", "BASEBALL", "야구 경기~~~", true, false, 5, "야구 응원방", 6),
+       (now(), now(), "abcd", "BASKETBALL", "농구 경기~~~", false, false, 1, "농구 응원방", 0);
+
 insert into game (created_date, last_modified_date, game_name, game_result, game_status, conference_id)
 values (now(), now(), "손흥민 2골 가능?", null, "PROGRESS", 1),
        (now(), now(), "토트넘 4골 가능?", null, "PROGRESS", 2),

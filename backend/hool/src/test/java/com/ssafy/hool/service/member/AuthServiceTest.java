@@ -35,4 +35,9 @@ class AuthServiceTest {
         Member member = memberService.findByMemberEmail(passwordResetDto.getEmail()).get();
         assertThat(member.getPassword().equals(passwordEncoder.encode("5678")));
     }
+
+    @Test
+    void 비밀번호() {
+        System.out.println(passwordEncoder.encode("ssafy1234!"));
+    }
 }

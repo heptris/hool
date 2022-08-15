@@ -5,10 +5,12 @@ import com.ssafy.hool.dto.emoji.CanEmojiDto;
 import com.ssafy.hool.dto.emoji.EmojiDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopListDto;
+import com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto;
 import com.ssafy.hool.dto.emoji_shop.EmojiShopUpdateDto;
 import com.ssafy.hool.dto.response.CursorResult;
 import com.ssafy.hool.dto.response.ResponseDto;
 import com.ssafy.hool.service.emoji.EmojiService;
+import com.ssafy.hool.service.emoji.EmojiShopRankingService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class EmojiShopController {
 
     private static final int Default_SIZE = 2;
     private final EmojiService emojiService;
+    private final EmojiShopRankingService emojiShopRankingService;
 
     @ApiOperation(value = "상점이모지 만들기", notes = "이모지 객체와 가격을 받아 이모지상점에 저장", response = Map.class)
     @PostMapping("/")
@@ -104,6 +107,14 @@ public class EmojiShopController {
         return new ResponseEntity<ResponseDto>(
                 new ResponseDto<List<EmojiShopListDto>>(200,"success",emojiService.searchEmojiShopList(keyword.trim()))
                 , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "상점이모지 랭킹리스트", notes = "이모지 상점에 저장된 이모지 리스트를 많이 판매한 순으로 반환", response = Map.class)
+    @GetMapping("/list/rank")
+    public ResponseEntity listEmojiShopByRank(){
+        return new ResponseEntity<ResponseDto>(
+                new ResponseDto<List<EmojiShopRankingDto>>(200,"success", emojiShopRankingService.getRanking())
+                        , HttpStatus.OK);
     }
 
 }

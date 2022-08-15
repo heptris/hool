@@ -29,6 +29,7 @@ public class FriendRequest extends BaseEntity {
     private Member toMember;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private FriendRequestStatus friendRequestStatus;
 
 //    public static FriendRequest createFriendRequest(Member member, Long friendMemberId) {

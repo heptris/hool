@@ -47,10 +47,7 @@ public class ClientGoogle {
             String name = jsonObj.get("name").toString();
             String nickName = name + "#" + jsonObj.get("sub").toString();
             String email = jsonObj.get("email").toString();
-            String password = "hool";
-
-            System.out.println(name);
-            System.out.println(email);
+            String password = "hool1234";
 
             MemberJoinDto memberJoinDto = MemberJoinDto.builder()
                     .memberEmail(email)

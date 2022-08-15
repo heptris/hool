@@ -13,6 +13,7 @@ public interface MemberConferenceRepository extends JpaRepository<Member_confere
 
     Member_conference findByConferenceAndMember(Conference conference, Member member);
 
+    List<Member_conference> findAllByOrderByLastModifiedDate();
 
     @Query("select mc from Member_conference mc where mc.enterStatus = 'ENTER' and mc.member.id = :memberId")
     List<Member_conference> findEnterStatus(@Param("memberId") Long memberId);

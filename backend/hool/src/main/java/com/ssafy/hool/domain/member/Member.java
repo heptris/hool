@@ -14,6 +14,8 @@ import com.ssafy.hool.dto.member.MemberJoinDto;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,24 +33,28 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 50)
     private String memberEmail; // 로그인 이메일
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String password; // 로그인 비밀번호
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 30)
     private String nickName; // 화면 내에서 아이디
+
     private int point;
 
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private Authority authority;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private MemberStatus memberStatus;
 
     @Builder.Default
@@ -105,6 +111,7 @@ public class Member extends BaseEntity {
                 .friendMemberEmail(memberEmail)
                 .friendNickName(nickName)
                 .friendMemberId(id)
+                .friendProfile(profileImage)
                 .build();
 
         return friend;

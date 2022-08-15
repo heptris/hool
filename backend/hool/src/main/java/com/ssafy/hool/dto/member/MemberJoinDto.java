@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -24,15 +26,18 @@ public class MemberJoinDto {
     private String memberEmail;
 
     @NotBlank
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{6,16}$",
+            message = "비밀번호는 6~16자리수여야 합니다. 영문 대소문자, 숫자, 특수문자를 1개 이상 포함해야 합니다.")
     private String password;
 
     @NotBlank
-    private String passwordComfirm;
+    private String passwordConfirm;
 
     @NotBlank
     private String name;
 
     @NotBlank
+    @Size(min = 3, max = 30, message = "닉네임은 3~30자리수여야 합니다.")
     private String nickName;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
