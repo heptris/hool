@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -121,9 +122,11 @@ public class ConferenceService {
         if(conference.getTotal() == 0){
             conference.roomTerminated();
         } else {
-            List<Member_conference> memberConferenceList = memberConferenceRepository.findAllByOrderByLastModifiedDate();
+            if(memberId == conference.getOwner_id()){
+                List<Member_conference> memberConferenceList = memberConferenceRepository.findAllByOrderByLastModifiedDate();
 
-            conference.changeOwner(memberConferenceList.get(0).getId());
+                conference.changeOwner(memberConferenceList.get(0).getId());
+            }
         }
     }
 
