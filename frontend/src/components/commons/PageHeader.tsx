@@ -11,7 +11,7 @@ type PropsType = {
   isDisplayInfo: boolean;
   concreteInfo?: React.ReactElement;
   SearchBar?: React.ReactElement;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 function PageHeader(props: PropsType) {

@@ -3,35 +3,42 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import defaultImg from "assets/profile-default-imgs/2.png";
-
 import { postBuyEmoji } from "api/market";
 
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 
 import { MarketItemType } from "types/MarketItemType";
-import { UserInfoType } from "types/UserInfoType";
-
-import { QUERY_KEYS } from "constant";
-import useUser from "hooks/useUser";
 
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
 const MarketItem = (props: MarketItemType) => {
-  const { userInfo } = useUser();
-  const { emojiId, price } = props;
-  const { mutate, isLoading, isError, error, isSuccess, data } =
-    useMutation(postBuyEmoji);
+  const {
+    emojiId,
+    price,
+    description,
+    emojiAnimate,
+    // emojiUrl,
+    name,
+    url,
+    creatorId,
+    emojiShopId,
+  } = props;
+
+  const { mutate } = useMutation(postBuyEmoji);
 
   return (
     <Item bgColor={mainColor} borderColor={adaptiveGrey700}>
-      <Emoji src={defaultImg} alt="" />
-      <ItemTitle>Sample {emojiId}</ItemTitle>
-      <ItemDesc>Lorem ipsum</ItemDesc>
+      <Emoji
+        src={url}
+        alt={name}
+        className={`animate__animated ${emojiAnimate}`}
+      />
+      <ItemTitle>{name}</ItemTitle>
+      <ItemDesc>{description}</ItemDesc>
       <BuyInfoWrapper>
         <CostsWrapper>
-          <i className="fa-solid fa-cube"></i>
+          <i className="fa-solid fa-cube" />
           <span>
             {Number(price)
               .toString()
@@ -45,10 +52,8 @@ const MarketItem = (props: MarketItemType) => {
           text={"구매"}
           buttonOnClick={() =>
             mutate({
-              buyerMemberId: userInfo.memberId,
-              dealPoint: price,
-              emojiShopId: 1,
-              sellerMemberId: 1,
+              emojiShopId,
+              sellerMemberId: creatorId,
             })
           }
         />

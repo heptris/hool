@@ -7,7 +7,6 @@ interface NavMode {
   isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
-  isLoggedIn: boolean;
 }
 export type ClientSessionType = {
   mySessionId: string;
@@ -28,7 +27,6 @@ const initialState: NavMode = {
   isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: false,
 };
 const sessionInitialState: ClientSessionType = {
   mySessionId: "",
@@ -66,9 +64,6 @@ const navbar = createSlice({
     },
     setIsShowingMessage(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingMessage = actions.payload;
-    },
-    setIsLoggedIn(state: NavMode, actions: PayloadAction<boolean>) {
-      state.isLoggedIn = actions.payload;
     },
   },
 });
@@ -133,7 +128,6 @@ export const {
   setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
-  setIsLoggedIn,
 } = navbar.actions;
 export const {
   setMySessionId,

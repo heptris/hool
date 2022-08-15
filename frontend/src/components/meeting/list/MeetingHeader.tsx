@@ -1,20 +1,29 @@
-import { useMutation } from "@tanstack/react-query";
-import { getMeetingListSearchByCategory } from "api/meeting";
-import PageHeader from "components/commons/PageHeader";
-import { ChangeEvent, useEffect, useState } from "react";
-import { ConferenceCategoryType } from "types/ConferenceCategoryType";
-import SelectCategory from "../common/SelectCategory";
-import { darkTheme } from "styles";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 
-const MeetingHeader = ({ changeState, isState, changeSport }) => {
+import styled from "styled-components";
+import { darkTheme } from "styles";
+
+import { getMeetingListSearchByCategory } from "api/meeting";
+
+import PageHeader from "components/commons/PageHeader";
+import SelectCategory from "../common/SelectCategory";
+
+import { ConferenceCategoryType } from "types/ConferenceCategoryType";
+
+const MeetingHeader = ({
+  changeState,
+  isState,
+}: {
+  changeState: Function;
+  isState: boolean;
+}) => {
   const [conferenceCategory, setConferenceCategory] =
     useState<ConferenceCategoryType>("DEFAULT");
   const switchStateHandler = (state: boolean) => {
     if (state) {
-      changeState(true); //전체
+      changeState(true);
     } else {
-      changeState(false); //최신순
+      changeState(false);
     }
   };
   const switchSportHandler = (sport: string) => {
@@ -23,9 +32,8 @@ const MeetingHeader = ({ changeState, isState, changeSport }) => {
 
   const onChange = (
     key: "conferenceCategory",
-    e: ChangeEvent<HTMLSelectElement>
+    { target: { value } }: { target: { value: ConferenceCategoryType } }
   ) => {
-    const { value } = e.target;
     setConferenceCategory(value);
     switchSportHandler(value);
   };

@@ -41,10 +41,10 @@ const getMeetingList = () => getRequest("");
 
 const getMeetingListPage = ({
   pageParam,
-  size = 4,
+  size,
 }: {
   pageParam?: number;
-  size?: number;
+  size: number;
 }) => getRequest(`page?cursorId=${pageParam ? pageParam : ""}&size=${size}`);
 
 const getMeetingListSearchByCategory = (

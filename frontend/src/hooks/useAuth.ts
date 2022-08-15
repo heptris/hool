@@ -1,7 +1,5 @@
 import { useNavigate } from "@tanstack/react-location";
-import { useDispatch } from "react-redux";
 
-import { setIsLoggedIn } from "store";
 import useUser from "./useUser";
 
 import { getMyProfile } from "api/profile";
@@ -22,21 +20,18 @@ const { ACCESS_TOKEN, REFRESH_TOKEN } = USER_AUTH_KEY;
 const useAuth = () => {
   const { clearUser, updateUser } = useUser();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const login = async (form: LoginFormType) => {
     await requestLogin(form)
       .then(async (res) => {
         onLoginSuccess(res.data);
         navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
-        dispatch(setIsLoggedIn(true));
       })
       .catch((err) => {
         if (err.response.status === 400) {
           alert("비밀번호가 틀렸습니다");
-        }
-        else if (err.response.status === 404) {
-          alert("가입되지 않은 이메일입니다.")
+        } else if (err.response.status === 404) {
+          alert("가입되지 않은 이메일입니다.");
         }
       });
   };
@@ -49,7 +44,6 @@ const useAuth = () => {
     window.alert("로그아웃이 완료되었습니다.");
     setApiHeaders();
     setAuthApiHeaders();
-    dispatch(setIsLoggedIn(false));
     navigate({ to: `${ROUTES_NAME.MAIN}` });
     return logoutResponse;
   };
