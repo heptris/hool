@@ -39,8 +39,13 @@ const postSaveGameResult = (obj: { gameId: number; result: boolean }) =>
 // main-controller
 const getMeetingList = () => getRequest("");
 
-const getMeetingListPage = (cursorId: number, size: number) =>
-  getRequest(`page?cursorId=${cursorId}&size=${size}`);
+const getMeetingListPage = ({
+  pageParam,
+  size = 4,
+}: {
+  pageParam?: number;
+  size?: number;
+}) => getRequest(`page?cursorId=${pageParam ? pageParam : ""}&size=${size}`);
 
 const getMeetingListSearchByCategory = (
   category: "SOCCER" | "BASEBALL" | "BASKETBALL" | "VOLLEYBALL" | "ESPORTS",
