@@ -153,7 +153,7 @@ function SocialHeader({
         </Switches>
       }
       SearchBar={<SocialSearchBar />}
-    ></PageHeader>
+    />
   );
 }
 

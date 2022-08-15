@@ -10,16 +10,17 @@ import { postBuyEmoji } from "api/market";
 import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 
+import { QUERY_KEYS } from "constant";
+
 import { MarketItemType } from "types/MarketItemType";
 import { UserInfoType } from "types/UserInfoType";
-
-import { QUERY_KEYS } from "constant";
-import useUser from "hooks/useUser";
 
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
 const MarketItem = (props: MarketItemType) => {
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
   const { emojiId, price } = props;
   const { mutate, isLoading, isError, error, isSuccess, data } =
     useMutation(postBuyEmoji);
@@ -45,7 +46,7 @@ const MarketItem = (props: MarketItemType) => {
           text={"구매"}
           buttonOnClick={() =>
             mutate({
-              buyerMemberId: userInfo.memberId,
+              buyerMemberId: userInfo!.memberId,
               dealPoint: price,
               emojiShopId: 1,
               sellerMemberId: 1,
