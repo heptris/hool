@@ -61,7 +61,7 @@ const Population = styled.span`
 `;
 const Time = styled.div`
   width: 6rem;
-  border: 1px solid;
+  border: 5px double;
   border-radius: 5rem;
   padding: 0.2rem;
   font-size: 0.9rem;
@@ -69,8 +69,8 @@ const Time = styled.div`
   color: ${darkTheme.emphasisColor};
 `;
 const Public = styled.div`
-  border: 1px groove;
-  padding: 0.5rem;
+  border: 3px solid;
+  padding: 0.3rem;
   border-radius: 4px;
   color: ${({ isPublic }: { isPublic: boolean }) =>
     isPublic ? darkTheme.infoColor : darkTheme.contrastColor};
