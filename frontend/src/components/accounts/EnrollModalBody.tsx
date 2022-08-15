@@ -236,7 +236,7 @@ const DropDownLabel = styled.label`
   display: block;
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
-  font-weight: bold;
+  font-weight: normal;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const DropDownInput = styled.select`
@@ -247,7 +247,7 @@ const DropDownInput = styled.select`
   padding: 0 0 0 0.8rem;
 
   &:focus {
-    outline: none;
+    outline: 2px solid ${darkTheme.mainBadgeColor};
   }
 `;
 

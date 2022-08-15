@@ -38,7 +38,7 @@ const Select = styled.select`
   cursor: pointer;
 
   &:focus {
-    outline: none;
+    outline: 2px solid ${darkTheme.mainBadgeColor};
   }
 `;
 const Option = styled.option`
