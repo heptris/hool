@@ -12,17 +12,7 @@ import EmojiCard from "components/commons/EmojiCard";
 import EnrollModalHeader from "./EnrollModalHeader";
 import EnrollModalBody from "./EnrollModalBody";
 import DetailModalBody from "./DetailModalBody";
-
-export type EmojiDetailType = {
-  emojiId: number;
-  emojiUrl: string;
-  name: string;
-  description: string;
-  emojiAnimate: string;
-  memberEmojiId: number;
-  isFavorite: boolean;
-  ARCode?: string;
-};
+import { EmojiDetailType } from "types/EmojiDetailType";
 
 function Inventory() {
   const [isOwnItems, setIsOwnItems] = useState(true);
