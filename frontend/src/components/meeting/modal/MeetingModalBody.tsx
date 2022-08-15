@@ -163,7 +163,8 @@ const MeetingModalBody = ({
           height={2}
           width={4}
           text={"취소"}
-          marginBottom={1.5}
+          marginBottom={2}
+          marginTop={1}
           color={darkTheme.adaptiveGrey500}
           marginRight={0.5}
           buttonOnClick={onDisplayChange}
@@ -237,7 +238,6 @@ const ToggleButton = styled.span`
   width: 48%;
   position: absolute;
   top: 50%;
-  left: 0.2rem;
   transform: translateY(-50%);
   input:checked ~ & {
     left: calc(50%);
@@ -246,8 +246,8 @@ const ToggleButton = styled.span`
 `;
 const Desc = styled.span`
   text-align: end;
-  font-size: 0.5rem;
-  color: ${darkTheme.adaptiveGrey200};
+  font-size: 0.7rem;
+  color: ${darkTheme.infoColor};
 `;
 const RowDiv = styled.div`
   width: 80%;

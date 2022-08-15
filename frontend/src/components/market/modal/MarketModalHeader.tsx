@@ -20,10 +20,11 @@ const TitleWrapper = styled.div`
   flex-direction: column;
 `;
 const Title = styled.h3`
-  font-size: 2rem;
+  font-size: 1.6rem;
 `;
 const SubTitle = styled.p`
   margin-top: 1rem;
+  font-size: 0.95rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const Header = styled.div`

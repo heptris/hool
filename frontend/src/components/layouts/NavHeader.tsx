@@ -136,8 +136,10 @@ const Hr = styled.hr`
   margin: 0;
 `;
 const LoginBtn = styled.button`
-  width: 4rem;
-  height: 2rem;
+  width: 5.3rem;
+  height: 2.3rem;
+  font-size: 1.2rem;
+  border: 2px solid ${darkTheme.mainBadgeColor};
   border-radius: 2rem;
   background-color: ${darkTheme.darkColor};
 

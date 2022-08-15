@@ -10,8 +10,7 @@ const MeetingGameModalHeader = () => {
           <Title>예측 제안</Title>
         </TitleCloseWrapper>
         <SubTitle>
-          방장이 게임을 제안하고 예측 결과에 따라 결과를 맞힌 참가자에게
-          포인트를 드립니다.
+          방장이 게임을 제안하고 예측 결과를 맞힌 참가자에게 포인트를 드립니다.
         </SubTitle>
       </TitleWrapper>
     </Header>
@@ -31,11 +30,12 @@ const TitleCloseWrapper = styled.div`
   justify-content: space-between;
 `;
 const Title = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  margin-top: 0.5rem;
 `;
-const SubTitle = styled.h3`
-  font-size: 0.75rem;
+const SubTitle = styled.p`
+  margin-top: 1rem;
+  font-size: 0.95rem;
   color: ${darkTheme.adaptiveGrey200};
 `;
 const Header = styled.div`
