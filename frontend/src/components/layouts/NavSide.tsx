@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
 
-import useUser from "hooks/useUser";
-
 import styled, { css } from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import {
   RootState,
@@ -18,13 +16,17 @@ import {
   setVideoEnabled,
   setIsCreatingPreferences,
 } from "store";
+import { useQueryClient } from "@tanstack/react-query";
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, adaptiveGrey800, adaptiveGrey700, bgColor } =
   darkTheme;
 const { MAIN, MEETING, SOCIAL, MARKET } = ROUTES_NAME;
 
 const NavSide = () => {
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
 
   const dispatch = useDispatch();
 

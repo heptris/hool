@@ -1,7 +1,5 @@
 import { Navigate } from "@tanstack/react-location";
-import { useQuery } from "@tanstack/react-query";
-
-import useUser from "hooks/useUser";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 
@@ -14,17 +12,16 @@ import { QUERY_KEYS, ROUTES_NAME } from "constant";
 import { MarketItemType } from "types/MarketItemType";
 
 import MarketListItem from "./MarketListItem";
+import { UserInfoType } from "types/UserInfoType";
 
 const MarketList = () => {
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
   const { data, isError, isLoading } = useQuery(
     [QUERY_KEYS.MARKET],
-    getMarketList,
-    {
-      retry: 0,
-    }
+    getMarketList
   );
-  console.log(data);
 
   if (isLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;

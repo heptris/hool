@@ -1,6 +1,6 @@
-import { Key, useState } from "react";
+import { useState } from "react";
 import { Navigate } from "@tanstack/react-location";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -12,8 +12,9 @@ import { QUERY_KEYS, ROUTES_NAME } from "constant";
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
 import LabelInput from "components/commons/LabelInput";
-import LabelTextarea from "components/commons/LabelTextarea";
 import Loading from "components/Loading";
+
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
@@ -26,6 +27,9 @@ interface UploadItemType {
 }
 
 const MarketModalBody = () => {
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
   const [uploadItemInfo, setUploadItemInfo] = useState({
     name: "",
     price: "",

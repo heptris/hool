@@ -1,19 +1,13 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Navigate } from "@tanstack/react-location";
-
-import useUser from "hooks/useUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles";
 
-import { getMyPoint } from "api/profile";
-
-import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { QUERY_KEYS } from "constant";
 
 import PageHeader from "components/commons/PageHeader";
 import Button from "components/commons/Button";
-import SearchBar from "components/commons/SearchBar";
-import Loading from "components/Loading";
+import { UserInfoType } from "types/UserInfoType";
 
 // const MarketSearchBar = () => {
 //   const [searchEmojiItem, setSearchEmojiItem] = useState("");
@@ -40,7 +34,8 @@ import Loading from "components/Loading";
 //   );
 // };
 const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
-  const { userInfo } = useUser();
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
 
   return (
     <PageHeader
@@ -64,15 +59,7 @@ const MarketHeader = ({ onDisplayChange }: { onDisplayChange: Function }) => {
           <MyPoint>
             <i className="fa-solid fa-cube"></i>
             <span>
-              {Number(
-                //   data.data.reduce(
-                //     (acc: number, cur: { dealtPoint: number }) =>
-                //       acc + +cur.dealtPoint,
-                //     0
-                //   )
-                // )
-                userInfo?.point
-              )
+              {Number(userInfo?.point)
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </span>

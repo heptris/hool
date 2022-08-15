@@ -25,9 +25,10 @@ export const QUERY_KEYS = {
   MARKET_UPLOAD_ITEM: "market-upload-item",
   MY_OWN_EMOJI_LIST: "my-own-emoji-list",
   MY_FAV_EMOJI_LIST: "my-fav-emoji-list",
+  ROOM_ACCESS: "room-access",
 };
 
-export const USER_SESSIONSTORAGE_KEY = {
+export const USER_AUTH_KEY = {
   ACCESS_TOKEN: "accessToken",
   REFRESH_TOKEN: "refreshToken",
 };

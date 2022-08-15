@@ -1,8 +1,10 @@
 import { Navigate, useMatch } from "@tanstack/react-location";
+import { useQueryClient } from "@tanstack/react-query";
 
 import MeetingRoom from "components/meeting/MeetingRoom";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { UserInfoType } from "types/UserInfoType";
 
 const RoomPage = () => {
   const match = useMatch();
@@ -10,7 +12,13 @@ const RoomPage = () => {
     params: { id },
   } = match;
 
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
+
   const conferenceId = +id;
+  if (queryClient.getQueryData([QUERY_KEYS.ROOM_ACCESS]) !== 200)
+    return <Navigate to={ROUTES_NAME.MAIN} replace={true} />;
+  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
   if (isNaN(conferenceId)) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return <MeetingRoom conferenceId={conferenceId} />;

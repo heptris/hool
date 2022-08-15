@@ -1,3 +1,5 @@
+import { MemberEmojiType } from "./MemberEmojiType";
+
 export interface UserInfoType {
   memberId: number;
   nickName: string;
@@ -5,8 +7,10 @@ export interface UserInfoType {
   point: number;
   emojiCount: number;
   friendCount: number;
-  memberEmojiDtoList: {
-    emojiId: number;
-    emojiUrl: string;
-  }[];
+  memberProfile: string;
+  memberEmojiList: {
+    cursorId: number;
+    hasNext: boolean;
+    values: MemberEmojiType[];
+  };
 }

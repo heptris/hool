@@ -1,9 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "@tanstack/react-location";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { ChangeEvent, useState } from "react";
 
-import useUser from "hooks/useUser";
+import useRoomEnter from "hooks/useRoomEnter";
 
 import { postCreateMeetingRoom } from "api/meeting";
 
@@ -13,10 +11,12 @@ import { darkTheme } from "styles";
 import Button from "components/commons/Button";
 import LabelTextarea from "components/commons/LabelTextarea";
 import LabelWrapper from "components/commons/LabelWrapper";
-import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 import LabelInput from "components/commons/LabelInput";
 
-import { handleEnterRoom } from "utils/handleEnterRoom";
+import { QUERY_KEYS } from "constant";
+
+import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
+import { UserInfoType } from "types/UserInfoType";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -38,15 +38,14 @@ const MeetingModalBody = ({
     title,
     conferencePassword,
   } = roomCreatingForm;
-  const {
-    userInfo: { nickName },
-  } = useUser();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
+  const { handleEnterRoom } = useRoomEnter();
   const { mutate } = useMutation(postCreateMeetingRoom, {
-    onSuccess: (data, variable) => {
+    onSuccess: (data) => {
       onDisplayChange();
-      handleEnterRoom(data.data.conferenceId, nickName, navigate, dispatch);
+      handleEnterRoom(data.data.conferenceId, userInfo!.nickName, data);
     },
     onError: (err) => {
       console.log(err);
