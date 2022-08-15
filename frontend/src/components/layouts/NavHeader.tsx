@@ -140,8 +140,8 @@ const Hr = styled.hr`
 const LoginBtn = styled.button`
   width: 5.3rem;
   height: 2.3rem;
-  font-size: 1.2rem;
-  border: 2px solid ${darkTheme.mainBadgeColor};
+  font-size: 1rem;
+  border: 3px ridge ${darkTheme.adaptiveGrey500};
   border-radius: 2rem;
   background-color: ${darkTheme.darkColor};
 
