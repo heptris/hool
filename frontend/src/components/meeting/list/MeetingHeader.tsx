@@ -12,8 +12,10 @@ import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
 const MeetingHeader = ({
   changeState,
+  changeSport,
   isState,
 }: {
+  changeSport: Function;
   changeState: Function;
   isState: boolean;
 }) => {
