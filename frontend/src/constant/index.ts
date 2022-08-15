@@ -27,6 +27,7 @@ export const QUERY_KEYS = {
   MY_OWN_EMOJI_LIST: "my-own-emoji-list",
   MY_FAV_EMOJI_LIST: "my-fav-emoji-list",
   ROOM_ACCESS: "room-access",
+  MARKET_SEARCHED_LIST: "market-searched-list",
 };
 
 export const USER_AUTH_KEY = {
