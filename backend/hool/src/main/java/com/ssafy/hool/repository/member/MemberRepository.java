@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
-    Optional<Member> findByNickName(String nickName);
+    @Query(value = "select m from Member m where m.nickName like %:friendNickName%")
+    List<Member> findByFriendWithNickName(@Param("friendNickName") String friendNickName);
 
     Optional<Member> findByMemberEmail(String memberEmail);
 

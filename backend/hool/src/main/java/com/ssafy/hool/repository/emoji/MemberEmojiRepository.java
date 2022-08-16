@@ -25,12 +25,12 @@ public interface MemberEmojiRepository extends JpaRepository<Member_emoji, Long>
     @Query("select new com.ssafy.hool.dto.emoji.DetailMemberEmojiDto(e.id, e.url, e.name, e.description, e.emojiAnimate, " +
             "me.id, me.is_favorite) " +
             "from Member_emoji me join me.member m join me.emoji e " +
-            "where m.id = :memberId")
+            "where m.id = :memberId order by me.id desc ")
     List<DetailMemberEmojiDto> getMyDetailEmojis(@Param("memberId") Long memberId);
 
     @Query("select new com.ssafy.hool.dto.emoji.DetailMemberEmojiDto(e.id, e.url, e.name" +
             ", e.description, e.emojiAnimate, me.id, me.is_favorite) from Member_emoji me join me.member m join me.emoji e " +
-            "where m.id = :memberId and me.is_favorite = true")
+            "where m.id = :memberId and me.is_favorite = true order by me.id desc ")
     List<DetailMemberEmojiDto> getFavoriteEmojis(@Param("memberId") Long memberId);
 
     @Query("select me from Member_emoji me where me.emoji.id = :emojiId and me.member.id = :memberId")
