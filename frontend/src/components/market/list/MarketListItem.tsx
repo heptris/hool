@@ -21,7 +21,7 @@ const MarketItem = (props: MarketItemType) => {
     emojiAnimate,
     // emojiUrl,
     name,
-    url,
+    emojiUrl,
     creatorId,
     emojiShopId,
   } = props;
@@ -37,7 +37,7 @@ const MarketItem = (props: MarketItemType) => {
   return (
     <Item bgColor={mainColor} borderColor={adaptiveGrey700}>
       <Emoji
-        src={url}
+        src={emojiUrl}
         alt={name}
         onMouseEnter={() => setIsHovering(true)}
         className={isHovering ? `animate__animated ${emojiAnimate}` : ""}
