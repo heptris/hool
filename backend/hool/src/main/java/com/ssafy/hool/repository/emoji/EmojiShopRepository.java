@@ -26,22 +26,23 @@ public interface EmojiShopRepository extends JpaRepository<Emoji_shop, Long> {
     int checkEmojiShop(@Param("emojiId") Long emojiId);
 
 
-    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, es.emoji_price, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
             "from Emoji_shop es join es.emoji e order by es.id desc")
     List<EmojiShopListDto> findEmojiShopListDtoPage(Pageable page);
 
 
-    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, es.emoji_price, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
             "from Emoji_shop es join es.emoji e where es.id < :id order by es.id desc")
     List<EmojiShopListDto> findEmojiShopListDtoLessPage(@Param("id") Long id, Pageable page);
 
     Boolean existsByIdLessThan(Long id);
 
-    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopListDto(es.id, es.emoji_price, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
             "from Emoji_shop es join es.emoji e where e.name like %:keyword%")
     List<EmojiShopListDto> searchEmojiShop(@Param("keyword") String keyword);
 
-    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto(count (es.id), es.id, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
+    @Query("select new com.ssafy.hool.dto.emoji_shop.EmojiShopRankingDto(count (es.id), es.id, es.emoji_price, e.id, e.name, e.url, e.description, e.emojiAnimate, e.creatorId)" +
             "from Emoji e join e.emoji_shop es join es.dealHistoryList dh group by es.id order by (count (es.id)) desc ")
-    List<EmojiShopRankingDto> rankEmojiShop();
+    List<EmojiShopRankingDto> rankEmojiShop(Pageable page);
+
 }
