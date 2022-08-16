@@ -6,39 +6,17 @@ import { darkTheme } from "styles";
 import { getMeetingListSearchByCategory } from "api/meeting";
 
 import PageHeader from "components/commons/PageHeader";
-import SelectCategory from "../common/SelectCategory";
 
 import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
-const MeetingHeader = ({
-  changeState,
-  changeSport,
-  isState,
-}: {
-  changeSport: Function;
-  changeState: Function;
-  isState: boolean;
-}) => {
+const MeetingHeader = ({ changeState }: { changeState: Function }) => {
   const [conferenceCategory, setConferenceCategory] =
     useState<ConferenceCategoryType>("DEFAULT");
-  const switchStateHandler = (state: boolean) => {
-    if (state) {
-      changeState(true);
-    } else {
-      changeState(false);
-    }
-  };
-  const switchSportHandler = (sport: string) => {
-    changeSport(sport);
+  const switchStateHandler = (state: ConferenceCategoryType) => {
+    setConferenceCategory(state);
+    changeState(state);
   };
 
-  const onChange = (
-    key: "conferenceCategory",
-    { target: { value } }: { target: { value: ConferenceCategoryType } }
-  ) => {
-    setConferenceCategory(value);
-    switchSportHandler(value);
-  };
   useEffect(() => {
     conferenceCategory !== "DEFAULT" &&
       getMeetingListSearchByCategory(conferenceCategory, 10, 10).then((res) =>
@@ -53,47 +31,139 @@ const MeetingHeader = ({
       isDisplaySearchBar={true}
       isDisplayBtn={false}
       isDisplayInfo={false}
-      SearchBar={
-        <div>
-          <SelectCategory
-            conferenceCategory={conferenceCategory}
-            onChange={onChange}
-          />
-        </div>
-      }
     >
       {
         <MeetingSwitches>
           <SwitchItem
             style={
-              isState
+              conferenceCategory === "DEFAULT"
                 ? {
                     background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
                   }
                 : {}
             }
             onClick={() => {
-              switchStateHandler(true);
+              switchStateHandler("DEFAULT");
             }}
           >
-            <span style={isState ? { color: darkTheme.mainBadgeColor } : {}}>
-              전 체
+            <span
+              style={
+                conferenceCategory === "DEFAULT"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              전체
             </span>
           </SwitchItem>
           <SwitchItem
             style={
-              isState
-                ? {}
-                : {
+              conferenceCategory === "SOCCER"
+                ? {
                     background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
                   }
+                : {}
             }
             onClick={() => {
-              switchStateHandler(false);
+              switchStateHandler("SOCCER");
             }}
           >
-            <span style={isState ? {} : { color: darkTheme.mainBadgeColor }}>
-              최신순
+            <span
+              style={
+                conferenceCategory === "SOCCER"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              축구
+            </span>
+          </SwitchItem>
+          <SwitchItem
+            style={
+              conferenceCategory === "BASEBALL"
+                ? {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+                : {}
+            }
+            onClick={() => {
+              switchStateHandler("BASEBALL");
+            }}
+          >
+            <span
+              style={
+                conferenceCategory === "BASEBALL"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              야구
+            </span>
+          </SwitchItem>
+          <SwitchItem
+            style={
+              conferenceCategory === "BASKETBALL"
+                ? {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+                : {}
+            }
+            onClick={() => {
+              switchStateHandler("BASKETBALL");
+            }}
+          >
+            <span
+              style={
+                conferenceCategory === "BASKETBALL"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              농구
+            </span>
+          </SwitchItem>
+          <SwitchItem
+            style={
+              conferenceCategory === "VOLLEYBALL"
+                ? {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+                : {}
+            }
+            onClick={() => {
+              switchStateHandler("VOLLEYBALL");
+            }}
+          >
+            <span
+              style={
+                conferenceCategory === "VOLLEYBALL"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              배구
+            </span>
+          </SwitchItem>
+          <SwitchItem
+            style={
+              conferenceCategory === "ESPORTS"
+                ? {
+                    background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                  }
+                : {}
+            }
+            onClick={() => {
+              switchStateHandler("ESPORTS");
+            }}
+          >
+            <span
+              style={
+                conferenceCategory === "ESPORTS"
+                  ? { color: darkTheme.mainBadgeColor }
+                  : {}
+              }
+            >
+              E-Sports
             </span>
           </SwitchItem>
         </MeetingSwitches>
