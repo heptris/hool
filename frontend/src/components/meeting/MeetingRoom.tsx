@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Session, Publisher, Subscriber } from "openvidu-react";
 
-import { setIsShowingGame, setNavMode } from "store";
+import {
+  addChatEvents,
+  setIsShowingGame,
+  setMsgToSend,
+  setNavMode,
+} from "store";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -17,6 +22,7 @@ import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
+import { EmojiDetailType } from "types/EmojiDetailType";
 
 export type SessionStateType = {
   session: typeof Session | undefined;
@@ -30,7 +36,7 @@ function MeetingRoom({ conferenceId }: { conferenceId: number }) {
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
     (state: RootState) => state.navbar
   );
-  const { audioEnabled, videoEnabled } = useSelector(
+  const { audioEnabled, videoEnabled, myUserName, chatEvents } = useSelector(
     (state: RootState) => state.clientSession
   );
   const [sessionState, setSessionState] = useState<SessionStateType>({
@@ -67,6 +73,9 @@ function MeetingRoom({ conferenceId }: { conferenceId: number }) {
   useEffect(() => {
     gameInfo.timeLimit && dispatch(setIsShowingGame(true));
   }, [gameInfo]);
+  useEffect(() => {
+    sessionState.session && recvSignal();
+  }, [sessionState.session]);
 
   const handleSessionState = (state: SessionStateType) => {
     setSessionState(state);
@@ -76,6 +85,39 @@ function MeetingRoom({ conferenceId }: { conferenceId: number }) {
   };
   const switchVideoEnabled = (videoState: boolean) => {
     sessionState.publisher.publishVideo(videoState);
+  };
+
+  const sendTextMessage = (msgToSend: string) => {
+    if (msgToSend.trim() === "") return;
+    sessionState.session
+      .signal({
+        data: myUserName + "::" + msgToSend.trim(),
+        to: [],
+        type: "chat",
+      })
+      .then(() => {
+        dispatch(setMsgToSend(""));
+      })
+      .catch((err: any) => console.error(err));
+  };
+  const sendEmojiSignal = (item: EmojiDetailType) => {
+    sessionState.session
+      .signal({
+        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
+        to: [],
+        type: "emoji",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
+  const recvSignal = () => {
+    sessionState.session.on("signal:chat", (event: any) => {
+      dispatch(addChatEvents(event.data));
+    });
   };
 
   return (
@@ -89,11 +131,12 @@ function MeetingRoom({ conferenceId }: { conferenceId: number }) {
             />
           </MeetingBox>
           <GameMessageBox>
+            {isShowingMessage && <MeetingMessageShow recvSignal={recvSignal} />}
             {isShowingMessage && (
-              <MeetingMessageShow sessionState={sessionState} />
-            )}
-            {isShowingMessage && (
-              <MeetingMessageInput sessionState={sessionState} />
+              <MeetingMessageInput
+                sendEmojiSignal={sendEmojiSignal}
+                sendTextMessage={sendTextMessage}
+              />
             )}
           </GameMessageBox>
         </FlexBox>

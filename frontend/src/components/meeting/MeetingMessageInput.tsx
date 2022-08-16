@@ -9,23 +9,23 @@ import { setMsgToSend, setIsDisplayEmoji } from "store";
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
 
-import type { SessionStateType } from "./MeetingRoom";
 import type { RootState } from "store";
-import type { EmojiDetailType } from "components/accounts/Inventory";
+import type { EmojiDetailType } from "types/EmojiDetailType";
 
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
 
 type PropsType = {
-  sessionState: SessionStateType;
+  sendEmojiSignal: Function;
+  sendTextMessage: Function;
 };
 
 const MeetingMessageInput = (props: PropsType) => {
+  const { sendEmojiSignal, sendTextMessage } = props;
   const dispatch = useDispatch();
-  const { myUserName, msgToSend, chatEvents, isDisplayEmoji } = useSelector(
+  const { msgToSend, isDisplayEmoji } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const { session } = props.sessionState;
 
   // React Query 상태
   const {
@@ -38,38 +38,6 @@ const MeetingMessageInput = (props: PropsType) => {
 
   const onChangeMsgToSend = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setMsgToSend(e.target.value));
-  };
-  const sendTextMessage = () => {
-    if (msgToSend.trim() === "") return;
-
-    const mySession = session;
-
-    mySession
-      .signal({
-        data: myUserName + "::" + msgToSend.trim(),
-        to: [],
-        type: "chat",
-      })
-      .then(() => {
-        dispatch(setMsgToSend(""));
-      })
-      .catch((err: any) => console.error(err));
-  };
-  const sendEmojiSignal = (item: EmojiDetailType) => {
-    const mySession = session;
-
-    mySession
-      .signal({
-        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
-        to: [],
-        type: "emoji",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
   };
 
   return (
@@ -106,7 +74,7 @@ const MeetingMessageInput = (props: PropsType) => {
         <MsgForm
           onSubmit={(e: React.FormEvent) => {
             e.preventDefault();
-            sendTextMessage();
+            sendTextMessage(msgToSend);
           }}
         >
           <Input
@@ -120,7 +88,7 @@ const MeetingMessageInput = (props: PropsType) => {
           <div
             onClick={(e: React.MouseEvent) => {
               e.preventDefault();
-              sendTextMessage();
+              sendTextMessage(msgToSend);
             }}
           >
             <Button

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
+import { RootState, setChatEvents } from "store";
 import { addChatEvents } from "store";
 
 import styled from "styled-components";
@@ -14,14 +14,13 @@ import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 
 type PropsType = {
-  sessionState: SessionStateType;
+  recvSignal: Function;
 };
 type SComponentPropsType = {
   isShowingGame?: boolean;
 };
 
 function MeetingMessageShow(props: PropsType) {
-  const dispatch = useDispatch();
   // Redux 상태
   const isShowingGame = useSelector(
     (state: RootState) => state.navbar.isShowingGame
@@ -31,26 +30,8 @@ function MeetingMessageShow(props: PropsType) {
   );
 
   // 상위 컴포넌트 세션상태
-  const { session } = props.sessionState;
-  useEffect(() => {
-    if (session !== undefined) {
-      recvSignal();
-    }
-  }, [session]);
-
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
 
-  const recvSignal = () => {
-    const mySession = session;
-
-    mySession.on("signal:chat", (event: any) => {
-      console.log(event.from);
-      console.log(event.type);
-
-      console.log(chatEvents);
-      dispatch(addChatEvents(event.data));
-    });
-  };
   const renderChatMsgs = (chatEvent: string, idx: number) => {
     const [sender, msg] = chatEvent.split("::");
     scrollToBottom();
