@@ -1,6 +1,6 @@
 insert into member (created_date, last_modified_date, authority, member_email,
                     member_status, name, nick_name, password, point, profile_image)
-values ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_ADMIN', 'aa@naver.com', 'OFFLINE', '관리자',
+values ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_ADMIN', 'admin@naver.com', 'OFFLINE', '관리자',
         'admin', '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S',
         10000, "https://hool-bucket.s3.ap-northeast-2.amazonaws.com/member/default/1.jpg"),
        ('2022-08-12 13:51:39.468000000', '2022-08-12 13:51:39.468000000', 'ROLE_USER', 'bb@naver.com', 'OFFLINE', 'bbb',
