@@ -57,7 +57,7 @@ const MarketModalBody = () => {
   };
   const enrollEmojiForMarket = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (uploadItemInfo.price === NaN || uploadItemInfo.price === undefined)
+    if (uploadItemInfo.price === undefined || isNaN(uploadItemInfo.price))
       return;
     if (uploadItemInfo.emojiId === 0) return;
 
