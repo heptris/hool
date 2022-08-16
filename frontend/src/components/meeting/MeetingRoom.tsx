@@ -23,6 +23,8 @@ import MeetingMessageInput from "./MeetingMessageInput";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 import { EmojiDetailType } from "types/EmojiDetailType";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "constant";
 
 export type SessionStateType = {
   session: typeof Session | undefined;
@@ -33,6 +35,7 @@ export type SessionStateType = {
 
 function MeetingRoom({ conferenceId }: { conferenceId: number }) {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const { isCreatingGame, isShowingMessage, isShowingGame } = useSelector(
     (state: RootState) => state.navbar
   );
@@ -58,6 +61,8 @@ function MeetingRoom({ conferenceId }: { conferenceId: number }) {
     return () => {
       postExitMeetingRoom({ conferenceId });
       dispatch(setNavMode("default"));
+      queryClient.setQueryData([QUERY_KEYS.ROOM_ACCESS], 404);
+      console.log("방 나가짐");
     };
   }, []);
   useEffect(() => {
