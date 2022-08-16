@@ -16,7 +16,7 @@ public class FriendRequestDto {
     // 친구 프로필
     private String friendNickName;
     private Long friendMemberId;
-    private String friendEmail;
+    private String friendMemberEmail;
     private String friendProfile;
     private MemberStatus memberStatus;
 

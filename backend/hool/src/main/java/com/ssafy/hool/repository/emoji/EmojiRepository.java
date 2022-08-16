@@ -74,7 +74,7 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
 
 //    @Query(value = "select ~~ from Emoji_shop es join es.dealHistoryList dh group by es.id order by es.id desc")
 
-    @Query(value = "select e from Emoji e join Member m on e.creatorId = m.id and m.id = 1")
-    List<Emoji> findByAdminEmoji();
+    @Query(value = "select e from Emoji e join Member m on e.creatorId = m.id and m.memberStatus = 'ROLE_ADMIN'")
+    List<Emoji> findByDefaultEmoji();
 
 }

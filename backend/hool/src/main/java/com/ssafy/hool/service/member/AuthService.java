@@ -2,6 +2,8 @@ package com.ssafy.hool.service.member;
 
 import com.ssafy.hool.config.jwt.TokenProvider;
 import com.ssafy.hool.config.oauth.ClientGoogle;
+import com.ssafy.hool.domain.emoji.Emoji;
+import com.ssafy.hool.domain.emoji.Member_emoji;
 import com.ssafy.hool.domain.member.Member;
 import com.ssafy.hool.domain.member.MemberStatus;
 import com.ssafy.hool.dto.member.MemberJoinResponseDto;
@@ -11,6 +13,7 @@ import com.ssafy.hool.dto.token.TokenDto;
 import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
+import com.ssafy.hool.repository.emoji.EmojiRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.service.point.PointHistoryService;
 import com.ssafy.hool.service.s3.AwsS3Service;
@@ -22,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
@@ -38,6 +43,8 @@ public class AuthService {
     private final AwsS3Service awsS3Service;
     private final PointHistoryService pointHistoryService;
 
+    private final EmojiRepository emojiRepository;
+
     /**
      * 회원가입
      */
@@ -50,9 +57,15 @@ public class AuthService {
         Member member = memberJoinDto.toMember(passwordEncoder);
         member.setProfileImage(getRandomImage());
 
+        List<Emoji> defaultEmoji = emojiRepository.findByDefaultEmoji();
+        for (Emoji emoji : defaultEmoji) {
+            Member_emoji memberEmoji = Member_emoji.createDefaultMemberEmoji(member, emoji);
+            member.getEmojis().add(memberEmoji);
+        }
         Member saveMember = memberRepository.save(member);
 
         pointHistoryService.signUpPoint(member.getId()); // 회원가입 보너스 +10000 포인트
+
 
         return MemberJoinResponseDto.of(saveMember);
     }
@@ -113,6 +126,12 @@ public class AuthService {
         if (!memberRepository.existsByMemberEmail(member.getMemberEmail())) { // 회원 가입
             member.setProfileImage(getRandomImage());
             member.setPassword(passwordEncoder.encode(member.getPassword()));
+
+            List<Emoji> defaultEmoji = emojiRepository.findByDefaultEmoji();
+            for (Emoji emoji : defaultEmoji) {
+                Member_emoji memberEmoji = Member_emoji.createDefaultMemberEmoji(member, emoji);
+                member.getEmojis().add(memberEmoji);
+            }
 
             memberRepository.save(member);
 

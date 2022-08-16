@@ -251,7 +251,7 @@ class EmojiServiceTest {
 
     @Test
     void addminEmoji() {
-        List<Emoji> emoji = emojiRepository.findByAdminEmoji();
+        List<Emoji> emoji = emojiRepository.findByDefaultEmoji();
         for (Emoji emoji1 : emoji) {
             System.out.println(emoji1.getUrl());
         }
