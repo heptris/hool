@@ -12,6 +12,7 @@ import com.ssafy.hool.dto.member.MemberJoinDto;
 import com.ssafy.hool.dto.token.TokenRequestDto;
 import com.ssafy.hool.exception.ex.CustomException;
 import com.ssafy.hool.repository.member.MemberRepository;
+import com.ssafy.hool.service.point.PointHistoryService;
 import com.ssafy.hool.service.s3.AwsS3Service;
 import com.ssafy.hool.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class AuthService {
     private final ClientGoogle clientGoogle;
 
     private final AwsS3Service awsS3Service;
+    private final PointHistoryService pointHistoryService;
 
     /**
      * 회원가입
@@ -47,9 +49,12 @@ public class AuthService {
 
         Member member = memberJoinDto.toMember(passwordEncoder);
         member.setProfileImage(getRandomImage());
-        member.setPoint(10000);
 
-        return MemberJoinResponseDto.of(memberRepository.save(member));
+        Member saveMember = memberRepository.save(member);
+
+        pointHistoryService.signUpPoint(member.getId()); // 회원가입 보너스 +10000 포인트
+
+        return MemberJoinResponseDto.of(saveMember);
     }
 
 
@@ -108,8 +113,10 @@ public class AuthService {
         if (!memberRepository.existsByMemberEmail(member.getMemberEmail())) { // 회원 가입
             member.setProfileImage(getRandomImage());
             member.setPassword(passwordEncoder.encode(member.getPassword()));
-            member.setPoint(10000);
+
             memberRepository.save(member);
+
+            pointHistoryService.signUpPoint(member.getId()); // 회원가입 보너스 +10000 포인트
         }
         // Token 반환
         MemberLoginDto googleLoginDto = new MemberLoginDto(member.getMemberEmail(), password);
