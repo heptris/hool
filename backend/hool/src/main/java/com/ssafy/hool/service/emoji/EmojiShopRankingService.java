@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,8 @@ public class EmojiShopRankingService {
 
 
     @Cacheable(value = "ranking", cacheManager = "rankCacheManager")
-    public List<EmojiShopRankingDto> getRanking(){
-        log.info("함수 실행 중");
-        return emojiShopRepository.rankEmojiShop();
+    public List<EmojiShopRankingDto> getRanking(Pageable page){
+        return emojiShopRepository.rankEmojiShop(page);
     }
 
 //    @CachePut(value = "ranking", cacheManager = "rankCacheManager")
