@@ -7,44 +7,44 @@ import { darkTheme } from "styles/Theme";
 
 import { postAcceptFriend } from "api/social";
 
-import pdi1 from "assets/profile-default-imgs/1.png";
-import pdi2 from "assets/profile-default-imgs/2.png";
-import pdi3 from "assets/profile-default-imgs/3.jpg";
-import pdi4 from "assets/profile-default-imgs/4.png";
-import pdi5 from "assets/profile-default-imgs/5.jpg";
-import pdi6 from "assets/profile-default-imgs/6.jpg";
-
 import Card from "components/commons/Card";
 
 import { QUERY_KEYS } from "constant";
 
-import { FriendInfoType } from "types/FriendInfoType";
-type PropsType = {
+import { FriendRequestInfoType, MyFriendInfoType } from "types/FriendInfoType";
+import useRoomEnter from "hooks/useRoomEnter";
+import { UserInfoType } from "types/UserInfoType";
+import { postEnterMeetingRoom } from "api/meeting";
+interface PropsType extends FriendRequestInfoType, MyFriendInfoType {
   isDisplayMyFriends: boolean;
-} & FriendInfoType;
+}
 
 function SocialItem(props: PropsType) {
   const {
-    friendConferenceDto,
-    friendMemberEmail,
-    friendMemberId,
     friendNickName,
     memberStatus,
     isDisplayMyFriends,
+    friendProfile,
+    friendMemberEmail,
     friendRequestId,
+    last,
+    friendConferenceDto,
   } = props;
-
-  const profiles = [pdi1, pdi2, pdi3, pdi4, pdi5, pdi6];
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
 
   const [isDisplayOption, setIsDisplayOption] = useState(false);
 
-  const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
+  const { handleEnterRoom } = useRoomEnter();
   const { mutate } = useMutation(postAcceptFriend, {
     onSettled: () => {
       queryClient.invalidateQueries([QUERY_KEYS.FRIEND_MESSAGE_LIST]);
       queryClient.invalidateQueries([QUERY_KEYS.FRIEND_LIST]);
+    },
+  });
+  const { mutate: enterRoomMutate } = useMutation(postEnterMeetingRoom, {
+    onSuccess: (data, { conferenceId }) => {
+      userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
     },
   });
   const handlePostAcceptFriendMutate = (accept: boolean) => {
@@ -54,12 +54,15 @@ function SocialItem(props: PropsType) {
   return (
     <SocialCard>
       <Status>
-        <ProfileImg src={profiles[friendMemberId]} />
+        <ProfileImg src={friendProfile} />
         <UserInfo>
           <Nickname>{friendNickName}</Nickname>
           <Email>{friendMemberEmail}</Email>
           <CurrentPos>
             {memberStatus === "ONLINE" ? "접속중" : "오프라인"}
+          </CurrentPos>
+          <CurrentPos>
+            {last && "최종 접속 시간 : " + new Date(last).toLocaleString()}
           </CurrentPos>
         </UserInfo>
       </Status>
@@ -75,10 +78,11 @@ function SocialItem(props: PropsType) {
             <div>
               <p
                 onClick={() => {
-                  navigate({
-                    to: `/meeting/${friendConferenceDto?.friendConferenceId}`,
-                    replace: true,
-                  });
+                  friendConferenceDto
+                    ? enterRoomMutate({
+                        conferenceId: friendConferenceDto.friendConferenceId,
+                      })
+                    : console.log("친구가 들어가 있는 방이 없습니다");
                   setIsDisplayOption(!isDisplayOption);
                 }}
               >
@@ -141,9 +145,10 @@ const Email = styled.h2`
   color: ${darkTheme.adaptiveGrey700};
   margin-bottom: 0.4rem;
 `;
-const CurrentPos = styled.span`
-  font-size: 1rem;
+const CurrentPos = styled.div`
+  font-size: 0.9rem;
   color: ${darkTheme.adaptiveGrey500};
+  margin-bottom: 0.2rem;
 `;
 const MenuIcon = styled.i`
   width: 1rem;
