@@ -24,6 +24,7 @@ public class EmojiShopRankingService {
 
     @Cacheable(value = "ranking", cacheManager = "rankCacheManager")
     public List<EmojiShopRankingDto> getRanking(){
+        log.info("함수 실행 중");
         return emojiShopRepository.rankEmojiShop();
     }
 

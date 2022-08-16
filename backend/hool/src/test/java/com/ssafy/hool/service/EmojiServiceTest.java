@@ -249,5 +249,12 @@ class EmojiServiceTest {
         return member;
     }
 
+    @Test
+    void addminEmoji() {
+        List<Emoji> emoji = emojiRepository.findByAdminEmoji();
+        for (Emoji emoji1 : emoji) {
+            System.out.println(emoji1.getUrl());
+        }
+    }
 
 }
