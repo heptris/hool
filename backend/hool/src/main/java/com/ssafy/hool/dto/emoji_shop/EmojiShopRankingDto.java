@@ -14,6 +14,7 @@ public class EmojiShopRankingDto {
 
     private Long dealCount;
     private Long emojiShopId;
+    private int price;
     private Long emojiId;
     private String name;
     private String url;

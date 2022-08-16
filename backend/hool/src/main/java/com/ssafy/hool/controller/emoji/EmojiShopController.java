@@ -111,10 +111,11 @@ public class EmojiShopController {
 
     @ApiOperation(value = "상점이모지 랭킹리스트", notes = "이모지 상점에 저장된 이모지 리스트를 많이 판매한 순으로 반환", response = Map.class)
     @GetMapping("/list/rank")
-    public ResponseEntity listEmojiShopByRank(){
+    public ResponseEntity listEmojiShopByRank(Integer size){
+        if(size == null) size = 10;
         return new ResponseEntity<ResponseDto>(
-                new ResponseDto<List<EmojiShopRankingDto>>(200,"success", emojiShopRankingService.getRanking())
-                        , HttpStatus.OK);
+                new ResponseDto<List<EmojiShopRankingDto>>(200,"success",
+                        emojiShopRankingService.getRanking(PageRequest.of(0,size))), HttpStatus.OK);
     }
 
 }

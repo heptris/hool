@@ -43,6 +43,17 @@ public class Member_emoji extends BaseEntity {
         return memberEmoji;
     }
 
+    public static Member_emoji createDefaultMemberEmoji(Member member, Emoji emoji){
+        Member_emoji memberEmoji = Member_emoji.builder()
+                .emojitype(EmojiType.DEFAULT)
+                .is_favorite(false)
+                .build();
+        memberEmoji.setMember(member);
+        memberEmoji.setEmoji(emoji);
+        return memberEmoji;
+    }
+
+
     public void setEmoji(Emoji emoji){
         this.emoji = emoji;
         emoji.getMemberEmojiList().add(this);
