@@ -73,7 +73,7 @@ const MarketList = ({
     <ItemList>
       {isTopTen ? (
         <>
-          {topTenList.data.map((el: MarketItemType) => {
+          {topTenList?.data.map((el: MarketItemType) => {
             return <MarketListItem key={el.emojiShopId} {...el} />;
           })}
         </>
