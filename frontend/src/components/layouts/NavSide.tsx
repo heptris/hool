@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-location";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,6 +14,7 @@ import {
   setAudioEnabled,
   setVideoEnabled,
   setIsCreatingPreferences,
+  setIsShowingGameSubmit,
 } from "store";
 import { useQueryClient } from "@tanstack/react-query";
 import { UserInfoType } from "types/UserInfoType";
@@ -40,27 +40,21 @@ const NavSide = () => {
     dispatch(setIsCreatingPreferences(true));
   };
 
-  const { navMode } = useSelector((state: RootState) => state.navbar);
+  const { navMode, isResultMode, isShowingGameSubmit } = useSelector(
+    (state: RootState) => state.navbar
+  );
 
-  const { audioEnabled, videoEnabled } = useSelector(
+  const { audioEnabled, videoEnabled, isHost } = useSelector(
     (state: RootState) => state.clientSession
   );
 
-  useEffect(() => {}, [audioEnabled, videoEnabled]);
-
   const audioEnabledHandler = () => {
-    if (audioEnabled) {
-      dispatch(setAudioEnabled(false));
-    } else {
-      dispatch(setAudioEnabled(true));
-    }
+    if (audioEnabled) dispatch(setAudioEnabled(false));
+    else dispatch(setAudioEnabled(true));
   };
   const videoEnabledHandler = () => {
-    if (videoEnabled) {
-      dispatch(setVideoEnabled(false));
-    } else {
-      dispatch(setVideoEnabled(true));
-    }
+    if (videoEnabled) dispatch(setVideoEnabled(false));
+    else dispatch(setVideoEnabled(true));
   };
 
   const isShowingMessage = useSelector(
@@ -68,11 +62,13 @@ const NavSide = () => {
   );
 
   const showMessageHandler = () => {
-    if (isShowingMessage) {
-      dispatch(setIsShowingMessage(false));
-    } else {
-      dispatch(setIsShowingMessage(true));
-    }
+    if (isShowingMessage) dispatch(setIsShowingMessage(false));
+    else dispatch(setIsShowingMessage(true));
+  };
+
+  const handleGameResultSubmitModal = () => {
+    if (isShowingGameSubmit) dispatch(setIsShowingGameSubmit(false));
+    else dispatch(setIsShowingGameSubmit(true));
   };
 
   return (
@@ -88,31 +84,40 @@ const NavSide = () => {
                 <UtilButton onClick={audioEnabledHandler}>
                   <AudioBtn audioEnabled={audioEnabled}>
                     {audioEnabled ? (
-                      <Icon className="fa-solid fa-microphone"></Icon>
+                      <Icon className="fa-solid fa-microphone" />
                     ) : (
-                      <Icon className="fa-solid fa-microphone-slash"></Icon>
+                      <Icon className="fa-solid fa-microphone-slash" />
                     )}
                   </AudioBtn>
                 </UtilButton>
                 <UtilButton onClick={videoEnabledHandler}>
                   <VideoBtn videoEnabled={videoEnabled}>
                     {videoEnabled ? (
-                      <Icon className="fa-solid fa-video"></Icon>
+                      <Icon className="fa-solid fa-video" />
                     ) : (
-                      <Icon className="fa-solid fa-video-slash"></Icon>
+                      <Icon className="fa-solid fa-video-slash" />
                     )}
                   </VideoBtn>
                 </UtilButton>
                 <UtilButton onClick={showMessageHandler}>
                   <Btn>
-                    <Icon className="fa-solid fa-comment"></Icon>
+                    <Icon className="fa-solid fa-comment" />
                   </Btn>
                 </UtilButton>
-                <UtilButton onClick={openCreatingGameModal}>
-                  <Btn>
-                    <Icon className="fa-solid fa-gamepad"></Icon>
-                  </Btn>
-                </UtilButton>
+                {isHost &&
+                  (isResultMode ? (
+                    <UtilButton onClick={handleGameResultSubmitModal}>
+                      <Btn>
+                        <Icon className="fa-solid fa-file-export" />
+                      </Btn>
+                    </UtilButton>
+                  ) : (
+                    <UtilButton onClick={openCreatingGameModal}>
+                      <Btn>
+                        <Icon className="fa-solid fa-gamepad" />
+                      </Btn>
+                    </UtilButton>
+                  ))}
               </>
             ) : (
               <>
