@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyEmojiList, getMyFavoriteEmoji } from "api/profile";
-import { QUERY_KEYS } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+
+import { Navigate } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import type { EmojiDetailType } from "types/EmojiDetailType";
 import Button from "components/commons/Button";
 import Modal from "components/commons/Modal";
 import EmojiCard from "components/commons/EmojiCard";
 import EnrollModalHeader from "./EnrollModalHeader";
 import EnrollModalBody from "./EnrollModalBody";
 import DetailModalBody from "./DetailModalBody";
-import { EmojiDetailType } from "types/EmojiDetailType";
+import Loading from "components/Loading";
 
 function Inventory() {
   const [isOwnItems, setIsOwnItems] = useState(true);
@@ -50,6 +53,10 @@ function Inventory() {
   } = useQuery([QUERY_KEYS.MY_FAV_EMOJI_LIST], getMyFavoriteEmoji, {
     retry: 0,
   });
+
+  if (myOwnEmojiListIsLoading || myFavEmojiListIsLoading) return <Loading />;
+  if (myOwnEmojiListIsError || myFavEmojiListIsError)
+    return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <InventoryBox>

@@ -102,6 +102,7 @@ const MarketList = ({
     </ItemList>
   );
 };
+
 const ItemList = styled.section`
   width: 100%;
   display: grid;

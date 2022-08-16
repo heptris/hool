@@ -3,7 +3,8 @@ export interface MemberEmojiType {
   emojiAnimate: string;
   emojiId: number;
   emojiUrl: string;
-  isFavorite: false;
+  isFavorite: boolean;
   memberEmojiId: number;
   name: string;
+  ARCode?: string;
 }
