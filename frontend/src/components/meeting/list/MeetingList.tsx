@@ -24,13 +24,13 @@ import { QUERY_KEYS } from "constant";
 
 import { MeetingRoomType } from "types/MeetingRoomType";
 import { UserInfoType } from "types/UserInfoType";
+import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
 type PropsType = {
-  isState: boolean;
-  isSport: string;
+  isState: string;
 };
 
-const MeetingList = ({ isState, isSport }: PropsType) => {
+const MeetingList = ({ isState }: PropsType) => {
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
   const newList: Array<any> = [];
@@ -53,7 +53,7 @@ const MeetingList = ({ isState, isSport }: PropsType) => {
     }
   );
   const { handleEnterRoom } = useRoomEnter();
-  isSport === "" || isSport === "카테고리를 선택하세요"
+  isState === "DEFAULT"
     ? allMeetingList?.pages.map((page) => {
         page.values.map((el: MeetingRoomType) => {
           newList.push(el);
@@ -61,7 +61,7 @@ const MeetingList = ({ isState, isSport }: PropsType) => {
       })
     : allMeetingList?.pages.map((page) => {
         page.values.map((el: MeetingRoomType) => {
-          if (el.category === isSport) {
+          if (el.category === isState) {
             newList.push(el);
           }
         });
@@ -103,7 +103,7 @@ const MeetingList = ({ isState, isSport }: PropsType) => {
   return (
     <>
       {/* <div onScroll={onScroll} ref={viewRef} /> */}
-      {isState ? (
+      {isState && (
         <ItemList>
           {newList.map((el: MeetingRoomType) => {
             const { conferenceId, isPublic } = el;
@@ -142,8 +142,6 @@ const MeetingList = ({ isState, isSport }: PropsType) => {
 
           <div ref={ref} />
         </ItemList>
-      ) : (
-        <ItemList></ItemList>
       )}
     </>
   );
