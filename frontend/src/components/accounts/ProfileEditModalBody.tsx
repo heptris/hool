@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 
-import { apiInstance } from "api";
+import { apiInstance, putRequest } from "api";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -85,11 +85,9 @@ const ProfileEditModalBody = ({
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    const api = apiInstance();
-    api
-      .put(HOOL_API_ENDPOINT + "member/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+    putRequest("member/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((res) => {
         console.log(res.data);
         alert("프로필 편집이 성공했습니다.");
