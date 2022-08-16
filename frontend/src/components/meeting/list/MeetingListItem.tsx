@@ -1,15 +1,32 @@
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import img from "assets/thumbnail_soccer_1920.jpg";
+import soccerImg from "assets/meeting-Imgs/soccer-img.jpg";
+import baseballImg from "assets/meeting-Imgs/baseball-img.jpg";
+import basketballImg from "assets/meeting-Imgs/basketball-img.jpg";
+import volleyballImg from "assets/meeting-Imgs/volleyball-img.jpg";
+import esportsImg from "assets/meeting-Imgs/esports-img.jpg";
 import Card from "components/commons/Card";
 import { MeetingRoomType } from "types/MeetingRoomType";
+import { useState } from "react";
 
 const ConferenceListItem = (props: MeetingRoomType) => {
   const { category, description, title, total, isPublic } = props;
   return (
     <ListItem bgColor={darkTheme.mainColor}>
-      <Thumbnail src={img} alt="" />
+      {category === "SOCCER" && <Thumbnail src={soccerImg} alt="soccerImg" />}
+      {category === "BASEBALL" && (
+        <Thumbnail src={baseballImg} alt="baseballImg" />
+      )}
+      {category === "BASKETBALL" && (
+        <Thumbnail src={basketballImg} alt="basketballImg" />
+      )}
+      {category === "VOLLEYBALL" && (
+        <Thumbnail src={volleyballImg} alt="volleyballImg" />
+      )}
+      {category === "ESPORTS" && (
+        <Thumbnail src={esportsImg} alt="esportsImg" />
+      )}
       <ItemTitle>{title}</ItemTitle>
       <ItemDesc>{description}</ItemDesc>
       <ItemDescWrapper>
