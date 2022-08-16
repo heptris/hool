@@ -120,6 +120,7 @@ const SocialSearchBar = () => {
 };
 const SearchResModal = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   background-color: ${darkTheme.mainColor};
   border: none;
@@ -134,6 +135,7 @@ const FriendCard = styled(Card)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 `;
 const InfoDivision = styled.div`
   display: flex;
