@@ -93,7 +93,7 @@ const MarketHeader = ({
       }
       isDisplayInfo={true}
       concreteInfo={
-        <>
+        <InfoDivision>
           <MyPointBox>
             <div>보유 중인 큐브</div>
             <MyPoint>
@@ -139,7 +139,7 @@ const MarketHeader = ({
               </span>
             </SwitchItem>
           </Switches>
-        </>
+        </InfoDivision>
       }
     />
   );
@@ -173,6 +173,10 @@ const SwitchItem = styled.button`
       color: ${darkTheme.adaptiveGrey200};
     }
   }
+`;
+const InfoDivision = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export default MarketHeader;

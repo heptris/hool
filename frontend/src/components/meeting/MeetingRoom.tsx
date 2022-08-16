@@ -131,7 +131,7 @@ const MeetingBox = styled.div`
   justify-content: center;
   align-items: center;
   /* box-sizing: border-box; */
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0;
   /* grid-template-rows: repeat(auto-fit, minmax(15rem, 1rem)); */
   /* grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr)); */
   background-color: ${darkTheme.mainColor};
