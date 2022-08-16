@@ -14,7 +14,7 @@ public class EmojiDto {
 
     private Long emojiId;
     private String name;
-    private String url;
+    private String emojiUrl;
     private String description;
     private EmojiAnimate emojiAnimate;
     private Long creatorId;
