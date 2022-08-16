@@ -22,9 +22,9 @@ import Loading from "components/Loading";
 
 import { QUERY_KEYS } from "constant";
 
-import { MeetingRoomType } from "types/MeetingRoomType";
-import { UserInfoType } from "types/UserInfoType";
-import { ConferenceCategoryType } from "types/ConferenceCategoryType";
+import type { MeetingRoomType } from "types/MeetingRoomType";
+import type { UserInfoType } from "types/UserInfoType";
+import type { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
 type PropsType = {
   isState: string;
@@ -70,8 +70,8 @@ const MeetingList = ({ isState }: PropsType) => {
   console.log(newList);
 
   const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
-    onSuccess: (data, { conferenceId }) => {
-      userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
+    onSuccess: (data, { title, conferenceId }) => {
+      userInfo && handleEnterRoom(title, conferenceId, userInfo.nickName, data);
     },
     onError: (error) => {
       // err.response.data.message ? alert(err.response.data.message) :
@@ -81,8 +81,9 @@ const MeetingList = ({ isState }: PropsType) => {
   const { mutate: mutatePrivate } = useMutation(
     postCheckPasswordBeforeEnterMeetingRoom,
     {
-      onSuccess: (data, { conferenceId }) => {
-        userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
+      onSuccess: (data, { title, conferenceId }) => {
+        userInfo &&
+          handleEnterRoom(title, conferenceId, userInfo.nickName, data);
       },
       onError: (error) => {
         // err.response.data.message ? alert(err.response.data.message) :
@@ -106,7 +107,7 @@ const MeetingList = ({ isState }: PropsType) => {
       {isState && (
         <ItemList>
           {newList.map((el: MeetingRoomType) => {
-            const { conferenceId, isPublic } = el;
+            const { title, conferenceId, isPublic } = el;
             return userInfo ? (
               <ItemLink
                 key={conferenceId}
@@ -114,6 +115,7 @@ const MeetingList = ({ isState }: PropsType) => {
                   isPublic
                     ? (() => {
                         mutatePublic({
+                          title,
                           conferenceId: conferenceId,
                         });
                       })()
@@ -121,6 +123,7 @@ const MeetingList = ({ isState }: PropsType) => {
                         const password =
                           prompt("비공개 방 비밀번호를 입력해주세요");
                         mutatePrivate({
+                          title,
                           conferenceId,
                           password: password ? password : "",
                         });

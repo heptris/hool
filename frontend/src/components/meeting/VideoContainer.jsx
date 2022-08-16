@@ -286,7 +286,7 @@ class VideoContainer extends Component {
   }
 
   render() {
-    const { mySessionId, myUserName } = this.props;
+    const { mySessionTitle, mySessionId, myUserName } = this.props;
 
     return (
       <Container>
@@ -333,7 +333,7 @@ class VideoContainer extends Component {
         {this.state.session !== undefined ? (
           <Session>
             <SessionHeader>
-              <SessionTitle>{mySessionId}</SessionTitle>
+              <SessionTitle>{mySessionTitle}</SessionTitle>
             </SessionHeader>
 
             <SessionBody>
@@ -487,7 +487,7 @@ const Session = styled.div`
 const SessionHeader = styled.div`
   padding: 0.5rem 2rem;
   background-color: ${darkTheme.adaptiveGrey800};
-  border-radius: 6px 6px 0 0;
+  border-radius: 0 6px 0 0;
 `;
 const SessionTitle = styled.h1`
   font-size: 2rem;

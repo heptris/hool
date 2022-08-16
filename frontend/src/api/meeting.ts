@@ -6,10 +6,11 @@ import { GameHistoryType } from "types/GameHistoryType";
 const postCreateMeetingRoom = (obj: CreatingMeetingRoomType) =>
   postRequest("conference/create", obj);
 
-const postEnterMeetingRoom = (obj: { conferenceId: number }) =>
+const postEnterMeetingRoom = (obj: { title: string; conferenceId: number }) =>
   postRequest("conference/enter", obj);
 
 const postCheckPasswordBeforeEnterMeetingRoom = (obj: {
+  title: string;
   conferenceId: number;
   password: string;
 }) => postRequest("conference/enter/check", obj);
