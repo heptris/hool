@@ -10,6 +10,7 @@ import Button from "components/commons/Button";
 import Card from "components/commons/Card";
 
 import { MarketItemType } from "types/MarketItemType";
+import { QUERY_KEYS } from "constant";
 
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
@@ -26,7 +27,22 @@ const MarketItem = (props: MarketItemType) => {
     emojiShopId,
   } = props;
 
-  const { mutate } = useMutation(postBuyEmoji);
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(postBuyEmoji, {
+    onSuccess: () => {
+      alert("구매가 완료되었습니다.");
+    },
+    onError: (error) => {
+      if (error.response.status === 409) {
+        alert(error.response.data.message);
+      } else if (error.reponse.status === 404) {
+        alert("본인이 만든 이모티콘입니다.");
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries([QUERY_KEYS.USER]);
+    },
+  });
   const [isHovering, setIsHovering] = useState(false);
   useEffect(() => {
     if (isHovering === false) return;
