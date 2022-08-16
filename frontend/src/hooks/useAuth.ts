@@ -60,9 +60,12 @@ const useAuth = () => {
     setApiHeaders(accessToken);
     setAuthApiHeaders(accessToken);
     updateUser(await getMyProfile());
-    console.log("시간차", accessTokenExpiresIn - Date.now());
+    // console.log(
+    //   "시간차",
+    //   new Date(accessTokenExpiresIn - Date.now()).getMinutes()
+    // );
 
-    setTimeout(onSilentRefresh, 30 * 60 * 1000);
+    setTimeout(onSilentRefresh, accessTokenExpiresIn - Date.now());
   };
 
   const onSilentRefresh = () => {
