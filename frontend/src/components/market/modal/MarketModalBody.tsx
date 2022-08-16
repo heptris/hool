@@ -44,8 +44,6 @@ const MarketModalBody = () => {
   if (canUploadIsLoading) return <Loading />;
   if (canUploadIsError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
-  console.log(canUploadData);
-
   const handleUploadItem = (el: UploadItemType) => {};
 
   return (
@@ -53,9 +51,9 @@ const MarketModalBody = () => {
       <LRContainer>
         <LeftContainer>
           <ItemList>
-            {canUploadData.data.map((el: UploadItemType) => {
-              return <EmojiCard key={el.emojiId} emojiUrl={el.url} />;
-            })}
+            {canUploadData.data.map((emo: UploadItemType) => (
+              <EmojiCard key={emo.emojiId} emojiUrl={emo.url} />
+            ))}
           </ItemList>
           <Button height={3} width={15} text={"등록하기"} marginTop={1.5} />
         </LeftContainer>

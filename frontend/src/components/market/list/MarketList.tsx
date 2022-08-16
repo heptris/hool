@@ -81,6 +81,7 @@ const MarketList = ({ searchKeyword }: { searchKeyword: string }) => {
     </ItemList>
   );
 };
+
 const ItemList = styled.section`
   width: 100%;
   display: grid;
