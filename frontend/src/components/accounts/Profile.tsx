@@ -73,7 +73,7 @@ function Profile() {
                       <CardContent>
                         <div>
                           <Activity>{description}</Activity>
-                          <Date>{createdDate}</Date>
+                          <Date>{createdDate.split("T")[0]}</Date>
                         </div>
                         <Diff>
                           {dealtPoint > 0 ? `+${dealtPoint}` : dealtPoint}
