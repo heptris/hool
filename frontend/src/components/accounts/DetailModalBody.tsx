@@ -1,15 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "constant";
+import { postMyEmojiDetailFavorite } from "api/profile";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { postMyEmojiDetailFavorite } from "api/profile";
+import type { MemberEmojiType } from "types/MemberEmojiType";
 
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
-import type { EmojiDetailType } from "components/accounts/Inventory";
-
-import { QUERY_KEYS } from "constant";
 
 type PropsType = {
   onChangeDetailInfo: Function;
@@ -25,7 +24,7 @@ function DetailModalBody({
   isFavorite,
   ARCode,
   onChangeDetailInfo,
-}: EmojiDetailType & PropsType) {
+}: MemberEmojiType & PropsType) {
   const queryClient = useQueryClient();
 
   return (

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
@@ -26,13 +27,20 @@ const MarketItem = (props: MarketItemType) => {
   } = props;
 
   const { mutate } = useMutation(postBuyEmoji);
+  const [isHovering, setIsHovering] = useState(false);
+  useEffect(() => {
+    if (isHovering === false) return;
+
+    setTimeout(() => setIsHovering(false), 2000);
+  }, [isHovering]);
 
   return (
     <Item bgColor={mainColor} borderColor={adaptiveGrey700}>
       <Emoji
         src={url}
         alt={name}
-        className={`animate__animated ${emojiAnimate}`}
+        onMouseEnter={() => setIsHovering(true)}
+        className={isHovering ? `animate__animated ${emojiAnimate}` : ""}
       />
       <ItemTitle>{name}</ItemTitle>
       <ItemDesc>{description}</ItemDesc>
