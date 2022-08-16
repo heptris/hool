@@ -27,6 +27,7 @@ import { UserInfoType } from "types/UserInfoType";
 import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
 const MeetingList = ({ isState }: { isState: string }) => {
+  const queryClient = useQueryClient();
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
   const newList: Array<any> = [];
@@ -63,8 +64,6 @@ const MeetingList = ({ isState }: { isState: string }) => {
         });
       });
 
-  console.log(newList);
-
   const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
     onSuccess: (data, { conferenceId }) => {
       userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
@@ -92,6 +91,11 @@ const MeetingList = ({ isState }: { isState: string }) => {
       hasNextPage && !isFetchingNextPage && fetchNextPage();
     }
   }, [inView]);
+  useEffect(() => {
+    queryClient.invalidateQueries([QUERY_KEYS.MEETING_LIST_PAGE], {
+      refetchPage: (page, index) => index === 0,
+    });
+  }, []);
 
   if (allMeetingListIsLoading) return <Loading />;
   if (allMeetingListIsError) return <Navigate to={"/error"} />;
