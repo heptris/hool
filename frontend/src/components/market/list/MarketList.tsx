@@ -48,6 +48,7 @@ const MarketList = ({
       getMarketListPage({ pageParam, size }).then((res) => res.data),
     {
       getNextPageParam: (lastPageRes) => lastPageRes.cursorId,
+      retry: 1,
     }
   );
   const { data: topTenList } = useQuery(
