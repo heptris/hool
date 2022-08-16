@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 
 import styled from "styled-components";
 
-import { getMarketListPage } from "api/market";
+import { getMarketListPage, getMarketRankList } from "api/market";
 
 import Loading from "components/Loading";
 import MarketListItem from "./MarketListItem";
@@ -21,7 +21,13 @@ import { UserInfoType } from "types/UserInfoType";
 
 const { USER, MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
-const MarketList = ({ searchKeyword }: { searchKeyword: string }) => {
+const MarketList = ({
+  searchKeyword,
+  isTopTen,
+}: {
+  searchKeyword: string;
+  isTopTen: boolean;
+}) => {
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
   const queryClient = useQueryClient();
@@ -44,6 +50,10 @@ const MarketList = ({ searchKeyword }: { searchKeyword: string }) => {
       getNextPageParam: (lastPageRes) => lastPageRes.cursorId,
     }
   );
+  const { data: topTenList } = useQuery(
+    [QUERY_KEYS.MARKET_RANK_LIST],
+    getMarketRankList
+  );
 
   useEffect(() => {
     if (inView) {
@@ -60,24 +70,34 @@ const MarketList = ({ searchKeyword }: { searchKeyword: string }) => {
 
   return (
     <ItemList>
-      {searchKeyword ? (
+      {isTopTen ? (
         <>
-          {searchedList?.map((el: MarketItemType) => {
+          {topTenList.data.map((el: MarketItemType) => {
             return <MarketListItem key={el.emojiShopId} {...el} />;
           })}
         </>
       ) : (
         <>
-          {data.pages.map((page) => (
-            <React.Fragment key={page.nextId}>
-              {page.values.map((el: MarketItemType) => {
+          {searchKeyword ? (
+            <>
+              {searchedList?.map((el: MarketItemType) => {
                 return <MarketListItem key={el.emojiShopId} {...el} />;
               })}
-            </React.Fragment>
-          ))}
+            </>
+          ) : (
+            <>
+              {data.pages.map((page) => (
+                <React.Fragment key={page.nextId}>
+                  {page.values.map((el: MarketItemType) => {
+                    return <MarketListItem key={el.emojiShopId} {...el} />;
+                  })}
+                </React.Fragment>
+              ))}
+            </>
+          )}
+          <div ref={ref} />
         </>
       )}
-      <div ref={ref} />
     </ItemList>
   );
 };

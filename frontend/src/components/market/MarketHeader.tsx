@@ -55,10 +55,14 @@ const MarketHeader = ({
   onDisplayChange,
   searchKeyword,
   setSearchKeyword,
+  setIsTopTen,
+  isTopTen,
 }: {
   onDisplayChange: Function;
   setSearchKeyword: Function;
   searchKeyword: string;
+  setIsTopTen: Function;
+  isTopTen: boolean;
 }) => {
   const queryClient = useQueryClient();
   const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
@@ -70,10 +74,14 @@ const MarketHeader = ({
       isDisplaySearchBar={true}
       isDisplayBtn={true}
       SearchBar={
-        <MarketSearchBar
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-        />
+        isTopTen ? (
+          <></>
+        ) : (
+          <MarketSearchBar
+            searchKeyword={searchKeyword}
+            setSearchKeyword={setSearchKeyword}
+          />
+        )
       }
       concreteBtn={
         <MarketButton
@@ -85,17 +93,53 @@ const MarketHeader = ({
       }
       isDisplayInfo={true}
       concreteInfo={
-        <MyPointBox>
-          <div>보유 중인 큐브</div>
-          <MyPoint>
-            <i className="fa-solid fa-cube"></i>
-            <span>
-              {Number(userInfo?.point)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            </span>
-          </MyPoint>
-        </MyPointBox>
+        <>
+          <MyPointBox>
+            <div>보유 중인 큐브</div>
+            <MyPoint>
+              <i className="fa-solid fa-cube"></i>
+              <span>
+                {Number(userInfo?.point)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
+            </MyPoint>
+          </MyPointBox>
+          <Switches>
+            <SwitchItem
+              style={
+                isTopTen
+                  ? {
+                      background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                    }
+                  : {}
+              }
+              onClick={() => {
+                setIsTopTen(true);
+              }}
+            >
+              <span style={isTopTen ? { color: darkTheme.mainBadgeColor } : {}}>
+                Top 10
+              </span>
+            </SwitchItem>
+            <SwitchItem
+              style={
+                isTopTen
+                  ? {}
+                  : {
+                      background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                    }
+              }
+              onClick={() => {
+                setIsTopTen(false);
+              }}
+            >
+              <span style={isTopTen ? {} : { color: darkTheme.mainBadgeColor }}>
+                전체 목록
+              </span>
+            </SwitchItem>
+          </Switches>
+        </>
       }
     />
   );
@@ -113,5 +157,22 @@ const MyPoint = styled.div`
   }
 `;
 const MarketButton = styled(Button)<{ onClick: Function }>``;
+const Switches = styled.div`
+  display: flex;
+  align-items: flex-end;
+`;
+const SwitchItem = styled.button`
+  background-color: transparent;
+  margin: 0 2rem 0 0;
+  padding: 0 0 0.25rem 0;
+
+  &:hover {
+    cursor: pointer;
+
+    span {
+      color: ${darkTheme.adaptiveGrey200};
+    }
+  }
+`;
 
 export default MarketHeader;

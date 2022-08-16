@@ -5,6 +5,7 @@ import { MarketHeader, MarketList, MarketModal } from "components/market";
 
 const MarketPage = () => {
   const [isDisplayModal, setIsDisplayModal] = useState(false);
+  const [isTopTen, setIsTopTen] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState("");
   const onDisplayChange = () => {
     setIsDisplayModal(!isDisplayModal);
@@ -15,8 +16,10 @@ const MarketPage = () => {
         onDisplayChange={onDisplayChange}
         searchKeyword={searchKeyword}
         setSearchKeyword={setSearchKeyword}
+        setIsTopTen={setIsTopTen}
+        isTopTen={isTopTen}
       />
-      <MarketList searchKeyword={searchKeyword} />
+      <MarketList searchKeyword={searchKeyword} isTopTen={isTopTen} />
       {isDisplayModal && <MarketModal onDisplayChange={onDisplayChange} />}
     </Container>
   );
