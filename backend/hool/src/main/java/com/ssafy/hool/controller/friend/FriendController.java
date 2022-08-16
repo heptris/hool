@@ -58,8 +58,8 @@ public class FriendController {
     @ApiOperation(value = "친구 요청할 친구 닉네임으로 검색", notes = "닉네임으로 검색한 친구의 회원Id, Email, 닉네임을 반환한다.")
     @PostMapping("/search")
     public ResponseEntity<?> searchFriend(@RequestBody SearchFriendReqDto searchFriendDto) {
-        FriendDto friendDto = friendService.searchAddFriend(searchFriendDto.getFriendNickName());
-        return new ResponseEntity<>(new ResponseDto(200, "친구 추가할 친구 검색", friendDto)
+        List<FriendDto> friendDtos = friendService.searchAddFriend(searchFriendDto.getFriendNickName());
+        return new ResponseEntity<>(new ResponseDto(200, "친구 추가할 친구 검색", friendDtos)
                 , HttpStatus.OK);
     }
 

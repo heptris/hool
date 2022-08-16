@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 
@@ -40,13 +41,13 @@ public class FriendService {
      * 친구추가할 친구를 닉네임으로 검색
      */
     @Transactional
-    public FriendDto searchAddFriend(String friendNickName) {
-        Member friend = memberRepository.findByNickName(friendNickName).orElseThrow(
-                () -> new CustomException(MEMBER_NICKNAME_NOT_FOUND));
+    public List<FriendDto> searchAddFriend(String friendNickName) {
+
+        List<Member> friends = memberRepository.findByFriendWithNickName(friendNickName.trim());
 
         // dto로 변환
-        FriendDto friendDto = friend.friendDto();
-        return friendDto;
+        List<FriendDto> friendDtos = friends.stream().map(member -> member.friendDto()).collect(Collectors.toList());
+        return friendDtos;
     }
 
 
