@@ -26,7 +26,7 @@ import { MeetingRoomType } from "types/MeetingRoomType";
 import { UserInfoType } from "types/UserInfoType";
 import { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
-const MeetingList = (isState: string) => {
+const MeetingList = ({ isState }: { isState: string }) => {
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
   const newList: Array<any> = [];
