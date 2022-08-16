@@ -21,11 +21,11 @@ const setApiHeaders = (accessToken?: string) => {
 const getRequest = async (path: string, obj?: object) => {
   return await api.get(path, obj).then((res) => res.data);
 };
-const postRequest = async (path: string, obj: object) => {
-  return await api.post(path, obj).then((res) => res.data);
+const postRequest = async (path: string, obj: object, opt?: object) => {
+  return await api.post(path, obj, opt).then((res) => res.data);
 };
-const putRequest = async (path: string, obj: object) => {
-  return await api.put(path, obj).then((res) => res.data);
+const putRequest = async (path: string, obj: object, opt?: object) => {
+  return await api.put(path, obj, opt).then((res) => res.data);
 };
 const deleteRequest = async (path: string, data?: object) => {
   return await api.delete(path, { data }).then((res) => res.data);

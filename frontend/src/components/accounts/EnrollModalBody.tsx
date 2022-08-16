@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
-import { apiInstance } from "api";
+import { apiInstance, postRequest } from "api";
 import { HOOL_API_ENDPOINT } from "constant";
 
 import styled from "styled-components";
@@ -101,11 +101,9 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
 
-    const api = apiInstance();
-    api
-      .post(HOOL_API_ENDPOINT + "emoji/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+    postRequest("emoji/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((res) => {
         console.log(res.data);
         queryClient.invalidateQueries([QUERY_KEYS.MY_OWN_EMOJI_LIST]);
