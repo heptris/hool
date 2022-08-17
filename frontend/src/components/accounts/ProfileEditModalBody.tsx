@@ -72,11 +72,10 @@ const ProfileEditModalBody = ({
   };
 
   const onSubmit = (e: React.FormEvent) => {
-    if (!files) return;
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("file", files[0]);
+    files && formData.append("file", files[0]);
     const data = {
       nickName,
     };
@@ -91,6 +90,7 @@ const ProfileEditModalBody = ({
       .then((res) => {
         console.log(res.data);
         alert("프로필 편집이 성공했습니다.");
+        onDisplayChange();
       })
       .catch((err) => console.error(err));
   };
@@ -108,7 +108,6 @@ const ProfileEditModalBody = ({
             type="file"
             accept={ALLOW_FILE_EXTENSION}
             ref={imgInputRef}
-            required={true}
             onChange={onLoadFile}
           />
           <Preview ref={previewRef}></Preview>
