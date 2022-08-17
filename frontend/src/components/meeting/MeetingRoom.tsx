@@ -220,36 +220,53 @@ const GameResultSubmitModal = (props: { gameInfo: GameInfoType }) => {
   const [result, setResult] = useState(true);
   return (
     <Modal
-      header={<div>경기 결과 입력</div>}
+      header={<Header>경기 결과 입력</Header>}
       body={
         <Form>
-          <div>{gameName}</div>
-          <div>
-            <label htmlFor={"agree"}>{agreeName}</label>
-            <input
-              type="radio"
-              id={"agree"}
-              name={"gameResult"}
-              defaultChecked
-              onClick={() => setResult(true)}
+          <GameWrapper>
+            <TextWrapper>
+              <Text>게임 제목 </Text>
+              <GameName>{gameName}</GameName>
+            </TextWrapper>
+            <GameResult>
+              <p>게임 결과</p>
+              <GameResultInput>
+                <InputWrapper>
+                  <input
+                    type="radio"
+                    id={"agree"}
+                    name={"gameResult"}
+                    defaultChecked
+                    onClick={() => setResult(true)}
+                  />
+                  <label htmlFor={"agree"}>{agreeName}</label>
+                </InputWrapper>
+                <InputWrapper>
+                  <input
+                    type="radio"
+                    id={"disagree"}
+                    name={"gameResult"}
+                    onClick={() => setResult(false)}
+                  />
+                  <label htmlFor={"disagree"}>{disagreeName}</label>
+                </InputWrapper>
+              </GameResultInput>
+            </GameResult>
+          </GameWrapper>
+          <ButtonWrapper>
+            <Button
+              marginBottom={1.5}
+              height={1.5}
+              width={4}
+              height={2}
+              text="제출"
+              buttonOnClick={() => {
+                dispatch(setIsShowingGameSubmit(false));
+                dispatch(setIsResultMode(false));
+                postSaveGameResult({ gameId, result });
+              }}
             />
-            <label htmlFor={"disagree"}>{disagreeName}</label>
-            <input
-              type="radio"
-              id={"disagree"}
-              name={"gameResult"}
-              onClick={() => setResult(false)}
-            />
-          </div>
-          <Button
-            height={1.5}
-            width={2}
-            buttonOnClick={() => {
-              dispatch(setIsShowingGameSubmit(false));
-              dispatch(setIsResultMode(false));
-              postSaveGameResult({ gameId, result });
-            }}
-          />
+          </ButtonWrapper>
         </Form>
       }
       onDisplayChange={() => {
@@ -258,7 +275,49 @@ const GameResultSubmitModal = (props: { gameInfo: GameInfoType }) => {
     />
   );
 };
-
+const Header = styled.div`
+  margin: 1.5rem 1rem 1rem;
+  width: 20rem;
+  font-size: 1.25rem;
+`;
+const GameWrapper = styled.div`
+  margin-left: 1rem;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const Text = styled.div``;
+const GameName = styled.div`
+  width: 80%;
+  text-align: center;
+`;
+const GameResult = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+const GameResultInput = styled.div`
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const InputWrapper = styled.div`
+  display: flex;
+  padding: 0.3rem;
+  flex-direction: row;
+  justify-content: center;
+`;
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const ConcreteContainer = styled(Container)`
   padding: 0;
   width: 100%;
@@ -290,4 +349,5 @@ const GameMessageBox = styled.div`
 `;
 ///
 const Form = styled.div``;
+
 export default MeetingRoom;
