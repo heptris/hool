@@ -7,7 +7,6 @@ import { OpenVidu, Publisher, Subscriber, Session } from "openvidu-browser";
 
 import styled from "styled-components";
 
-import Button from "components/commons/Button";
 import UserVideoComponent from "./UserVideoComponent";
 import { darkTheme } from "styles";
 import { SessionStateType } from "./MeetingRoom";
@@ -530,18 +529,25 @@ const SessionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
 `;
 const SessionHeader = styled.div`
-  padding: 0.5rem 2rem;
+  width: 100%;
+  padding: 1rem 2rem;
   background-color: ${darkTheme.adaptiveGrey800};
   border-radius: 0 6px 0 0;
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
 `;
 const SessionTitle = styled.h1`
   font-size: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 const SessionBody = styled.div`
   width: 100%;
-  height: 100%;
   display: grid;
   justify-content: center;
   align-content: center;
@@ -552,11 +558,11 @@ const SessionBody = styled.div`
   gap: 0.5rem;
 `;
 const MainVideoContainer = styled.div`
-  max-width: 100%;
+  width: 100%;
   height: auto;
 `;
 const StreamContainer = styled.div`
-  max-width: 100%;
+  width: 100%;
   height: auto;
 `;
 
