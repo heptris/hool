@@ -53,7 +53,7 @@ const MeetingHeader = ({ changeState }: { changeState: Function }) => {
                   : {}
               }
             >
-              전체
+              전체 목록
             </span>
           </SwitchItem>
           <SwitchItem
