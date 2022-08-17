@@ -27,15 +27,14 @@ const postExitMeetingRoom = (obj: { conferenceId: number }) =>
 const postCreateGame = (obj: { conferenceId: number; gameName: string }) =>
   postRequest("game/create", obj);
 
-const postCreateGameHistory = (obj: GameHistoryType) => {
-  console.log(obj);
-
-  return postRequest("game/create/history", obj);
-};
+const postCreateGameHistory = (obj: GameHistoryType) =>
+  postRequest("game/create/history", obj);
 
 const postSaveGameResult = (obj: { gameId: number; result: boolean }) =>
   postRequest("game/save/result", obj);
 
+const postGameStatistics = (obj: { gameId: number }) =>
+  postRequest("game/statistics", obj);
 // main-controller
 const getMeetingList = () => getRequest("");
 
@@ -66,4 +65,5 @@ export {
   postCheckPasswordBeforeEnterMeetingRoom,
   getMeetingListPage,
   getMeetingListSearchByCategory,
+  postGameStatistics,
 };
