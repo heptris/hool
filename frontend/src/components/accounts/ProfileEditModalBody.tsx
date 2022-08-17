@@ -16,15 +16,6 @@ import { UserInfoType } from "types/UserInfoType";
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
 // const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
 
-export const convertURLtoFile = async (url: string) => {
-  const response = await fetch(url);
-  const data = await response.blob();
-  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-  const metadata = { type: `image/${ext}` };
-  return new File([data], filename!, metadata);
-};
-
 const ProfileEditModalBody = ({
   onDisplayChange,
 }: {
@@ -34,11 +25,9 @@ const ProfileEditModalBody = ({
     QUERY_KEYS.USER,
   ]);
   const profileUrl = userInfo!.memberProfile;
-  const profileFileObject = convertURLtoFile(profileUrl); //서버 실행시 성공하는지 확인
-  console.log(profileFileObject);
   const nickname = userInfo?.nickName;
 
-  const [files, setFiles] = useState<FileList>(); //profileFileObject
+  const [files, setFiles] = useState<FileList>();
   const imgInputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const previewRef: React.RefObject<HTMLDivElement> = useRef(null);
   const [nickName, setNickname] = useState(nickname);
@@ -130,17 +119,6 @@ const ProfileEditModalBody = ({
         />
       </Wrapper>
       <ButtonWrapper>
-        {/* <Button
-          height={2.5}
-          width={5}
-          text={"취소"}
-          marginTop={0.5}
-          marginBottom={2}
-          color={darkTheme.adaptiveGrey500}
-          marginRight={1}
-          buttonOnClick={onDisplayChange}
-        /> */}
-
         <SubmitBtn width={6} height={3} text={"수정하기"} />
       </ButtonWrapper>
     </ProfileForm>
