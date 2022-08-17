@@ -10,7 +10,8 @@ import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 
 import { HOOL_API_ENDPOINT, QUERY_KEYS } from "constant";
-
+import useUser from "hooks/useUser";
+import { getMyProfile } from "api/profile";
 import { UserInfoType } from "types/UserInfoType";
 
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
@@ -24,6 +25,8 @@ const ProfileEditModalBody = ({
   const userInfo = useQueryClient().getQueryData<UserInfoType>([
     QUERY_KEYS.USER,
   ]);
+  const queryClient = useQueryClient();
+  const { updateUser } = useUser();
   const profileUrl = userInfo!.memberProfile;
   const nickname = userInfo?.nickName;
 
@@ -76,9 +79,12 @@ const ProfileEditModalBody = ({
     putRequest("member/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
+        updateUser(await getMyProfile());
+        queryClient.invalidateQueries([QUERY_KEYS.USER]);
         alert("프로필 편집이 성공했습니다.");
+
         onDisplayChange();
       })
       .catch((err) => console.error(err));
