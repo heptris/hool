@@ -18,7 +18,7 @@ const ConferenceListItem = (props: MeetingRoomType) => {
     if (category === "BASEBALL") return "야구";
     if (category === "BASKETBALL") return "농구";
     if (category === "VOLLEYBALL") return "배구";
-    if (category === "E-Sports") return "E-sports";
+    if (category === "ESPORTS") return "E-sports";
   };
 
   return (

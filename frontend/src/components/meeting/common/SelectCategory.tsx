@@ -22,7 +22,7 @@ const SelectCategory = (props: {
       <Option value="BASEBALL">야구</Option>
       <Option value="BASKETBALL">농구</Option>
       <Option value="VOLLEYBALL">배구</Option>
-      <Option value="ESPORTS">E-Sports</Option>
+      <Option value="ESPORTS">E-sports</Option>
     </Select>
   );
 };
