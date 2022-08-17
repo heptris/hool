@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Device } from "openvidu-browser";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
@@ -20,7 +21,7 @@ export type ClientSessionType = {
   emojiEvents: Array<string>;
   chatEvents: Array<string>;
   isDisplayEmoji: boolean;
-  currentVideoDevice?: Object | undefined;
+  currentVideoDevice?: Device | undefined;
   isPublic: boolean;
   isHost: boolean;
 };

@@ -1,8 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Session, Publisher, Subscriber } from "openvidu-react";
-import { Device } from "openvidu-browser";
+import {
+  Session,
+  Publisher,
+  Subscriber,
+  Stream,
+  Device,
+} from "openvidu-browser";
 
 import {
   addChatEvents,
@@ -28,10 +33,10 @@ import { QUERY_KEYS } from "constant";
 import type { RootState } from "store";
 import { EmojiDetailType } from "types/EmojiDetailType";
 export type SessionStateType = {
-  session: typeof Session | undefined;
-  mainStreamManager: typeof Publisher | typeof Subscriber | undefined;
-  publisher: typeof Publisher | undefined;
-  subscribers: Array<typeof Subscriber>;
+  session: Session | undefined;
+  mainStreamManager: Publisher | Subscriber | Stream | undefined;
+  publisher: Publisher | undefined;
+  subscribers: Array<Subscriber>;
   currentVideoDevice?: Device | undefined;
 };
 import { GameInfoType } from "types/GameInfoType";
@@ -110,9 +115,13 @@ function MeetingRoom() {
     setSessionState(state);
   };
   const switchAudioEnabled = (audioState: boolean) => {
+    if (publisher === undefined) return;
+
     publisher.publishAudio(audioState);
   };
   const switchVideoEnabled = (videoState: boolean) => {
+    if (publisher === undefined) return;
+
     publisher.publishVideo(videoState);
   };
   const handleStartGame = () => {
@@ -127,7 +136,9 @@ function MeetingRoom() {
   };
 
   const sendTextMessage = (msgToSend: string) => {
+    if (session === undefined) return;
     if (msgToSend.trim() === "") return;
+
     session
       .signal({
         data: JSON.stringify({
@@ -144,6 +155,8 @@ function MeetingRoom() {
       .catch((err: any) => console.error(err));
   };
   const sendEmojiSignal = (item: EmojiDetailType) => {
+    if (session === undefined) return;
+
     session
       .signal({
         data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
@@ -158,6 +171,8 @@ function MeetingRoom() {
       });
   };
   const recvSignal = () => {
+    if (session === undefined) return;
+
     session.on("signal:chat", (event: any) => {
       dispatch(addChatEvents(event.data));
     });
@@ -168,6 +183,8 @@ function MeetingRoom() {
   };
   const sendGameInfo = () => {
     // console.log("게임 생성 후 데이터 변경 후");
+    if (session === undefined) return;
+
     session
       .signal({
         data: JSON.stringify(gameInfo),

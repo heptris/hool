@@ -1,9 +1,18 @@
-import { Component, Key } from "react";
+import React, { Component, Key } from "react";
 import { connect } from "react-redux";
 import * as actions from "store";
 
 import axios from "axios";
-import { OpenVidu, Publisher, Subscriber, Session } from "openvidu-browser";
+import {
+  OpenVidu,
+  Publisher,
+  Subscriber,
+  Stream,
+  StreamManager,
+  Device,
+  SignalEvent,
+  StreamEvent,
+} from "openvidu-browser";
 
 import styled from "styled-components";
 
@@ -30,7 +39,7 @@ interface State {
   emojiEvents?: Array<string>;
   chatEvents?: Array<string>;
   isDisplayEmoji?: boolean;
-  currentVideoDevice?: Object | undefined;
+  currentVideoDevice?: Device | undefined;
   isPublic?: boolean;
   isHost?: boolean;
   setMySessionId?: Function;
@@ -73,15 +82,15 @@ class VideoContainer extends Component<State, SessionStateType> {
     this.leaveSession();
   }
 
-  handleChangeSessionId(e: { target: { value: any } }) {
+  handleChangeSessionId(e: React.ChangeEvent<HTMLInputElement>) {
     this.props.setMySessionId!(e.target.value);
   }
 
-  handleChangeUserName(e: { target: { value: any } }) {
+  handleChangeUserName(e: React.ChangeEvent<HTMLInputElement>) {
     this.props.setMyUserName!(e.target.value);
   }
 
-  handleMainVideoStream(stream: any) {
+  handleMainVideoStream(stream: Publisher | Subscriber | Stream) {
     if (this.state.mainStreamManager !== stream) {
       this.setState(
         {
@@ -94,9 +103,9 @@ class VideoContainer extends Component<State, SessionStateType> {
     }
   }
 
-  deleteSubscriber(streamManager: any) {
-    let subscribers = this.state.subscribers;
-    let index = subscribers.indexOf(streamManager, 0);
+  deleteSubscriber(streamManager: StreamManager) {
+    const subscribers = this.state.subscribers;
+    const index = subscribers.indexOf(streamManager as Subscriber, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
       this.setState(
@@ -123,14 +132,18 @@ class VideoContainer extends Component<State, SessionStateType> {
       },
       () => {
         const mySession = this.state.session;
+        if (mySession === undefined) return;
 
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
-        mySession.on("streamCreated", (event: { stream: any }) => {
+        mySession.on("streamCreated", (event: StreamEvent) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
-          const subscriber = mySession.subscribe(event.stream, undefined);
+          const subscriber = mySession.subscribe(
+            event.stream,
+            undefined as unknown as HTMLElement
+          );
           const subscribers = this.state.subscribers;
           subscribers.push(subscriber);
 
@@ -141,13 +154,10 @@ class VideoContainer extends Component<State, SessionStateType> {
         });
 
         // On every Stream destroyed...
-        mySession.on(
-          "streamDestroyed",
-          (event: { stream: { streamManager: any } }) => {
-            // Remove the stream from 'subscribers' array
-            this.deleteSubscriber(event.stream.streamManager);
-          }
-        );
+        mySession.on("streamDestroyed", (event: StreamEvent) => {
+          // Remove the stream from 'subscribers' array
+          this.deleteSubscriber(event.stream.streamManager);
+        });
 
         // On every asynchronous exception...
         mySession.on("exception", (exception: any) => {
@@ -162,18 +172,20 @@ class VideoContainer extends Component<State, SessionStateType> {
           // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.props.myUserName })
+            .connect(token as string, { clientData: this.props.myUserName })
             .then(async () => {
-              const devices = await this.OV?.getDevices();
-              const videoDevices = devices?.filter(
-                (device: { kind: string }) => device.kind === "videoinput"
+              if (this.OV === null || this.OV === undefined) return;
+
+              const devices = await this.OV.getDevices();
+              const videoDevices = devices.filter(
+                (device: Device) => device.kind === "videoinput"
               );
 
               // --- 5) Get your own camera stream ---
 
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
-              const publisher = this.OV?.initPublisher(
+              const publisher = this.OV.initPublisher(
                 undefined as unknown as HTMLElement,
                 {
                   audioSource: undefined, // The source of audio. If undefined default microphone
@@ -194,7 +206,7 @@ class VideoContainer extends Component<State, SessionStateType> {
               // Set the main video in the page to display our webcam and store our Publisher
               this.setState(
                 {
-                  currentVideoDevice: videoDevices![0],
+                  currentVideoDevice: videoDevices[0],
                   mainStreamManager: publisher,
                   publisher: publisher,
                 },
@@ -297,33 +309,33 @@ class VideoContainer extends Component<State, SessionStateType> {
 
   recvSignal() {
     const mySession = this.state.session;
+    if (mySession === undefined) return;
 
-    mySession.on(
-      "signal:emoji",
-      (event: { data: any; from: { connectionId: any }; type: any }) => {
-        console.log(event.data);
-        console.log(event.from);
-        console.log(event.type);
+    mySession.on("signal:emoji", (event: SignalEvent) => {
+      if (event.from === undefined) return;
+      if (this.state.publisher === undefined) return;
 
-        const sender = event.from.connectionId;
-        const publisher = this.state.publisher.stream.connection.connectionId;
-        const subscribers = this.state.subscribers.map(
-          (sub: { stream: { connection: { connectionId: any } } }) =>
-            sub.stream.connection.connectionId
-        );
+      console.log(event.data);
+      console.log(event.from);
+      console.log(event.type);
 
-        // connection.data "{\"clientData\":\"myUserName#105957535666388128155\"}"
-        // connection.role "PUBLISHER"
+      const sender = event.from.connectionId;
+      const publisher = this.state.publisher.stream.connection.connectionId;
+      const subscribers = this.state.subscribers.map(
+        (sub: Subscriber) => sub.stream.connection.connectionId
+      );
 
-        const idx = sender !== publisher ? subscribers.indexOf(sender) + 1 : 0;
+      // connection.data "{\"clientData\":\"myUserName#105957535666388128155\"}"
+      // connection.role "PUBLISHER"
 
-        const newEmojiEvents = this.props.emojiEvents?.map((emo: any, i: any) =>
-          idx === i ? event.data : emo
-        );
+      const idx = sender !== publisher ? subscribers.indexOf(sender) + 1 : 0;
 
-        this.props.setEmojiEvents!(newEmojiEvents);
-      }
-    );
+      const newEmojiEvents = this.props.emojiEvents?.map(
+        (emo: string, i: number) => (idx === i ? event.data : emo)
+      );
+
+      this.props.setEmojiEvents!(newEmojiEvents);
+    });
   }
 
   render() {
@@ -396,7 +408,7 @@ class VideoContainer extends Component<State, SessionStateType> {
               {this.state.publisher !== undefined ? (
                 <StreamContainer
                   onClick={() =>
-                    this.handleMainVideoStream(this.state.publisher)
+                    this.handleMainVideoStream(this.state.publisher!)
                   }
                 >
                   <UserVideoComponent
@@ -407,7 +419,7 @@ class VideoContainer extends Component<State, SessionStateType> {
               ) : null}
 
               {this.state.subscribers.map(
-                (sub: Publisher | Subscriber, i: Key | null | undefined) => (
+                (sub: Subscriber, i: Key | null | undefined) => (
                   <StreamContainer
                     key={i}
                     onClick={() => this.handleMainVideoStream(sub)}

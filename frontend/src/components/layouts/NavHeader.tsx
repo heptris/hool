@@ -96,6 +96,7 @@ const ProfileName = styled.p`
   color: ${adaptiveGrey200};
   font-size: 1rem;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 `;
 const NavUser = styled.div`
