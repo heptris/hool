@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 
-import { apiInstance, putRequest } from "api";
+import { putRequest } from "api";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -9,13 +9,12 @@ import { darkTheme } from "styles/Theme";
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 
-import { HOOL_API_ENDPOINT, QUERY_KEYS } from "constant";
+import { QUERY_KEYS } from "constant";
 import useUser from "hooks/useUser";
 import { getMyProfile } from "api/profile";
 import { UserInfoType } from "types/UserInfoType";
 
 const ALLOW_FILE_EXTENSION = ".png,.jpg,.jpeg,.gif";
-// const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;
 
 const ProfileEditModalBody = ({
   onDisplayChange,
@@ -80,14 +79,12 @@ const ProfileEditModalBody = ({
       headers: { "Content-Type": "multipart/form-data" },
     })
       .then(async (res) => {
-        console.log(res.data);
         updateUser(await getMyProfile());
         queryClient.invalidateQueries([QUERY_KEYS.USER]);
         alert("프로필 편집이 성공했습니다.");
-
-        onDisplayChange();
       })
       .catch((err) => console.error(err));
+    onDisplayChange();
   };
 
   return (
