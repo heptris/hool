@@ -151,7 +151,6 @@ const EmojiModal = styled.div`
   border: 1px solid ${darkTheme.adaptiveGrey800};
   border-radius: 4px;
   position: absolute;
-  overflow: auto;
   bottom: 2rem;
   left: calc(3rem - 100%);
   padding: 0.5rem 0.5rem;
@@ -162,12 +161,13 @@ const ModalGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem 0.2rem;
+  overflow: auto;
 `;
 const ModalText = styled.h1``;
 const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey700};
   background-color: ${darkTheme.adaptiveGrey700};
-  width: 99%;
+  width: 100%;
 `;
 
 export default MeetingMessageInput;
