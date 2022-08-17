@@ -26,7 +26,7 @@ const MeetingHeader = ({ changeState }: { changeState: Function }) => {
 
   return (
     <PageHeader
-      pageTitle="응원 ZONE"
+      pageTitle="응원 세션 참가"
       subtext="친구와 함께 좋아하는 팀 경기를 응원하러 가볼까요?"
       isDisplaySearchBar={true}
       isDisplayBtn={false}
@@ -163,7 +163,7 @@ const MeetingHeader = ({ changeState }: { changeState: Function }) => {
                   : {}
               }
             >
-              E-Sports
+              E-sports
             </span>
           </SwitchItem>
         </MeetingSwitches>
@@ -174,7 +174,7 @@ const MeetingHeader = ({ changeState }: { changeState: Function }) => {
 
 const MeetingSwitches = styled.div`
   display: flex;
-  margin: 0 0 0 0.8rem;
+  margin: 0 0 0 0;
 `;
 const SwitchItem = styled.button`
   background-color: transparent;
