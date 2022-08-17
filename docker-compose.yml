@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: "on-failure"
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: "on-failure"
+    expose:
+      - 5442
+    volumes:
+      - './frontend:/app'
+      - '/app/node_modules'
+    environment: 
+      - NODE_ENV=development 
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
