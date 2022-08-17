@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Session, Publisher, Subscriber } from "openvidu-react";
+import { Device } from "openvidu-browser";
 
 import {
   addChatEvents,
@@ -31,6 +32,7 @@ export type SessionStateType = {
   mainStreamManager: typeof Publisher | typeof Subscriber | undefined;
   publisher: typeof Publisher | undefined;
   subscribers: Array<typeof Subscriber>;
+  currentVideoDevice?: Device | undefined;
 };
 import { GameInfoType } from "types/GameInfoType";
 import Button from "components/commons/Button";
@@ -256,7 +258,6 @@ const GameResultSubmitModal = (props: { gameInfo: GameInfoType }) => {
           <ButtonWrapper>
             <Button
               marginBottom={1.5}
-              height={1.5}
               width={4}
               height={2}
               text="제출"
