@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "@tanstack/react-location";
 import {
   useInfiniteQuery,
@@ -24,7 +24,6 @@ import { QUERY_KEYS } from "constant";
 
 import type { MeetingRoomType } from "types/MeetingRoomType";
 import type { UserInfoType } from "types/UserInfoType";
-import type { ConferenceCategoryType } from "types/ConferenceCategoryType";
 
 const MeetingList = ({ isState }: { isState: string }) => {
   const queryClient = useQueryClient();

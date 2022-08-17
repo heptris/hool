@@ -36,7 +36,7 @@ const MarketList = ({
     MARKET_SEARCHED_LIST,
   ]);
   const {
-    data,
+    data: wholeList,
     isLoading,
     isError,
     hasNextPage,
@@ -87,8 +87,8 @@ const MarketList = ({
             </>
           ) : (
             <>
-              {data.pages.map((page) => (
-                <React.Fragment key={page.nextId}>
+              {wholeList?.pages.map((page, i) => (
+                <React.Fragment key={i}>
                   {page.values.map((el: MarketItemType) => {
                     return <MarketListItem key={el.emojiShopId} {...el} />;
                   })}

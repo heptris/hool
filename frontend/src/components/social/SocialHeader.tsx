@@ -50,7 +50,6 @@ const SocialSearchBar = () => {
 
     mutateSearchFriend({ friendNickName: searchName });
   }, [searchName]);
-  console.log(searchFriendData, myFriends);
 
   return (
     <SearchBar

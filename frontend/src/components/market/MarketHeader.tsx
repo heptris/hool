@@ -27,7 +27,6 @@ const MarketSearchBar = ({
   const postSearchMutation = useMutation(getMarketSearch, {
     mutationKey: [MARKET_SEARCHED_LIST],
     onSuccess: (data) => {
-      console.log(data.data);
       queryClient.setQueryData([MARKET_SEARCHED_LIST], data.data);
     },
   });
