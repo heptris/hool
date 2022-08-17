@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
@@ -42,7 +42,7 @@ const MarketSearchBar = ({
 
   return (
     <>
-      <SearchBar
+      <CustomSearchBar
         inputValue={searchKeyword}
         searchPlaceholder="이모지 검색"
         inputOnChange={handleSearchEmojiItem}
@@ -51,6 +51,9 @@ const MarketSearchBar = ({
     </>
   );
 };
+const CustomSearchBar = styled(SearchBar).attrs((props) => {
+  onKeyPress: Function;
+})``;
 const MarketHeader = ({
   onDisplayChange,
   searchKeyword,
