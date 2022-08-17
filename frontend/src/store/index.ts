@@ -9,6 +9,7 @@ interface NavMode {
   isShowingMessage: boolean;
 }
 export type ClientSessionType = {
+  mySessionTitle: string;
   mySessionId: string;
   myUserName: string;
   audioEnabled: boolean;
@@ -29,6 +30,7 @@ const initialState: NavMode = {
   isShowingMessage: false,
 };
 const sessionInitialState: ClientSessionType = {
+  mySessionTitle: "",
   mySessionId: "",
   myUserName: "",
   audioEnabled: false,
@@ -71,6 +73,12 @@ const clientSession = createSlice({
   name: "clientSession",
   initialState: sessionInitialState,
   reducers: {
+    setMySessionTitle(
+      state: ClientSessionType,
+      actions: PayloadAction<string>
+    ) {
+      state.mySessionTitle = actions.payload;
+    },
     setMySessionId(state: ClientSessionType, actions: PayloadAction<string>) {
       state.mySessionId = actions.payload;
     },
@@ -130,6 +138,7 @@ export const {
   setIsShowingMessage,
 } = navbar.actions;
 export const {
+  setMySessionTitle,
   setMySessionId,
   setMyUserName,
   setAudioEnabled,

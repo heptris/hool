@@ -13,8 +13,9 @@ import Button from "components/commons/Button";
 
 import { QUERY_KEYS } from "constant";
 
-import { UserInfoType } from "types/UserInfoType";
-import { FriendInfoType } from "types/FriendInfoType";
+import type { UserInfoType } from "types/UserInfoType";
+import type { FriendInfoType } from "types/FriendInfoType";
+
 type PropsType = {
   isDisplayMyFriends: boolean;
   setIsDisplayMyFriends: Function;
@@ -45,6 +46,8 @@ const SocialSearchBar = () => {
   };
 
   useEffect(() => {
+    if (searchName === "") return;
+
     mutateSearchFriend({ friendNickName: searchName });
   }, [searchName]);
   console.log(searchFriendData, myFriends);
@@ -55,46 +58,111 @@ const SocialSearchBar = () => {
       searchPlaceholder="친구 검색"
       inputOnChange={handleSearchName}
       SearchListComponent={(() => {
-        if (searchName === userInfo?.nickName)
-          return <CustomFriendCard>본인입니다</CustomFriendCard>;
-        if (searchName && isSearchFriendError)
-          return (
-            <CustomFriendCard>존재하지 않는 사용자입니다.</CustomFriendCard>
-          );
+        // if (searchName === userInfo?.nickName)
+        //   return <SearchResModal>본인입니다</SearchResModal>;
+        if (searchName && searchFriendData?.data.length === 0)
+          return <SearchResModal>검색 결과가 존재하지 않아요.</SearchResModal>;
         if (isSearchFriendSuccess)
           return (
-            <CustomFriendCard>
-              <div>
-                <strong>
-                  사용자 닉네임 : {searchFriendData.data.friendNickName}
-                </strong>
-                <p>사용자 메일 : {searchFriendData.data.friendMemberEmail}</p>
-              </div>
-              {myFriends &&
+            <SearchResModal>
+              {searchFriendData.data.map((res: FriendInfoType) => (
+                <FriendCard key={res.friendMemberId}>
+                  <InfoDivision>
+                    <FriendProfileImg src={res.friendProfile} />
+                    <FriendInfo>
+                      <FriendNickName>{res.friendNickName}</FriendNickName>
+                      <FriendEmail>{res.friendMemberEmail}</FriendEmail>
+                    </FriendInfo>
+                  </InfoDivision>
+
+                  {userInfo?.nickName !== res.friendNickName &&
+                    !myFriends?.data
+                      .map((friend) => friend.friendMemberId)
+                      .includes(res.friendMemberId) && (
+                      <Button
+                        width={4}
+                        height={2}
+                        text={"친구 요청"}
+                        fontSize={0.825}
+                        buttonOnClick={() => {
+                          mutateFriendSend({
+                            friendMemberId: res.friendMemberId,
+                          });
+                        }}
+                      />
+                    )}
+                </FriendCard>
+              ))}
+              {/* <div>
+                <img src={searchFriendData.data.friendProfile} alt="" />
+                <strong>{searchFriendData.data[0].friendNickName}</strong>
+                <p>{searchFriendData.data[0].friendMemberEmail}</p>
+              </div> */}
+              {/* {myFriends &&
                 !myFriends.data
                   .map((el: FriendInfoType) => el?.friendMemberId)
                   .includes(searchFriendData.data.friendMemberId) && (
                   <Button
+                    width={4}
                     height={2}
-                    width={2}
                     text={"친구 요청"}
-                    fontSize={0.8}
+                    fontSize={0.825}
                     buttonOnClick={() => {
                       mutateFriendSend(searchFriendData.data.friendMemberId);
                     }}
                   />
-                )}
-            </CustomFriendCard>
+                )} */}
+            </SearchResModal>
           );
       })()}
     />
   );
 };
-const CustomFriendCard = styled(Card)`
+const SearchResModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: ${darkTheme.mainColor};
+  border: none;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  align-items: center;
+  padding: 1rem;
+`;
+const FriendCard = styled(Card)`
+  width: 100%;
+  background-color: transparent;
+  border: transparent;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  margin-bottom: 1rem;
+`;
+const InfoDivision = styled.div`
+  display: flex;
+`;
+const FriendProfileImg = styled.img`
+  width: 3rem;
+  border-radius: 4rem;
+`;
+const FriendInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1rem;
+`;
+const FriendNickName = styled.h1`
+  width: 10rem;
+  margin-bottom: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+const FriendEmail = styled.h2`
+  width: 10rem;
+  font-size: 0.825rem;
+  font-weight: normal;
+  color: ${darkTheme.adaptiveGrey500};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 function SocialHeader({

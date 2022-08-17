@@ -141,7 +141,6 @@ const LoginBtn = styled.button`
   width: 5.3rem;
   height: 2.3rem;
   font-size: 1rem;
-  border: 3px ridge ${darkTheme.adaptiveGrey500};
   border-radius: 2rem;
   background-color: ${darkTheme.darkColor};
 
