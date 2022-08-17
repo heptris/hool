@@ -10,13 +10,11 @@ import com.ssafy.hool.repository.emoji.EmojiShopRepository;
 import com.ssafy.hool.repository.member.MemberRepository;
 import com.ssafy.hool.repository.point.DealHistoryRepository;
 import com.ssafy.hool.repository.point.PointHistoryRepository;
-import com.ssafy.hool.service.point.DealHistoryService;
 import com.ssafy.hool.service.point.PointHistoryService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

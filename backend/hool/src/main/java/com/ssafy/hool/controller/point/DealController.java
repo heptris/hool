@@ -3,7 +3,6 @@ package com.ssafy.hool.controller.point;
 import com.ssafy.hool.dto.deal_history.DealHistoryCreateDto;
 import com.ssafy.hool.dto.deal_history.DealHistoryResponseDto;
 import com.ssafy.hool.dto.response.ResponseDto;
-import com.ssafy.hool.service.point.DealHistoryService;
 import com.ssafy.hool.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
