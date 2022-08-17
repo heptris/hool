@@ -6,7 +6,7 @@ const MeetingModalHeader = () => {
   return (
     <Header>
       <TitleWrapper>
-        <Title>응원방 생성</Title>
+        <Title>응원 세션 생성</Title>
         <SubTitle>친구와 함께 응원할 방을 직접 만들어보세요!</SubTitle>
       </TitleWrapper>
     </Header>

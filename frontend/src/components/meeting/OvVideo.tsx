@@ -26,7 +26,7 @@ function OpenViduVideoComponent(props: PropsType) {
 }
 
 const Video = styled.video`
-  max-width: 100%;
+  width: 100%;
   height: auto;
   border-radius: 4px;
 `;

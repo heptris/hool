@@ -227,12 +227,13 @@ const ButtonText = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  justify-content: space-around;
   align-items: center;
 `;
 const TextSpan = styled.label`
   z-index: 1;
+  width: 50%;
   font-size: 0.825rem;
+  text-align: center;
   cursor: pointer;
 `;
 const ToggleButton = styled.span`
@@ -241,15 +242,17 @@ const ToggleButton = styled.span`
   height: 85%;
   line-height: 1;
   background-color: ${darkTheme.mainBadgeColor};
-  cursor: pointer;
-  width: 48%;
+  width: 50%;
   position: absolute;
   top: 50%;
+  left: 0;
   transform: translateY(-50%);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
   input:checked ~ & {
     left: calc(50%);
   }
-  transition: all 0.2s ease-in;
 `;
 const Desc = styled.span`
   text-align: end;

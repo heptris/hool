@@ -91,7 +91,7 @@ function UserVideoComponent(props: PropsType) {
 }
 
 const StreamComponent = styled.div`
-  max-width: 100%;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
