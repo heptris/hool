@@ -36,7 +36,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private static final int DEFAULT_SIZE = 2;
+    private static final int DEFAULT_SIZE = 20;
 
     @ApiOperation(value = "회원 프로필 수정")
     @ApiResponses({

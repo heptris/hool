@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ import java.util.Map;
 import static com.ssafy.hool.exception.ex.ErrorCode.*;
 import static com.ssafy.hool.exception.ex.ErrorCode.ALREADY_USED_NICKNAME;
 
+@Slf4j
 @Api(tags = {"회원가입, 로그인, 로그아웃, 토큰 재발행을 제공하는 Controller"})
 @RestController
 @RequestMapping("/auth")
@@ -114,6 +116,7 @@ public class AuthController {
     })
     @GetMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request) {
+        log.info("로그아웃 성공!!");
         String accessToken = request.getHeader("Authorization").substring(7);
         Long memberId = SecurityUtil.getCurrentMemberId();
         memberService.logoutStatus(memberId);
