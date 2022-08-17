@@ -62,7 +62,7 @@ const SocialSearchBar = () => {
         //   return <SearchResModal>본인입니다</SearchResModal>;
         if (searchName && searchFriendData?.data.length === 0)
           return <SearchResModal>검색 결과가 존재하지 않아요.</SearchResModal>;
-        if (isSearchFriendSuccess)
+        if (searchName && isSearchFriendSuccess)
           return (
             <SearchResModal>
               {searchFriendData.data.map((res: FriendInfoType) => (
