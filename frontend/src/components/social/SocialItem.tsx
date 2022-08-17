@@ -43,8 +43,8 @@ function SocialItem(props: PropsType) {
     },
   });
   const { mutate: enterRoomMutate } = useMutation(postEnterMeetingRoom, {
-    onSuccess: (data, { conferenceId }) => {
-      userInfo && handleEnterRoom(conferenceId, userInfo.nickName, data);
+    onSuccess: (data, { title, conferenceId }) => {
+      userInfo && handleEnterRoom(title, conferenceId, userInfo.nickName, data);
     },
   });
   const handlePostAcceptFriendMutate = (accept: boolean) => {
@@ -80,6 +80,7 @@ function SocialItem(props: PropsType) {
                 onClick={() => {
                   friendConferenceDto
                     ? enterRoomMutate({
+                        title: friendConferenceDto.friendConferenceTitle,
                         conferenceId: friendConferenceDto.friendConferenceId,
                       })
                     : console.log("친구가 들어가 있는 방이 없습니다");
