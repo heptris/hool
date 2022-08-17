@@ -50,7 +50,12 @@ const MeetingModalBody = ({
     onSuccess: (data) => {
       dispatch(setIsHost(true));
       onDisplayChange();
-      handleEnterRoom(data.data.conferenceId, userInfo!.nickName, data);
+      handleEnterRoom(
+        roomCreatingForm.title,
+        data.data.conferenceId,
+        userInfo!.nickName,
+        data
+      );
     },
     onError: (err) => {
       console.log(err);
