@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Navigate } from "@tanstack/react-location";
 
 import { getFriendList, getFriendSendMessage } from "api/social";
@@ -12,29 +12,23 @@ import Requests from "components/social/Requests";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
-import { UserInfoType } from "types/UserInfoType";
+import { getMyProfile } from "api/profile";
 
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
-
-  const userInfo = useQueryClient().getQueryData<UserInfoType>([
-    QUERY_KEYS.USER,
-  ]);
-
+  const userInfo = useQuery([QUERY_KEYS.USER], getMyProfile).data;
   const { data: friendListData, isLoading: friendListIsLoading } = useQuery(
     [QUERY_KEYS.FRIEND_LIST],
     getFriendList,
-    { retry: 1 }
+    { enabled: !!userInfo }
   );
   const { data: friendMessageListData, isLoading: friendMessageListIsLoading } =
     useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
-      retry: 1,
+      enabled: !!userInfo,
     });
 
   if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  // if (friendListIsError || friendMessageListIsError)
-  //   return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <Container>

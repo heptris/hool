@@ -1,11 +1,10 @@
-import { Navigate } from "@tanstack/react-location";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { getMyPoint } from "api/profile";
+import { getMyPoint, getMyProfile } from "api/profile";
 import Button from "../commons/Button";
 import Modal from "../commons/Modal";
 import Card from "../commons/Card";
@@ -13,22 +12,19 @@ import ProfileEditModalHeader from "./ProfileEditModalHeader";
 import ProfileEditModalBody from "./ProfileEditModalBody";
 import Loading from "components/Loading";
 
-import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { QUERY_KEYS } from "constant";
 
 import { PointHistoryType } from "types/PointHistoryType";
-import { UserInfoType } from "types/UserInfoType";
 
 function Profile() {
-  const userInfo = useQueryClient().getQueryData<UserInfoType>([
-    QUERY_KEYS.USER,
-  ]);
+  const userInfo = useQuery([QUERY_KEYS.USER], getMyProfile).data;
 
-  if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
+  const profileUrl = userInfo?.memberProfile;
 
-  const profileUrl = userInfo.memberProfile;
-
-  const { data: myPointData, isLoading } = useQuery([QUERY_KEYS.POINT], () =>
-    getMyPoint({ memberId: userInfo.memberId })
+  const { data: myPointData, isLoading } = useQuery(
+    [QUERY_KEYS.POINT],
+    () => getMyPoint({ memberId: userInfo.memberId }),
+    { enabled: !!userInfo }
   );
 
   const [isEditing, setIsEditing] = useState(false);

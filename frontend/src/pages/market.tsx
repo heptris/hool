@@ -1,7 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+
+import { getMyProfile } from "api/profile";
 
 import Container from "components/commons/Container";
 import { MarketHeader, MarketList, MarketModal } from "components/market";
+
+import { QUERY_KEYS } from "constant";
 
 const MarketPage = () => {
   const [isDisplayModal, setIsDisplayModal] = useState(false);
@@ -10,6 +15,7 @@ const MarketPage = () => {
   const onDisplayChange = () => {
     setIsDisplayModal(!isDisplayModal);
   };
+  useQuery([QUERY_KEYS.USER], getMyProfile);
   return (
     <Container>
       <MarketHeader
