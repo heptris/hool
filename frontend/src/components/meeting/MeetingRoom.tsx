@@ -379,8 +379,8 @@ const RadioButton = styled.input`
       color: white;
       width: 12px;
       height: 12px;
-      margin-left: 3.7px;
-      margin-top: 4.3px;
+      margin-left: 3px;
+      margin-top: 4px;
     }
   }
   &:checked + ${Item} {
@@ -397,8 +397,8 @@ const RadioButton = styled.input`
       color: white;
       width: 12px;
       height: 12px;
-      margin-left: 3.7px;
-      margin-top: 4.3px;
+      margin-left: 3px;
+      margin-top: 4px;
     }
   }
 `;
