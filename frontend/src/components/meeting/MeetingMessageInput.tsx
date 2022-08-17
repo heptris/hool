@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getMyEmojiList } from "api/profile";
+import { getMyFavoriteEmoji } from "api/profile";
 import { QUERY_KEYS } from "constant";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -29,10 +29,10 @@ const MeetingMessageInput = (props: PropsType) => {
 
   // React Query 상태
   const {
-    data: myOwnEmojiList,
-    isError: myOwnEmojiListIsError,
-    isLoading: myOwnEmojiListIsLoading,
-  } = useQuery([QUERY_KEYS.MY_OWN_EMOJI_LIST], getMyEmojiList, {
+    data: myFavEmojiList,
+    isError: myFavEmojiListIsError,
+    isLoading: myFavEmojiListIsLoading,
+  } = useQuery([QUERY_KEYS.MY_FAV_EMOJI_LIST], getMyFavoriteEmoji, {
     retry: 0,
   });
 
@@ -44,10 +44,10 @@ const MeetingMessageInput = (props: PropsType) => {
     <Container>
       {isDisplayEmoji && (
         <EmojiModal className={"animate__animated animate__bounceIn"}>
-          <ModalText>소유중인 이모지</ModalText>
+          <ModalText>이모지 즐겨찾기 목록</ModalText>
           <Hr />
           <ModalGrid>
-            {myOwnEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+            {myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
               <div key={i} onClick={() => sendEmojiSignal(item)}>
                 <EmojiCard emojiUrl={item.emojiUrl} />
               </div>
