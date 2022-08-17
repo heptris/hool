@@ -229,44 +229,44 @@ const GameResultSubmitModal = (props: { gameInfo: GameInfoType }) => {
               <GameName>{gameName}</GameName>
             </TextWrapper>
             <GameResult>
-              <p>게임 결과</p>
-              <GameResultInput>
-                <InputWrapper>
-                  <input
+              <Text>게임 결과</Text>
+              <Wrapper>
+                <Item>
+                  <RadioButton
                     type="radio"
                     id={"agree"}
                     name={"gameResult"}
                     defaultChecked
                     onClick={() => setResult(true)}
                   />
-                  <label htmlFor={"agree"}>{agreeName}</label>
-                </InputWrapper>
-                <InputWrapper>
-                  <input
+                  <RadioButtonLabel htmlFor={"agree"} />
+                  <div>{agreeName}</div>
+                </Item>
+                <Item>
+                  <RadioButton
                     type="radio"
                     id={"disagree"}
                     name={"gameResult"}
                     onClick={() => setResult(false)}
                   />
-                  <label htmlFor={"disagree"}>{disagreeName}</label>
-                </InputWrapper>
-              </GameResultInput>
+                  <RadioButtonLabel htmlFor={"disagree"} />
+                  <div>{disagreeName}</div>
+                </Item>
+              </Wrapper>
             </GameResult>
+            <ButtonWrapper>
+              <Button
+                height={2.5}
+                width={7}
+                text="제출"
+                buttonOnClick={() => {
+                  dispatch(setIsShowingGameSubmit(false));
+                  dispatch(setIsResultMode(false));
+                  postSaveGameResult({ gameId, result });
+                }}
+              />
+            </ButtonWrapper>
           </GameWrapper>
-          <ButtonWrapper>
-            <Button
-              marginBottom={1.5}
-              height={1.5}
-              width={4}
-              height={2}
-              text="제출"
-              buttonOnClick={() => {
-                dispatch(setIsShowingGameSubmit(false));
-                dispatch(setIsResultMode(false));
-                postSaveGameResult({ gameId, result });
-              }}
-            />
-          </ButtonWrapper>
         </Form>
       }
       onDisplayChange={() => {
@@ -278,42 +278,107 @@ const GameResultSubmitModal = (props: { gameInfo: GameInfoType }) => {
 const Header = styled.div`
   margin: 1.5rem 1rem 1rem;
   width: 20rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
+  font-weight: bold;
 `;
 const GameWrapper = styled.div`
-  margin-left: 1rem;
-  height: 10rem;
+  margin: 1rem;
+  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 `;
 const TextWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
-const Text = styled.div``;
+const Text = styled.div`
+  width: 30%;
+  font-size: 0.825rem;
+  margin-bottom: 1rem;
+`;
 const GameName = styled.div`
-  width: 80%;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  border: 1px solid ${darkTheme.adaptiveGrey200};
+  border-radius: 8px;
+  margin-bottom: 1rem;
 `;
 const GameResult = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-const GameResultInput = styled.div`
-  display: flex;
-  width: 80%;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
-const InputWrapper = styled.div`
+const Wrapper = styled.div`
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const Item = styled.div`
   display: flex;
-  padding: 0.3rem;
-  flex-direction: row;
-  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  position: relative;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 `;
+
+const RadioButtonLabel = styled.label`
+  position: absolute;
+  top: 25%;
+  left: 1rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #ccc;
+`;
+const RadioButton = styled.input`
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  &:hover ~ ${RadioButtonLabel} {
+    background: #ccc;
+    &::after {
+      content: "\f005";
+      font-family: "FontAwesome";
+      display: block;
+      color: white;
+      width: 12px;
+      height: 12px;
+      margin-left: 3.7px;
+      margin-top: 4.3px;
+    }
+  }
+  &:checked + ${Item} {
+    background: ${darkTheme.mainBadgeColor};
+    border: 2px solid ${darkTheme.mainBadgeColor};
+  }
+  &:checked + ${RadioButtonLabel} {
+    background: ${darkTheme.mainBadgeColor};
+    border: 1px solid ${darkTheme.mainBadgeColor};
+    &::after {
+      content: "\f005";
+      font-family: "FontAwesome";
+      display: block;
+      color: white;
+      width: 12px;
+      height: 12px;
+      margin-left: 3.7px;
+      margin-top: 4.3px;
+    }
+  }
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
