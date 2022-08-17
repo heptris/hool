@@ -7,6 +7,8 @@ interface NavMode {
   isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
+  isResultMode: boolean;
+  isShowingGameSubmit: boolean;
 }
 export type ClientSessionType = {
   mySessionTitle: string;
@@ -20,6 +22,7 @@ export type ClientSessionType = {
   isDisplayEmoji: boolean;
   currentVideoDevice?: Object | undefined;
   isPublic: boolean;
+  isHost: boolean;
 };
 const initialState: NavMode = {
   navMode: "default",
@@ -28,6 +31,8 @@ const initialState: NavMode = {
   isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
+  isResultMode: false,
+  isShowingGameSubmit: false,
 };
 const sessionInitialState: ClientSessionType = {
   mySessionTitle: "",
@@ -41,6 +46,7 @@ const sessionInitialState: ClientSessionType = {
   isDisplayEmoji: false,
   currentVideoDevice: undefined,
   isPublic: true,
+  isHost: false,
 };
 const navbar = createSlice({
   name: "navbar",
@@ -66,6 +72,12 @@ const navbar = createSlice({
     },
     setIsShowingMessage(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingMessage = actions.payload;
+    },
+    setIsResultMode(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isResultMode = actions.payload;
+    },
+    setIsShowingGameSubmit(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isShowingGameSubmit = actions.payload;
     },
   },
 });
@@ -121,6 +133,9 @@ const clientSession = createSlice({
     setIsPublic(state: ClientSessionType, actions: PayloadAction<boolean>) {
       state.isPublic = actions.payload;
     },
+    setIsHost(state: ClientSessionType, actions: PayloadAction<boolean>) {
+      state.isHost = actions.payload;
+    },
   },
 });
 export const store = configureStore({
@@ -136,6 +151,8 @@ export const {
   setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
+  setIsResultMode,
+  setIsShowingGameSubmit,
 } = navbar.actions;
 export const {
   setMySessionTitle,
@@ -150,6 +167,7 @@ export const {
   addEmojiEvents,
   setIsDisplayEmoji,
   setIsPublic,
+  setIsHost,
 } = clientSession.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

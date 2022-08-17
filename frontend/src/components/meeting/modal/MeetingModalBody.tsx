@@ -18,6 +18,8 @@ import { QUERY_KEYS } from "constant";
 import { CreatingMeetingRoomType } from "types/CreatingMeetingRoomType";
 import { UserInfoType } from "types/UserInfoType";
 import SelectCategory from "../common/SelectCategory";
+import { useDispatch } from "react-redux";
+import { setIsHost } from "store";
 
 const MeetingModalBody = ({
   onDisplayChange,
@@ -42,9 +44,11 @@ const MeetingModalBody = ({
   const userInfo = useQueryClient().getQueryData<UserInfoType>([
     QUERY_KEYS.USER,
   ]);
+  const dispatch = useDispatch();
   const { handleEnterRoom } = useRoomEnter();
   const { mutate } = useMutation(postCreateMeetingRoom, {
     onSuccess: (data) => {
+      dispatch(setIsHost(true));
       onDisplayChange();
       handleEnterRoom(data.data.conferenceId, userInfo!.nickName, data);
     },
