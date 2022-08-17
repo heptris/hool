@@ -1,17 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, setChatEvents } from "store";
-import { addChatEvents } from "store";
+import React from "react";
+import { useSelector } from "react-redux";
+
+import { RootState } from "store";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-
-import profileDefaultImg from "assets/profile-default-imgs/1.png";
-
-import type { SessionStateType } from "./MeetingRoom";
+import { IconStyle } from "styles/IconStyle";
 
 import { MessageBox } from "./MeetingMessageInput";
-import { IconStyle } from "styles/IconStyle";
 
 type PropsType = {
   recvSignal: Function;
@@ -33,35 +29,55 @@ function MeetingMessageShow(props: PropsType) {
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
 
   const renderChatMsgs = (chatEvent: string, idx: number) => {
-    const [sender, msg] = chatEvent.split("::");
+    const {
+      myUserName: sender,
+      msgToSend: msg,
+      memberProfile: url,
+    } = JSON.parse(chatEvent);
     scrollToBottom();
 
     if (sender === myUserName) {
-      return createOppositeBubble({ sender, msg, idx });
+      return createMyBubble({ sender, msg, idx, url });
     } else {
-      return createOppositeBubble({ sender, msg, idx });
+      return createOppositeBubble({ sender, msg, idx, url });
     }
   };
   const createMyBubble = ({
     sender,
     msg,
     idx,
+    url,
   }: {
     sender: string;
     msg: string;
     idx: number;
-  }) => {};
+    url: string;
+  }) => {
+    return (
+      <SpeechBubble isMe={true} key={idx}>
+        <ProfileImg src={url} alt={`${sender}의 프로필 이미지`} />
+        <MessageContent isMe={true}>
+          <NickName>{sender}</NickName>
+          <MessageText>
+            <span>{msg}</span>
+          </MessageText>
+        </MessageContent>
+      </SpeechBubble>
+    );
+  };
   const createOppositeBubble = ({
     sender,
     msg,
     idx,
+    url,
   }: {
     sender: string;
     msg: string;
     idx: number;
+    url: string;
   }) => (
     <SpeechBubble key={idx}>
-      <ProfileImg src={profileDefaultImg} alt={`${sender}의 프로필 이미지`} />
+      <ProfileImg src={url} alt={`${sender}의 프로필 이미지`} />
       <MessageContent>
         <NickName>{sender}</NickName>
         <MessageText>
@@ -127,15 +143,17 @@ const SpeechBubble = styled.div`
   height: fit-content;
   display: flex;
   align-items: center;
+  ${({ isMe }: { isMe?: boolean }) => isMe && "flex-direction: row-reverse;"};
 `;
 const ProfileImg = styled.img`
   width: 2.5rem;
   border-radius: 4px;
-  margin-right: 1rem;
+  margin: 0 0.5rem;
 `;
 const MessageContent = styled.div`
   display: flex;
   flex-direction: column;
+  ${({ isMe }: { isMe?: boolean }) => isMe && "align-items: flex-end;"};
 `;
 const NickName = styled.h1`
   font-size: 0.9rem;

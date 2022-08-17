@@ -21,12 +21,12 @@ import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
 import MeetingGame from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
+import Modal from "components/commons/Modal";
 
 import { QUERY_KEYS } from "constant";
 
 import type { RootState } from "store";
 import { EmojiDetailType } from "types/EmojiDetailType";
-import Modal from "components/commons/Modal";
 export type SessionStateType = {
   session: typeof Session | undefined;
   mainStreamManager: typeof Publisher | typeof Subscriber | undefined;
@@ -37,6 +37,7 @@ export type SessionStateType = {
 import { GameInfoType } from "types/GameInfoType";
 import Button from "components/commons/Button";
 import { postGameStatistics, postSaveGameResult } from "api/meeting";
+import { UserInfoType } from "types/UserInfoType";
 
 function MeetingRoom() {
   const dispatch = useDispatch();
@@ -75,7 +76,7 @@ function MeetingRoom() {
     },
   });
   const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData([QUERY_KEYS.USER]);
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
 
   const { session, mainStreamManager, publisher, subscribers } = sessionState;
 
@@ -129,7 +130,11 @@ function MeetingRoom() {
     if (msgToSend.trim() === "") return;
     session
       .signal({
-        data: myUserName + "::" + msgToSend.trim(),
+        data: JSON.stringify({
+          myUserName: myUserName,
+          msgToSend: msgToSend.trim(),
+          memberProfile: userInfo?.memberProfile,
+        }),
         to: [],
         type: "chat",
       })
