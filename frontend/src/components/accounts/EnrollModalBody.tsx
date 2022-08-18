@@ -29,7 +29,6 @@ const ANIMATE_TYPES = [
   "animate__zoomInDown",
   "animate__slideOutUp",
 ];
-
 function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
   const queryClient = useQueryClient();
   const [files, setFiles] = useState<FileList>();
@@ -107,9 +106,12 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
       .then((res) => {
         console.log(res.data);
         queryClient.invalidateQueries([QUERY_KEYS.MY_OWN_EMOJI_LIST]);
-        onDisplayChange();
+        onDisplayChange("이모지 등록 성공!", true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error("여기 에러인가", err);
+        onDisplayChange(`이모지 등록 실패!ㅠㅠ ${err}`, false);
+      });
   };
 
   return (

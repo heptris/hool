@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 
 import { putRequest } from "api";
@@ -34,15 +34,32 @@ const ProfileEditModalBody = ({
   const previewRef: React.RefObject<HTMLDivElement> = useRef(null);
   const [nickName, setNickname] = useState(nickname);
 
+  const { mutate } = useMutation(
+    (formData: FormData) =>
+      putRequest("member/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      }),
+    {
+      onSuccess: async () => {
+        updateUser(await getMyProfile());
+        queryClient.invalidateQueries([QUERY_KEYS.USER]);
+        onDisplayChange("프로필 편집이 완료되었습니다!", true);
+      },
+      onError: (err) => {
+        console.error(err);
+        onDisplayChange("어맛, 무언가 잘못되었어요!", false);
+      },
+    }
+  );
+  useEffect(() => {
+    renderPreview();
+  }, [files]);
+
   const onLoadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const tmpFiles = e.target.files;
     if (tmpFiles === null) return;
     setFiles(tmpFiles);
   };
-
-  useEffect(() => {
-    renderPreview();
-  }, [files]);
 
   const renderPreview = () => {
     if (!files) return;
@@ -74,16 +91,7 @@ const ProfileEditModalBody = ({
       "memberUpdateDto",
       new Blob([JSON.stringify(data)], { type: "application/json" })
     );
-
-    putRequest("member/", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then(async (res) => {
-        updateUser(await getMyProfile());
-        queryClient.invalidateQueries([QUERY_KEYS.USER]);
-      })
-      .catch((err) => console.error(err));
-    onDisplayChange();
+    mutate(formData);
   };
 
   return (

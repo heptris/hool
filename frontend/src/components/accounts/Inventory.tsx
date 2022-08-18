@@ -16,6 +16,9 @@ import EnrollModalHeader from "./EnrollModalHeader";
 import EnrollModalBody from "./EnrollModalBody";
 import DetailModalBody from "./DetailModalBody";
 import Loading from "components/Loading";
+import Alert from "components/commons/Alert";
+
+const ALERT_DISPLAYING_TIME = 4000;
 
 function Inventory() {
   const [isOwnItems, setIsOwnItems] = useState(true);
@@ -31,6 +34,9 @@ function Inventory() {
     ARCode: "",
   });
   const [isDisplayEnroll, setIsDisplayEnroll] = useState(false);
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const switchIsDisplayEnroll = () => {
     setIsDisplayEnroll(!isDisplayEnroll);
@@ -58,105 +64,129 @@ function Inventory() {
   if (myOwnEmojiListIsError || myFavEmojiListIsError)
     return <Navigate to={ROUTES_NAME.ERROR} />;
 
-  return (
-    <InventoryBox>
-      {isDisplayEnroll && (
-        <Modal
-          header={<EnrollModalHeader />}
-          body={<EnrollModalBody onDisplayChange={switchIsDisplayEnroll} />}
-          onDisplayChange={switchIsDisplayEnroll}
-        />
-      )}
-      {isDisplayDetail && (
-        <Modal
-          header={
-            <DetailHeader>
-              <span>상세정보</span>
-            </DetailHeader>
-          }
-          body={
-            <DetailModalBody
-              {...detailInfo}
-              onChangeDetailInfo={setDetailInfo}
-            />
-          }
-          onDisplayChange={switchIsDisplayDetail}
-        />
-      )}
-      <Info>
-        <div>
-          <InventoryHeader>인벤토리</InventoryHeader>
-          <InventorySwitches>
-            <SwitchItem
-              style={
-                isOwnItems
-                  ? {
-                      background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
-                    }
-                  : {}
-              }
-              onClick={() => {
-                setIsOwnItems(true);
-              }}
-            >
-              <span
-                style={isOwnItems ? { color: darkTheme.mainBadgeColor } : {}}
-              >
-                소유중
-              </span>
-            </SwitchItem>
-            <SwitchItem
-              style={
-                isOwnItems
-                  ? {}
-                  : {
-                      background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
-                    }
-              }
-              onClick={() => {
-                setIsOwnItems(false);
-              }}
-            >
-              <span
-                style={isOwnItems ? {} : { color: darkTheme.mainBadgeColor }}
-              >
-                즐겨찾기
-              </span>
-            </SwitchItem>
-          </InventorySwitches>
-        </div>
-        <div onClick={switchIsDisplayEnroll}>
-          <EnrollBtn width={6} height={3} text={"이모지 등록"} />
-        </div>
-      </Info>
-      <Hr />
+  const handleDisplayAlert = (message: string, success: boolean) => {
+    setIsDisplayAlert(true);
+    setMsgToDisplay(message);
+    setIsSuccess(success);
+  };
 
-      <InventoryContent>
-        {isOwnItems
-          ? myOwnEmojiList?.data.map((item: EmojiDetailType, i: number) => (
-              <div
-                key={i}
+  return (
+    <>
+      {isDisplayAlert && (
+        <Alert
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          handleDisplayAlert={setIsDisplayAlert}
+          isDisplayAlert={isDisplayAlert}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
+      <InventoryBox>
+        {isDisplayEnroll && (
+          <Modal
+            header={<EnrollModalHeader />}
+            body={
+              <EnrollModalBody
+                onDisplayChange={(message: string, success: boolean) => {
+                  switchIsDisplayEnroll();
+                  handleDisplayAlert(message, success);
+                }}
+              />
+            }
+            onDisplayChange={switchIsDisplayEnroll}
+          />
+        )}
+        {isDisplayDetail && (
+          <Modal
+            header={
+              <DetailHeader>
+                <span>상세정보</span>
+              </DetailHeader>
+            }
+            body={
+              <DetailModalBody
+                {...detailInfo}
+                onChangeDetailInfo={setDetailInfo}
+              />
+            }
+            onDisplayChange={switchIsDisplayDetail}
+          />
+        )}
+        <Info>
+          <div>
+            <InventoryHeader>인벤토리</InventoryHeader>
+            <InventorySwitches>
+              <SwitchItem
+                style={
+                  isOwnItems
+                    ? {
+                        background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                      }
+                    : {}
+                }
                 onClick={() => {
-                  setDetailInfo(item);
-                  switchIsDisplayDetail();
+                  setIsOwnItems(true);
                 }}
               >
-                <EmojiCard emojiUrl={item.emojiUrl} />
-              </div>
-            ))
-          : myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
-              <div
-                key={i}
+                <span
+                  style={isOwnItems ? { color: darkTheme.mainBadgeColor } : {}}
+                >
+                  소유중
+                </span>
+              </SwitchItem>
+              <SwitchItem
+                style={
+                  isOwnItems
+                    ? {}
+                    : {
+                        background: `linear-gradient(to bottom, transparent 85%, ${darkTheme.mainBadgeColor} 15%)`,
+                      }
+                }
                 onClick={() => {
-                  setDetailInfo(item);
-                  switchIsDisplayDetail();
+                  setIsOwnItems(false);
                 }}
               >
-                <EmojiCard emojiUrl={item.emojiUrl} />
-              </div>
-            ))}
-      </InventoryContent>
-    </InventoryBox>
+                <span
+                  style={isOwnItems ? {} : { color: darkTheme.mainBadgeColor }}
+                >
+                  즐겨찾기
+                </span>
+              </SwitchItem>
+            </InventorySwitches>
+          </div>
+          <div onClick={switchIsDisplayEnroll}>
+            <EnrollBtn width={6} height={3} text={"이모지 등록"} />
+          </div>
+        </Info>
+        <Hr />
+
+        <InventoryContent>
+          {isOwnItems
+            ? myOwnEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+                <div
+                  key={i}
+                  onClick={() => {
+                    setDetailInfo(item);
+                    switchIsDisplayDetail();
+                  }}
+                >
+                  <EmojiCard emojiUrl={item.emojiUrl} />
+                </div>
+              ))
+            : myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+                <div
+                  key={i}
+                  onClick={() => {
+                    setDetailInfo(item);
+                    switchIsDisplayDetail();
+                  }}
+                >
+                  <EmojiCard emojiUrl={item.emojiUrl} />
+                </div>
+              ))}
+        </InventoryContent>
+      </InventoryBox>
+    </>
   );
 }
 
