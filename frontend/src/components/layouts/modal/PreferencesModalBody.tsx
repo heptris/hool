@@ -109,7 +109,7 @@ const PreferencesModalBody = () => {
         </InputWrapper>
       </Wrapper>
 
-      <Setting>화면 모드 설정</Setting>
+      {/* <Setting>화면 모드 설정</Setting>
       <Wrapper>
         <InputWrapper>
           <Input
@@ -134,7 +134,7 @@ const PreferencesModalBody = () => {
           />
           <Label htmlFor="r6">라이트 모드</Label>
         </InputWrapper>
-      </Wrapper>
+      </Wrapper> */}
 
       <ButtonWrapper>
         <Button

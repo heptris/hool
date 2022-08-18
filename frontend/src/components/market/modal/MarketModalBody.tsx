@@ -7,11 +7,13 @@ import { QUERY_KEYS, ROUTES_NAME } from "constant";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import Alert from "components/commons/Alert";
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
 import LabelInput from "components/commons/LabelInput";
 import Loading from "components/Loading";
 
+const ALERT_DISPLAYING_TIME = 4000;
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
 interface UploadItemType {
@@ -41,6 +43,11 @@ const MarketModalBody = () => {
     isLoading: canUploadIsLoading,
   } = useQuery([QUERY_KEYS.MARKET_UPLOAD_ITEM], getMarketMakeList);
 
+  /* Alert 보일러플레이트 */
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
+
   if (canUploadIsLoading) return <Loading />;
   if (canUploadIsError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
@@ -65,12 +72,29 @@ const MarketModalBody = () => {
       .then(() => {
         queryClient.invalidateQueries([QUERY_KEYS.MARKET_UPLOAD_ITEM]);
         queryClient.invalidateQueries([QUERY_KEYS.MARKET]);
+        setIsDisplayAlert(true);
+        setIsSuccess(true);
+        setMsgToDisplay("등록 성공!");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setIsDisplayAlert(true);
+        setIsSuccess(false);
+        setMsgToDisplay("등록 실패. 잠시 후 다시 시도해 주세요.");
+      });
   };
 
   return (
     <>
+      {isDisplayAlert && (
+        <Alert
+          isDisplayAlert={isDisplayAlert}
+          handleDisplayAlert={setIsDisplayAlert}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
       <LRContainer>
         <LeftContainer>
           <ItemList>

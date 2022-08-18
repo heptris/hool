@@ -46,13 +46,15 @@ const MeetingMessageInput = (props: PropsType) => {
         <EmojiModal className={"animate__animated animate__bounceIn"}>
           <ModalText>이모지 즐겨찾기 목록</ModalText>
           <Hr />
-          <ModalGrid>
-            {myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
-              <div key={i} onClick={() => sendEmojiSignal(item)}>
-                <EmojiCard emojiUrl={item.emojiUrl} />
-              </div>
-            ))}
-          </ModalGrid>
+          <GridWrapper>
+            <ModalGrid>
+              {myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+                <div key={i} onClick={() => sendEmojiSignal(item)}>
+                  <EmojiCard emojiUrl={item.emojiUrl} />
+                </div>
+              ))}
+            </ModalGrid>
+          </GridWrapper>
         </EmojiModal>
       )}
       <MessageBox>
@@ -64,8 +66,8 @@ const MeetingMessageInput = (props: PropsType) => {
                 dispatch(setIsDisplayEmoji(!isDisplayEmoji));
               }}
             />
-            <Icon className="fa-solid fa-microphone" />
-            <Icon className="fa-solid fa-bell" />
+            {/* <Icon className="fa-solid fa-microphone" />
+            <Icon className="fa-solid fa-bell" /> */}
           </Left>
           <div>
             <Icon className="fa-solid fa-circle-info"></Icon>
@@ -147,7 +149,6 @@ const MsgForm = styled.form`
 const EmojiModal = styled.div`
   background-color: ${darkTheme.bgColor};
   width: 24rem;
-  height: 10rem;
   border: 1px solid ${darkTheme.adaptiveGrey800};
   border-radius: 4px;
   position: absolute;
@@ -157,11 +158,14 @@ const EmojiModal = styled.div`
   box-sizing: border-box;
   z-index: 5001;
 `;
+const GridWrapper = styled.div`
+  overflow: auto;
+  height: 8rem;
+`;
 const ModalGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem 0.2rem;
-  overflow: auto;
 `;
 const ModalText = styled.h1``;
 const Hr = styled.hr`

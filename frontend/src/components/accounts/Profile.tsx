@@ -15,6 +15,9 @@ import Loading from "components/Loading";
 import { QUERY_KEYS } from "constant";
 
 import { PointHistoryType } from "types/PointHistoryType";
+import Alert from "components/commons/Alert";
+
+const ALERT_DISPLAYING_TIME = 4000;
 
 function Profile() {
   const userInfo = useQuery([QUERY_KEYS.USER], getMyProfile).data;
@@ -29,6 +32,9 @@ function Profile() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isDisplayModal, setIsDisplayModal] = useState(false);
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const switchIsEditing = () => {
     setIsEditing(!isEditing);
@@ -38,14 +44,36 @@ function Profile() {
     setIsDisplayModal(!isDisplayModal);
   };
 
+  const handleDisplayAlert = (message: string, success: boolean) => {
+    setIsDisplayAlert(true);
+    setMsgToDisplay(message);
+    setIsSuccess(success);
+  };
+
   if (isLoading) return <Loading />;
 
   return (
     <>
+      {isDisplayAlert && (
+        <Alert
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          handleDisplayAlert={setIsDisplayAlert}
+          isDisplayAlert={isDisplayAlert}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
       {isEditing && (
         <Modal
           header={<ProfileEditModalHeader />}
-          body={<ProfileEditModalBody onDisplayChange={switchIsEditing} />}
+          body={
+            <ProfileEditModalBody
+              onDisplayChange={(message: string, success: boolean) => {
+                switchIsEditing();
+                handleDisplayAlert(message, success);
+              }}
+            />
+          }
           onDisplayChange={switchIsEditing}
         />
       )}

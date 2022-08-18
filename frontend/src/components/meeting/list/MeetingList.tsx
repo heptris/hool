@@ -26,6 +26,9 @@ import type { MeetingRoomType } from "types/MeetingRoomType";
 import type { UserInfoType } from "types/UserInfoType";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import Alert from "components/commons/Alert";
+
+const ALERT_DISPLAYING_TIME = 4000;
 
 const MeetingList = ({ isState }: { isState: string }) => {
   const { isInView } = useSelector((state: RootState) => state.listPagination);
@@ -87,6 +90,7 @@ const MeetingList = ({ isState }: { isState: string }) => {
       },
     }
   );
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
 
   useEffect(() => {
     if (isInView) {
@@ -104,7 +108,14 @@ const MeetingList = ({ isState }: { isState: string }) => {
 
   return (
     <>
-      {/* <div onScroll={onScroll} ref={viewRef} /> */}
+      {isDisplayAlert && (
+        <Alert
+          isDisplayAlert={isDisplayAlert}
+          handleDisplayAlert={setIsDisplayAlert}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          msgToDisplay={"로그인이 필요한 서비스입니다!"}
+        />
+      )}
       {isState && (
         <ItemList>
           {newList.map((el: MeetingRoomType) => {
@@ -136,7 +147,7 @@ const MeetingList = ({ isState }: { isState: string }) => {
             ) : (
               <div
                 onClick={() => {
-                  alert("로그인이 필요한 서비스입니다.");
+                  setIsDisplayAlert(true);
                 }}
               >
                 <MeetingListItem {...el} />

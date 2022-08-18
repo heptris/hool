@@ -29,16 +29,21 @@ const GameHeader = ({
   gameName,
   timeLimit,
   handleDisplayClose,
+  handleStaticGameClose,
 }: {
   timeLimit: number;
   handleDisplayClose: Function;
   gameName: string;
+  handleStaticGameClose: Function;
 }) => {
   const leftTime = useCountdown(timeLimit);
   const [days, hours, minutes, seconds] = leftTime;
   const [alertColor, setAlertColor] = useState(infoColor);
   useEffect(() => {
-    minutes + seconds <= 0 && handleDisplayClose();
+    if (minutes + seconds === 0) {
+      handleDisplayClose();
+      handleStaticGameClose(false);
+    }
   }, [leftTime]);
   useEffect(() => {
     setAlertColor(
@@ -49,18 +54,95 @@ const GameHeader = ({
     <Header>
       <HeaderText>게임 예측 투표</HeaderText>
       <GameShowTopBox alertColor={alertColor}>
-        <Timer leftTime={leftTime} />
+        <CountdownTimer leftTime={leftTime} />
       </GameShowTopBox>
     </Header>
+  );
+};
+
+export const MeetingStaticGame = ({
+  gameInfo,
+  handleDisplayClose,
+  handleStaticGameClose,
+}: {
+  gameInfo: GameInfoType;
+  handleDisplayClose: Function;
+  handleStaticGameClose: Function;
+}) => {
+  const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
+  const [gameChoice, setGameChoice] = useState<GameHistoryType>({
+    bettPoint: 100,
+    gameId,
+  });
+  const { mutate } = useMutation(postCreateGameHistory, {
+    onSuccess: () => {
+      handleDisplayClose();
+    },
+  });
+  useEffect(() => {
+    gameChoice.bettChoice !== undefined && mutate(gameChoice);
+  }, [gameChoice]);
+
+  return (
+    <GamePredictWrapper>
+      <GameHeader
+        gameName={gameName}
+        handleDisplayClose={handleDisplayClose}
+        timeLimit={timeLimit}
+        handleStaticGameClose={handleStaticGameClose}
+      />
+      <Hr />
+      <GameWrapper>
+        <TextWrapper>
+          <Text>게임 제목 </Text>
+          <GameName>{gameName}</GameName>
+        </TextWrapper>
+        <GamePredict>
+          <Text>게임 예측</Text>
+          <AgreeItem
+            onClick={() => {
+              setGameChoice({
+                ...gameChoice,
+                bettChoice: true,
+              });
+              alert("게임 참여 완료!");
+            }}
+          >
+            <AgreeTitle>{agreeName}</AgreeTitle>
+            <PointWrapper>
+              <BtnIcon className="fa-solid fa-cube" />
+              <AgreePoint>100</AgreePoint>
+            </PointWrapper>
+          </AgreeItem>
+          <DisAgreeItem
+            onClick={() => {
+              setGameChoice({
+                ...gameChoice,
+                bettChoice: false,
+              });
+              alert("게임 참여 완료!");
+            }}
+          >
+            <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
+            <PointWrapper>
+              <BtnIcon className="fa-solid fa-cube" />
+              <AgreePoint>100</AgreePoint>
+            </PointWrapper>
+          </DisAgreeItem>
+        </GamePredict>
+      </GameWrapper>
+    </GamePredictWrapper>
   );
 };
 
 const MeetingGame = ({
   gameInfo,
   handleDisplayClose,
+  handleStaticGameClose,
 }: {
   gameInfo: GameInfoType;
   handleDisplayClose: Function;
+  handleStaticGameClose: Function;
 }) => {
   const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
   const [gameChoice, setGameChoice] = useState<GameHistoryType>({
@@ -90,6 +172,7 @@ const MeetingGame = ({
           gameName={gameName}
           handleDisplayClose={handleDisplayClose}
           timeLimit={timeLimit}
+          handleStaticGameClose={handleStaticGameClose}
         />
       }
       body={
@@ -106,6 +189,7 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: true,
                 });
+                alert("게임 참여 완료!");
               }}
             >
               <AgreeTitle>{agreeName}</AgreeTitle>
@@ -120,6 +204,7 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: false,
                 });
+                alert("게임 참여 완료!");
               }}
             >
               <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
@@ -135,6 +220,20 @@ const MeetingGame = ({
     />
   );
 };
+
+const GamePredictWrapper = styled.div`
+  display: flex;
+  height: 25rem;
+  border-radius: 4px;
+  flex-direction: column;
+  background-color: ${darkTheme.mainColor};
+  margin-left: 1rem;
+`;
+const Hr = styled.hr`
+  width: 100%;
+  border: 1px solid ${darkTheme.adaptiveGrey700};
+  background-color: ${darkTheme.adaptiveGrey700};
+`;
 const Header = styled.div`
   margin: 1.5rem 1rem 1rem;
   height: 2rem;
@@ -148,9 +247,7 @@ const HeaderText = styled.div`
   font-size: 1rem;
   font-weight: bold;
 `;
-const Timer = styled(CountdownTimer)`
-  margin: 0;
-`;
+
 const GameWrapper = styled.div`
   margin: 1rem;
   height: 20rem;
@@ -189,6 +286,7 @@ const PointWrapper = styled.div`
 const GameShowTopBox = styled(MessageBox)`
   width: 5rem;
   height: 1rem;
+  margin: 0rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -201,13 +299,15 @@ const AgreeItem = styled.div`
   justify-content: space-around;
   background-color: ${mainBadgeColor};
   height: 3rem;
-  position: relative;
   border: 1px solid #ccc;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
+  &:hover {
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
 
 const DisAgreeItem = styled.div`
@@ -216,16 +316,18 @@ const DisAgreeItem = styled.div`
   justify-content: space-around;
   background-color: ${contrastColor};
   height: 3rem;
-  position: relative;
   border: 1px solid #ccc;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
+  &:hover {
+    background-color: ${darkTheme.emphasisColor};
+  }
 `;
-const AgreeTitle = styled.h1`
-  font-size: 2rem;
+const AgreeTitle = styled.div`
+  font-size: 1.2rem;
   font-weight: bold;
 `;
 
