@@ -51,7 +51,10 @@ const useAuth = () => {
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
     updateUser(await getMyProfile());
 
-    setTimeout(onSilentRefresh, accessTokenExpiresIn - Date.now() - 10000);
+    setTimeout(
+      onSilentRefresh,
+      accessTokenExpiresIn - Date.now() - 5 * 60 * 1000
+    );
   };
 
   const onSilentRefresh = () => {
