@@ -12,8 +12,6 @@ import EmojiCard from "components/commons/EmojiCard";
 import LabelInput from "components/commons/LabelInput";
 import Loading from "components/Loading";
 
-import { UserInfoType } from "types/UserInfoType";
-
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
 interface UploadItemType {
@@ -28,7 +26,6 @@ interface UploadItemType {
 
 const MarketModalBody = () => {
   const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
   const [uploadItemInfo, setUploadItemInfo] = useState<UploadItemType>({
     emojiId: 0,
     name: "",
@@ -65,8 +62,7 @@ const MarketModalBody = () => {
       emojiId: uploadItemInfo.emojiId,
       price: uploadItemInfo.price,
     })
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         queryClient.invalidateQueries([QUERY_KEYS.MARKET_UPLOAD_ITEM]);
         queryClient.invalidateQueries([QUERY_KEYS.MARKET]);
       })

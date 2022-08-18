@@ -1,4 +1,4 @@
-import React, { Component, Key } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import * as actions from "store";
 
@@ -51,7 +51,7 @@ interface State {
   setEmojiEvents?: Function;
   setIsDisplayEmoji?: Function;
 }
-class VideoContainer extends Component<State, SessionStateType> {
+class VideoContainer extends React.Component<State, SessionStateType> {
   handleSessionState: (state: SessionStateType) => void;
   OV?: OpenVidu | null;
   constructor(props: State & Readonly<State>) {
@@ -71,7 +71,6 @@ class VideoContainer extends Component<State, SessionStateType> {
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
-    this.recvSignal = this.recvSignal.bind(this);
   }
 
   componentDidMount() {
@@ -192,7 +191,7 @@ class VideoContainer extends Component<State, SessionStateType> {
                   videoSource: undefined, // The source of video. If undefined default webcam
                   publishAudio: this.props.audioEnabled, // Whether you want to start publishing with your audio unmuted or not
                   publishVideo: this.props.videoEnabled, // Whether you want to start publishing with your video enabled or not
-                  resolution: "1280x720", // The resolution of your video
+                  resolution: "800x600", // The resolution of your video
                   frameRate: 30, // The frame rate of your video
                   insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                   mirror: true, // Whether to mirror your local video or not
@@ -216,8 +215,6 @@ class VideoContainer extends Component<State, SessionStateType> {
                   });
                 }
               );
-
-              this.recvSignal();
             })
             .catch((error: { code: any; message: any }) => {
               console.log(
@@ -307,37 +304,6 @@ class VideoContainer extends Component<State, SessionStateType> {
   //   }
   // }
 
-  recvSignal() {
-    const mySession = this.state.session;
-    if (mySession === undefined) return;
-
-    mySession.on("signal:emoji", (event: SignalEvent) => {
-      if (event.from === undefined) return;
-      if (this.state.publisher === undefined) return;
-
-      console.log(event.data);
-      console.log(event.from);
-      console.log(event.type);
-
-      const sender = event.from.connectionId;
-      const publisher = this.state.publisher.stream.connection.connectionId;
-      const subscribers = this.state.subscribers.map(
-        (sub: Subscriber) => sub.stream.connection.connectionId
-      );
-
-      // connection.data "{\"clientData\":\"myUserName#105957535666388128155\"}"
-      // connection.role "PUBLISHER"
-
-      const idx = sender !== publisher ? subscribers.indexOf(sender) + 1 : 0;
-
-      const newEmojiEvents = this.props.emojiEvents?.map(
-        (emo: string, i: number) => (idx === i ? event.data : emo)
-      );
-
-      this.props.setEmojiEvents!(newEmojiEvents);
-    });
-  }
-
   render() {
     const { mySessionTitle, mySessionId, myUserName } = this.props;
 
@@ -412,25 +378,20 @@ class VideoContainer extends Component<State, SessionStateType> {
                   }
                 >
                   <UserVideoComponent
-                    idx={0}
+                    idx={this.props.emojiEvents?.length! - 1}
                     streamManager={this.state.publisher}
                   />
                 </StreamContainer>
               ) : null}
 
-              {this.state.subscribers.map(
-                (sub: Subscriber, i: Key | null | undefined) => (
-                  <StreamContainer
-                    key={i}
-                    onClick={() => this.handleMainVideoStream(sub)}
-                  >
-                    <UserVideoComponent
-                      idx={Number(i) + 1}
-                      streamManager={sub}
-                    />
-                  </StreamContainer>
-                )
-              )}
+              {this.state.subscribers.map((sub: Subscriber, i: number) => (
+                <StreamContainer
+                  key={i}
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent idx={i} streamManager={sub} />
+                </StreamContainer>
+              ))}
             </SessionBody>
           </SessionWrapper>
         ) : null}

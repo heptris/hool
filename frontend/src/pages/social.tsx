@@ -20,11 +20,11 @@ function SocialPage() {
   const { data: friendListData, isLoading: friendListIsLoading } = useQuery(
     [QUERY_KEYS.FRIEND_LIST],
     getFriendList,
-    { enabled: !!userInfo }
+    { retry: 1 }
   );
   const { data: friendMessageListData, isLoading: friendMessageListIsLoading } =
     useQuery([QUERY_KEYS.FRIEND_MESSAGE_LIST], getFriendSendMessage, {
-      enabled: !!userInfo,
+      retry: 1,
     });
 
   if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
