@@ -16,18 +16,18 @@ const useAuth = () => {
   const navigate = useNavigate();
 
   const login = async (form: LoginFormType) => {
-    await requestLogin(form)
-      .then(async (res) => {
-        onLoginSuccess(res.data);
-        navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          alert("비밀번호가 틀렸습니다");
-        } else if (err.response.status === 404) {
-          alert("가입되지 않은 이메일입니다.");
-        }
-      });
+    await requestLogin(form).then(async (res) => {
+      onLoginSuccess(res.data);
+      navigate({ to: `${ROUTES_NAME.MAIN}`, replace: true });
+    });
+    /* Alert 커스텀으로 인해 에러는 Auth 컴포넌트에서 처리하도록 책임 분리했습니다. */
+    // .catch((err) => {
+    //   if (err.response.status === 400) {
+    //     alert("비밀번호가 틀렸습니다");
+    //   } else if (err.response.status === 404) {
+    //     alert("가입되지 않은 이메일입니다.");
+    //   }
+    // });
   };
 
   const logout = async () => {

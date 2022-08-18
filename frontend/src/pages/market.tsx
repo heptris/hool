@@ -5,6 +5,7 @@ import { getMyProfile } from "api/profile";
 
 import Container from "components/commons/Container";
 import { MarketHeader, MarketList, MarketModal } from "components/market";
+import Loading from "components/Loading";
 
 import { QUERY_KEYS } from "constant";
 
@@ -15,7 +16,11 @@ const MarketPage = () => {
   const onDisplayChange = () => {
     setIsDisplayModal(!isDisplayModal);
   };
-  useQuery([QUERY_KEYS.USER], getMyProfile);
+  const { data: userInfo, isLoading } = useQuery(
+    [QUERY_KEYS.USER],
+    getMyProfile
+  );
+  if (isLoading) return <Loading />;
   return (
     <Container>
       <MarketHeader
@@ -24,8 +29,13 @@ const MarketPage = () => {
         setSearchKeyword={setSearchKeyword}
         setIsTopTen={setIsTopTen}
         isTopTen={isTopTen}
+        userInfo={userInfo}
       />
-      <MarketList searchKeyword={searchKeyword} isTopTen={isTopTen} />
+      <MarketList
+        searchKeyword={searchKeyword}
+        isTopTen={isTopTen}
+        userInfo={userInfo}
+      />
       {isDisplayModal && <MarketModal onDisplayChange={onDisplayChange} />}
     </Container>
   );

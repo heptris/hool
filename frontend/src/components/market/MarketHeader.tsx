@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent } from "react";
+import { ChangeEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import styled from "styled-components";
@@ -14,7 +14,7 @@ import { getMarketSearch } from "api/market";
 
 import { UserInfoType } from "types/UserInfoType";
 
-const { MARKET_SEARCHED_LIST, USER } = QUERY_KEYS;
+const { MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
 const MarketSearchBar = ({
   searchKeyword,
@@ -59,16 +59,15 @@ const MarketHeader = ({
   setSearchKeyword,
   setIsTopTen,
   isTopTen,
+  userInfo,
 }: {
   onDisplayChange: Function;
   setSearchKeyword: Function;
   searchKeyword: string;
   setIsTopTen: Function;
   isTopTen: boolean;
+  userInfo?: UserInfoType;
 }) => {
-  const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
-
   return (
     <PageHeader
       pageTitle="이모지 구매"
