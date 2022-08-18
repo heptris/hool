@@ -44,10 +44,12 @@ public class ConferenceService {
 
     /**
      * 응원방 생성
+     *
      * @param conferenceCreateDto
      * @param conference_category
      */
-    public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category, Long memberId){
+    public ConferenceResponseDto createConference(ConferenceCreateDto conferenceCreateDto, Conference_category conference_category, Long memberId) {
+        isAlreadyEnter(memberId);
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = Conference.createConference(conferenceCreateDto, member, conference_category);
         conference.totalUpdate(1);
@@ -64,6 +66,7 @@ public class ConferenceService {
      * @param conferenceJoinDto
      */
     public void enterConference(ConferenceJoinDto conferenceJoinDto, Long memberId){
+        isAlreadyEnter(memberId);
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceJoinDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
@@ -76,11 +79,19 @@ public class ConferenceService {
         conference.totalUpdate(1);
     }
 
+    private void isAlreadyEnter(Long memberId) {
+        List<Member_conference> isAlreadyEnter = memberConferenceRepository.findByAlreadyEnter(memberId);
+        if (!isAlreadyEnter.isEmpty()) {
+            throw new CustomException(ALREADY_ENTER_ROOM);
+        }
+    }
+
     /**
      * 응원방 입장 - 방 비밀번호 확인
      * @param conferenceJoinCheckDto
      */
     public void enterCheckConference(ConferenceJoinCheckDto conferenceJoinCheckDto, Long memberId){
+        isAlreadyEnter(memberId);
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceJoinCheckDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
 
