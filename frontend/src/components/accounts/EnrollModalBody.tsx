@@ -33,7 +33,7 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
   const queryClient = useQueryClient();
   const [files, setFiles] = useState<FileList>();
   const [emojiName, setEmojiName] = useState("");
-  const [emojiAnimate, setEmojiAnimate] = useState("");
+  const [emojiAnimate, setEmojiAnimate] = useState("animate__none");
   const [emojiDescription, setEmojiDescription] = useState("");
   const imgInputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const previewRef: React.RefObject<HTMLDivElement> = useRef(null);
