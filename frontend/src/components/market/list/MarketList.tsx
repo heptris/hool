@@ -5,9 +5,11 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
+
+import { RootState } from "store";
 
 import { getMarketListPage, getMarketRankList } from "api/market";
 
@@ -16,10 +18,9 @@ import MarketListItem from "./MarketListItem";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
-import { MarketItemType } from "types/MarketItemType";
-import { UserInfoType } from "types/UserInfoType";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
+
+import type { MarketItemType } from "types/MarketItemType";
+import type { UserInfoType } from "types/UserInfoType";
 
 const { MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
