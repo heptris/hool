@@ -105,11 +105,20 @@ public class GameService {
         totalPoint = truePoint + falsePoint;
         totalUser = trueUser + falseUser;
         // O, X 베팅 포인트 비율 계산
-        int trueRatio = (int) (Math.round((truePoint * 100)/(double)totalPoint)/100.0)*100;
-        int falseRatio = (int) (Math.round((falsePoint * 100)/(double)totalPoint)/100.0)*100;
+        int trueRatio = (int) ((Math.round((truePoint * 100)/(double)totalPoint)/100.0)*100);
+        int falseRatio = (int) ((Math.round((falsePoint * 100)/(double)totalPoint)/100.0)*100);
 
-        double trueDividendRate = (Math.round((falseUser * 100)/(double)trueUser)/100.0);
-        double falseDividendRate = (Math.round((trueUser * 100)/(double)falseUser)/100.0);
+        double trueDividendRate, falseDividendRate;
+        if(trueUser != 0){
+            trueDividendRate = (Math.round((falseUser * 1000)/(double)trueUser)/1000.0);
+        } else {
+            trueDividendRate = 0;
+        }
+        if(falseUser != 0){
+            falseDividendRate = (Math.round((trueUser * 1000)/(double)falseUser)/1000.0);
+        } else {
+            falseDividendRate = 0;
+        }
 
         return new GameBettStatisticsResponseDto(trueRatio, falseRatio, trueDividendRate, falseDividendRate, truePoint, falsePoint, trueUser, falseUser);
     }
