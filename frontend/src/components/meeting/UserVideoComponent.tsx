@@ -137,6 +137,7 @@ const Emoji = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  pointer-events: none;
 `;
 
 export default UserVideoComponent;

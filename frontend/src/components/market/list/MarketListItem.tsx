@@ -125,6 +125,7 @@ const Emoji = styled.img`
   margin-top: 3rem;
   height: 8rem;
   border-radius: 4px;
+  pointer-events: none;
 `;
 const ItemTitle = styled.h3`
   margin-top: 1rem;
