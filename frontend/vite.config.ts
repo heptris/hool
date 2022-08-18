@@ -15,5 +15,9 @@ export default defineConfig({
       strict: false,
     },
   },
+  preview: {
+    host: "0.0.0.0",
+    port: 5442,
+  },
   plugins: [svgr(), react(), tsconfigPaths()],
 });

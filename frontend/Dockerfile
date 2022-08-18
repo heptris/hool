@@ -7,7 +7,7 @@ RUN chmod +x /entrypoint.sh
 
 ADD . .
 
-RUN npm install --force
+RUN npm install
 
 ENTRYPOINT ["/entrypoint.sh"]
 
