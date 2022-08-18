@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postBuyEmoji } from "api/market";
 import { QUERY_KEYS } from "constant";
@@ -28,6 +28,12 @@ const MarketItem = (props: MarketItemType) => {
     creatorId,
     emojiShopId,
   } = props;
+
+  /* 이미지 저장 방지 스크립트 */
+  document.addEventListener(
+    "contextmenu",
+    (e: any) => e.target.matches("img") && e.preventDefault()
+  );
 
   const queryClient = useQueryClient();
   /* Alert 보일러플레이트 */
@@ -125,7 +131,6 @@ const Emoji = styled.img`
   margin-top: 3rem;
   height: 8rem;
   border-radius: 4px;
-  pointer-events: none;
 `;
 const ItemTitle = styled.h3`
   margin-top: 1rem;

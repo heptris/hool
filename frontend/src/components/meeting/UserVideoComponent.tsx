@@ -21,6 +21,12 @@ type PropsType = {
 function UserVideoComponent(props: PropsType) {
   const { idx, streamManager, mainVideoStream } = props;
 
+  /* 이미지 저장 방지 스크립트 */
+  document.addEventListener(
+    "contextmenu",
+    (e: any) => e.target.matches("img") && e.preventDefault()
+  );
+
   const [isDisplayingEmoji, setIsDisplayingEmoji] = useState(false);
 
   const dispatch = useDispatch();
@@ -137,7 +143,6 @@ const Emoji = styled.img`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  pointer-events: none;
 `;
 
 export default UserVideoComponent;
