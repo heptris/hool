@@ -6,16 +6,19 @@ import { darkTheme } from "styles/Theme";
 
 import { postSearchFriend, postSendFriendSendMessage } from "api/social";
 
+import Alert from "components/commons/Alert";
 import PageHeader from "components/commons/PageHeader";
 import SearchBar from "components/commons/SearchBar";
 import Card from "components/commons/Card";
 import Button from "components/commons/Button";
+import MyFriends from "./MyFriends";
 
 import { QUERY_KEYS } from "constant";
 
 import type { UserInfoType } from "types/UserInfoType";
 import type { FriendInfoType } from "types/FriendInfoType";
-import MyFriends from "./MyFriends";
+
+const ALERT_DISPLAYING_TIME = 4000;
 
 type PropsType = {
   isDisplayMyFriends: boolean;
@@ -29,6 +32,12 @@ const SocialSearchBar = () => {
   ]);
   const myFriends: { data: FriendInfoType[] } | undefined =
     queryClient.getQueryData([QUERY_KEYS.FRIEND_LIST]);
+
+  /* Alert 보일러플레이트 */
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
+
   const [searchName, setSearchName] = useState("");
   const {
     mutate: mutateSearchFriend,
@@ -38,6 +47,9 @@ const SocialSearchBar = () => {
   } = useMutation(postSearchFriend);
   const { mutate: mutateFriendSend } = useMutation(postSendFriendSendMessage, {
     onSuccess: () => {
+      setIsDisplayAlert(true);
+      setIsSuccess(true);
+      setMsgToDisplay("친구 요청 보내기 성공!");
       setSearchName("");
     },
   });
@@ -53,52 +65,64 @@ const SocialSearchBar = () => {
   }, [searchName]);
 
   return (
-    <SearchBar
-      inputValue={searchName}
-      searchPlaceholder="사용자 검색"
-      inputOnChange={handleSearchName}
-      SearchListComponent={(() => {
-        // if (searchName === userInfo?.nickName)
-        //   return <SearchResModal>본인입니다</SearchResModal>;
-        if (searchName && searchFriendData?.data.length === 0)
-          return <SearchResModal>검색 결과가 존재하지 않아요.</SearchResModal>;
-        if (searchName && isSearchFriendSuccess)
-          return (
-            <SearchResModal>
-              {searchFriendData.data.map((res: FriendInfoType) => (
-                <FriendCard key={res.friendMemberId}>
-                  <InfoDivision>
-                    <FriendProfileImg src={res.friendProfile} />
-                    <FriendInfo>
-                      <FriendNickName>{res.friendNickName}</FriendNickName>
-                      <FriendEmail>{res.friendMemberEmail}</FriendEmail>
-                    </FriendInfo>
-                  </InfoDivision>
+    <>
+      {isDisplayAlert && (
+        <Alert
+          isDisplayAlert={isDisplayAlert}
+          handleDisplayAlert={setIsDisplayAlert}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
+      <SearchBar
+        inputValue={searchName}
+        searchPlaceholder="사용자 검색"
+        inputOnChange={handleSearchName}
+        SearchListComponent={(() => {
+          // if (searchName === userInfo?.nickName)
+          //   return <SearchResModal>본인입니다</SearchResModal>;
+          if (searchName && searchFriendData?.data.length === 0)
+            return (
+              <SearchResModal>검색 결과가 존재하지 않아요.</SearchResModal>
+            );
+          if (searchName && isSearchFriendSuccess)
+            return (
+              <SearchResModal>
+                {searchFriendData.data.map((res: FriendInfoType) => (
+                  <FriendCard key={res.friendMemberId}>
+                    <InfoDivision>
+                      <FriendProfileImg src={res.friendProfile} />
+                      <FriendInfo>
+                        <FriendNickName>{res.friendNickName}</FriendNickName>
+                        <FriendEmail>{res.friendMemberEmail}</FriendEmail>
+                      </FriendInfo>
+                    </InfoDivision>
 
-                  {userInfo?.nickName !== res.friendNickName &&
-                    !myFriends?.data
-                      .map((friend) => friend.friendMemberId)
-                      .includes(res.friendMemberId) && (
-                      <Button
-                        width={4}
-                        height={2}
-                        text={"친구 요청"}
-                        fontSize={0.825}
-                        buttonOnClick={() => {
-                          mutateFriendSend({
-                            friendMemberId: res.friendMemberId,
-                          });
-                        }}
-                      />
-                    )}
-                </FriendCard>
-              ))}
-              {/* <div>
+                    {userInfo?.nickName !== res.friendNickName &&
+                      !myFriends?.data
+                        .map((friend) => friend.friendMemberId)
+                        .includes(res.friendMemberId) && (
+                        <Button
+                          width={4}
+                          height={2}
+                          text={"친구 요청"}
+                          fontSize={0.825}
+                          buttonOnClick={() => {
+                            mutateFriendSend({
+                              friendMemberId: res.friendMemberId,
+                            });
+                          }}
+                        />
+                      )}
+                  </FriendCard>
+                ))}
+                {/* <div>
                 <img src={searchFriendData.data.friendProfile} alt="" />
                 <strong>{searchFriendData.data[0].friendNickName}</strong>
                 <p>{searchFriendData.data[0].friendMemberEmail}</p>
               </div> */}
-              {/* {myFriends &&
+                {/* {myFriends &&
                 !myFriends.data
                   .map((el: FriendInfoType) => el?.friendMemberId)
                   .includes(searchFriendData.data.friendMemberId) && (
@@ -112,10 +136,11 @@ const SocialSearchBar = () => {
                     }}
                   />
                 )} */}
-            </SearchResModal>
-          );
-      })()}
-    />
+              </SearchResModal>
+            );
+        })()}
+      />
+    </>
   );
 };
 const SearchResModal = styled.div`

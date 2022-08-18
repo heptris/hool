@@ -75,7 +75,10 @@ function SocialItem(props: PropsType) {
       )}
       <SocialCard>
         <Status>
-          <ProfileImg src={friendProfile} />
+          <ProfileDiv>
+            <ProfileImg src={friendProfile} />
+            {isDisplayMyFriends && <StatusCircle memberStatus={memberStatus} />}
+          </ProfileDiv>
           <UserInfo>
             <Nickname>{friendNickName}</Nickname>
             <Email>{friendMemberEmail}</Email>
@@ -83,7 +86,7 @@ function SocialItem(props: PropsType) {
               {memberStatus === "ONLINE" ? "접속중" : "오프라인"}
             </CurrentPos>
             <CurrentPos>
-              {last && "최종 접속 시간 : " + new Date(last).toLocaleString()}
+              {last && "마지막 접속일 : " + new Date(last).toLocaleDateString()}
             </CurrentPos>
           </UserInfo>
         </Status>
@@ -167,7 +170,6 @@ const Status = styled.div`
 const ProfileImg = styled.img`
   width: 5rem;
   border-radius: 5rem;
-  margin: 1.5rem 0 1.5rem 1.5rem;
 `;
 const UserInfo = styled.div`
   align-self: center;
@@ -240,6 +242,21 @@ const Hr = styled.hr`
   background-color: ${darkTheme.adaptiveGrey800};
   width: 100%;
   margin: 0;
+`;
+const ProfileDiv = styled.div`
+  position: relative;
+  margin: 1.5rem 0 1.5rem 1.5rem;
+`;
+const StatusCircle = styled.div`
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1px solid ${darkTheme.black};
+  border-radius: 1rem;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: ${({ memberStatus }: { memberStatus: string }) =>
+    memberStatus === "ONLINE" ? darkTheme.infoColor : darkTheme.contrastColor};
 `;
 
 export default SocialItem;
