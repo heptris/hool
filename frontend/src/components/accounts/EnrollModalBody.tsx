@@ -109,8 +109,13 @@ function EnrollModalBody({ onDisplayChange }: { onDisplayChange: Function }) {
         onDisplayChange("이모지 등록 성공!", true);
       })
       .catch((err) => {
-        console.error("여기 에러인가", err);
-        onDisplayChange(`이모지 등록 실패!ㅠㅠ ${err}`, false);
+        if (err.response.status === 413) {
+          onDisplayChange(`이모지 크기가 5MB 이상인 것 같아요!`, false);
+        }
+        onDisplayChange(
+          `이모지 등록 실패. 비어있는 입력이 없는지 확인해 주세요.`,
+          false
+        );
       });
   };
 
