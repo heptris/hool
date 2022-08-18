@@ -16,8 +16,8 @@ import MarketListItem from "./MarketListItem";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
-import { MarketItemType } from "types/MarketItemType";
-import { UserInfoType } from "types/UserInfoType";
+import type { MarketItemType } from "types/MarketItemType";
+import type { UserInfoType } from "types/UserInfoType";
 
 const { MARKET_SEARCHED_LIST } = QUERY_KEYS;
 

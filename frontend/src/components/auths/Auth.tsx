@@ -7,11 +7,13 @@ import { darkTheme } from "styles/Theme";
 
 import useAuth from "hooks/useAuth";
 
+import Alert from "components/commons/Alert";
 import Button from "components/commons/Button";
 import LabelInput from "components/commons/LabelInput";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
-const google_key = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
+const ALERT_DISPLAYING_TIME = 4000;
+const GOOGLE_KEY = import.meta.env.VITE_SOME_KEY_GOOGLE_ID;
 
 const Auth = () => {
   const eMailRef = useRef<HTMLInputElement>(null);
@@ -20,6 +22,9 @@ const Auth = () => {
     password: "",
   });
   const { login } = useAuth();
+  /* Alert 보일러플레이트 */
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, id } = e.target;
@@ -31,7 +36,18 @@ const Auth = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(form);
+
+    login(form).catch((err) => {
+      if (err.response.status === 400) {
+        // alert("비밀번호가 틀렸습니다");
+        setIsDisplayAlert(true);
+        setMsgToDisplay("비밀번호가 틀린 것 같아요!");
+      } else if (err.response.status === 404) {
+        // alert("가입되지 않은 이메일입니다.");
+        setIsDisplayAlert(true);
+        setMsgToDisplay("가입하지 않으신 이메일 같아요!");
+      }
+    });
     setForm({
       memberEmail: "",
       password: "",
@@ -42,7 +58,7 @@ const Auth = () => {
   useEffect(() => {
     function start() {
       gapi.client.init({
-        clientId: { google_key },
+        clientId: { GOOGLE_KEY },
         scope: "",
       });
     }
@@ -50,37 +66,48 @@ const Auth = () => {
   });
 
   return (
-    <Container>
-      <FormBox onSubmit={handleSubmit}>
-        <Link to={"/"}>
-          <Logo>hool!</Logo>
-        </Link>
-        <Title>로그인</Title>
-        <LabelInput
-          inputRef={eMailRef}
-          inputValue={form.memberEmail}
-          text="이메일"
-          placeholderText="Email"
-          type="email"
-          inputOnChange={onChange}
-          id={"memberEmail"}
+    <>
+      {isDisplayAlert && (
+        <Alert
+          isDisplayAlert={isDisplayAlert}
+          handleDisplayAlert={setIsDisplayAlert}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          msgToDisplay={msgToDisplay}
+          isSuccess={false}
         />
-        <LabelInput
-          text="비밀번호"
-          placeholderText="Password"
-          type="password"
-          inputValue={form.password}
-          inputOnChange={onChange}
-          id={"password"}
-        />
-        <LinkText to={"/auth/find"}>
-          비밀번호를 잊어버리셨나요? 비밀번호 초기화
-        </LinkText>
-        <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
-        <LinkText to={"/auth/signup"}>계정이 없으신가요? 회원가입</LinkText>
-        <GoogleLoginBtn />
-      </FormBox>
-    </Container>
+      )}
+      <Container>
+        <FormBox onSubmit={handleSubmit}>
+          <Link to={"/"}>
+            <Logo>hool!</Logo>
+          </Link>
+          <Title>로그인</Title>
+          <LabelInput
+            inputRef={eMailRef}
+            inputValue={form.memberEmail}
+            text="이메일"
+            placeholderText="Email"
+            type="email"
+            inputOnChange={onChange}
+            id={"memberEmail"}
+          />
+          <LabelInput
+            text="비밀번호"
+            placeholderText="Password"
+            type="password"
+            inputValue={form.password}
+            inputOnChange={onChange}
+            id={"password"}
+          />
+          <LinkText to={"/auth/find"}>
+            비밀번호를 잊어버리셨나요? 비밀번호 초기화
+          </LinkText>
+          <Button text="로그인" width={20} height={3.125} marginBottom={0.25} />
+          <LinkText to={"/auth/signup"}>계정이 없으신가요? 회원가입</LinkText>
+          <GoogleLoginBtn />
+        </FormBox>
+      </Container>
+    </>
   );
 };
 

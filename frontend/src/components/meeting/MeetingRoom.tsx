@@ -193,16 +193,16 @@ function MeetingRoom() {
   const recvChatSignal = () => {
     if (session === undefined) return;
 
-    session.on("signal:chat", (event: any) => {
-      dispatch(addChatEvents(event.data));
+    session.on("signal:chat", (event: SignalEvent) => {
+      dispatch(addChatEvents(event.data!));
     });
   };
   const recvGameSignal = () => {
     if (session === undefined) return;
 
-    session.on("signal:gameInfo", (event: any) => {
+    session.on("signal:gameInfo", (event: SignalEvent) => {
       console.log("게임 생성 하고 방장이 보낸 게임 데이터");
-      setRcvdGameInfo(JSON.parse(event.data));
+      setRcvdGameInfo(JSON.parse(event.data!));
     });
   };
   const recvEmojiSignal = () => {
