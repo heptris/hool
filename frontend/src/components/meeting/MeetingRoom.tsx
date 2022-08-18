@@ -188,7 +188,14 @@ function MeetingRoom() {
 
     session
       .signal({
-        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
+        data:
+          myUserName +
+          "::" +
+          item.emojiUrl +
+          "::" +
+          item.emojiAnimate +
+          "::" +
+          Math.random(),
         to: [],
         type: "emoji",
       })

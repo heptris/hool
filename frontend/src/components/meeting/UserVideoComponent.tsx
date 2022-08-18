@@ -21,13 +21,26 @@ type PropsType = {
 function UserVideoComponent(props: PropsType) {
   const { idx, streamManager, mainVideoStream } = props;
 
+  /* 이미지 저장 방지 스크립트 */
+  document.addEventListener(
+    "contextmenu",
+    (e: any) => e.target.matches("img") && e.preventDefault()
+  );
+
   const [isDisplayingEmoji, setIsDisplayingEmoji] = useState(false);
 
   const dispatch = useDispatch();
   const { emojiEvents } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const emojiData = emojiEvents[idx];
+
+  /* 이모지 이벤트 처리 로직 */
+  const [emojiData, setEmojiData] = useState("");
+  useEffect(() => {
+    if (emojiEvents[idx] === "") return;
+
+    setEmojiData(emojiEvents[idx]);
+  }, [emojiEvents]);
   const [sender, emojiUrl, emojiAnimate] = emojiData.split("::");
   useEffect(() => {
     if (emojiData === "") return;

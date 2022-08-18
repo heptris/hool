@@ -70,7 +70,7 @@ const MeetingGameModalBody = ({
       <Wrapper>
         <GameTitle>게임 제목</GameTitle>
         <TitleInput
-          placeholder="방제목을 최대 45자 이내로 작성해주세요"
+          placeholder="게임 제목을 최대 45자 이내로 작성해주세요"
           type="text"
           key="게임 제목"
           onChange={titleInputChangeHandler}

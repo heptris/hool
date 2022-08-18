@@ -10,6 +10,12 @@ type PropsType = {
 };
 
 function EmojiCard(props: PropsType) {
+  /* 이미지 저장 방지 스크립트 */
+  document.addEventListener(
+    "contextmenu",
+    (e: any) => e.target.matches("img") && e.preventDefault()
+  );
+
   return (
     <ConcreteEmojiCard {...props}>
       <EmojiImg src={props.emojiUrl} />
