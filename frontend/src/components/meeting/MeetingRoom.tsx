@@ -96,6 +96,8 @@ function MeetingRoom() {
   }, [videoEnabled]);
   // 세션에 따라 신호 받기
   useEffect(() => {
+    if (session === undefined) return;
+
     recvChatSignal();
     recvGameSignal();
     recvEmojiSignal();
