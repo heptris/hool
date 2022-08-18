@@ -66,8 +66,8 @@ const MeetingMessageInput = (props: PropsType) => {
                 dispatch(setIsDisplayEmoji(!isDisplayEmoji));
               }}
             />
-            <Icon className="fa-solid fa-microphone" />
-            <Icon className="fa-solid fa-bell" />
+            {/* <Icon className="fa-solid fa-microphone" />
+            <Icon className="fa-solid fa-bell" /> */}
           </Left>
           <div>
             <Icon className="fa-solid fa-circle-info"></Icon>
