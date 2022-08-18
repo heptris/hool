@@ -5,9 +5,11 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
+
+import { RootState } from "store";
 
 import { getMarketListPage, getMarketRankList } from "api/market";
 
@@ -16,22 +18,24 @@ import MarketListItem from "./MarketListItem";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
-import { MarketItemType } from "types/MarketItemType";
-import { UserInfoType } from "types/UserInfoType";
 
-const { USER, MARKET_SEARCHED_LIST } = QUERY_KEYS;
+import type { MarketItemType } from "types/MarketItemType";
+import type { UserInfoType } from "types/UserInfoType";
+
+const { MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
 const MarketList = ({
   searchKeyword,
   isTopTen,
+  userInfo,
 }: {
   searchKeyword: string;
   isTopTen: boolean;
+  userInfo?: UserInfoType;
 }) => {
-  const { ref, inView } = useInView();
-  const [size, setSize] = useState(4);
+  const { isInView } = useSelector((state: RootState) => state.listPagination);
+  const [size, setSize] = useState(10);
   const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
   const { data: searchedList } = useQuery<MarketItemType[]>([
     MARKET_SEARCHED_LIST,
   ]);
@@ -57,10 +61,10 @@ const MarketList = ({
   );
 
   useEffect(() => {
-    if (inView) {
+    if (isInView) {
       hasNextPage && !isFetchingNextPage && fetchNextPage();
     }
-  }, [inView]);
+  }, [isInView]);
   useEffect(() => {
     !searchKeyword && queryClient.setQueryData([MARKET_SEARCHED_LIST], null);
   }, [searchKeyword]);
@@ -70,36 +74,38 @@ const MarketList = ({
   if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
-    <ItemList>
-      {isTopTen ? (
-        <>
-          {topTenList?.data.map((el: MarketItemType) => {
-            return <MarketListItem key={el.emojiShopId} {...el} />;
-          })}
-        </>
-      ) : (
-        <>
-          {searchKeyword ? (
-            <>
-              {searchedList?.map((el: MarketItemType) => {
-                return <MarketListItem key={el.emojiShopId} {...el} />;
-              })}
-            </>
-          ) : (
-            <>
-              {wholeList?.pages.map((page, i) => (
-                <React.Fragment key={i}>
-                  {page.values.map((el: MarketItemType) => {
-                    return <MarketListItem key={el.emojiShopId} {...el} />;
-                  })}
-                </React.Fragment>
-              ))}
-            </>
-          )}
-          <div ref={ref} />
-        </>
-      )}
-    </ItemList>
+    <>
+      <ItemList>
+        {isTopTen ? (
+          <>
+            {topTenList?.data.map((el: MarketItemType) => {
+              return <MarketListItem key={el.emojiShopId} {...el} />;
+            })}
+          </>
+        ) : (
+          <>
+            {searchKeyword ? (
+              <>
+                {searchedList?.map((el: MarketItemType) => {
+                  return <MarketListItem key={el.emojiShopId} {...el} />;
+                })}
+              </>
+            ) : (
+              <>
+                {wholeList?.pages.map((page, i) => (
+                  <React.Fragment key={i}>
+                    {page.values.map((el: MarketItemType) => {
+                      return <MarketListItem key={el.emojiShopId} {...el} />;
+                    })}
+                  </React.Fragment>
+                ))}
+              </>
+            )}
+          </>
+        )}
+      </ItemList>
+      {isFetchingNextPage && <div>Loading...</div>}
+    </>
   );
 };
 

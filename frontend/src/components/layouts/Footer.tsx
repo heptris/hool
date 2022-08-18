@@ -1,7 +1,16 @@
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { useDispatch } from "react-redux";
+import { setIsInview } from "store";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
 const Footer = () => {
+  const { ref, inView } = useInView();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setIsInview(inView));
+  }, [inView]);
   return (
     <FooterBox>
       <FooterContent>
@@ -33,6 +42,7 @@ const Footer = () => {
           <h3>06220 서울특별시 강남구 테헤란로 212 (역삼동)</h3>
         </div>
       </FooterContent>
+      <div ref={ref} />
     </FooterBox>
   );
 };

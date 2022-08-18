@@ -95,15 +95,11 @@ function MeetingMessageShow(props: PropsType) {
 
   return (
     <>
-      <MessageShowHeader isShowingGame={isShowingGame}>
+      <MessageShowHeader>
         <Icon className="fa-solid fa-comment" />
         <h1>Chat</h1>
       </MessageShowHeader>
-      <MessageShowBody
-        id={"showBody"}
-        ref={msgBodyRef}
-        isShowingGame={isShowingGame}
-      >
+      <MessageShowBody id={"showBody"} ref={msgBodyRef}>
         {chatEvents.map((chat, i) => renderChatMsgs(chat, i))}
       </MessageShowBody>
     </>
@@ -115,16 +111,14 @@ const MessageShowHeader = styled(MessageBox)`
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   background-color: ${darkTheme.mainColor};
-  margin-top: ${(props: SComponentPropsType) =>
-    props.isShowingGame ? "1rem" : "0rem"}; //  게임 컴포넌트 없을때,
+  margin-top: 0rem;
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
 const MessageShowBody = styled(MessageBox)`
   margin-top: 0rem;
-  height: ${(props: SComponentPropsType) =>
-    props.isShowingGame ? "52%" : "100%"}; //게임 컴포넌트 없을때,
+  height: 100%;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   background-color: ${darkTheme.adaptiveGrey800};
