@@ -27,7 +27,7 @@ public class FriendRequestController {
 
     private final FriendRequestService friendRequestService;
 
-    private static final int DEFAULT_SIZE = 1;
+    private static final int DEFAULT_SIZE = 20;
 
     /**
      * 친구 요청 메세지 보내기
