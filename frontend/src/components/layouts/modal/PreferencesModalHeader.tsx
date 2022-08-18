@@ -26,12 +26,9 @@ const TitleCloseWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
-const Title = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-`;
+const Title = styled.h3``;
 const Header = styled.div`
-  padding: 1.5rem 1rem 1rem;
+  padding: 1.5rem 1rem 1rem 1rem;
   width: 100%;
   display: flex;
   align-items: center;

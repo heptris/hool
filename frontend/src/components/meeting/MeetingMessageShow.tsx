@@ -1,105 +1,83 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
+
 import { RootState } from "store";
-import { addChatEvents } from "store";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
-
-import profileDefaultImg from "assets/profile-default-imgs/1.png";
-
-import type { SessionStateType } from "./MeetingRoom";
-
-import EmojiCard from "components/commons/EmojiCard";
-import { MessageBox } from "./MeetingMessageInput";
 import { IconStyle } from "styles/IconStyle";
 
+import { MessageBox } from "./MeetingMessageInput";
+
 type PropsType = {
-  sessionState: SessionStateType;
+  recvSignal: Function;
 };
 type SComponentPropsType = {
   isShowingGame?: boolean;
 };
 
 function MeetingMessageShow(props: PropsType) {
-  const dispatch = useDispatch();
   // Redux 상태
   const isShowingGame = useSelector(
     (state: RootState) => state.navbar.isShowingGame
   );
-  const { myUserName, chatEvents, isDisplayEmoji } = useSelector(
+  const { myUserName, chatEvents } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const myOwnItems = [
-    {
-      emojiTitle: "불타는 아스날",
-      ARCode: "",
-      author: "Andrew",
-      description: "아스날은 불타야 제맛이지",
-      isFav: false,
-      imgUrl: "",
-    },
-    {
-      emojiTitle: "우리흥",
-      ARCode: "",
-      author: "Dijkstra",
-      description: "으앙마",
-      isFav: false,
-      imgUrl: "",
-    },
-  ];
 
   // 상위 컴포넌트 세션상태
-  const { session, subscribers } = props.sessionState;
-  useEffect(() => {
-    if (session !== undefined) {
-      recvSignal();
-    }
-  }, [session]);
-
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
 
-  const recvSignal = () => {
-    const mySession = session;
-
-    mySession.on("signal:chat", (event: any) => {
-      console.log(event.from);
-      console.log(event.type);
-
-      console.log(chatEvents);
-      dispatch(addChatEvents(event.data));
-    });
-  };
   const renderChatMsgs = (chatEvent: string, idx: number) => {
-    const [sender, msg] = chatEvent.split("::");
+    const {
+      myUserName: sender,
+      msgToSend: msg,
+      memberProfile: url,
+    } = JSON.parse(chatEvent);
     scrollToBottom();
 
     if (sender === myUserName) {
-      return createOppositeBubble({ sender, msg, idx });
+      return createMyBubble({ sender, msg, idx, url });
     } else {
-      return createOppositeBubble({ sender, msg, idx });
+      return createOppositeBubble({ sender, msg, idx, url });
     }
   };
   const createMyBubble = ({
     sender,
     msg,
     idx,
+    url,
   }: {
     sender: string;
     msg: string;
     idx: number;
-  }) => {};
+    url: string;
+  }) => {
+    return (
+      <SpeechBubble isMe={true} key={idx}>
+        <ProfileImg src={url} alt={`${sender}의 프로필 이미지`} />
+        <MessageContent isMe={true}>
+          <NickName>{sender}</NickName>
+          <MessageText>
+            <span>{msg}</span>
+          </MessageText>
+        </MessageContent>
+      </SpeechBubble>
+    );
+  };
   const createOppositeBubble = ({
     sender,
     msg,
     idx,
+    url,
   }: {
     sender: string;
     msg: string;
     idx: number;
+    url: string;
   }) => (
     <SpeechBubble key={idx}>
-      <ProfileImg src={profileDefaultImg} alt={`${sender}의 프로필 이미지`} />
+      <ProfileImg src={url} alt={`${sender}의 프로필 이미지`} />
       <MessageContent>
         <NickName>{sender}</NickName>
         <MessageText>
@@ -114,22 +92,6 @@ function MeetingMessageShow(props: PropsType) {
       msgBody.scrollTop = msgBody.scrollHeight;
     }
   };
-  const sendEmojiSignal = (item: typeof myOwnItems[0]) => {
-    const mySession = session;
-
-    mySession
-      .signal({
-        data: myUserName + "::" + item.imgUrl,
-        to: [],
-        type: "emoji",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
 
   return (
     <>
@@ -143,21 +105,6 @@ function MeetingMessageShow(props: PropsType) {
         isShowingGame={isShowingGame}
       >
         {chatEvents.map((chat, i) => renderChatMsgs(chat, i))}
-        {isDisplayEmoji && (
-          <EmojiModal className={"animate__animated animate__bounceIn"}>
-            <ModalText>소유중인 이모지</ModalText>
-            <Hr />
-            <ModalGrid>
-              {myOwnItems.map((item, i) => (
-                <div key={i} onClick={() => sendEmojiSignal(item)}>
-                  <EmojiCard>
-                    <></>
-                  </EmojiCard>
-                </div>
-              ))}
-            </ModalGrid>
-          </EmojiModal>
-        )}
       </MessageShowBody>
     </>
   );
@@ -196,15 +143,17 @@ const SpeechBubble = styled.div`
   height: fit-content;
   display: flex;
   align-items: center;
+  ${({ isMe }: { isMe?: boolean }) => isMe && "flex-direction: row-reverse;"};
 `;
 const ProfileImg = styled.img`
   width: 2.5rem;
   border-radius: 4px;
-  margin-right: 1rem;
+  margin: 0 0.5rem;
 `;
 const MessageContent = styled.div`
   display: flex;
   flex-direction: column;
+  ${({ isMe }: { isMe?: boolean }) => isMe && "align-items: flex-end;"};
 `;
 const NickName = styled.h1`
   font-size: 0.9rem;
@@ -224,30 +173,6 @@ const MessageText = styled.div`
     font-size: 0.9rem;
     padding: 0.5rem;
   }
-`;
-const EmojiModal = styled.div`
-  background-color: ${darkTheme.bgColor};
-  width: 95%;
-  height: 10rem;
-  border: 1px solid ${darkTheme.adaptiveGrey800};
-  border-radius: 4px;
-  position: absolute;
-  overflow: auto;
-  bottom: 0px;
-  left: 0px;
-  padding: 0.5rem 0.5rem;
-  box-sizing: border-box;
-`;
-const ModalGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem 0.2rem;
-`;
-const ModalText = styled.h1``;
-const Hr = styled.hr`
-  border: 1px solid ${darkTheme.adaptiveGrey700};
-  background-color: ${darkTheme.adaptiveGrey700};
-  width: 99%;
 `;
 
 export default MeetingMessageShow;

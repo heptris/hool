@@ -1,4 +1,4 @@
-import { useLocation } from "@tanstack/react-location";
+import { useLocation, useNavigate } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
@@ -7,6 +7,41 @@ import { ReactComponent as ErrorCircleImg } from "assets/error-circle-img.svg";
 import { ReactComponent as ErrorExclamationImg } from "assets/error-exclamation-img.svg";
 
 import Button from "components/commons/Button";
+
+const Error = ({ errorMessage }: { errorMessage: string }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  return (
+    <Container>
+      <ErrorBox>
+        <TitleBox>
+          <Title>404 Error</Title>
+          <ErrorCirCleImage />
+          <ErrorExclamationImage />
+        </TitleBox>
+        <SubTitle>요청하신 페이지를 찾을 수 없습니다.</SubTitle>
+        <SubTitle>입력하신 주소가 정확한지 다시 한번 확인해주세요.</SubTitle>
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+        <Button
+          text="메인 페이지로 돌아가기"
+          width={20}
+          height={3.125}
+          fontSize={1.25}
+          buttonOnClick={() => navigate({ to: "/", replace: true })}
+          marginBottom={1}
+        />
+        {/* <Button
+          text="이전 페이지로 돌아가기"
+          width={20}
+          height={3.125}
+          fontSize={1.25}
+          buttonOnClick={() => location.history.back()}
+          color={darkTheme.adaptiveGrey500}
+        /> */}
+      </ErrorBox>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100vw;
@@ -61,30 +96,5 @@ const ErrorMessage = styled.h1`
   font-size: 1.5rem;
   margin-bottom: 2rem;
 `;
-
-const Error = ({ errorMessage }: { errorMessage: string }) => {
-  const location = useLocation();
-  return (
-    <Container>
-      <ErrorBox>
-        <TitleBox>
-          <Title>404 Error</Title>
-          <ErrorCirCleImage />
-          <ErrorExclamationImage />
-        </TitleBox>
-        <SubTitle>요청하신 페이지를 찾을 수 없습니다.</SubTitle>
-        <SubTitle>입력하신 주소가 정확한지 다시 한번 확인해주세요.</SubTitle>
-        <ErrorMessage>{errorMessage}</ErrorMessage>
-        <Button
-          text="이전 페이지로 돌아가기"
-          width={20}
-          height={3.125}
-          fontSize={1.25}
-          buttonOnClick={() => location.history.back()}
-        />
-      </ErrorBox>
-    </Container>
-  );
-};
 
 export default Error;

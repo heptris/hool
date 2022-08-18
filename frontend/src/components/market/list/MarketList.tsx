@@ -1,42 +1,108 @@
+import React, { useEffect, useState } from "react";
 import { Navigate } from "@tanstack/react-location";
-import { useQuery } from "@tanstack/react-query";
-
-import useUser from "hooks/useUser";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
 import styled from "styled-components";
 
-import { getMarketList } from "api/market";
+import { getMarketListPage, getMarketRankList } from "api/market";
 
 import Loading from "components/Loading";
+import MarketListItem from "./MarketListItem";
 
 import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import { MarketItemType } from "types/MarketItemType";
+import { UserInfoType } from "types/UserInfoType";
 
-import MarketListItem from "./MarketListItem";
+const { USER, MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
-const MarketList = () => {
-  const { userInfo } = useUser();
-  const { data, isError, isLoading } = useQuery(
+const MarketList = ({
+  searchKeyword,
+  isTopTen,
+}: {
+  searchKeyword: string;
+  isTopTen: boolean;
+}) => {
+  const { ref, inView } = useInView();
+  const [size, setSize] = useState(4);
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
+  const { data: searchedList } = useQuery<MarketItemType[]>([
+    MARKET_SEARCHED_LIST,
+  ]);
+  const {
+    data: wholeList,
+    isLoading,
+    isError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
     [QUERY_KEYS.MARKET],
-    getMarketList,
+    ({ pageParam }) =>
+      getMarketListPage({ pageParam, size }).then((res) => res.data),
     {
-      retry: 0,
+      getNextPageParam: (lastPageRes) => lastPageRes.cursorId,
+      retry: 1,
     }
   );
+  const { data: topTenList } = useQuery(
+    [QUERY_KEYS.MARKET_RANK_LIST],
+    getMarketRankList
+  );
+
+  useEffect(() => {
+    if (inView) {
+      hasNextPage && !isFetchingNextPage && fetchNextPage();
+    }
+  }, [inView]);
+  useEffect(() => {
+    !searchKeyword && queryClient.setQueryData([MARKET_SEARCHED_LIST], null);
+  }, [searchKeyword]);
 
   if (isLoading) return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
-  // if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
+  if (isError) return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <ItemList>
-      {data.data.map((el: MarketItemType) => {
-        return <MarketListItem key={el.emojiId} {...el} />;
-      })}
+      {isTopTen ? (
+        <>
+          {topTenList?.data.map((el: MarketItemType) => {
+            return <MarketListItem key={el.emojiShopId} {...el} />;
+          })}
+        </>
+      ) : (
+        <>
+          {searchKeyword ? (
+            <>
+              {searchedList?.map((el: MarketItemType) => {
+                return <MarketListItem key={el.emojiShopId} {...el} />;
+              })}
+            </>
+          ) : (
+            <>
+              {wholeList?.pages.map((page, i) => (
+                <React.Fragment key={i}>
+                  {page.values.map((el: MarketItemType) => {
+                    return <MarketListItem key={el.emojiShopId} {...el} />;
+                  })}
+                </React.Fragment>
+              ))}
+            </>
+          )}
+          <div ref={ref} />
+        </>
+      )}
     </ItemList>
   );
 };
+
 const ItemList = styled.section`
   width: 100%;
   display: grid;

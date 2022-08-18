@@ -1,50 +1,60 @@
-import React, { useState } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMyFavoriteEmoji } from "api/profile";
+import { QUERY_KEYS } from "constant";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setMsgToSend, setIsDisplayEmoji } from "store";
 
 import styled from "styled-components";
 import { darkTheme, IconStyle, InputStyle } from "styles";
 
-import type { SessionStateType } from "./MeetingRoom";
 import type { RootState } from "store";
+import type { EmojiDetailType } from "types/EmojiDetailType";
 
 import Button from "components/commons/Button";
+import EmojiCard from "components/commons/EmojiCard";
 
 type PropsType = {
-  sessionState: SessionStateType;
+  sendEmojiSignal: Function;
+  sendTextMessage: Function;
 };
 
 const MeetingMessageInput = (props: PropsType) => {
+  const { sendEmojiSignal, sendTextMessage } = props;
   const dispatch = useDispatch();
-  const { myUserName, msgToSend, chatEvents, isDisplayEmoji } = useSelector(
+  const { msgToSend, isDisplayEmoji } = useSelector(
     (state: RootState) => state.clientSession
   );
-  const { session } = props.sessionState;
+
+  // React Query 상태
+  const {
+    data: myFavEmojiList,
+    isError: myFavEmojiListIsError,
+    isLoading: myFavEmojiListIsLoading,
+  } = useQuery([QUERY_KEYS.MY_FAV_EMOJI_LIST], getMyFavoriteEmoji, {
+    retry: 0,
+  });
 
   const onChangeMsgToSend = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setMsgToSend(e.target.value));
   };
-  const sendTextMessage = () => {
-    if (msgToSend.trim() === "") {
-      return;
-    }
-
-    const mySession = session;
-
-    mySession
-      .signal({
-        data: myUserName + "::" + msgToSend.trim(),
-        to: [],
-        type: "chat",
-      })
-      .then(() => {
-        dispatch(setMsgToSend(""));
-      })
-      .catch((err: any) => console.error(err));
-  };
 
   return (
-    <>
+    <Container>
+      {isDisplayEmoji && (
+        <EmojiModal className={"animate__animated animate__bounceIn"}>
+          <ModalText>이모지 즐겨찾기 목록</ModalText>
+          <Hr />
+          <ModalGrid>
+            {myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+              <div key={i} onClick={() => sendEmojiSignal(item)}>
+                <EmojiCard emojiUrl={item.emojiUrl} />
+              </div>
+            ))}
+          </ModalGrid>
+        </EmojiModal>
+      )}
       <MessageBox>
         <IconBox>
           <Left>
@@ -64,7 +74,7 @@ const MeetingMessageInput = (props: PropsType) => {
         <MsgForm
           onSubmit={(e: React.FormEvent) => {
             e.preventDefault();
-            sendTextMessage();
+            sendTextMessage(msgToSend);
           }}
         >
           <Input
@@ -78,7 +88,7 @@ const MeetingMessageInput = (props: PropsType) => {
           <div
             onClick={(e: React.MouseEvent) => {
               e.preventDefault();
-              sendTextMessage();
+              sendTextMessage(msgToSend);
             }}
           >
             <Button
@@ -91,10 +101,14 @@ const MeetingMessageInput = (props: PropsType) => {
           </div>
         </MsgForm>
       </MessageBox>
-    </>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  position: relative;
+  overflow: visible;
+`;
 const Input = styled.input`
   ${InputStyle}
 `;
@@ -129,6 +143,31 @@ const Icon = styled.i`
 const MsgForm = styled.form`
   width: 100%;
   position: relative;
+`;
+const EmojiModal = styled.div`
+  background-color: ${darkTheme.bgColor};
+  width: 24rem;
+  height: 10rem;
+  border: 1px solid ${darkTheme.adaptiveGrey800};
+  border-radius: 4px;
+  position: absolute;
+  bottom: 2rem;
+  left: calc(3rem - 100%);
+  padding: 0.5rem 0.5rem;
+  box-sizing: border-box;
+  z-index: 5001;
+`;
+const ModalGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem 0.2rem;
+  overflow: auto;
+`;
+const ModalText = styled.h1``;
+const Hr = styled.hr`
+  border: 1px solid ${darkTheme.adaptiveGrey700};
+  background-color: ${darkTheme.adaptiveGrey700};
+  width: 100%;
 `;
 
 export default MeetingMessageInput;

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { darkTheme } from "styles";
 
 const Loading = () => {
   return (
@@ -9,20 +10,26 @@ const Loading = () => {
   );
 };
 const Wrapper = styled.div`
-  position: relative;
-  height: 100vh;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9995;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const Spinner = styled.div`
-  width: 10rem;
-  height: 10rem;
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  width: 4rem;
+  height: 4rem;
   transform: translate(-50%, -50%);
-  border: 10px solid #f3f3f3; /* Light grey */
-  border-top: 10px solid #383636; /* Black */
+  border: 10px solid ${darkTheme.adaptiveGrey500};
+  border-top: 10px solid ${darkTheme.emphasisColor};
   border-radius: 50%;
-  animation: spinner 1.5s linear infinite;
+  animation: spinner 0.4s linear infinite;
   box-sizing: border-box;
 
   @keyframes spinner {

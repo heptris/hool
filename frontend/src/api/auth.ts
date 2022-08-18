@@ -10,9 +10,8 @@ const requestLogin = async (form: LoginFormType) =>
   await api.post(`login`, form).then((res) => res.data);
 
 //구글 로그인시 아래함수 이용하면 axios 요청이 안되서 사용안함.
-// const requestGoogleLogin = async (obj: { googleIdToken: string }) => {
-//   await api.post(`google/login`, obj).then((res) => res.data);
-// }
+const requestGoogleLogin = async (obj: { googleIdToken: string }) =>
+  await api.post(`google/login`, obj).then((res) => res.data);
 
 const requestLogout = async () =>
   await api.get(`logout`).then((res) => res.data);
@@ -58,4 +57,5 @@ export {
   postCheckNickName,
   postSignUp,
   postVerifyCode,
+  requestGoogleLogin,
 };

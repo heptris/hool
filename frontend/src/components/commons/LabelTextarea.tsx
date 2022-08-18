@@ -11,6 +11,7 @@ interface LabelTextareaProps {
   width?: string;
   textareaOnChange?: Function;
   textareaValue?: string;
+  isRequired?: boolean;
 }
 
 const LabelTextarea = (props: LabelTextareaProps) => {
@@ -22,6 +23,7 @@ const LabelTextarea = (props: LabelTextareaProps) => {
     width,
     textareaValue,
     textareaOnChange,
+    isRequired,
   } = props;
   return (
     <Wrapper {...props}>
@@ -33,6 +35,7 @@ const LabelTextarea = (props: LabelTextareaProps) => {
         placeholder={placeholderText}
         value={textareaValue}
         onChange={textareaOnChange}
+        require={isRequired || false}
       />
     </Wrapper>
   );

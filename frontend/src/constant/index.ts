@@ -20,11 +20,17 @@ export const QUERY_KEYS = {
   FRIEND_LIST: "friend-list",
   FRIEND_MESSAGE_LIST: "friend-message-list",
   MARKET: "market",
-  MEETINGS: "meetings",
+  MEETING_LIST_PAGE: "meeting-list-page",
   POINT: "point",
+  MARKET_UPLOAD_ITEM: "market-upload-item",
+  MY_OWN_EMOJI_LIST: "my-own-emoji-list",
+  MY_FAV_EMOJI_LIST: "my-fav-emoji-list",
+  ROOM_ACCESS: "room-access",
+  MARKET_SEARCHED_LIST: "market-searched-list",
+  MARKET_RANK_LIST: " market-rank-list",
 };
 
-export const USER_SESSIONSTORAGE_KEY = {
+export const USER_AUTH_KEY = {
   ACCESS_TOKEN: "accessToken",
   REFRESH_TOKEN: "refreshToken",
 };

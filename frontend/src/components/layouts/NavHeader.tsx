@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-location";
 
-import useUser from "hooks/useUser";
-
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -10,13 +8,20 @@ import useAuth from "hooks/useAuth";
 
 import profileDefaultImg from "assets/profile-default-imgs/1.png";
 
-import { ROUTES_NAME } from "constant";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+import { useQueryClient } from "@tanstack/react-query";
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey200, mainColor } = darkTheme;
 const { LOGIN, PROFILE } = ROUTES_NAME;
 
 const NavHeader = () => {
-  const { userInfo } = useUser();
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
+
+  const profileUrl = userInfo?.memberProfile;
+
   const [isDisplayMenu, setIsDisplayMenu] = useState(false);
   const { logout } = useAuth();
 
@@ -45,7 +50,7 @@ const NavHeader = () => {
               </ProfileMenu>
             )}
             <ProfileImg
-              src={profileDefaultImg}
+              src={profileUrl}
               alt={`${profileDefaultImg}의 프로필 이미지`}
             />
             <ProfileName>{userInfo.nickName}</ProfileName>
@@ -66,7 +71,7 @@ const Header = styled.nav`
   margin: 0 auto;
   left: 0;
   right: 0;
-  padding: 0.7rem 10%;
+  padding: 0.7rem 5%;
   height: 2rem;
   display: flex;
   position: fixed;
@@ -87,8 +92,12 @@ const ProfileImg = styled.img`
   border-radius: 4px;
 `;
 const ProfileName = styled.p`
+  width: 5rem;
   color: ${adaptiveGrey200};
   font-size: 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 const NavUser = styled.div`
   margin-right: 2rem;
@@ -96,6 +105,7 @@ const NavUser = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  text-align: center;
 
   & i {
     transition: transform ease 0.3s;
@@ -129,8 +139,9 @@ const Hr = styled.hr`
   margin: 0;
 `;
 const LoginBtn = styled.button`
-  width: 4rem;
-  height: 2rem;
+  width: 5.3rem;
+  height: 2.3rem;
+  font-size: 1rem;
   border-radius: 2rem;
   background-color: ${darkTheme.darkColor};
 

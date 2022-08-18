@@ -1,5 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { USER_SESSIONSTORAGE_KEY } from "constant";
+import { Device } from "openvidu-browser";
 
 interface NavMode {
   navMode: "default" | "meetingRoom" | "unseen";
@@ -8,9 +8,11 @@ interface NavMode {
   isCreatingPreferences: boolean;
   isShowingGame: boolean;
   isShowingMessage: boolean;
-  isLoggedIn: boolean;
+  isResultMode: boolean;
+  isShowingGameSubmit: boolean;
 }
 export type ClientSessionType = {
+  mySessionTitle: string;
   mySessionId: string;
   myUserName: string;
   audioEnabled: boolean;
@@ -19,7 +21,9 @@ export type ClientSessionType = {
   emojiEvents: Array<string>;
   chatEvents: Array<string>;
   isDisplayEmoji: boolean;
-  currentVideoDevice?: Object | undefined;
+  currentVideoDevice?: Device | undefined;
+  isPublic: boolean;
+  isHost: boolean;
 };
 const initialState: NavMode = {
   navMode: "default",
@@ -28,11 +32,13 @@ const initialState: NavMode = {
   isCreatingPreferences: false,
   isShowingGame: false,
   isShowingMessage: false,
-  isLoggedIn: !!sessionStorage.getItem(USER_SESSIONSTORAGE_KEY.ACCESS_TOKEN),
+  isResultMode: false,
+  isShowingGameSubmit: false,
 };
 const sessionInitialState: ClientSessionType = {
-  mySessionId: "SessionABC",
-  myUserName: "Yan",
+  mySessionTitle: "",
+  mySessionId: "",
+  myUserName: "",
   audioEnabled: false,
   videoEnabled: false,
   msgToSend: "",
@@ -40,6 +46,8 @@ const sessionInitialState: ClientSessionType = {
   chatEvents: new Array(),
   isDisplayEmoji: false,
   currentVideoDevice: undefined,
+  isPublic: true,
+  isHost: false,
 };
 const navbar = createSlice({
   name: "navbar",
@@ -66,8 +74,11 @@ const navbar = createSlice({
     setIsShowingMessage(state: NavMode, actions: PayloadAction<boolean>) {
       state.isShowingMessage = actions.payload;
     },
-    setIsLoggedIn(state: NavMode, actions: PayloadAction<boolean>) {
-      state.isLoggedIn = actions.payload;
+    setIsResultMode(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isResultMode = actions.payload;
+    },
+    setIsShowingGameSubmit(state: NavMode, actions: PayloadAction<boolean>) {
+      state.isShowingGameSubmit = actions.payload;
     },
   },
 });
@@ -75,6 +86,12 @@ const clientSession = createSlice({
   name: "clientSession",
   initialState: sessionInitialState,
   reducers: {
+    setMySessionTitle(
+      state: ClientSessionType,
+      actions: PayloadAction<string>
+    ) {
+      state.mySessionTitle = actions.payload;
+    },
     setMySessionId(state: ClientSessionType, actions: PayloadAction<string>) {
       state.mySessionId = actions.payload;
     },
@@ -114,6 +131,12 @@ const clientSession = createSlice({
     ) {
       state.isDisplayEmoji = actions.payload;
     },
+    setIsPublic(state: ClientSessionType, actions: PayloadAction<boolean>) {
+      state.isPublic = actions.payload;
+    },
+    setIsHost(state: ClientSessionType, actions: PayloadAction<boolean>) {
+      state.isHost = actions.payload;
+    },
   },
 });
 export const store = configureStore({
@@ -129,9 +152,11 @@ export const {
   setIsCreatingPreferences,
   setIsShowingGame,
   setIsShowingMessage,
-  setIsLoggedIn,
+  setIsResultMode,
+  setIsShowingGameSubmit,
 } = navbar.actions;
 export const {
+  setMySessionTitle,
   setMySessionId,
   setMyUserName,
   setAudioEnabled,
@@ -142,6 +167,8 @@ export const {
   addChatEvents,
   addEmojiEvents,
   setIsDisplayEmoji,
+  setIsPublic,
+  setIsHost,
 } = clientSession.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

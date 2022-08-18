@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
@@ -10,6 +11,7 @@ type PropsType = {
   isDisplayInfo: boolean;
   concreteInfo?: React.ReactElement;
   SearchBar?: React.ReactElement;
+  children?: ReactNode;
 };
 
 function PageHeader(props: PropsType) {
@@ -43,6 +45,7 @@ function PageHeader(props: PropsType) {
         {isDisplayInfo && <>{concreteInfo}</>}
         {isDisplayBtn && <>{concreteBtn}</>}
       </UtilBox>
+      {props.children}
       <Hr />
     </Header>
   );
@@ -56,7 +59,7 @@ const Header = styled.div`
 `;
 
 const HeaderText = styled.h1`
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: bold;
   margin: 0 0 2rem 0;
 `;

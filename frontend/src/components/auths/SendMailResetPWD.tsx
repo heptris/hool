@@ -169,14 +169,14 @@ const Title = styled.div`
 `;
 
 const SubTitle1 = styled.div`
-  font-size: 0.625rem;
+  font-size: 0.85rem;
   color: ${darkTheme.adaptiveGrey500};
   align-self: start;
   margin-bottom: 0.25rem;
 `;
 
 const SubTitle2 = styled.div`
-  font-size: 0.625rem;
+  font-size: 0.85rem;
   color: ${darkTheme.adaptiveGrey500};
   align-self: start;
   margin-bottom: 1.5rem;

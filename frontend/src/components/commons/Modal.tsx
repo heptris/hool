@@ -49,7 +49,6 @@ const Wrapper = styled.div`
   left: 0;
   z-index: 9990;
 `;
-
 const ModalWindow = styled.div`
   min-width: 100vw;
   height: 100vh;
@@ -63,19 +62,16 @@ const ModalWindow = styled.div`
   left: 0;
   z-index: 9991;
 `;
-
 const ModalComponent = styled.div`
   border-radius: 4px;
   background-color: ${darkTheme.mainColor};
   z-index: 9992;
 `;
-
 const ModalHeader = styled.div`
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
 `;
-
 // const CloseBtn = styled.button`
 //   background-color: transparent;
 
@@ -87,12 +83,10 @@ const ModalHeader = styled.div`
 //     }
 //   }
 // `;
-
 const Hr = styled.hr`
   border: 1px solid ${darkTheme.adaptiveGrey700};
   background-color: ${darkTheme.adaptiveGrey700};
 `;
-
 const ModalBody = styled.div`
   padding: 0 1rem;
 `;

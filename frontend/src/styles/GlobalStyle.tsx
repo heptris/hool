@@ -3,7 +3,7 @@ import { darkTheme } from "./Theme";
 
 const { darkColor, white } = darkTheme;
 
-export const letterSpacingSize = 0.08;
+export const letterSpacingSize = 0.04;
 
 export const GlobalStyle = createGlobalStyle`
   /* * {

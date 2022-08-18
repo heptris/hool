@@ -22,7 +22,20 @@ const SignUp = () => {
   const [disabled, setDisabled] = useState(true);
   const [nicknameOverlap, setnickNameOverlap] = useState("");
   const [passwordOverlap, setPasswordOverlap] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
 
+  const emailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const InputEmail = event.target.value;
+    setEmail(InputEmail);
+    if (!emailRegex.test(InputEmail)) {
+      setEmailMessage("올바르지 않은 이메일 형식입니다.");
+    } else {
+      setEmailMessage("올바른 이메일입니다.");
+    }
+  };
   const emailSendHandler = () => {
     if (!email) {
       return alert("이메일을 입력해주세요");
@@ -64,12 +77,12 @@ const SignUp = () => {
   };
 
   const checkNicknameHandler = async () => {
+    console.log(nickname);
     return await postCheckNickName({ nickName: nickname })
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           setnickNameOverlap("사용가능한 닉네임입니다.");
-        } else if (res.status === 409) {
-          alert("중복");
         }
       })
       .catch((err) => {
@@ -78,6 +91,30 @@ const SignUp = () => {
         }
         console.log(err);
       });
+  };
+
+  const nicknameChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const Inputnickname = event.target.value;
+    setNickname(Inputnickname);
+    if (Inputnickname.trim().length < 3 || Inputnickname.trim().length > 30) {
+      setnickNameOverlap("3자리 이상 30자리 이내로 작성해 주세요.");
+    } else {
+      setnickNameOverlap("중복검사를 해주세요");
+    }
+  };
+
+  const passwordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+    const InputPassword = event.target.value;
+    setPassword(InputPassword);
+    if (InputPassword.trim().length < 8 || InputPassword.trim().length > 16) {
+      setPasswordMessage("최소 8자리 이상 16자리 이하로 작성해주세요.");
+    } else if (!passwordRegex.test(InputPassword)) {
+      setPasswordMessage("숫자+영문자+특수문자 조합으로 작성해주세요!");
+    } else {
+      setPasswordMessage("안전한 비밀번호입니다.");
+    }
   };
 
   const checkPassworChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -119,10 +156,8 @@ const SignUp = () => {
             text="이메일"
             placeholderText="Email"
             type="email"
-            info="*필수 정보입니다"
-            inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setEmail(event.target.value)
-            }
+            info={emailMessage}
+            inputOnChange={emailChangeHandler}
           />
           <Button
             CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
@@ -170,9 +205,7 @@ const SignUp = () => {
             placeholderText="Nickname"
             info={nicknameOverlap}
             type="text"
-            inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setNickname(event.target.value)
-            }
+            inputOnChange={nicknameChangeHandler}
           />
           <Button
             CSSProps={"position:absolute; top: 1.5rem; right:0.4rem"}
@@ -189,13 +222,12 @@ const SignUp = () => {
           text="비밀번호"
           placeholderText="Password"
           type="password"
-          inputOnChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setPassword(event.target.value)
-          }
+          info={passwordMessage}
+          inputOnChange={passwordChangeHandler}
         />
         <LabelInput
           text="비밀번호 확인"
-          placeholderText="Password Confirm"
+          placeholderText="Confirm Password"
           info={passwordOverlap}
           type="password"
           inputOnChange={checkPassworChangedHandler}

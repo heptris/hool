@@ -1,32 +1,34 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getMyEmojiList, getMyFavoriteEmoji } from "api/profile";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
+
+import { Navigate } from "@tanstack/react-location";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
+import type { EmojiDetailType } from "types/EmojiDetailType";
 import Button from "components/commons/Button";
 import Modal from "components/commons/Modal";
 import EmojiCard from "components/commons/EmojiCard";
 import EnrollModalHeader from "./EnrollModalHeader";
 import EnrollModalBody from "./EnrollModalBody";
 import DetailModalBody from "./DetailModalBody";
-
-export type DetailType = {
-  emojiTitle: string;
-  ARCode: string;
-  author: string;
-  description: string;
-  isFav: boolean;
-};
+import Loading from "components/Loading";
 
 function Inventory() {
   const [isOwnItems, setIsOwnItems] = useState(true);
   const [isDisplayDetail, setIsDisplayDetail] = useState(false);
-  const [detailInfo, setDetailInfo] = useState<DetailType>({
-    emojiTitle: "",
-    ARCode: "",
-    author: "",
+  const [detailInfo, setDetailInfo] = useState<EmojiDetailType>({
+    emojiId: 0,
+    emojiUrl: "",
+    name: "",
     description: "",
-    isFav: false,
+    emojiAnimate: "",
+    memberEmojiId: 0,
+    isFavorite: false,
+    ARCode: "",
   });
   const [isDisplayEnroll, setIsDisplayEnroll] = useState(false);
 
@@ -37,39 +39,31 @@ function Inventory() {
     setIsDisplayDetail(!isDisplayDetail);
   };
 
-  const myOwnItems = [
-    {
-      emojiTitle: "불타는 아스날",
-      ARCode: "",
-      author: "Andrew",
-      description: "아스날은 불타야 제맛이지",
-      isFav: false,
-    },
-    {
-      emojiTitle: "우리흥",
-      ARCode: "",
-      author: "Dijkstra",
-      description: "으앙마",
-      isFav: false,
-    },
-  ];
+  const {
+    data: myOwnEmojiList,
+    isError: myOwnEmojiListIsError,
+    isLoading: myOwnEmojiListIsLoading,
+  } = useQuery([QUERY_KEYS.MY_OWN_EMOJI_LIST], getMyEmojiList, {
+    retry: 0,
+  });
+  const {
+    data: myFavEmojiList,
+    isError: myFavEmojiListIsError,
+    isLoading: myFavEmojiListIsLoading,
+  } = useQuery([QUERY_KEYS.MY_FAV_EMOJI_LIST], getMyFavoriteEmoji, {
+    retry: 0,
+  });
 
-  const myFavorites = [
-    {
-      emojiTitle: "맨구",
-      ARCode: "",
-      author: "Andrew",
-      description: "훈발놈",
-      isFav: true,
-    },
-  ];
+  if (myOwnEmojiListIsLoading || myFavEmojiListIsLoading) return <Loading />;
+  if (myOwnEmojiListIsError || myFavEmojiListIsError)
+    return <Navigate to={ROUTES_NAME.ERROR} />;
 
   return (
     <InventoryBox>
       {isDisplayEnroll && (
         <Modal
           header={<EnrollModalHeader />}
-          body={<EnrollModalBody />}
+          body={<EnrollModalBody onDisplayChange={switchIsDisplayEnroll} />}
           onDisplayChange={switchIsDisplayEnroll}
         />
       )}
@@ -80,7 +74,12 @@ function Inventory() {
               <span>상세정보</span>
             </DetailHeader>
           }
-          body={<DetailModalBody {...detailInfo} />}
+          body={
+            <DetailModalBody
+              {...detailInfo}
+              onChangeDetailInfo={setDetailInfo}
+            />
+          }
           onDisplayChange={switchIsDisplayDetail}
         />
       )}
@@ -134,35 +133,28 @@ function Inventory() {
 
       <InventoryContent>
         {isOwnItems
-          ? myOwnItems.map((item, i) => {
-              return (
-                <div
-                  key={i}
-                  onClick={() => {
-                    switchIsDisplayDetail();
-                    setDetailInfo(item);
-                  }}
-                >
-                  <EmojiCard>
-                    <></>
-                  </EmojiCard>
-                </div>
-              );
-            })
-          : myFavorites.map((item) => {
-              return (
-                <div
-                  onClick={() => {
-                    switchIsDisplayDetail();
-                    setDetailInfo(item);
-                  }}
-                >
-                  <EmojiCard>
-                    <></>
-                  </EmojiCard>
-                </div>
-              );
-            })}
+          ? myOwnEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+              <div
+                key={i}
+                onClick={() => {
+                  setDetailInfo(item);
+                  switchIsDisplayDetail();
+                }}
+              >
+                <EmojiCard emojiUrl={item.emojiUrl} />
+              </div>
+            ))
+          : myFavEmojiList?.data.map((item: EmojiDetailType, i: number) => (
+              <div
+                key={i}
+                onClick={() => {
+                  setDetailInfo(item);
+                  switchIsDisplayDetail();
+                }}
+              >
+                <EmojiCard emojiUrl={item.emojiUrl} />
+              </div>
+            ))}
       </InventoryContent>
     </InventoryBox>
   );
@@ -229,7 +221,7 @@ const InventoryContent = styled.div`
 `;
 const DetailHeader = styled.h1`
   width: 20rem;
-  margin: 1rem 0 1rem 0;
+  margin: 1.5rem 1rem 1rem 0.5rem;
 `;
 
 export default Inventory;

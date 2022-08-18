@@ -1,84 +1,118 @@
-import { Key } from "react";
+import React, { useState } from "react";
 import { Navigate } from "@tanstack/react-location";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getMarketMakeList, postMarketItem } from "api/market";
+import { QUERY_KEYS, ROUTES_NAME } from "constant";
 
 import styled from "styled-components";
 import { darkTheme } from "styles/Theme";
 
-import { getMarketMakeList } from "api/market";
-
-import { ROUTES_NAME } from "constant";
-
 import Button from "components/commons/Button";
 import EmojiCard from "components/commons/EmojiCard";
 import LabelInput from "components/commons/LabelInput";
-import LabelTextarea from "components/commons/LabelTextarea";
 import Loading from "components/Loading";
+
+import { UserInfoType } from "types/UserInfoType";
 
 const { adaptiveGrey700, adaptiveGrey800 } = darkTheme;
 
+interface UploadItemType {
+  emojiId: number;
+  name: string;
+  emojiUrl: string;
+  description: string;
+  emojiAnimate: string;
+  creatorId: number;
+  price?: number;
+}
+
 const MarketModalBody = () => {
+  const queryClient = useQueryClient();
+  const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
+  const [uploadItemInfo, setUploadItemInfo] = useState<UploadItemType>({
+    emojiId: 0,
+    name: "",
+    emojiUrl: "",
+    description: "",
+    emojiAnimate: "",
+    creatorId: 0,
+    price: 0,
+  });
   const {
     data: canUploadData,
     isError: canUploadIsError,
     isLoading: canUploadIsLoading,
-  } = useQuery(["market-can-upload"], getMarketMakeList);
+  } = useQuery([QUERY_KEYS.MARKET_UPLOAD_ITEM], getMarketMakeList);
 
   if (canUploadIsLoading) return <Loading />;
   if (canUploadIsError) return <Navigate to={ROUTES_NAME.ERROR} />;
+
+  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    setUploadItemInfo({
+      ...uploadItemInfo,
+      price: parseInt(e.target.value),
+    });
+  };
+  const enrollEmojiForMarket = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (uploadItemInfo.price === undefined || isNaN(uploadItemInfo.price))
+      return;
+    if (uploadItemInfo.emojiId === 0) return;
+
+    postMarketItem({
+      emojiId: uploadItemInfo.emojiId,
+      price: uploadItemInfo.price,
+    })
+      .then((res) => {
+        console.log(res.data);
+        queryClient.invalidateQueries([QUERY_KEYS.MARKET_UPLOAD_ITEM]);
+        queryClient.invalidateQueries([QUERY_KEYS.MARKET]);
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <>
       <LRContainer>
         <LeftContainer>
           <ItemList>
-            {canUploadData.data.map(
-              (
-                el: {
-                  creatorId: number;
-                  description: string;
-                  name: string;
-                  url: string;
-                },
-                i: Key | null | undefined
-              ) => {
-                return (
-                  <EmojiCard
-                    key={i}
-                    children={
-                      <div style={{ overflow: "hidden" }}>
-                        <div>{el.name}</div>
-                        <div>{el.description}</div>
-                        <div>{el.url}</div>
-                      </div>
-                    }
-                  />
-                );
-              }
-            )}
+            {canUploadData.data.map((emo: UploadItemType) => (
+              <div
+                onClick={() => {
+                  setUploadItemInfo(emo);
+                }}
+              >
+                <EmojiCard key={emo.emojiId} emojiUrl={emo.emojiUrl} />
+              </div>
+            ))}
           </ItemList>
-          <Button height={3} width={15} text={"등록하기"} marginTop={1.5} />
+          <Button
+            height={3}
+            width={14.5}
+            text={"등록하기"}
+            marginTop={1.5}
+            buttonOnClick={enrollEmojiForMarket}
+          />
         </LeftContainer>
         <RightContainer>
+          <PreviewDivision>
+            {uploadItemInfo.emojiUrl !== "" ? (
+              <NonClickableEmojiCard emojiUrl={uploadItemInfo.emojiUrl} />
+            ) : null}
+            <EmojiTitle>{uploadItemInfo.name}</EmojiTitle>
+            <Description>{uploadItemInfo.description}</Description>
+          </PreviewDivision>
           <InputWrapper>
-            <LeftLabelInput
-              text={"상품명"}
-              info={"2~22자 내로 입력해주세요"}
-              widthSize={"10rem"}
-              placeholderText={"상품명을 적어주세요"}
-            />
             <LabelInput
+              type="text"
               text="판매금액"
-              widthSize={"10rem"}
+              widthSize={"14.5rem"}
               placeholderText={"판매금액을 적어주세요"}
+              inputOnChange={onChangePrice}
             />
           </InputWrapper>
-          <LabelTextarea
-            text="설명"
-            placeholderText="여기에 설명을 적어주세요"
-            height="100%"
-            width="100%"
-          />
         </RightContainer>
       </LRContainer>
     </>
@@ -101,17 +135,20 @@ const RightContainer = styled.div`
   align-items: center;
 `;
 const ItemList = styled.div`
+  padding: 0.5rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 0.5rem;
   justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 0.5rem;
   background-color: ${adaptiveGrey800};
   border: 1px solid ${adaptiveGrey700};
-  padding: 0.5rem;
-  height: 15rem;
-  width: 100%;
-  overflow: auto;
   border-radius: 4px;
+  max-width: fit-content;
+  min-width: 14.5rem;
+  height: 14.5rem;
+  overflow: auto;
+  box-sizing: border-box;
 
   ::-webkit-scrollbar {
     width: 6px;
@@ -128,13 +165,44 @@ const ItemList = styled.div`
     height: 0;
   }
 `;
-const LeftLabelInput = styled(LabelInput)`
-  margin-right: 1rem;
+const PreviewDivision = styled.div`
+  width: 14.5rem;
+  height: 14.5rem;
+  background-color: ${darkTheme.darkColor};
+  border: 1px solid ${darkTheme.adaptiveGrey800};
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const NonClickableEmojiCard = styled(EmojiCard)`
+  width: 6.25rem;
+  height: 6.25rem;
+
+  &:hover {
+    cursor: default;
+    outline: 0;
+    background-color: ${darkTheme.darkColor};
+  }
 `;
 const InputWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 0.7rem;
+`;
+const EmojiTitle = styled.h1`
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+const Description = styled.p`
+  margin-top: 1.5rem;
+  color: ${darkTheme.adaptiveGrey200};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default MarketModalBody;

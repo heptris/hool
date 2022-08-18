@@ -8,20 +8,37 @@ const EMOJI_SHOP = "emojishop/";
 const postBuyEmoji = (obj: BuyEmojiType) => postRequest("deal", obj);
 
 // emoji-shop-controller
-const getMarketList = (cursorId: number, size: number) =>
-  getRequest(`${EMOJI_SHOP}list?cursorId=${cursorId}&size=${size}`);
+const putMarketItem = (obj: { emojiShopId: number; updatePrice: number }) =>
+  putRequest(EMOJI_SHOP, obj);
 
 const postMarketItem = (obj: { emojiId: number; price: number }) =>
   postRequest(EMOJI_SHOP, obj);
 
-const putMarketItem = (obj: { emojiShopId: number; updatePrice: number }) =>
-  putRequest(EMOJI_SHOP, obj);
-
 const deleteMarketItem = (id: number) =>
   deleteRequest(`${EMOJI_SHOP}?emojiShopId=${id}`);
 
-const getMarketMakeList = (cursorId: number, size: number) =>
+const getMarketList = () => getRequest(`${EMOJI_SHOP}list`);
+
+const getMarketListPage = ({
+  pageParam,
+  size,
+}: {
+  pageParam?: number;
+  size: number;
+}) =>
+  getRequest(
+    `${EMOJI_SHOP}list/page?cursorId=${pageParam ? pageParam : ""}&size=${size}`
+  );
+
+const getMarketRankList = () => getRequest(`${EMOJI_SHOP}list/rank`);
+
+const getMarketMakeList = () => getRequest(`${EMOJI_SHOP}makelist`);
+
+const getMarketMakeListPage = (cursorId = 1, size = 10) =>
   getRequest(`${EMOJI_SHOP}makelist?cursorId=${cursorId}&size=${size}`);
+
+const getMarketSearch = (keyword: string) =>
+  getRequest(`${EMOJI_SHOP}search?keyword=${keyword}`);
 
 export {
   getMarketList,
@@ -30,4 +47,8 @@ export {
   deleteMarketItem,
   postBuyEmoji,
   getMarketMakeList,
+  getMarketMakeListPage,
+  getMarketListPage,
+  getMarketRankList,
+  getMarketSearch,
 };

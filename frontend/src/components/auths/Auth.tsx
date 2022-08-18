@@ -22,10 +22,10 @@ const Auth = () => {
   const { login } = useAuth();
 
   const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { placeholder, value, id } = e.target;
+    const { value, id } = e.target;
     await setForm({
       ...form,
-      [id ? id : placeholder]: value,
+      [id]: value,
     });
   };
 
@@ -60,17 +60,18 @@ const Auth = () => {
           inputRef={eMailRef}
           inputValue={form.memberEmail}
           text="이메일"
-          placeholderText="hool@example.com"
+          placeholderText="Email"
           type="email"
           inputOnChange={onChange}
           id={"memberEmail"}
         />
         <LabelInput
           text="비밀번호"
-          placeholderText="password"
+          placeholderText="Password"
           type="password"
           inputValue={form.password}
           inputOnChange={onChange}
+          id={"password"}
         />
         <LinkText to={"/auth/find"}>
           비밀번호를 잊어버리셨나요? 비밀번호 초기화

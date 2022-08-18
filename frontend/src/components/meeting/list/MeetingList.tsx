@@ -1,62 +1,155 @@
-import { Link, Navigate } from "@tanstack/react-location";
-import { useDispatch } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { Navigate } from "@tanstack/react-location";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
-import useUser from "hooks/useUser";
+import useRoomEnter from "hooks/useRoomEnter";
 
 import styled from "styled-components";
 
-import { getMeetingList, postEnterMeetingRoom } from "api/meeting";
-
-import { setMySessionId, setMyUserName } from "store";
+import {
+  getMeetingListPage,
+  postCheckPasswordBeforeEnterMeetingRoom,
+  postEnterMeetingRoom,
+} from "api/meeting";
 
 import MeetingListItem from "./MeetingListItem";
 import Loading from "components/Loading";
 
 import { QUERY_KEYS } from "constant";
 
-import { MeetingRoomType } from "types/MeetingRoomType";
+import type { MeetingRoomType } from "types/MeetingRoomType";
+import type { UserInfoType } from "types/UserInfoType";
 
-const MeetingList = () => {
-  const { data, isLoading, isError } = useQuery([QUERY_KEYS.MEETINGS], () =>
-    getMeetingList()
+const MeetingList = ({ isState }: { isState: string }) => {
+  const queryClient = useQueryClient();
+  const { ref, inView } = useInView();
+  const [size, setSize] = useState(4);
+  const newList: Array<any> = [];
+  const userInfo = useQueryClient().getQueryData<UserInfoType>([
+    QUERY_KEYS.USER,
+  ]);
+  const {
+    data: allMeetingList,
+    isLoading: allMeetingListIsLoading,
+    isError: allMeetingListIsError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    [QUERY_KEYS.MEETING_LIST_PAGE],
+    ({ pageParam }) =>
+      getMeetingListPage({ pageParam, size }).then((res) => res.data),
+    {
+      getNextPageParam: (lastPageRes) => lastPageRes.cursorId,
+    }
   );
-  const { userInfo } = useUser();
+  const { handleEnterRoom } = useRoomEnter();
+  isState === "DEFAULT"
+    ? allMeetingList?.pages.map((page) => {
+        page.values.map((el: MeetingRoomType) => {
+          newList.push(el);
+        });
+      })
+    : allMeetingList?.pages.map((page) => {
+        page.values.map((el: MeetingRoomType) => {
+          if (el.category === isState) {
+            newList.push(el);
+          }
+        });
+      });
 
-  const dispatch = useDispatch();
+  const { mutate: mutatePublic } = useMutation(postEnterMeetingRoom, {
+    onSuccess: (data, { title, conferenceId }) => {
+      userInfo && handleEnterRoom(title, conferenceId, userInfo.nickName, data);
+    },
+    onError: (error) => {
+      // err.response.data.message ? alert(err.response.data.message) :
+      alert(error);
+    },
+  });
+  const { mutate: mutatePrivate } = useMutation(
+    postCheckPasswordBeforeEnterMeetingRoom,
+    {
+      onSuccess: (data, { title, conferenceId }) => {
+        userInfo &&
+          handleEnterRoom(title, conferenceId, userInfo.nickName, data);
+      },
+      onError: (error) => {
+        // err.response.data.message ? alert(err.response.data.message) :
+        alert(error);
+      },
+    }
+  );
 
-  if (isLoading) return <Loading />;
-  if (isError) return <Navigate to={"/error"} />;
+  useEffect(() => {
+    if (inView) {
+      hasNextPage && !isFetchingNextPage && fetchNextPage();
+    }
+  }, [inView]);
+  useEffect(() => {
+    queryClient.invalidateQueries([QUERY_KEYS.MEETING_LIST_PAGE], {
+      refetchPage: (page, index) => index === 0,
+    });
+  }, []);
+
+  if (allMeetingListIsLoading) return <Loading />;
+  if (allMeetingListIsError) return <Navigate to={"/error"} />;
 
   return (
-    <ItemList>
-      {data.data.map((el: MeetingRoomType) => {
-        return userInfo ? (
-          <Link
-            to={`meeting/${el.conferenceId}`}
-            key={el.conferenceId}
-            onClick={() => {
-              dispatch(setMySessionId("" + el.conferenceId));
-              dispatch(setMyUserName(userInfo.nickName));
-              postEnterMeetingRoom({
-                conferenceId: el.conferenceId,
-                memberId: userInfo.memberId,
-              });
-            }}
-          >
-            <MeetingListItem {...el} />
-          </Link>
-        ) : (
-          <div onClick={() => alert("로그인이 필요한 서비스입니다.")}>
-            <MeetingListItem {...el} />
-          </div>
-        );
-      })}
-    </ItemList>
+    <>
+      {/* <div onScroll={onScroll} ref={viewRef} /> */}
+      {isState && (
+        <ItemList>
+          {newList.map((el: MeetingRoomType) => {
+            const { title, conferenceId, isPublic } = el;
+            return userInfo ? (
+              <ItemLink
+                key={conferenceId}
+                onClick={() => {
+                  isPublic
+                    ? (() => {
+                        mutatePublic({
+                          title,
+                          conferenceId: conferenceId,
+                        });
+                      })()
+                    : (() => {
+                        const password =
+                          prompt("비공개 방 비밀번호를 입력해주세요");
+                        mutatePrivate({
+                          title,
+                          conferenceId,
+                          password: password ? password : "",
+                        });
+                      })();
+                }}
+              >
+                <MeetingListItem {...el} />
+              </ItemLink>
+            ) : (
+              <div
+                onClick={() => {
+                  alert("로그인이 필요한 서비스입니다.");
+                }}
+              >
+                <MeetingListItem {...el} />
+              </div>
+            );
+          })}
+
+          <div ref={ref} />
+        </ItemList>
+      )}
+    </>
   );
 };
 
-const ItemList = styled.div`
+const ItemList = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
@@ -64,5 +157,8 @@ const ItemList = styled.div`
   column-gap: 1.5vw;
   margin-top: 2rem;
   justify-content: center;
+`;
+const ItemLink = styled.li`
+  cursor: pointer;
 `;
 export default MeetingList;

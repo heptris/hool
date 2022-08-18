@@ -2,18 +2,22 @@ import styled from "styled-components";
 
 import SocialItem from "./SocialItem";
 
-import { FriendInfoType } from "types/FriendInfoType";
+import { FriendRequestInfoType } from "types/FriendInfoType";
 
 type PropsType = {
-  requests: FriendInfoType[];
+  requests: FriendRequestInfoType[];
   isDisplayMyFriends: boolean;
 };
 
 function Requests({ requests, isDisplayMyFriends }: PropsType) {
   return (
     <RequestsBox>
-      {requests.map((user, i) => (
-        <SocialItem key={i} isDisplayMyFriends={isDisplayMyFriends} {...user} />
+      {requests.map((user) => (
+        <SocialItem
+          key={user.friendRequestId}
+          isDisplayMyFriends={isDisplayMyFriends}
+          {...user}
+        />
       ))}
     </RequestsBox>
   );
