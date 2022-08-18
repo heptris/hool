@@ -26,7 +26,7 @@ import Container from "components/commons/Container";
 import VideoContainer from "./VideoContainer";
 import MeetingMessageShow from "./MeetingMessageShow";
 import MeetingMessageInput from "./MeetingMessageInput";
-import MeetingGame from "./MeetingGame";
+import MeetingGame, { MeetingStaticGame } from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 import Modal from "components/commons/Modal";
 
@@ -103,12 +103,19 @@ function MeetingRoom() {
     recvEmojiSignal();
   }, [session]);
 
+  const [showGameModal, setShowGameModal] = useState(false);
+  const handleStaticGameClose = (value: boolean) => {
+    setShowGameModal(value);
+    console.log(showGameModal);
+  };
+
   // 방장이 게임을 생성했을 경우를 핸들링하는 useEffect
   useEffect(() => {
     if (gameInfo.timeLimit) {
       //게임을 생성하면
       dispatch(setIsResultMode(true)); // navside -> result모드로 변경
       sendGameInfo();
+      setShowGameModal(true);
     }
   }, [gameInfo]);
   // 참가자가 게임을 받았을 경우 핸들링하는 useEffect
@@ -255,6 +262,15 @@ function MeetingRoom() {
               handleSessionState={handleSessionState}
             />
           </MeetingBox>
+          {!isShowingGame && showGameModal && (
+            <MeetingStaticGame
+              handleStaticGameClose={handleStaticGameClose}
+              gameInfo={rcvdGameInfo}
+              handleDisplayClose={() => {
+                dispatch(setIsShowingGame(false));
+              }}
+            />
+          )}
           <GameMessageBox>
             {isShowingMessage && (
               <MeetingMessageShow recvSignal={recvChatSignal} />
@@ -274,6 +290,7 @@ function MeetingRoom() {
       }
       {isShowingGame && (
         <MeetingGame
+          handleStaticGameClose={handleStaticGameClose}
           gameInfo={rcvdGameInfo}
           handleDisplayClose={() => {
             dispatch(setIsShowingGame(false));
