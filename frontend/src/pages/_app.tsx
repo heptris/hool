@@ -3,13 +3,9 @@ import useAuth from "hooks/useAuth";
 import { useEffect } from "react";
 
 export default function App({ children }: { children: React.ReactNode }) {
-  const { onSilentRefresh, logout } = useAuth();
+  const { onSilentRefresh } = useAuth();
   useEffect(() => {
     onSilentRefresh();
-    window.addEventListener("unload", logout);
-    return () => {
-      window.removeEventListener("unload", logout);
-    };
   }, []);
 
   return <Layout>{children}</Layout>;
