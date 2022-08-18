@@ -24,11 +24,13 @@ import { QUERY_KEYS } from "constant";
 
 import type { MeetingRoomType } from "types/MeetingRoomType";
 import type { UserInfoType } from "types/UserInfoType";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 const MeetingList = ({ isState }: { isState: string }) => {
+  const { isInView } = useSelector((state: RootState) => state.listPagination);
   const queryClient = useQueryClient();
-  const { ref, inView } = useInView();
-  const [size, setSize] = useState(4);
+  const [size, setSize] = useState(10);
   const newList: Array<any> = [];
   const userInfo = useQueryClient().getQueryData<UserInfoType>([
     QUERY_KEYS.USER,
@@ -87,10 +89,10 @@ const MeetingList = ({ isState }: { isState: string }) => {
   );
 
   useEffect(() => {
-    if (inView) {
+    if (isInView) {
       hasNextPage && !isFetchingNextPage && fetchNextPage();
     }
-  }, [inView]);
+  }, [isInView]);
   useEffect(() => {
     queryClient.invalidateQueries([QUERY_KEYS.MEETING_LIST_PAGE], {
       refetchPage: (page, index) => index === 0,
@@ -141,10 +143,9 @@ const MeetingList = ({ isState }: { isState: string }) => {
               </div>
             );
           })}
-
-          <div ref={ref} />
         </ItemList>
       )}
+      {isFetchingNextPage && <div>Loading...</div>}
     </>
   );
 };
@@ -160,5 +161,9 @@ const ItemList = styled.ul`
 `;
 const ItemLink = styled.li`
   cursor: pointer;
+`;
+const InViewBar = styled.div`
+  position: absolute;
+  bottom: -5rem;
 `;
 export default MeetingList;
