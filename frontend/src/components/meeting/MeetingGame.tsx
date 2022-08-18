@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { postCreateGameHistory } from "api/meeting";
 import { useMutation } from "@tanstack/react-query";
 import { GameHistoryType } from "types/GameHistoryType";
+import Modal from "components/commons/Modal";
 
 const {
   contrastColor,
@@ -45,17 +46,12 @@ const GameHeader = ({
     );
   }, [0.5 * seconds]);
   return (
-    <GameShowTopBox alertColor={alertColor}>
-      <GameSubTitle>참여를 원하지 않으면 모달 바깥을 클릭해주세요</GameSubTitle>
-      <GameTitleBox>
-        <div>
-          <GameBottomTitleText>{gameName}</GameBottomTitleText>
-        </div>
-        <GameTopText>
-          <CountdownTimer leftTime={leftTime} />
-        </GameTopText>
-      </GameTitleBox>
-    </GameShowTopBox>
+    <Header>
+      <HeaderText>게임 예측 투표</HeaderText>
+      <GameShowTopBox alertColor={alertColor}>
+        <Timer leftTime={leftTime} />
+      </GameShowTopBox>
+    </Header>
   );
 };
 
@@ -88,16 +84,23 @@ const MeetingGame = ({
   }, [gameChoice]);
 
   return (
-    <GameModalWindow>
-      <GameModal>
+    <Modal
+      header={
         <GameHeader
           gameName={gameName}
           handleDisplayClose={handleDisplayClose}
           timeLimit={timeLimit}
         />
-        <div>
-          <GameBottomResultBox>
-            <GameAgreeBox
+      }
+      body={
+        <GameWrapper>
+          <TextWrapper>
+            <Text>게임 제목 </Text>
+            <GameName>{gameName}</GameName>
+          </TextWrapper>
+          <GamePredict>
+            <Text>게임 예측</Text>
+            <AgreeItem
               onClick={() => {
                 setGameChoice({
                   ...gameChoice,
@@ -110,8 +113,8 @@ const MeetingGame = ({
                 <BtnIcon className="fa-solid fa-cube" />
                 <AgreePoint>100</AgreePoint>
               </PointWrapper>
-            </GameAgreeBox>
-            <GameDisAgreeBox
+            </AgreeItem>
+            <DisAgreeItem
               onClick={() => {
                 setGameChoice({
                   ...gameChoice,
@@ -124,105 +127,103 @@ const MeetingGame = ({
                 <BtnIcon className="fa-solid fa-cube" />
                 <AgreePoint>100</AgreePoint>
               </PointWrapper>
-            </GameDisAgreeBox>
-          </GameBottomResultBox>
-        </div>
-      </GameModal>
-      <GameModalWrapper
-        onClick={(e: React.MouseEvent) => {
-          e.preventDefault();
-          handleDisplayClose();
-        }}
-      />
-    </GameModalWindow>
+            </DisAgreeItem>
+          </GamePredict>
+        </GameWrapper>
+      }
+      onDisplayChange={handleDisplayClose}
+    />
   );
 };
-const GameSubTitle = styled.p`
-  position: absolute;
-  font-size: 0.8rem;
-  left: 0.5rem;
-  top: 0.5rem;
-`;
-const GameModalWindow = styled.div`
-  min-width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9991;
+const Header = styled.div`
+  margin: 1.5rem 1rem 1rem;
+  height: 2rem;
+  width: 20rem;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 `;
-const GameModalWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 9990;
-  cursor: pointer;
+const HeaderText = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
 `;
-const GameModal = styled.div`
-  z-index: 9992;
-  min-width: 30%;
+const Timer = styled(CountdownTimer)`
+  margin: 0;
 `;
+const GameWrapper = styled.div`
+  margin: 1rem;
+  height: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+`;
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const GamePredict = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Text = styled.div`
+  width: 30%;
+  font-size: 0.825rem;
+  margin-bottom: 1rem;
+`;
+const GameName = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  border: 1px solid ${darkTheme.adaptiveGrey200};
+  border-radius: 8px;
+  margin-bottom: 1rem;
+`;
+
 const PointWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
 const GameShowTopBox = styled(MessageBox)`
-  width: 100%;
-  padding: 0;
-  margin: 0;
+  width: 5rem;
+  height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${({ alertColor }: { alertColor: string }) => alertColor};
+`;
+
+const AgreeItem = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  position: relative;
-`;
-
-const GameTopText = styled.h3`
-  font-size: 1.5rem;
-`;
-
-const GameTitleBox = styled.div`
-  width: 100%;
-  height: 3.5rem;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const GameBottomTitleText = styled.h1`
-  font-size: 2rem;
-`;
-
-const GameBottomResultBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-  margin-top: 0.5rem;
-`;
-
-const GameAgreeBox = styled.div`
-  overflow: auto;
-  width: 49%;
-  height: 10rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  box-sizing: border-box;
+  justify-content: space-around;
   background-color: ${mainBadgeColor};
+  height: 3rem;
+  position: relative;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
   cursor: pointer;
 `;
 
+const DisAgreeItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: ${contrastColor};
+  height: 3rem;
+  position: relative;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+`;
 const AgreeTitle = styled.h1`
   font-size: 2rem;
   font-weight: bold;
@@ -236,10 +237,6 @@ const BtnIcon = styled.i`
 const AgreePoint = styled.h1`
   font-size: 1rem;
   margin-left: 0.3rem;
-`;
-
-const GameDisAgreeBox = styled(GameAgreeBox)`
-  background-color: ${contrastColor};
 `;
 
 const DisAgreeTitle = styled(AgreeTitle)``;
