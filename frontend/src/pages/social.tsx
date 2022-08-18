@@ -16,7 +16,10 @@ import { getMyProfile } from "api/profile";
 
 function SocialPage() {
   const [isDisplayMyFriends, setIsDisplayMyFriends] = useState(true);
-  const userInfo = useQuery([QUERY_KEYS.USER], getMyProfile).data;
+  const { data: userInfo, isLoading: isUserInfoLoading } = useQuery(
+    [QUERY_KEYS.USER],
+    getMyProfile
+  );
   const { data: friendListData, isLoading: friendListIsLoading } = useQuery(
     [QUERY_KEYS.FRIEND_LIST],
     getFriendList,
@@ -27,7 +30,8 @@ function SocialPage() {
       retry: 1,
     });
 
-  if (friendListIsLoading || friendMessageListIsLoading) return <Loading />;
+  if (friendListIsLoading || friendMessageListIsLoading || isUserInfoLoading)
+    return <Loading />;
   if (!userInfo) return <Navigate to={ROUTES_NAME.LOGIN} />;
 
   return (
