@@ -81,7 +81,6 @@ const ProfileEditModalBody = ({
       .then(async (res) => {
         updateUser(await getMyProfile());
         queryClient.invalidateQueries([QUERY_KEYS.USER]);
-        alert("프로필 편집이 성공했습니다.");
       })
       .catch((err) => console.error(err));
     onDisplayChange();
