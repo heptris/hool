@@ -15,6 +15,7 @@ import { QUERY_KEYS } from "constant";
 
 import type { UserInfoType } from "types/UserInfoType";
 import type { FriendInfoType } from "types/FriendInfoType";
+import MyFriends from "./MyFriends";
 
 type PropsType = {
   isDisplayMyFriends: boolean;
@@ -54,7 +55,7 @@ const SocialSearchBar = () => {
   return (
     <SearchBar
       inputValue={searchName}
-      searchPlaceholder="친구 검색"
+      searchPlaceholder="사용자 검색"
       inputOnChange={handleSearchName}
       SearchListComponent={(() => {
         // if (searchName === userInfo?.nickName)
@@ -168,6 +169,11 @@ function SocialHeader({
   isDisplayMyFriends,
   setIsDisplayMyFriends,
 }: PropsType) {
+  const queryClient = useQueryClient();
+
+  const friendMessageList: { data: FriendInfoType[] } | undefined =
+    queryClient.getQueryData([QUERY_KEYS.FRIEND_MESSAGE_LIST]);
+
   return (
     <PageHeader
       pageTitle="친구 찾기"
@@ -214,7 +220,7 @@ function SocialHeader({
                 isDisplayMyFriends ? {} : { color: darkTheme.mainBadgeColor }
               }
             >
-              친구요청
+              내게 온 친구요청({friendMessageList?.data.length})
             </span>
           </SwitchItem>
         </Switches>
