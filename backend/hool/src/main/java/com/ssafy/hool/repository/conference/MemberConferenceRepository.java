@@ -17,4 +17,5 @@ public interface MemberConferenceRepository extends JpaRepository<Member_confere
 
     @Query("select mc from Member_conference mc where mc.enterStatus = 'ENTER' and mc.member.id = :memberId")
     List<Member_conference> findEnterStatus(@Param("memberId") Long memberId);
+
 }
