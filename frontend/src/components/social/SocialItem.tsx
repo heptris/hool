@@ -246,6 +246,9 @@ const Hr = styled.hr`
 const ProfileDiv = styled.div`
   position: relative;
   margin: 1.5rem 0 1.5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const StatusCircle = styled.div`
   width: 0.8rem;
@@ -253,7 +256,7 @@ const StatusCircle = styled.div`
   border: 1px solid ${darkTheme.black};
   border-radius: 1rem;
   position: absolute;
-  top: -4px;
+  top: 10px;
   right: -4px;
   background-color: ${({ memberStatus }: { memberStatus: string }) =>
     memberStatus === "ONLINE" ? darkTheme.infoColor : darkTheme.contrastColor};
