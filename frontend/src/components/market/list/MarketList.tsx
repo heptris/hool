@@ -19,19 +19,20 @@ import { QUERY_KEYS, ROUTES_NAME } from "constant";
 import { MarketItemType } from "types/MarketItemType";
 import { UserInfoType } from "types/UserInfoType";
 
-const { USER, MARKET_SEARCHED_LIST } = QUERY_KEYS;
+const { MARKET_SEARCHED_LIST } = QUERY_KEYS;
 
 const MarketList = ({
   searchKeyword,
   isTopTen,
+  userInfo,
 }: {
   searchKeyword: string;
   isTopTen: boolean;
+  userInfo?: UserInfoType;
 }) => {
   const { ref, inView } = useInView();
   const [size, setSize] = useState(4);
   const queryClient = useQueryClient();
-  const userInfo = queryClient.getQueryData<UserInfoType>([USER]);
   const { data: searchedList } = useQuery<MarketItemType[]>([
     MARKET_SEARCHED_LIST,
   ]);
