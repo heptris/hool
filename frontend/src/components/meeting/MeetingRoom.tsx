@@ -17,6 +17,7 @@ import {
   setIsShowingGameSubmit,
   setMsgToSend,
   setEmojiEvents,
+  setIsGameSelect,
 } from "store";
 
 import styled from "styled-components";
@@ -116,6 +117,7 @@ function MeetingRoom() {
       dispatch(setIsResultMode(true)); // navside -> result모드로 변경
       sendGameInfo();
       setShowGameModal(true);
+      dispatch(setIsGameSelect(false));
     }
   }, [gameInfo]);
   // 참가자가 게임을 받았을 경우 핸들링하는 useEffect
