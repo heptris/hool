@@ -80,7 +80,7 @@ public class ConferenceService {
     }
 
     private void isAlreadyEnter(Long memberId) {
-        List<Member_conference> isAlreadyEnter = memberConferenceRepository.findByAlreadyEnter(memberId);
+        List<Member_conference> isAlreadyEnter = memberConferenceRepository.findEnterStatus(memberId);
         if (!isAlreadyEnter.isEmpty()) {
             throw new CustomException(ALREADY_ENTER_ROOM);
         }
