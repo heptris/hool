@@ -7,6 +7,7 @@ import {
   Subscriber,
   Stream,
   Device,
+  SignalEvent,
 } from "openvidu-browser";
 
 import {
@@ -15,6 +16,7 @@ import {
   setIsShowingGame,
   setIsShowingGameSubmit,
   setMsgToSend,
+  setEmojiEvents,
 } from "store";
 
 import styled from "styled-components";
@@ -52,9 +54,8 @@ function MeetingRoom() {
     isShowingGame,
     isShowingGameSubmit,
   } = useSelector((state: RootState) => state.navbar);
-  const { audioEnabled, videoEnabled, myUserName, isHost } = useSelector(
-    (state: RootState) => state.clientSession
-  );
+  const { audioEnabled, videoEnabled, myUserName, isHost, emojiEvents } =
+    useSelector((state: RootState) => state.clientSession);
   const [sessionState, setSessionState] = useState<SessionStateType>({
     session: undefined,
     mainStreamManager: undefined,
@@ -95,7 +96,9 @@ function MeetingRoom() {
   }, [videoEnabled]);
   // 세션에 따라 신호 받기
   useEffect(() => {
-    session && recvSignal();
+    recvChatSignal();
+    recvGameSignal();
+    recvEmojiSignal();
   }, [session]);
 
   // 방장이 게임을 생성했을 경우를 핸들링하는 useEffect
@@ -154,33 +157,6 @@ function MeetingRoom() {
       })
       .catch((err: any) => console.error(err));
   };
-  const sendEmojiSignal = (item: EmojiDetailType) => {
-    if (session === undefined) return;
-
-    session
-      .signal({
-        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
-        to: [],
-        type: "emoji",
-      })
-      .then(() => {
-        console.log("Message successfully sent");
-      })
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-  const recvSignal = () => {
-    if (session === undefined) return;
-
-    session.on("signal:chat", (event: any) => {
-      dispatch(addChatEvents(event.data));
-    });
-    session.on("signal:gameInfo", (event: any) => {
-      console.log("게임 생성 하고 방장이 보낸 게임 데이터");
-      setRcvdGameInfo(JSON.parse(event.data));
-    });
-  };
   const sendGameInfo = () => {
     // console.log("게임 생성 후 데이터 변경 후");
     if (session === undefined) return;
@@ -198,6 +174,67 @@ function MeetingRoom() {
         console.error(err);
       });
   };
+  const sendEmojiSignal = (item: EmojiDetailType) => {
+    if (session === undefined) return;
+
+    session
+      .signal({
+        data: myUserName + "::" + item.emojiUrl + "::" + item.emojiAnimate,
+        to: [],
+        type: "emoji",
+      })
+      .then(() => {
+        console.log("Message successfully sent");
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
+  const recvChatSignal = () => {
+    if (session === undefined) return;
+
+    session.on("signal:chat", (event: any) => {
+      dispatch(addChatEvents(event.data));
+    });
+  };
+  const recvGameSignal = () => {
+    if (session === undefined) return;
+
+    session.on("signal:gameInfo", (event: any) => {
+      console.log("게임 생성 하고 방장이 보낸 게임 데이터");
+      setRcvdGameInfo(JSON.parse(event.data));
+    });
+  };
+  const recvEmojiSignal = () => {
+    const mySession = session;
+    if (mySession === undefined) return;
+
+    mySession.on("signal:emoji", (event: SignalEvent) => {
+      if (event.from === undefined) return;
+      if (publisher === undefined) return;
+
+      const sender = event.from.connectionId;
+      const myPublisher = publisher.stream.connection.connectionId;
+      const mySubscribers = subscribers.map(
+        (sub: Subscriber) => sub.stream.connection.connectionId
+      );
+
+      // connection.data "{\"clientData\":\"myUserName#105957535666388128155\"}"
+      // connection.role "PUBLISHER"
+
+      const idx =
+        sender !== myPublisher
+          ? mySubscribers.indexOf(sender)
+          : emojiEvents.length - 1;
+      if (idx === -1) return;
+
+      const newEmojiEvents = emojiEvents.map((emo: string, i: number) =>
+        idx === i ? event.data! : emo
+      );
+
+      dispatch(setEmojiEvents(newEmojiEvents));
+    });
+  };
 
   return (
     <>
@@ -210,7 +247,9 @@ function MeetingRoom() {
             />
           </MeetingBox>
           <GameMessageBox>
-            {isShowingMessage && <MeetingMessageShow recvSignal={recvSignal} />}
+            {isShowingMessage && (
+              <MeetingMessageShow recvSignal={recvChatSignal} />
+            )}
             {isShowingMessage && (
               <MeetingMessageInput
                 sendEmojiSignal={sendEmojiSignal}
