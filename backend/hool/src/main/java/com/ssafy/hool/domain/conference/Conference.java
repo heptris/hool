@@ -29,12 +29,18 @@ public class Conference extends BaseEntity {
 
     private Long owner_id;
     private Boolean isActive;
+
+    @Column(length = 140)
     private String title;
+    @Column(length = 140)
     private String description;
     private int total;
     private Boolean isPublic;
+
+    @Column(length = 30)
     private String conferencePassword;
 
+    @Column(length = 10)
     @Enumerated(EnumType.STRING)
     private Conference_category conference_category;
 

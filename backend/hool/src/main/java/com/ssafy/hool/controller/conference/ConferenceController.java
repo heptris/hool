@@ -1,5 +1,6 @@
 package com.ssafy.hool.controller.conference;
 
+import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.dto.conference.*;
 import com.ssafy.hool.dto.response.ResponseDto;
@@ -54,8 +55,8 @@ public class ConferenceController {
     @PostMapping("/exit")
     public ResponseEntity exitConference(@RequestBody ConferenceExitDto conferenceExitDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
-        conferenceService.exitConference(conferenceExitDto, memberId);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "Exit Room"), HttpStatus.OK);
+        ConferenceExitResponseDto conferenceExitResponseDto = conferenceService.exitConference(conferenceExitDto, memberId);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", conferenceExitResponseDto), HttpStatus.OK);
     }
 
 }

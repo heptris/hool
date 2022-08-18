@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 public class FriendController {
 
-    private static final int DEFAULT_SIZE = 1;
+    private static final int DEFAULT_SIZE = 20;
     private final FriendService friendService;
     private final ConferenceService conferenceService;
 

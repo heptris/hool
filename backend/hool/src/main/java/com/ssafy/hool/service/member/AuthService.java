@@ -137,6 +137,8 @@ public class AuthService {
 
             pointHistoryService.signUpPoint(member.getId()); // 회원가입 보너스 +10000 포인트
         }
+        Member savedMember = memberRepository.findByMemberEmail(member.getMemberEmail()).
+                orElseThrow(() -> new CustomException(MEMBER_EMAIL_NOT_FOUND));
         // Token 반환
         MemberLoginDto googleLoginDto = new MemberLoginDto(member.getMemberEmail(), password);
         UsernamePasswordAuthenticationToken authenticationToken = googleLoginDto.toAuthentication();
@@ -144,7 +146,7 @@ public class AuthService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
-        member.updateMemberStatus(MemberStatus.ONLINE);
+        savedMember.updateMemberStatus(MemberStatus.ONLINE);
 
         return tokenDto;
     }

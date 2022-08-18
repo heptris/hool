@@ -31,6 +31,7 @@ spring-build:
   only:
     - master
     - develop
+    - feature/backend
 
 spring-package:
   image: docker:latest
@@ -50,6 +51,7 @@ spring-package:
   only:
     - master
     - develop
+    - feature/backend
 
 dockerize:
   image: docker:latest
@@ -91,3 +93,4 @@ deploy:
   only:
     - master
     - develop
+    - feature/backend
