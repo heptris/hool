@@ -27,6 +27,7 @@ public class Member_conference extends BaseEntity {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
+    @Column(length = 10)
     @Enumerated(EnumType.STRING)
     private EnterStatus enterStatus;
 
