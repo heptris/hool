@@ -30,7 +30,7 @@ function UserVideoComponent(props: PropsType) {
   );
 
   useMemo(() => {
-    if (emojiEvents[idx] !== "") return;
+    if (emojiEvents[idx] === "") return;
 
     setEmojiData(emojiEvents[idx]);
   }, [emojiEvents[idx]]);
