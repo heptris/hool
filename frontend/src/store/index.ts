@@ -11,6 +11,9 @@ interface NavMode {
   isResultMode: boolean;
   isShowingGameSubmit: boolean;
 }
+interface ListPaginationType {
+  isInView: boolean;
+}
 export type ClientSessionType = {
   mySessionTitle: string;
   mySessionId: string;
@@ -49,6 +52,7 @@ const sessionInitialState: ClientSessionType = {
   isPublic: true,
   isHost: false,
 };
+const listPaginationInitialState: ListPaginationType = { isInView: false };
 const navbar = createSlice({
   name: "navbar",
   initialState,
@@ -139,10 +143,20 @@ const clientSession = createSlice({
     },
   },
 });
+const listPagination = createSlice({
+  name: "listPagination",
+  initialState: listPaginationInitialState,
+  reducers: {
+    setIsInview(state: ListPaginationType, actions: PayloadAction<boolean>) {
+      state.isInView = actions.payload;
+    },
+  },
+});
 export const store = configureStore({
   reducer: {
     navbar: navbar.reducer,
     clientSession: clientSession.reducer,
+    listPagination: listPagination.reducer,
   },
 });
 export const {
@@ -170,6 +184,7 @@ export const {
   setIsPublic,
   setIsHost,
 } = clientSession.actions;
+export const { setIsInview } = listPagination.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
