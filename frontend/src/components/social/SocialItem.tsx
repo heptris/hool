@@ -7,14 +7,21 @@ import { darkTheme } from "styles/Theme";
 
 import { postAcceptFriend } from "api/social";
 
+import Alert from "components/commons/Alert";
 import Card from "components/commons/Card";
 
 import { QUERY_KEYS } from "constant";
 
-import { FriendRequestInfoType, MyFriendInfoType } from "types/FriendInfoType";
+import type {
+  FriendRequestInfoType,
+  MyFriendInfoType,
+} from "types/FriendInfoType";
 import useRoomEnter from "hooks/useRoomEnter";
-import { UserInfoType } from "types/UserInfoType";
+import type { UserInfoType } from "types/UserInfoType";
 import { postEnterMeetingRoom } from "api/meeting";
+
+const ALERT_DISPLAYING_TIME = 2000;
+
 interface PropsType extends FriendRequestInfoType, MyFriendInfoType {
   isDisplayMyFriends: boolean;
 }
@@ -34,6 +41,10 @@ function SocialItem(props: PropsType) {
   const userInfo = queryClient.getQueryData<UserInfoType>([QUERY_KEYS.USER]);
 
   const [isDisplayOption, setIsDisplayOption] = useState(false);
+  /* Alert 보일러플레이트 */
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
 
   const { handleEnterRoom } = useRoomEnter();
   const { mutate } = useMutation(postAcceptFriend, {
@@ -52,66 +63,95 @@ function SocialItem(props: PropsType) {
   };
 
   return (
-    <SocialCard>
-      <Status>
-        <ProfileImg src={friendProfile} />
-        <UserInfo>
-          <Nickname>{friendNickName}</Nickname>
-          <Email>{friendMemberEmail}</Email>
-          <CurrentPos>
-            {memberStatus === "ONLINE" ? "접속중" : "오프라인"}
-          </CurrentPos>
-          <CurrentPos>
-            {last && "최종 접속 시간 : " + new Date(last).toLocaleString()}
-          </CurrentPos>
-        </UserInfo>
-      </Status>
-      <div>
-        <MenuIcon
-          onClick={() => {
-            setIsDisplayOption(!isDisplayOption);
-          }}
-          className="fa-solid fa-ellipsis-vertical"
-        ></MenuIcon>
-        {isDisplayMyFriends && isDisplayOption && (
-          <Menu>
-            <div>
-              <p
-                onClick={() => {
-                  friendConferenceDto
-                    ? enterRoomMutate({
-                        title: friendConferenceDto.friendConferenceTitle,
-                        conferenceId: friendConferenceDto.friendConferenceId,
-                      })
-                    : console.log("친구가 들어가 있는 방이 없습니다");
-                  setIsDisplayOption(!isDisplayOption);
-                }}
-              >
-                <p>친구 따라가기</p>
-              </p>
-            </div>
-          </Menu>
-        )}
-        {!isDisplayMyFriends && isDisplayOption && (
-          <Menu>
-            <div>
-              <p onClick={() => handlePostAcceptFriendMutate(true)}>
-                요청 승낙
-              </p>
-            </div>
-            <Hr />
-            <div>
-              <p
-                style={{ color: `${darkTheme.adaptiveGrey200}` }}
-                onClick={() => handlePostAcceptFriendMutate(false)}
-              >
-                거절
-              </p>
-            </div>
-          </Menu>
-        )}
-      </div>
-    </SocialCard>
+    <>
+      {isDisplayAlert && (
+        <Alert
+          isDisplayAlert={isDisplayAlert}
+          handleDisplayAlert={setIsDisplayAlert}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
+      <SocialCard>
+        <Status>
+          <ProfileImg src={friendProfile} />
+          <UserInfo>
+            <Nickname>{friendNickName}</Nickname>
+            <Email>{friendMemberEmail}</Email>
+            <CurrentPos>
+              {memberStatus === "ONLINE" ? "접속중" : "오프라인"}
+            </CurrentPos>
+            <CurrentPos>
+              {last && "최종 접속 시간 : " + new Date(last).toLocaleString()}
+            </CurrentPos>
+          </UserInfo>
+        </Status>
+        <div>
+          <MenuIcon
+            onClick={() => {
+              setIsDisplayOption(!isDisplayOption);
+            }}
+            className="fa-solid fa-ellipsis-vertical"
+          ></MenuIcon>
+          {isDisplayMyFriends && isDisplayOption && (
+            <Menu>
+              <div>
+                <p
+                  onClick={() => {
+                    friendConferenceDto
+                      ? enterRoomMutate({
+                          title: friendConferenceDto.friendConferenceTitle,
+                          conferenceId: friendConferenceDto.friendConferenceId,
+                        })
+                      : console.log("친구가 들어가 있는 방이 없습니다");
+                    setIsDisplayOption(!isDisplayOption);
+                  }}
+                >
+                  <p>친구 따라가기</p>
+                </p>
+              </div>
+            </Menu>
+          )}
+          {!isDisplayMyFriends && isDisplayOption && (
+            <Menu>
+              <div>
+                <p
+                  onClick={() => {
+                    setIsDisplayAlert(true);
+                    setIsSuccess(true);
+                    setMsgToDisplay("친구가 됐어요!");
+                    setTimeout(
+                      () => handlePostAcceptFriendMutate(true),
+                      ALERT_DISPLAYING_TIME
+                    );
+                  }}
+                >
+                  요청 승낙
+                </p>
+              </div>
+              <Hr />
+              <div>
+                <p
+                  style={{ color: `${darkTheme.adaptiveGrey200}` }}
+                  onClick={() => {
+                    setIsDisplayAlert(true);
+                    setIsSuccess(false);
+                    setMsgToDisplay("거절했어요...");
+                    setTimeout(
+                      () => handlePostAcceptFriendMutate(false),
+                      ALERT_DISPLAYING_TIME
+                    );
+                  }}
+                >
+                  거절
+                </p>
+              </div>
+            </Menu>
+          )}
+        </div>
+      </SocialCard>
+    </>
   );
 }
 

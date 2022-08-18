@@ -12,6 +12,8 @@ import Card from "components/commons/Card";
 
 import type { MarketItemType } from "types/MarketItemType";
 
+const ANIMATION_DISPLAYING_TIME = 2000;
+const ALERT_DISPLAYING_TIME = 4000;
 const { adaptiveGrey700, adaptiveGrey800, mainColor } = darkTheme;
 
 const MarketItem = (props: MarketItemType) => {
@@ -28,6 +30,7 @@ const MarketItem = (props: MarketItemType) => {
   } = props;
 
   const queryClient = useQueryClient();
+  /* Alert 보일러플레이트 */
   const [isDisplayAlert, setIsDisplayAlert] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [msgToDisplay, setMsgToDisplay] = useState("");
@@ -61,7 +64,7 @@ const MarketItem = (props: MarketItemType) => {
   useEffect(() => {
     if (isHovering === false) return;
 
-    setTimeout(() => setIsHovering(false), 2000);
+    setTimeout(() => setIsHovering(false), ANIMATION_DISPLAYING_TIME);
   }, [isHovering]);
 
   return (
@@ -70,7 +73,7 @@ const MarketItem = (props: MarketItemType) => {
         <Alert
           isDisplayAlert={isDisplayAlert}
           handleDisplayAlert={setIsDisplayAlert}
-          displayTimeInMs={4000}
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
           msgToDisplay={msgToDisplay}
           isSuccess={isSuccess}
         />
