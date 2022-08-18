@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setEmojiEvents } from "store";
 import _ from "lodash";
@@ -22,18 +22,19 @@ function UserVideoComponent(props: PropsType) {
   const { idx, streamManager, mainVideoStream } = props;
 
   const [isDisplayingEmoji, setIsDisplayingEmoji] = useState(false);
-  const [emojiData, setEmojiData] = useState("");
 
   const dispatch = useDispatch();
   const { emojiEvents } = useSelector(
     (state: RootState) => state.clientSession
   );
 
-  useMemo(() => {
+  /* 이모지 이벤트 처리 로직 */
+  const [emojiData, setEmojiData] = useState("");
+  useEffect(() => {
     if (emojiEvents[idx] === "") return;
 
     setEmojiData(emojiEvents[idx]);
-  }, [emojiEvents[idx]]);
+  }, [emojiEvents]);
   const [sender, emojiUrl, emojiAnimate] = emojiData.split("::");
   useEffect(() => {
     if (emojiData === "") return;
