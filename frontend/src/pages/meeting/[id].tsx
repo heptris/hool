@@ -19,13 +19,7 @@ const RoomPage = () => {
 
   useEffect(() => {
     dispatch(setNavMode("meetingRoom"));
-    window.addEventListener("unload", () =>
-      postExitMeetingRoom({ conferenceId })
-    );
     return () => {
-      window.removeEventListener("unload", () =>
-        postExitMeetingRoom({ conferenceId })
-      );
       postExitMeetingRoom({ conferenceId });
       dispatch(setNavMode("default"));
       dispatch(setIsHost(false));

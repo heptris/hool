@@ -17,6 +17,7 @@ import {
   setIsShowingGameSubmit,
   setMsgToSend,
   setEmojiEvents,
+  setIsGameSelect,
 } from "store";
 
 import styled from "styled-components";
@@ -29,6 +30,7 @@ import MeetingMessageInput from "./MeetingMessageInput";
 import MeetingGame, { MeetingStaticGame } from "./MeetingGame";
 import MeetingGameModal from "components/meeting/gameModal/MeetingGameModal";
 import Modal from "components/commons/Modal";
+import Alert from "components/commons/Alert";
 
 import { QUERY_KEYS } from "constant";
 
@@ -45,6 +47,8 @@ import { GameInfoType } from "types/GameInfoType";
 import Button from "components/commons/Button";
 import { postGameStatistics, postSaveGameResult } from "api/meeting";
 import { UserInfoType } from "types/UserInfoType";
+
+const ALERT_DISPLAYING_TIME = 5000;
 
 function MeetingRoom() {
   const dispatch = useDispatch();
@@ -76,6 +80,9 @@ function MeetingRoom() {
     disagreeName: "",
     timeLimit: 0,
   });
+  const [isDisplayAlert, setIsDisplayAlert] = useState(false);
+  const [msgToDisplay, setMsgToDisplay] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const { mutate: gameStatisticsMutate } = useMutation(postGameStatistics, {
     onSuccess: (data) => {
       console.log(data);
@@ -115,7 +122,10 @@ function MeetingRoom() {
       //게임을 생성하면
       dispatch(setIsResultMode(true)); // navside -> result모드로 변경
       sendGameInfo();
-      setShowGameModal(true);
+      dispatch(setIsGameSelect(false));
+      setTimeout(() => {
+        setShowGameModal(true);
+      }, 1000);
     }
   }, [gameInfo]);
   // 참가자가 게임을 받았을 경우 핸들링하는 useEffect
@@ -145,6 +155,11 @@ function MeetingRoom() {
       () => gameStatisticsMutate({ gameId: rcvdGameInfo.gameId }),
       rcvdGameInfo.timeLimit - new Date().getTime() + 1000 // 1초 정도의 여유를 주고 통계창 띄우기
     );
+  };
+  const handleDisplayAlert = (message: string, success: boolean) => {
+    setIsDisplayAlert(true);
+    setMsgToDisplay(message);
+    setIsSuccess(success);
   };
 
   const sendTextMessage = (msgToSend: string) => {
@@ -254,6 +269,15 @@ function MeetingRoom() {
 
   return (
     <>
+      {isDisplayAlert && (
+        <Alert
+          displayTimeInMs={ALERT_DISPLAYING_TIME}
+          handleDisplayAlert={setIsDisplayAlert}
+          isDisplayAlert={isDisplayAlert}
+          msgToDisplay={msgToDisplay}
+          isSuccess={isSuccess}
+        />
+      )}
       <ConcreteContainer>
         <FlexBox>
           <MeetingBox>
@@ -262,16 +286,18 @@ function MeetingRoom() {
               handleSessionState={handleSessionState}
             />
           </MeetingBox>
-          {!isShowingGame && showGameModal && (
-            <MeetingStaticGame
-              handleStaticGameClose={handleStaticGameClose}
-              gameInfo={rcvdGameInfo}
-              handleDisplayClose={() => {
-                dispatch(setIsShowingGame(false));
-              }}
-            />
-          )}
           <GameMessageBox>
+            {!isShowingGame && showGameModal && (
+              <MeetingStaticGame
+                handleStaticGameClose={handleStaticGameClose}
+                gameInfo={rcvdGameInfo}
+                handleDisplayClose={() => {
+                  dispatch(setIsShowingGame(false));
+                  console.log("모달창 닫기 완료");
+                }}
+                handleDisplayAlert={handleDisplayAlert}
+              />
+            )}
             {isShowingMessage && (
               <MeetingMessageShow recvSignal={recvChatSignal} />
             )}
@@ -294,7 +320,9 @@ function MeetingRoom() {
           gameInfo={rcvdGameInfo}
           handleDisplayClose={() => {
             dispatch(setIsShowingGame(false));
+            console.log("투표 완료");
           }}
+          handleDisplayAlert={handleDisplayAlert}
         />
       )}
     </>

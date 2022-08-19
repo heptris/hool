@@ -173,7 +173,8 @@ const MeetingModalBody = ({
           height={2}
           width={4}
           text={"완료"}
-          marginBottom={1.5}
+          marginTop={1}
+          marginBottom={2}
           buttonOnClick={() => {
             if (conferenceCategory === "DEFAULT") {
               alert("카테고리를 선택하세요");

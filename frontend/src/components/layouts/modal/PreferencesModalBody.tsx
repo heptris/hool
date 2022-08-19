@@ -141,17 +141,17 @@ const PreferencesModalBody = () => {
           height={2}
           width={4}
           text={"취소"}
-          marginTop={0.5}
+          marginTop={1}
           marginBottom={2}
           color={darkTheme.adaptiveGrey500}
-          marginRight={1}
+          marginRight={0.5}
           buttonOnClick={() => dispatch(setIsCreatingPreferences(false))}
         />
         <Button
           height={2}
           width={4}
           text={"완료"}
-          marginTop={0.5}
+          marginTop={1}
           marginBottom={2}
           buttonOnClick={onSumbitHandler}
         />
