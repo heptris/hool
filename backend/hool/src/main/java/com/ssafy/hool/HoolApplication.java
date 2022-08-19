@@ -17,7 +17,6 @@ public class HoolApplication {
 				.properties(APPLICATION_LOCATIONS)
 				.run(args);
 
-//		SpringApplication.run(HoolApplication.class, args);
 	}
 
 }
