@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aa8dc1de-eca5-46a4-bb08-a7a01af08de6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/hool/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/hool/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/images/addfav.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/images/editProfile.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/images/makeroom.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/images/pointhistory.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/images/uploadEmoji.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/exec/유저시나리오.md" beforeDir="false" afterPath="$PROJECT_DIR$/exec/유저시나리오.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,15 +26,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/S07P12A408/backend/hool/build.gradle",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/S07P12A408&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -39,6 +45,8 @@
       <updated>1659610795811</updated>
       <workItem from="1659610796830" duration="205000" />
       <workItem from="1659611012308" duration="39000" />
+      <workItem from="1660874379496" duration="67000" />
+      <workItem from="1660874461625" duration="849000" />
     </task>
     <servers />
   </component>
