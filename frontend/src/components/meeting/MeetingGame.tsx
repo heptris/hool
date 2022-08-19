@@ -42,7 +42,7 @@ const GameHeader = ({
   const [days, hours, minutes, seconds] = leftTime;
   const [alertColor, setAlertColor] = useState(infoColor);
   useEffect(() => {
-    if (minutes + seconds === 0) {
+    if (minutes + seconds <= 0) {
       handleDisplayClose();
       handleStaticGameClose(false);
     }
@@ -51,7 +51,7 @@ const GameHeader = ({
     setAlertColor(
       alertColor === adaptiveGrey500 ? emphasisColor : adaptiveGrey500
     );
-  }, [0.5 * seconds]);
+  }, [seconds]);
   return (
     <Header>
       <HeaderText>게임 예측 투표</HeaderText>
@@ -66,10 +66,12 @@ export const MeetingStaticGame = ({
   gameInfo,
   handleDisplayClose,
   handleStaticGameClose,
+  handleDisplayAlert,
 }: {
   gameInfo: GameInfoType;
   handleDisplayClose: Function;
   handleStaticGameClose: Function;
+  handleDisplayAlert: Function;
 }) => {
   const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
   const [gameChoice, setGameChoice] = useState<GameHistoryType>({
@@ -84,6 +86,7 @@ export const MeetingStaticGame = ({
     onSuccess: () => {
       handleDisplayClose();
       dispatch(setIsGameSelect(true));
+      handleDisplayAlert(`게임 참여 완료!`, true);
     },
   });
   // useEffect(() => {}, [gameComplete]);
@@ -104,7 +107,7 @@ export const MeetingStaticGame = ({
         <TextWrapper>
           <Text>게임 제목 </Text>
           {!gameComplete && <GameName>{gameName}</GameName>}
-          {gameComplete && <GameName>게임 투표 완료!</GameName>}
+          {gameComplete && <GameName>{gameName} 게임 투표 완료!</GameName>}
         </TextWrapper>
         <GamePredict>
           <Text>게임 예측</Text>
@@ -115,7 +118,7 @@ export const MeetingStaticGame = ({
                   ...gameChoice,
                   bettChoice: true,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
               }}
             >
               <AgreeTitle>{agreeName}</AgreeTitle>
@@ -146,7 +149,9 @@ export const MeetingStaticGame = ({
                   ...gameChoice,
                   bettChoice: false,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
+
+                // handleDisplayAlert(`게임 참여 완료 ${disagreeName}`, false);
               }}
             >
               <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
@@ -180,10 +185,12 @@ const MeetingGame = ({
   gameInfo,
   handleDisplayClose,
   handleStaticGameClose,
+  handleDisplayAlert,
 }: {
   gameInfo: GameInfoType;
   handleDisplayClose: Function;
   handleStaticGameClose: Function;
+  handleDisplayAlert: Function;
 }) => {
   const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
   const [gameChoice, setGameChoice] = useState<GameHistoryType>({
@@ -198,6 +205,7 @@ const MeetingGame = ({
     onSuccess: () => {
       handleDisplayClose();
       dispatch(setIsGameSelect(true));
+      handleDisplayAlert(`게임 참여 완료`, true);
     },
   });
 
@@ -234,7 +242,8 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: true,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
+                // handleDisplayAlert(`게임 참여 완료 ${agreeName}`, true);
               }}
             >
               <AgreeTitle>{agreeName}</AgreeTitle>
@@ -249,7 +258,8 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: false,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
+                // handleDisplayAlert(`게임 참여 완료 ${disagreeName}`, false);
               }}
             >
               <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
