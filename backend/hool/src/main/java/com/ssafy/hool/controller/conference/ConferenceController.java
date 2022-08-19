@@ -1,6 +1,5 @@
 package com.ssafy.hool.controller.conference;
 
-import com.ssafy.hool.domain.conference.Conference;
 import com.ssafy.hool.domain.conference.Conference_category;
 import com.ssafy.hool.dto.conference.*;
 import com.ssafy.hool.dto.response.ResponseDto;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/conference")
@@ -55,8 +52,16 @@ public class ConferenceController {
     @PostMapping("/exit")
     public ResponseEntity exitConference(@RequestBody ConferenceExitDto conferenceExitDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
-        ConferenceExitResponseDto conferenceExitResponseDto = conferenceService.exitConference(conferenceExitDto, memberId);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", conferenceExitResponseDto), HttpStatus.OK);
+        conferenceService.exitConference(conferenceExitDto, memberId);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", "exit room"), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "응원방 나가기 체크", notes = "응원방 나가기 체크")
+    @PostMapping("/exit/check")
+    public ResponseEntity exitCheckConference(@RequestBody ConferenceExitDto conferenceExitDto){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        ConferenceExitCheckResponseDto conferenceExitCheckResponseDto = conferenceService.exitCheckConference(conferenceExitDto, memberId);
+        return new ResponseEntity<ResponseDto>(new ResponseDto(200, "success", conferenceExitCheckResponseDto), HttpStatus.OK);
     }
 
 }
