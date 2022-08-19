@@ -27,6 +27,7 @@ export type ClientSessionType = {
   currentVideoDevice?: Device | undefined;
   isPublic: boolean;
   isHost: boolean;
+  isGameSelect: boolean;
 };
 const initialState: NavMode = {
   navMode: "default",
@@ -51,6 +52,7 @@ const sessionInitialState: ClientSessionType = {
   currentVideoDevice: undefined,
   isPublic: true,
   isHost: false,
+  isGameSelect: false,
 };
 const listPaginationInitialState: ListPaginationType = { isInView: false };
 const navbar = createSlice({
@@ -141,6 +143,10 @@ const clientSession = createSlice({
     setIsHost(state: ClientSessionType, actions: PayloadAction<boolean>) {
       state.isHost = actions.payload;
     },
+    setIsGameSelect(state: ClientSessionType, actions:
+      PayloadAction<boolean>) {
+      state.isGameSelect = actions.payload;
+    }
   },
 });
 const listPagination = createSlice({
@@ -183,6 +189,7 @@ export const {
   setIsDisplayEmoji,
   setIsPublic,
   setIsHost,
+  setIsGameSelect
 } = clientSession.actions;
 export const { setIsInview } = listPagination.actions;
 // Infer the `RootState` and `AppDispatch` types from the store itself
