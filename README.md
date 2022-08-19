@@ -7,7 +7,7 @@
 | Application                       | Domain                             | Language                         | Framework                            |
 | --------------------------------- | ---------------------------------- | -------------------------------- | ------------------------------------ |
 | :white_check_mark: Desktop Web    | :black_square_button: AI           | :black_square_button: JavaScript | :black_square_button: Vue.js         |
-| :white_check_mark: Mobile Web     | :black_square_button: Big Data     | :white_check_mark: TypeScript    | :white_check_mark: React             |
+| :black_square_button: Mobile Web  | :black_square_button: Big Data     | :white_check_mark: TypeScript    | :white_check_mark: React             |
 | :white_check_mark: Responsive Web | :black_square_button: Blockchain   | :black_square_button: C/C++      | :black_square_button: Angular        |
 | :black_square_button: Android App | :black_square_button: IoT          | :black_square_button: C#         | :black_square_button: Node.js        |
 | :black_square_button: iOS App     | :white_check_mark: AR/VR/Metaverse | :black_square_button: Python     | :black_square_button: Flask/Django   |
@@ -26,38 +26,19 @@
 
 * 주요 기능
   
-  - 필수 구현
-    - 회원 관리
-    - 화상 미팅룸
-    - 3D Emoji
-  - 추가 기능
-    - 포인트 (등급에 따른 혜택)
-    - 포인트 베팅
-    - 친구 겸 그룹
-    - 초대 기능 (따라가기)
-    - 귓속말
-    - 간단한 게임
-
-* 주요 기술
+  - 응원 세션 생성/참가
   
-  - WebRTC
-  - WebSocket
-  - JWT Authentication
-  - three.js
-
-* 참조 리소스
+  - 다이나믹 이모지
   
-  * Vuetify: 디자인 전반 적용
-  * Vue Argon Design System: 디자인 전반 적용
-  * Vue Black Dashboard Pro(유료): 캘린더 컴포넌트 사용
-  * AR Core: 구글에서 제공하는 AR 지원 라이브러리. 이미지 인식 및 오버레이 영상에 활용
-  * Color Thief: 이미지 색상 추출 라이브러리. 커버 사진 색상 추출 및 배경 변경에 활용
-  * Animation.css: CSS 애니메이션 지원 라이브러리. 메인 페이지 진입 애니메이션에 활용
-
-* 배포 환경
+  - 포인트(큐브)
   
-  - URL: // 웹 서비스, 랜딩 페이지, 프로젝트 소개 등의 배포 URL 기입
-  - 테스트 계정: // 로그인이 필요한 경우, 사용 가능한 테스트 계정(ID/PW) 기입
+  - 승자가 패자의 큐브를 획득 가능한 내기 게임 생성
+  
+  - 친구(소셜)
+  
+  - 친구 따라가기
+  
+  - 간단한 게임
 
 <br><br>
 
@@ -65,12 +46,9 @@
 
 ## :family: 팀 소개
 
-- 한승재: 팀장, FE
-- 박상태: BE
-- 신은정: FE
-- 안호진: FE
-- 이승호: BE
-- 전한울: BE
+| 한승재                                                                                                  | 전한울                                                                                                  | 박상태                                                                                                   | 신은정                                                                                                  | 안호진                                                                                                | 이승호                                                                                                   |
+|:----------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------:|
+| <a href="https://github.com/YanZisuka">![](https://avatars.githubusercontent.com/u/83825572?v=4)</a> | <a href="https://github.com/hanwool77">![](https://avatars.githubusercontent.com/u/62233935?v=4)</a> | <a href="https://github.com/sangtae365">![](https://avatars.githubusercontent.com/u/95201136?v=4)</a> | <a href="https://github.com/ejshin2ya">![](https://avatars.githubusercontent.com/u/80582815?v=4)</a> | <a href="https://github.com/HojinAn">![](https://avatars.githubusercontent.com/u/47904304?v=4)</a> | <a href="https://github.com/dltmdgh579">![](https://avatars.githubusercontent.com/u/68692871?v=4)</a> |
 
 <br><br>
 
@@ -80,13 +58,21 @@
 
 ### :computer: 개발 환경
 
+#### FE
+
+![node%3A16.16](https://img.shields.io/badge/-node%3A16.16-339933?logo=Node.js&logoColor=white&style=flat-square)
+
+![VisualStudioCode](https://img.shields.io/badge/-VisualStudioCode-007acc?logo=Visual%20Studio%20Code&logoColor=white&style=flat-square)
+
+#### BE
+
+![openjdk%3A8](https://img.shields.io/badge/-openjdk%3A8-black?logo=OpenJDK&logoColor=white&style=flat-square)
+
+![IntelliJ%20IDEA](https://img.shields.io/badge/-IntelliJ%20IDEA-black?logo=IntelliJ%20IDEA&style=flat-square)
+
 <br>
 
-### :books: 기술 스택
-
-<br>
-
-### :building_construction: 아키텍처
+### :building_construction: 기술스택/아키텍처
 
 ![](./README.assets/techstack-architecture.png)
 
@@ -94,8 +80,12 @@
 
 ### :card_file_box: ERD
 
+![](./README.assets/erd.png)
+
 <br>
 
-### :pager: 기능
+### :pager: 동작화면
+
+
 
 <br>

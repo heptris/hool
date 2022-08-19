@@ -12,6 +12,8 @@ import { postCreateGameHistory } from "api/meeting";
 import { useMutation } from "@tanstack/react-query";
 import { GameHistoryType } from "types/GameHistoryType";
 import Modal from "components/commons/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setIsGameSelect } from "store";
 
 const {
   contrastColor,
@@ -40,7 +42,7 @@ const GameHeader = ({
   const [days, hours, minutes, seconds] = leftTime;
   const [alertColor, setAlertColor] = useState(infoColor);
   useEffect(() => {
-    if (minutes + seconds === 0) {
+    if (minutes + seconds <= 0) {
       handleDisplayClose();
       handleStaticGameClose(false);
     }
@@ -49,7 +51,7 @@ const GameHeader = ({
     setAlertColor(
       alertColor === adaptiveGrey500 ? emphasisColor : adaptiveGrey500
     );
-  }, [0.5 * seconds]);
+  }, [seconds]);
   return (
     <Header>
       <HeaderText>게임 예측 투표</HeaderText>
@@ -64,21 +66,30 @@ export const MeetingStaticGame = ({
   gameInfo,
   handleDisplayClose,
   handleStaticGameClose,
+  handleDisplayAlert,
 }: {
   gameInfo: GameInfoType;
   handleDisplayClose: Function;
   handleStaticGameClose: Function;
+  handleDisplayAlert: Function;
 }) => {
   const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
   const [gameChoice, setGameChoice] = useState<GameHistoryType>({
     bettPoint: 100,
     gameId,
   });
+  const dispatch = useDispatch();
+  const gameComplete = useSelector(
+    (state: RootState) => state.clientSession.isGameSelect
+  );
   const { mutate } = useMutation(postCreateGameHistory, {
     onSuccess: () => {
       handleDisplayClose();
+      dispatch(setIsGameSelect(true));
+      handleDisplayAlert(`게임 참여 완료!`, true);
     },
   });
+  // useEffect(() => {}, [gameComplete]);
   useEffect(() => {
     gameChoice.bettChoice !== undefined && mutate(gameChoice);
   }, [gameChoice]);
@@ -95,40 +106,75 @@ export const MeetingStaticGame = ({
       <GameWrapper>
         <TextWrapper>
           <Text>게임 제목 </Text>
-          <GameName>{gameName}</GameName>
+          {!gameComplete && <GameName>{gameName}</GameName>}
+          {gameComplete && <GameName>{gameName} 게임 투표 완료!</GameName>}
         </TextWrapper>
         <GamePredict>
           <Text>게임 예측</Text>
-          <AgreeItem
-            onClick={() => {
-              setGameChoice({
-                ...gameChoice,
-                bettChoice: true,
-              });
-              alert("게임 참여 완료!");
-            }}
-          >
-            <AgreeTitle>{agreeName}</AgreeTitle>
-            <PointWrapper>
-              <BtnIcon className="fa-solid fa-cube" />
-              <AgreePoint>100</AgreePoint>
-            </PointWrapper>
-          </AgreeItem>
-          <DisAgreeItem
-            onClick={() => {
-              setGameChoice({
-                ...gameChoice,
-                bettChoice: false,
-              });
-              alert("게임 참여 완료!");
-            }}
-          >
-            <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
-            <PointWrapper>
-              <BtnIcon className="fa-solid fa-cube" />
-              <AgreePoint>100</AgreePoint>
-            </PointWrapper>
-          </DisAgreeItem>
+          {!gameComplete && (
+            <AgreeItem
+              onClick={() => {
+                setGameChoice({
+                  ...gameChoice,
+                  bettChoice: true,
+                });
+                console.log("참여완료");
+              }}
+            >
+              <AgreeTitle>{agreeName}</AgreeTitle>
+              <PointWrapper>
+                <BtnIcon className="fa-solid fa-cube" />
+                <AgreePoint>100</AgreePoint>
+              </PointWrapper>
+            </AgreeItem>
+          )}
+          {gameComplete && (
+            <CompleteItem>
+              <AgreeTitle>
+                {gameChoice.bettChoice && (
+                  <BtnIcon className="fa-solid fa-circle-check" />
+                )}
+                {agreeName}
+              </AgreeTitle>
+              <PointWrapper>
+                <BtnIcon className="fa-solid fa-cube" />
+                <AgreePoint>100</AgreePoint>
+              </PointWrapper>
+            </CompleteItem>
+          )}
+          {!gameComplete && (
+            <DisAgreeItem
+              onClick={() => {
+                setGameChoice({
+                  ...gameChoice,
+                  bettChoice: false,
+                });
+                console.log("참여완료");
+
+                // handleDisplayAlert(`게임 참여 완료 ${disagreeName}`, false);
+              }}
+            >
+              <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
+              <PointWrapper>
+                <BtnIcon className="fa-solid fa-cube" />
+                <AgreePoint>100</AgreePoint>
+              </PointWrapper>
+            </DisAgreeItem>
+          )}
+          {gameComplete && (
+            <CompleteItem>
+              <DisAgreeTitle>
+                {!gameChoice.bettChoice && (
+                  <BtnIcon className="fa-solid fa-circle-check" />
+                )}
+                {disagreeName}
+              </DisAgreeTitle>
+              <PointWrapper>
+                <BtnIcon className="fa-solid fa-cube" />
+                <AgreePoint>100</AgreePoint>
+              </PointWrapper>
+            </CompleteItem>
+          )}
         </GamePredict>
       </GameWrapper>
     </GamePredictWrapper>
@@ -139,20 +185,27 @@ const MeetingGame = ({
   gameInfo,
   handleDisplayClose,
   handleStaticGameClose,
+  handleDisplayAlert,
 }: {
   gameInfo: GameInfoType;
   handleDisplayClose: Function;
   handleStaticGameClose: Function;
+  handleDisplayAlert: Function;
 }) => {
   const { timeLimit, agreeName, disagreeName, gameId, gameName } = gameInfo;
   const [gameChoice, setGameChoice] = useState<GameHistoryType>({
     bettPoint: 100,
     gameId,
   });
-
+  const dispatch = useDispatch();
+  const gameComplete = useSelector(
+    (state: RootState) => state.clientSession.isGameSelect
+  );
   const { mutate } = useMutation(postCreateGameHistory, {
     onSuccess: () => {
       handleDisplayClose();
+      dispatch(setIsGameSelect(true));
+      handleDisplayAlert(`게임 참여 완료`, true);
     },
   });
 
@@ -189,7 +242,8 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: true,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
+                // handleDisplayAlert(`게임 참여 완료 ${agreeName}`, true);
               }}
             >
               <AgreeTitle>{agreeName}</AgreeTitle>
@@ -204,7 +258,8 @@ const MeetingGame = ({
                   ...gameChoice,
                   bettChoice: false,
                 });
-                alert("게임 참여 완료!");
+                console.log("참여완료");
+                // handleDisplayAlert(`게임 참여 완료 ${disagreeName}`, false);
               }}
             >
               <DisAgreeTitle>{disagreeName}</DisAgreeTitle>
@@ -308,6 +363,18 @@ const AgreeItem = styled.div`
   &:hover {
     background-color: ${darkTheme.emphasisColor};
   }
+`;
+const CompleteItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: ${darkTheme.adaptiveGrey500};
+  height: 3rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const DisAgreeItem = styled.div`
