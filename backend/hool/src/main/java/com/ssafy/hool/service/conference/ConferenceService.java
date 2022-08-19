@@ -112,7 +112,7 @@ public class ConferenceService {
      * 응원방 나가기
      * @param conferenceExitDto
      */
-    public ConferenceExitResponseDto exitConference(ConferenceExitDto conferenceExitDto, Long memberId){
+    public void exitConference(ConferenceExitDto conferenceExitDto, Long memberId){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
         Member_conference memberConference = memberConferenceRepository.findByConferenceAndMember(conference, member);
@@ -120,20 +120,28 @@ public class ConferenceService {
 
         conference.totalUpdate(-1);
 
-        Boolean isChange = false;
-        String changeHost = null;
         if(conference.getTotal() == 0){
             conference.roomTerminated();
         } else {
             if(memberId == conference.getOwner_id()){
-                isChange = true;
                 List<Member_conference> memberConferenceList = memberConferenceRepository.findAllByOrderByLastModifiedDate();
 
                 conference.changeOwner(memberConferenceList.get(0).getId());
-                changeHost = memberRepository.findById(memberConferenceList.get(0).getId()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND)).getNickName();
             }
         }
-        return new ConferenceExitResponseDto(isChange, changeHost);
+    }
+
+    public ConferenceExitCheckResponseDto exitCheckConference(ConferenceExitDto conferenceExitDto, Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        Conference conference = conferenceRepository.findById(conferenceExitDto.getConferenceId()).orElseThrow(() -> new CustomException(CONFERENCE_NOT_FOUND));
+
+        ConferenceExitCheckResponseDto conferenceExitCheckResponseDto = null;
+        if(member.getId() == conference.getOwner_id()){
+            conferenceExitCheckResponseDto = new ConferenceExitCheckResponseDto(true);
+        } else {
+            conferenceExitCheckResponseDto = new ConferenceExitCheckResponseDto(false);
+        }
+        return conferenceExitCheckResponseDto;
     }
 
     public CursorResult<ConferenceListResponseDto> getSearch(Long cursorId, Pageable page, String category){

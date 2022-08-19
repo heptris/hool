@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConferenceExitResponseDto {
-    private Boolean changeHost;
-    private String nextHost;
+public class ConferenceExitCheckResponseDto {
+    private Boolean amIHost;
 }
