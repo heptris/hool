@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa8dc1de-eca5-46a4-bb08-a7a01af08de6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/exec/유저시나리오.md" beforeDir="false" afterPath="$PROJECT_DIR$/exec/유저시나리오.md" afterDir="false" />
-    </list>
+    <list default="true" id="aa8dc1de-eca5-46a4-bb08-a7a01af08de6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +39,7 @@
       <workItem from="1659611012308" duration="39000" />
       <workItem from="1660874379496" duration="67000" />
       <workItem from="1660874461625" duration="914000" />
-      <workItem from="1660875395903" duration="1690000" />
+      <workItem from="1660875395903" duration="2180000" />
     </task>
     <servers />
   </component>
