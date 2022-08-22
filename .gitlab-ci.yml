@@ -22,6 +22,8 @@ spring-build:
   stage: spring-build
   script: |
     echo -e $BACK_AWSENV_KEY > ./backend/hool/src/main/resources/aws.yml
+    value=`cat ./backend/hool/src/main/resources/aws.yml`
+    echo "$value"
     cd backend/hool/
     chmod +x gradlew
     ./gradlew build -x test
