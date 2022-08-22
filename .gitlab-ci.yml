@@ -22,6 +22,7 @@ spring-build:
   stage: spring-build
   script: |
     cd backend/hool/
+    echo -e $BACK_AWSENV_KEY > ./src/main/resources/.aws.yml
     chmod +x gradlew
     ./gradlew build -x test
   artifacts:
