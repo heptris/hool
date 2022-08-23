@@ -84,8 +84,6 @@
 
 <br>
 
-### :pager: 동작화면
-
-
+### :pager: [동작화면 (Click!)](./exec/images/)
 
 <br>
