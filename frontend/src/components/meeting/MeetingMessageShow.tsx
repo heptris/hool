@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "store";
@@ -25,7 +25,6 @@ function MeetingMessageShow(props: PropsType) {
     (state: RootState) => state.clientSession
   );
 
-  // 상위 컴포넌트 세션상태
   const msgBodyRef: React.RefObject<HTMLDivElement> = React.useRef(null);
 
   const renderChatMsgs = (chatEvent: string, idx: number) => {
@@ -34,7 +33,6 @@ function MeetingMessageShow(props: PropsType) {
       msgToSend: msg,
       memberProfile: url,
     } = JSON.parse(chatEvent);
-    scrollToBottom();
 
     if (sender === myUserName) {
       return createMyBubble({ sender, msg, idx, url });
@@ -92,6 +90,9 @@ function MeetingMessageShow(props: PropsType) {
       msgBody.scrollTop = msgBody.scrollHeight;
     }
   };
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatEvents]);
 
   return (
     <>
