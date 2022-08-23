@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    include: API-KEY
   sql:
     init:
       mode: always
@@ -9,6 +11,7 @@ spring:
     url: jdbc:mysql://localhost:3306/ssafy_web_db?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: ssafy
     password: (2MdiTE7h[BXy(fEVQw=
+#    password: ${MYSQL_ROOT_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -65,18 +68,6 @@ jwt:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-
-#cloud:
-#  aws:
-#    credentials:
-#      accessKey: AKIA2EDEFCNPY65UAG56
-#      secretKey: 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
-#    s3:
-#      bucket: hool-bucket
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
 
 #server:
 #  tomcat:
