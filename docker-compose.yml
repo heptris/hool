@@ -1,27 +1,73 @@
-version: '3.8'
+version: "3"
+
+volumes:
+  react_dist_vol: {}
 
 services:
   nginx:
-    image: nginx:latest
     container_name: nginx
-    restart: "on-failure"
+    image: nginx
+    volumes:
+      - react_dist_vol:/data/client/dist
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     ports:
-      - 80:80
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend
-    restart: "on-failure"
+      - "80:80"
+      - "443:443"
     expose:
-      - 5442
+      - 80
+      - 443
+    depends_on:
+      - application
+      - react
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
     volumes:
-      - './frontend:/app'
-      - '/app/node_modules'
-    environment: 
-      - NODE_ENV=development 
-      - CHOKIDAR_USEPOLLING=true
-    stdin_open: true
-    tty: true
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  react:
+    container_name: react
+    image: $FRONT_IMAGE_NAME
+    volumes:
+      - react_dist_vol:/app/dist
+    command: |
+      npm run build
+
+  application:
+    image: hanwool77/hooltest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+      - redis
+    container_name: app_test
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/ssafy_web_db?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: (2MdiTE7h[BXy(fEVQw=
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    container_name: redis
+
+  database:
+    image: mysql:8.0.29
+    container_name: ssafy_web_db
+    environment:
+      - MYSQL_DATABASE=ssafy_web_db
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=(2MdiTE7h[BXy(fEVQw=
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - 3306:3306
+    volumes:
+      - /home/revision/docker_spring/database/ssafy_web_db/:/var/lib/mysql
