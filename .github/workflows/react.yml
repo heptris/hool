@@ -1,0 +1,39 @@
+name: React CI
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create secrets
+        run: echo "${{ secrets.FRONT_DOTENV_LOCAL }}" > frontend/.env.local
+
+      - name: Set up Node.js 16.16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.16
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd frontend/
+          npm install
+
+      - name: Run tests
+        run: |
+          cd frontend/
+          npm run test
+
+      - name: Dockerize
+        run: |
+          echo "${{ secrets.FRONT_DOCKER_HUB_PW }}" | docker login -u "${{ secrets.FRONT_DOCKER_HUB_USER }}" --password-stdin
+          docker build -t "${{ secrets.FRONT_IMAGE_NAME }}" ./frontend/
+          docker push "${{ secrets.FRONT_IMAGE_NAME }}"
+          docker logout
