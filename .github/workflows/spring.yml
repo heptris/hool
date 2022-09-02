@@ -3,87 +3,46 @@ name: Spring CI
 on:
   push:
     branches:
-      - feature/backend
+      - develop
 
 jobs:
   build:
     runs-on: ubuntu-20.04
-
-    services:
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: github-actions
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v2
+#       - name: Cache dependency
+#         uses: actions/cache@v2
+#         with:
+#           path: ~/.cache/pip
+#           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pip-
 
-      - name: Cache dependency
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+#       - name: Create secrets
+#         run: echo "${{ secrets.DOTENV }}" > server/.env
 
-      - name: Create secrets
-        run: echo "${{ secrets.DOTENV }}" > server/.env
+      - name: Set up Java JDK
+        uses: actions/setup-java@v3.4.1
+        with: 
+          java-version: 8
 
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install dependencies
+      - name: Build
         run: |
-          cd server/
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install coverage codecov
-
-      - name: Run tests
-        run: |
-          cd server/
-          python manage.py migrate
-          coverage run ./manage.py test
-          codecov
+            echo -e $BACK_APIKEY > ./backend/hool/src/main/resources/application-API-KEY.properties
+            value=`cat ./backend/hool/src/main/resources/application-API-KEY.properties`
+            echo "$value"
+            cd backend/hool/
+            chmod +x gradlew
+            ./gradlew build -x test
 
       - name: Dockerize
         run: |
-          echo "${{ secrets.DOCKER_HUB_PW }}" | docker login -u "${{ secrets.DOCKER_HUB_USER }}" --password-stdin
+          cd backend/hool
+          echo "${{ secrets.BACK_DOCKER_HUB_PW }}" | docker login -u "${{ secrets.BACK_DOCKER_HUB_USER }}" --password-stdin
           docker build -t "${{ secrets.BACK_IMAGE_NAME }}" ./server/
           docker push "${{ secrets.BACK_IMAGE_NAME }}"
           docker logout
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Run scripts
-        run: |
-          mkdir -p ~/.ssh
-          eval $(ssh-agent -s)
-          echo "${{ secrets.SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/SSH_KEY.key
-          chmod 600 ~/.ssh/SSH_KEY.key
-          ssh-add ~/.ssh/SSH_KEY.key
-          ssh ubuntu@"${{ secrets.DEPLOY_SERVER_IP }}" sudo bash deploy.sh
+    
+      
+ 
