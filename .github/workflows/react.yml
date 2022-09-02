@@ -25,10 +25,10 @@ jobs:
           cd frontend/
           npm install
 
-      - name: Run tests
-        run: |
-          cd frontend/
-          npm run test
+      # - name: Run tests
+      #   run: |
+      #     cd frontend/
+      #     npm run test
 
       - name: Dockerize
         run: |

@@ -3,6 +3,7 @@ name: Spring CI
 on:
   push:
     branches:
+      - feature/backend
 
 jobs:
   build:
