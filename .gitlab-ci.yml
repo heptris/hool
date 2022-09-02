@@ -16,7 +16,6 @@ cache:
   paths:
     - node_modules/
 
-
 spring-build:
   image: openjdk:8
   stage: spring-build
@@ -28,7 +27,7 @@ spring-build:
     chmod +x gradlew
     ./gradlew build -x test
   artifacts:
-    paths: 
+    paths:
       - ./backend/hool/build/libs/*.jar
     expire_in: 60 min
   only:
@@ -72,7 +71,6 @@ dockerize:
   after_script: |
     docker logout
   only:
-    - develop
     - master
 
 deploy:
@@ -91,9 +89,6 @@ deploy:
     ssh-add $SSH_KEY
   script: |
     ssh ubuntu@"$DEPLOY_SERVER_IP" bash deploy.sh
-    ssh ubuntu@"$DEPLOY_SERVER_IP" bash springdeploy.sh
   when: on_success
   only:
     - master
-    - develop
-    - feature/backend
