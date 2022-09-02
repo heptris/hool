@@ -1,19 +1,19 @@
 import { getRequest, postRequest, putRequest } from "api";
 
-const MEMBER = "member";
+const MEMBER = "/member";
 
 // point-controller
 const getMyPoint = (obj: { memberId: number }) => postRequest("point", obj);
 
 // member controller
 const getMyProfile = async () => {
-  return await getRequest(`${MEMBER}/`)
+  return await getRequest(`${MEMBER}`)
     .then(({ data }) => data)
     .catch((err) => console.log(err));
 };
 
 const putModifyMyProfile = (obj: { name: string; nickName: string }) =>
-  putRequest(`${MEMBER}/`, obj);
+  putRequest(`${MEMBER}`, obj);
 
 const postMyEmojiDetail = (obj: { emojiId: number }) =>
   postRequest(`${MEMBER}/detail/emoji`, obj);

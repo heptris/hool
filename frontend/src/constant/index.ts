@@ -11,7 +11,8 @@ export const ROUTES_NAME = {
   SOCIAL: "/social",
 };
 
-export const HOST = "https://" + "hool-app.link";
+const PROTOCOL = "https://";
+export const HOST = PROTOCOL + "hool-app.link";
 export const HOOL_API_ENDPOINT = HOST + "/api";
 export const HOOL_AUTH_ENDPOINT = HOST + "/auth";
 export const HOOL_IMAGE_ENDPOINT = HOST + "/image";

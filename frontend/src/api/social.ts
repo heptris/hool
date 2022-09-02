@@ -1,6 +1,6 @@
 import { getRequest, postRequest } from "api";
 
-const FRIEND = "friend";
+const FRIEND = "/friend";
 
 // friend-controller
 const postJoinFriendRoom = (obj: { conferenceId: number }) =>
@@ -18,19 +18,19 @@ const postSearchFriend = (obj: { friendNickName: string }) =>
 
 // friend-request-controller
 const postAcceptFriend = (obj: { accept: boolean; friendRequestId: number }) =>
-  postRequest(`${FRIEND}request/accept`, obj);
+  postRequest(`${FRIEND}/request/accept`, obj);
 
-const getFriendSendMessage = () => getRequest(`${FRIEND}request/send/message`);
+const getFriendSendMessage = () => getRequest(`${FRIEND}/request/send/message`);
 
 const postSendFriendSendMessage = (obj: { friendMemberId: number }) =>
-  postRequest(`${FRIEND}request/send/message`, obj);
+  postRequest(`${FRIEND}/request/send/message`, obj);
 
 const getFriendRequestSendMessagePage = (
   friendRequestCursorId: number,
   size: number
 ) =>
   getRequest(
-    `${FRIEND}request/send/message/page?friendRequestCursorId=${friendRequestCursorId}&size=${size}`
+    `${FRIEND}/request/send/message/page?friendRequestCursorId=${friendRequestCursorId}&size=${size}`
   );
 
 export {

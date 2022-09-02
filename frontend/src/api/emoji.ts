@@ -1,6 +1,6 @@
 import { deleteRequest, getRequest, postRequest, putRequest } from "api";
 
-const EMOJI = "emoji";
+const EMOJI = "/emoji";
 
 // emoji-controller
 const getEmojiList = () => getRequest(`${EMOJI}/list`);
