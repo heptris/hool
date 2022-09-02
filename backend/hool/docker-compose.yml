@@ -4,9 +4,9 @@ services:
     image: mysql:8.0.29
     container_name: ssafy_web_db
     environment:
-      - MYSQL_DATABASE=ssafy_web_db
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD=(2MdiTE7h[BXy(fEVQw=
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     ports:
       - 3306:3306
@@ -26,7 +26,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/ssafy_web_db?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: (2MdiTE7h[BXy(fEVQw=
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - test_network_02
   redis:
