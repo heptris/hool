@@ -11,9 +11,10 @@ export const ROUTES_NAME = {
   SOCIAL: "/social",
 };
 
-export const HOOL_API_ENDPOINT = "https://i7a408.p.ssafy.io/api/";
-export const HOOL_AUTH_ENDPOINT = "https://i7a408.p.ssafy.io/auth/";
-export const HOOL_IMAGE_ENDPOINT = "https://i7a408.p.ssafy.io/image/";
+export const HOST = "https://" + "hool-app.link";
+export const HOOL_API_ENDPOINT = HOST + "/api";
+export const HOOL_AUTH_ENDPOINT = HOST + "/auth";
+export const HOOL_IMAGE_ENDPOINT = HOST + "/image";
 
 export const QUERY_KEYS = {
   USER: "user",
