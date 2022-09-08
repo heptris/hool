@@ -30,7 +30,7 @@ jobs:
 
       - name: Build
         run: |
-            echo -e $BACK_APIKEY > ./backend/hool/src/main/resources/application-API-KEY.properties
+            echo -e ${{ BACK_APIKEY }} > ./backend/hool/src/main/resources/application-API-KEY.properties
             value=`cat ./backend/hool/src/main/resources/application-API-KEY.properties`
             echo "$value"
             cd backend/hool/
