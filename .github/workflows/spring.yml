@@ -33,7 +33,7 @@ jobs:
               echo "cloud.aws.credentials.access-key=${{ secrets.AWS_ACCESS_KEY }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
               echo "cloud.aws.credentials.secret-key=${{ secrets.AWS_SECRET_KEY }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
               echo "cloud.aws.s3.bucket=${{ secrets.AWS_BUCKET }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
-              echo "cloud.aws.region.static=${{ secretse.AWS_REGION }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
+              echo "cloud.aws.region.static=${{ secrets.AWS_REGION }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
               echo "cloud.aws.stack.auto=${{ secrets.AWS_STACK_AUTO }}" > ./backend/hool/src/main/resources/application-API-KEY.properties
               cat ./backend/hool/src/main/resources/application-API-KEY.properties
       - name: Build
