@@ -35,7 +35,8 @@ jobs:
               echo $AWS_BUCKET >> ./backend/hool/src/main/resources/application-API-KEY.properties
               echo $AWS_REGION >> ./backend/hool/src/main/resources/application-API-KEY.properties
               echo $AWS_STACK_AUTO >> ./backend/hool/src/main/resources/application-API-KEY.properties
-              cat ./backend/hool/src/main/resources/application-API-KEY.properties
+              value=`cat ./backend/hool/src/main/resources/application-API-KEY.properties`
+              echo "$value"
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
