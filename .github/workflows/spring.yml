@@ -45,6 +45,6 @@ jobs:
       - name: Dockerize
         run: |
           echo "${{ secrets.BACK_DOCKER_HUB_PW }}" | docker login -u "${{ secrets.BACK_DOCKER_HUB_USER }}" --password-stdin
-          docker build -t "${{ secrets.BACK_IMAGE_NAME }}" ../backend/hool
+          docker build -t "${{ secrets.BACK_IMAGE_NAME }}" ./backend/hool
           docker push "${{ secrets.BACK_IMAGE_NAME }}"
           docker logout
